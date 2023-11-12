@@ -7406,10 +7406,10 @@ $.extend( Datepicker.prototype, {
 			buttonText = this._get( inst, "buttonText" );
 			buttonImage = this._get( inst, "buttonImage" );
 			inst.trigger = $( this._get( inst, "buttonImageOnly" ) ?
-				$( "</static/img/>" ).addClass( this._triggerClass ).
+				$( "<img/>" ).addClass( this._triggerClass ).
 					attr( { src: buttonImage, alt: buttonText, title: buttonText } ) :
 				$( "<button type='button'></button>" ).addClass( this._triggerClass ).
-					html( !buttonImage ? buttonText : $( "</static/img/>" ).attr(
+					html( !buttonImage ? buttonText : $( "<img/>" ).attr(
 					{ src:buttonImage, alt:buttonText, title:buttonText } ) ) );
 			input[ isRTL ? "before" : "after" ]( inst.trigger );
 			inst.trigger.on( "click", function() {
@@ -11659,7 +11659,7 @@ $.ui.plugin.add( "resizable", "containment", {
 			ce = that.containerElement,
 			continueResize = true;
 
-		if ( ce[ 0 ] !== document && ( //static/ ).test( ce.css( "position" ) ) ) {
+		if ( ce[ 0 ] !== document && ( /static/ ).test( ce.css( "position" ) ) ) {
 			cop = co;
 		}
 
@@ -11753,7 +11753,7 @@ $.ui.plugin.add( "resizable", "containment", {
 			} );
 		}
 
-		if ( that._helper && !o.animate && ( //static/ ).test( ce.css( "position" ) ) ) {
+		if ( that._helper && !o.animate && ( /static/ ).test( ce.css( "position" ) ) ) {
 			$( this ).css( {
 				left: ho.left - cop.left - co.left,
 				width: w,
