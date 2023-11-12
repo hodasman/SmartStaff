@@ -8,4 +8,10 @@ app_name = MainappConfig.name
 urlpatterns = [
     path("", views.MainPageView.as_view()),
     path("devices/", views.DevicesListView.as_view()),
+    path(
+        "devices/<int:pk>",
+        views.DevicesDetailView.as_view(),
+        name="news_detail",
+    ),
+    path("articles/", views.ArticlesListView.as_view()),
 ]
