@@ -14,4 +14,6 @@ urlpatterns = [
         name="news_detail",
     ),
     path("articles/", views.ArticlesListView.as_view()),
+    path("articles/<int:pk>", views.ArticlesDetailView.as_view()),
+    path("scenarios/", views.ScenariosListView.as_view()),
 ]
