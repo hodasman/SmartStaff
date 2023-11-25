@@ -16,9 +16,10 @@ class DevicesDetailView(TemplateView):
 class ArticlesListView(TemplateView):
     template_name = "mainapp/articles.html"
 
+
 class ArticlesDetailView(TemplateView):
     template_name = "mainapp/article_details.html"
 
+
 class ScenariosListView(TemplateView):
     template_name = "mainapp/scenarios.html"
-
