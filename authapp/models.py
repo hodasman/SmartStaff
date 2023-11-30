@@ -80,6 +80,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text=_("Автор может добавлять статьи на сайт"),
     )
+    is_staff = models.BooleanField(default=False)
     objects = UserManager()
 
     USERNAME_FIELD = "email"
