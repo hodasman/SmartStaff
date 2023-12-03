@@ -39,6 +39,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "mainapp",
     "authapp",
+    "sorl.thumbnail",
+]
+
+PYTHONINSTALLED_APPS = [
+    # ...
+    "sorl.thumbnail",
 ]
 
 MIDDLEWARE = [

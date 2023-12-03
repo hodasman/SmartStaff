@@ -1,16 +1,18 @@
-from django.views.generic import TemplateView
+from django.views.generic import DetailView, ListView, TemplateView
+
+from mainapp import models as mainapp_models
 
 
 class MainPageView(TemplateView):
     template_name = "mainapp/index.html"
 
 
-class DevicesListView(TemplateView):
-    template_name = "mainapp/devices_list.html"
+class DevicesListView(ListView):
+    model = mainapp_models.Devices
 
 
-class DevicesDetailView(TemplateView):
-    template_name = "mainapp/device_details.html"
+class DevicesDetailView(DetailView):
+    model = mainapp_models.Devices
 
 
 class ArticlesListView(TemplateView):
