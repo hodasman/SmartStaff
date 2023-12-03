@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username_validator = ASCIIUsernameValidator()
     username = models.CharField(
         _("username"),
-        max_length=150,
+        max_length=15,
         unique=True,
         help_text=_("Используйте только буквы, цифры или знаки @/./+/-/_"),
         validators=[username_validator],
@@ -87,4 +87,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["username", "first_name", "last_name"]
 
     def __str__(self):
-        return f"{self.username} {self.email}"
+        return f"{self.username}"

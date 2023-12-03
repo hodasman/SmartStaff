@@ -18,6 +18,9 @@
                     </ul>
                 </li>
                 <li><a href="#">Контакты</a></li>
+                {% if user.is_superuser%}
+                <li><a href="{% url 'admin:index'%}">Админ</li>
+                {% endif %}
             </ul>
         </nav>
     </div>

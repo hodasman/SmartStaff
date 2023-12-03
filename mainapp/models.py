@@ -55,7 +55,7 @@ class Articles(models.Model):
     category = models.ForeignKey(
         ArticleCategory, verbose_name="Категория", on_delete=models.CASCADE, related_name="articles"
     )
-    slug = models.SlugField(verbose_name="URL", max_length=200, unique=True, blank=True, null=True)
+    slug = models.SlugField(verbose_name="URL", unique=True, blank=True, null=True)
     preambule = models.TextField(verbose_name="Краткое описание", blank=True)
     text = models.TextField(verbose_name="Текст", blank=True)
     images = models.ImageField(verbose_name="Изображение", blank=True, null=True, upload_to="articles_img/")

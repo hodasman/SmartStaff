@@ -1,6 +1,11 @@
 
 {% extends 'base.html' %}
 {% load static %}
+
+{% block title %}
+{{ object.title}}
+{% endblock title %}
+
 {% block content %}
     <!-- bradcam_area  -->
     <div class="bradcam_area bradcam_bg_1">
@@ -8,7 +13,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="bradcam_text">
-                        <h3>Название устройства</h3>
+                        <h3>45+ Умных Устройств</h3>
                     </div>
                 </div>
             </div>
@@ -24,23 +29,23 @@
                         <div class="single_jobs white-bg d-flex justify-content-between">
                             <div class="jobs_left d-flex align-items-center">
                                 <div class="thumb">
-                                    <img src='{% static "img/svg_icon/1.svg" %}' alt="">
+                                    <img src='{{object.foto1.url}}' width="50" height="50"  alt="">
                                 </div>
                                 <div class="jobs_conetent">
-                                    <a href="#"><h4>Software Engineer</h4></a>
+                                    <h4>{{ object.title }}</h4>
                                     <div class="links_locat d-flex align-items-center">
                                         <div class="location">
-                                            <p> <i class="fa fa-map-marker"></i> California, USA</p>
+                                            <p> <i class="fa fa-th-list"></i> {{object.category}}</p>
                                         </div>
                                         <div class="location">
-                                            <p> <i class="fa fa-clock-o"></i> Part-time</p>
+                                            <p> <i class="fa fa-user"></i> {{object.author}}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="jobs_right">
                                 <div class="apply_now">
-                                    <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -124,15 +129,17 @@
                 <div class="col-lg-4">
                     <div class="job_sumary">
                         <div class="summery_header">
-                            <h3>Job Summery</h3>
+                            <h3>Характеристики</h3>
                         </div>
                         <div class="job_content">
                             <ul>
-                                <li>Published on: <span>12 Nov, 2019</span></li>
-                                <li>Vacancy: <span>2 Position</span></li>
-                                <li>Salary: <span>50k - 120k/y</span></li>
-                                <li>Location: <span>California, USA</span></li>
-                                <li>Job Nature: <span> Full-time</span></li>
+                                <li>Модель: <span>{{object.model}}</span></li>
+                                <li>Протоколы: <span>{{object.protocol}}</span></li>
+                                <li>Питание: <span>{{object.power}}</span></li>
+                                <li>Размеры: <span>{{object.size}}</span></li>
+                                <li>Комплектация: <span>{{object.set}}</span></li>
+                                <li>Платформы: <span> {% for item in object.platforms.all %} {{item.title}}; {% endfor %}</span></li>
+                            
                             </ul>
                         </div>
                     </div>
