@@ -10,9 +10,19 @@ class MainPageView(TemplateView):
 class DevicesListView(ListView):
     model = mainapp_models.Devices
 
+    def get_context_data(self, **kwargs):
+        context = super(DevicesListView, self).get_context_data(**kwargs)
+        context["qty"] = len(mainapp_models.Devices.objects.all())  # Количество устройств
+        return context
+
 
 class DevicesDetailView(DetailView):
     model = mainapp_models.Devices
+
+    def get_context_data(self, **kwargs):
+        context = super(DevicesDetailView, self).get_context_data(**kwargs)
+        context["qty"] = len(mainapp_models.Devices.objects.all())  # Количество устройств
+        return context
 
 
 class ArticlesListView(TemplateView):

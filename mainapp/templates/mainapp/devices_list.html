@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="bradcam_text">
-                        <h3>45+ Умных Устройств</h3>
+                        <h3>{{ qty }}+ Умных Устройств</h3>
                     </div>
                 </div>
             </div>
@@ -129,7 +129,11 @@
                                     <div class="jobs_left d-flex align-items-center">
                                         <div class="thumb">
                                             
-                                            <img src='{{item.foto1.url}}' width="50" height="50"  alt="">
+                                            {% if item.icon %}
+                                            <img src='{{item.icon.url}}' width="50" height="50"  alt="">
+                                            {% else %}
+                                            <img src='{% static "img/svg_icon/4.svg" %}' width="50" height="50" alt="">
+                                            {% endif %}
                                             
                                         </div>
                                         <div class="jobs_conetent">
