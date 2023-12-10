@@ -16,6 +16,14 @@ class DevicesListView(ListView):
         return context
 
 
+class DevicesCategory(ListView):
+    model = mainapp_models.Devices
+    template_name = "mainapp/devices_list.html"
+
+    def get_queryset(self):
+        return mainapp_models.Devices.objects.filter(category__slug=self.kwargs["cat_slug"], is_published=True)
+
+
 class DevicesDetailView(DetailView):
     model = mainapp_models.Devices
 

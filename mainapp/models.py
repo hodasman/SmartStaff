@@ -27,6 +27,7 @@ class Platforms(models.Model):
 
 class ArticleCategory(models.Model):
     title = models.CharField(max_length=256, verbose_name="Название")
+    slug = AutoSlugField(populate_from="title")
     description = models.TextField(blank=True, null=True, verbose_name="Описание")
 
     class Meta:
@@ -40,6 +41,7 @@ class ArticleCategory(models.Model):
 
 class DeviceCategory(models.Model):
     title = models.CharField(max_length=256, verbose_name="Название")
+    slug = AutoSlugField(populate_from="title")
     description = models.TextField(blank=True, null=True, verbose_name="Описание")
 
     class Meta:

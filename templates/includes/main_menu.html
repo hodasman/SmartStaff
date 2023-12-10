@@ -2,9 +2,9 @@
     <div class="main-menu  d-none d-lg-block">
         <nav>
             <ul id="navigation">
-                <li><a href="#">Главная</a></li>
+                <li><a href="{% url 'mainapp:main_page' %}">Главная</a></li>
                 <li><a href="#">Сценарии</a></li>
-                <li><a href="#">Устройства <i class="ti-angle-down"></i></a>
+                <li><a href="{% url 'mainapp:devices-list' %}">Устройства <i class="ti-angle-down"></i></a>
                     <ul class="submenu">
                         <li><a href="#">Категория1 </a></li>
                         <li><a href="#">Категория2 </a></li>
