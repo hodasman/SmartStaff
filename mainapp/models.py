@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from autoslug import AutoSlugField
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -82,10 +83,13 @@ class Devices(models.Model):
         DeviceCategory, verbose_name="Категория", on_delete=models.CASCADE, related_name="devices"
     )
     title = models.CharField(max_length=256, verbose_name="Название")
-    slug = models.SlugField(verbose_name="URL", max_length=200, unique=True, blank=True, null=True)
+    slug = AutoSlugField(populate_from="title", verbose_name="URL")
     description = models.TextField(verbose_name="Описание", blank=True)
+    icon = models.ImageField(verbose_name="Иконка_устройства", blank=True, null=True, upload_to=device_foto_path)
     foto1 = models.ImageField(verbose_name="Фото устройства_1", blank=True, null=True, upload_to=device_foto_path)
-
+    foto2 = models.ImageField(verbose_name="Фото устройства_2", blank=True, null=True, upload_to=device_foto_path)
+    foto3 = models.ImageField(verbose_name="Фото устройства_3", blank=True, null=True, upload_to=device_foto_path)
+    foto4 = models.ImageField(verbose_name="Фото устройства_4", blank=True, null=True, upload_to=device_foto_path)
     model = models.CharField(max_length=256, verbose_name="Модель устройства")
     size = models.CharField(max_length=256, verbose_name="Размеры")
     power = models.CharField(max_length=256, verbose_name="Питание")
