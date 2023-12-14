@@ -21,7 +21,9 @@ class DevicesCategory(ListView):
     template_name = "mainapp/devices_list.html"
 
     def get_queryset(self):
-        return mainapp_models.Devices.objects.filter(category__slug=self.kwargs["cat_slug"], is_published=True)
+        """cat__slug – это способ обращения к слагу таблицы DeviceCategory через объект category модели Devices
+        функция выдает объект QuerySet с выборкой по категории"""
+        return mainapp_models.Devices.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
 
 
 class DevicesDetailView(DetailView):
