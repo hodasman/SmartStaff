@@ -102,6 +102,8 @@ class Devices(models.Model):
     set = models.CharField(max_length=256, verbose_name="Комплект")
     link_to_buy = models.CharField(max_length=256, verbose_name="Ссылка для покупки")
     deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(verbose_name="Создан", auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name="Обновлен", auto_now=True)
 
     def __str__(self) -> str:
         return f"{self.pk} {self.title}"
