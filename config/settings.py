@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "mainapp",
     "authapp",
     "sorl.thumbnail",
+    "mptt",
+    "core",
 ]
 
 PYTHONINSTALLED_APPS = [
