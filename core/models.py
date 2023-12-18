@@ -5,6 +5,12 @@ from mptt.models import MPTTModel, TreeForeignKey
 class MenuItem(MPTTModel):
     name = models.CharField(max_length=100, unique=True)
     url = models.CharField("Ссылка", max_length=255)
+    cat_slug = models.CharField(
+        "Слаг категории",
+        max_length=255,
+        null=True,
+        blank=True,
+    )
     position = models.PositiveIntegerField("Позиция", default=1)
     parent = TreeForeignKey("self", on_delete=models.CASCADE, null=True, blank=True, related_name="children")
 
