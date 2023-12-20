@@ -54,10 +54,10 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     username_validator = ASCIIUsernameValidator()
     username = models.CharField(
-        _("username"),
+        _("Мянушка(login)"),
         max_length=15,
         unique=True,
-        help_text=_("Используйте только буквы, цифры или знаки @/./+/-/_"),
+        help_text=_("Максимальное значение 15 символов. Используйте только буквы, цифры или знаки +/-/_"),
         validators=[username_validator],
         error_messages={
             "unique": _("Такой пользователь уже существует"),

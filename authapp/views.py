@@ -1,6 +1,11 @@
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
+from django.views.generic import CreateView
+
+from authapp import forms
 
 
 class CustomLoginView(LoginView):
@@ -24,3 +29,9 @@ class CustomLogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
         messages.add_message(self.request, messages.INFO, "Увидимся!")
         return super().dispatch(request, *args, **kwargs)
+
+
+class RegisterView(CreateView):
+    model = get_user_model()
+    form_class = forms.CreateUserForm
+    success_url = reverse_lazy("mainapp:main_page")
