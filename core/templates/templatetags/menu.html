@@ -5,7 +5,7 @@
             {% for menu_item in menu_items %}
                 {% if menu_item.get_children %}
                 
-                <li><a href="{% url menu_item.url %}""> {{ menu_item }}<i class="ti-angle-down"></i></a>
+                <li><a href="{% url menu_item.url %}"> {{ menu_item }}<i class="ti-angle-down"></i></a>
                     <ul class="submenu">
                         {% for m_item in menu_item.get_children %}
                         <li><a href="{% url m_item.url cat_slug=m_item.cat_slug %}">{{ m_item }} </a></li>
@@ -17,9 +17,9 @@
                 {% endif %}
                 
             {% endfor %}
-                {% if user.is_superuser%}
-                <li><a href="{% url 'admin:index'%}">Админ</li>
-                {% endif %}
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'admin:index'%}">Админ</li>
+            {% endif %}
             </ul>
         </nav>
     </div>

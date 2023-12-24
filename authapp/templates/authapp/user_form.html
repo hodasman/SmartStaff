@@ -2,15 +2,32 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+<!-- bradcam_area  -->
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="bradcam_text">
+                    
+                    {% if user.is_anonymous %}
+                    <h3>Регистрация нового пользователя</h3>
+                    {% else %}
+                    <h3>Редактировать профиль</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ bradcam_area  -->
 <div class="whole-wrap">
     <div class="container box_1170">
         <div class="section-top-border">
             <div class="row">
                 <div class="col-lg-8 col-md-8">
-                    {% if user.is_anonymous %}
-                    <h3>Регистрация нового пользователя</h3>
-                    {% else %}
-                    <h3>Редактировать профиль</h3>
+                    {% if not user.is_anonymous %}
+                    
+                    
             
                     {% endif %}
                     <form method="post" class="mt-2" enctype="multipart/form-data">
@@ -25,6 +42,15 @@
                         {% endif %}
                         </button>
                     </form>
+                </div>
+                <div class="col-lg-3 col-md-4 mt-sm-30">
+                    <div class="single-element-widget">
+                        
+                        {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" alt="" width="100%">
+                        {% endif %}
+                        
+                    </div>
                 </div>
             </div>    
         </div>    
