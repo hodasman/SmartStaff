@@ -35,7 +35,7 @@ class DevicesDetailView(DetailView):
         return context
 
 
-class ArticlesListView(TemplateView):
+class ArticlesListView(ListView):
     template_name = "mainapp/articles.html"
 
 
