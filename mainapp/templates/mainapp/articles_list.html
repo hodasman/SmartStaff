@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="bradcam_text">
-                        <h3>Статьи</h3>
+                        <h3>Статьи({{qty}})</h3>
                     </div>
                 </div>
             </div>
@@ -23,28 +23,28 @@
             <div class="row">
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="blog_left_sidebar">
+                        {% for item in object_list %}
                         <article class="blog_item">
                             <div class="blog_item_img">
-                                <img src='{% static "img/blog/single_blog_1.png" %}' alt="">
+                                <img src='{{item.main_img.url}}' alt="">
                                 <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
+                                    <h3>{{item.created_at|date:"d"}}</h3>
+                                    <p>{{item.created_at|date:"M"}}</p>
                                 </a>
                             </div>
 
                             <div class="blog_details">
-                                <a class="d-inline-block" href="single-blog.html">
-                                    <h2>Статья 1</h2>
+                                <a class="d-inline-block" href="{% url 'mainapp:article_detail' slug=item.slug %}">
+                                    <h2>{{item.title}}</h2>
                                 </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
+                                <p>{{item.preambule}}</p>
                                 <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
+                                    <li><a href="#"><i class="fa fa-user"></i> {{item.category}}</a></li>
                                     <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
                                 </ul>
                             </div>
                         </article>
-
+                        {% endfor %}
                         <article class="blog_item">
                             <div class="blog_item_img">
                                 <img src='{% static "img/blog/single_blog_2.png" %}' alt="">

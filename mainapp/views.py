@@ -36,11 +36,21 @@ class DevicesDetailView(DetailView):
 
 
 class ArticlesListView(ListView):
-    template_name = "mainapp/articles.html"
+    model = mainapp_models.Articles
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticlesListView, self).get_context_data(**kwargs)
+        context["qty"] = len(mainapp_models.Articles.objects.all())  # Количество статей
+        return context
 
 
-class ArticlesDetailView(TemplateView):
-    template_name = "mainapp/article_details.html"
+class ArticlesDetailView(DetailView):
+    model = mainapp_models.Articles
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticlesDetailView, self).get_context_data(**kwargs)
+
+        return context
 
 
 class ScenariosListView(TemplateView):
