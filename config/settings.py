@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "sorl.thumbnail",
     "mptt",
     "core",
+    "crispy_forms",
+    "crispy_bootstrap4",
 ]
 
 PYTHONINSTALLED_APPS = [
@@ -149,3 +151,6 @@ LOGIN_REDIRECT_URL = "mainapp:main_page"
 LOGOUT_REDIRECT_URL = "mainapp:main_page"
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"

@@ -1,0 +1,14 @@
+<div class="col-xl-6 col-lg-7">
+    <div class="main-menu  d-none d-lg-block">
+        <nav>
+            <ul id="navigation">
+            {% if user.is_superuser %}
+                <li><a href="{% url 'admin:index'%}">Админ</li>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'authapp:profile_edit' pk=request.user.pk %}">Редактировать профиль</li>
+            {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
