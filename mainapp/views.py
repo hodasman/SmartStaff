@@ -53,5 +53,15 @@ class ArticlesDetailView(DetailView):
         return context
 
 
+class ArticlesCategory(ListView):
+    model = mainapp_models.Articles
+    template_name = "mainapp/articles_list.html"
+
+    def get_queryset(self):
+        """cat__slug – это способ обращения к слагу таблицы ArticlesCategory через объект category модели Articles
+        функция выдает объект QuerySet с выборкой по категории"""
+        return mainapp_models.Articles.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
+
+
 class ScenariosListView(TemplateView):
     template_name = "mainapp/scenarios.html"

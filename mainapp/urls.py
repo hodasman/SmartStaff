@@ -16,5 +16,6 @@ urlpatterns = [
     path("devices/category/<slug:cat_slug>/", views.DevicesCategory.as_view(), name="devices_category"),
     path("articles/", views.ArticlesListView.as_view(), name="articles"),
     path("articles/<slug:slug>", views.ArticlesDetailView.as_view(), name="article_detail"),
+    path("articles/category/<slug:cat_slug>/", views.ArticlesCategory.as_view(), name="articles_category"),
     path("scenarios/", views.ScenariosListView.as_view(), name="scenarios"),
 ]
