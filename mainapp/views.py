@@ -25,6 +25,13 @@ class DevicesCategory(ListView):
         функция выдает объект QuerySet с выборкой по категории"""
         return mainapp_models.Devices.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
 
+    def get_context_data(self, **kwargs):
+        context = super(DevicesCategory, self).get_context_data(**kwargs)
+        context["cat"] = mainapp_models.DeviceCategory.objects.get(
+            slug=self.kwargs["cat_slug"]
+        ).title  # Получение названия категории
+        return context
+
 
 class DevicesDetailView(DetailView):
     model = mainapp_models.Devices
@@ -40,7 +47,7 @@ class ArticlesListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesListView, self).get_context_data(**kwargs)
-        context["qty"] = len(mainapp_models.Articles.objects.all())  # Количество статей
+        print(context)
         return context
 
 
@@ -49,7 +56,7 @@ class ArticlesDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesDetailView, self).get_context_data(**kwargs)
-
+        context["qty"] = len(mainapp_models.Articles.objects.all())  # Количество статей
         return context
 
 
@@ -61,6 +68,13 @@ class ArticlesCategory(ListView):
         """cat__slug – это способ обращения к слагу таблицы ArticlesCategory через объект category модели Articles
         функция выдает объект QuerySet с выборкой по категории"""
         return mainapp_models.Articles.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticlesCategory, self).get_context_data(**kwargs)
+        context["cat"] = mainapp_models.ArticleCategory.objects.get(
+            slug=self.kwargs["cat_slug"]
+        ).title  # Получение названия категории
+        return context
 
 
 class ScenariosListView(TemplateView):
