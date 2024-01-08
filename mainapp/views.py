@@ -25,6 +25,13 @@ class DevicesCategory(ListView):
         функция выдает объект QuerySet с выборкой по категории"""
         return mainapp_models.Devices.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
 
+    def get_context_data(self, **kwargs):
+        context = super(DevicesCategory, self).get_context_data(**kwargs)
+        context["cat"] = mainapp_models.DeviceCategory.objects.get(
+            slug=self.kwargs["cat_slug"]
+        ).title  # Получение названия категории
+        return context
+
 
 class DevicesDetailView(DetailView):
     model = mainapp_models.Devices
@@ -36,11 +43,38 @@ class DevicesDetailView(DetailView):
 
 
 class ArticlesListView(ListView):
-    template_name = "mainapp/articles.html"
+    model = mainapp_models.Articles
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticlesListView, self).get_context_data(**kwargs)
+        print(context)
+        return context
 
 
-class ArticlesDetailView(TemplateView):
-    template_name = "mainapp/article_details.html"
+class ArticlesDetailView(DetailView):
+    model = mainapp_models.Articles
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticlesDetailView, self).get_context_data(**kwargs)
+        context["qty"] = len(mainapp_models.Articles.objects.all())  # Количество статей
+        return context
+
+
+class ArticlesCategory(ListView):
+    model = mainapp_models.Articles
+    template_name = "mainapp/articles_list.html"
+
+    def get_queryset(self):
+        """cat__slug – это способ обращения к слагу таблицы ArticlesCategory через объект category модели Articles
+        функция выдает объект QuerySet с выборкой по категории"""
+        return mainapp_models.Articles.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticlesCategory, self).get_context_data(**kwargs)
+        context["cat"] = mainapp_models.ArticleCategory.objects.get(
+            slug=self.kwargs["cat_slug"]
+        ).title  # Получение названия категории
+        return context
 
 
 class ScenariosListView(TemplateView):

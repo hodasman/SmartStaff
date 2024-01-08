@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from autoslug import AutoSlugField
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -8,8 +6,13 @@ from django.db import models
 def device_foto_path(instance, filename):
     # file will be uploaded to
     #   MEDIA_ROOT / devices_foto / <model> / <filename>
-    suff = Path(filename).suffix
     return "devices_foto/{0}/{1}".format(instance.model, filename)
+
+
+def article_img_path(instance, filename):
+    # file will be uploaded to
+    #   MEDIA_ROOT / articles_img / <slug> / <filename>
+    return "articles_img/{0}/{1}".format(instance.slug, filename)
 
 
 class Platforms(models.Model):
@@ -58,10 +61,35 @@ class Articles(models.Model):
     category = models.ForeignKey(
         ArticleCategory, verbose_name="Категория", on_delete=models.CASCADE, related_name="articles"
     )
-    slug = models.SlugField(verbose_name="URL", unique=True, blank=True, null=True)
+    slug = AutoSlugField(populate_from="title", verbose_name="URL")
     preambule = models.TextField(verbose_name="Краткое описание", blank=True)
     text = models.TextField(verbose_name="Текст", blank=True)
-    images = models.ImageField(verbose_name="Изображение", blank=True, null=True, upload_to="articles_img/")
+    main_img = models.ImageField(verbose_name="Заглавная картинка", blank=True, null=True, upload_to=article_img_path)
+    img_1 = models.ImageField(verbose_name="Картинка_1", blank=True, null=True, upload_to=article_img_path)
+    img_2 = models.ImageField(verbose_name="Картинка_2", blank=True, null=True, upload_to=article_img_path)
+    img_3 = models.ImageField(verbose_name="Картинка_3", blank=True, null=True, upload_to=article_img_path)
+    img_4 = models.ImageField(verbose_name="Картинка_4", blank=True, null=True, upload_to=article_img_path)
+    img_5 = models.ImageField(verbose_name="Картинка_5", blank=True, null=True, upload_to=article_img_path)
+    img_6 = models.ImageField(verbose_name="Картинка_6", blank=True, null=True, upload_to=article_img_path)
+    img_7 = models.ImageField(verbose_name="Картинка_7", blank=True, null=True, upload_to=article_img_path)
+    img_8 = models.ImageField(verbose_name="Картинка_8", blank=True, null=True, upload_to=article_img_path)
+    img_9 = models.ImageField(verbose_name="Картинка_9", blank=True, null=True, upload_to=article_img_path)
+    img_10 = models.ImageField(verbose_name="Картинка_10", blank=True, null=True, upload_to=article_img_path)
+    img_11 = models.ImageField(verbose_name="Картинка_11", blank=True, null=True, upload_to=article_img_path)
+    img_12 = models.ImageField(verbose_name="Картинка_12", blank=True, null=True, upload_to=article_img_path)
+    img_13 = models.ImageField(verbose_name="Картинка_13", blank=True, null=True, upload_to=article_img_path)
+    img_14 = models.ImageField(verbose_name="Картинка_14", blank=True, null=True, upload_to=article_img_path)
+    img_15 = models.ImageField(verbose_name="Картинка_15", blank=True, null=True, upload_to=article_img_path)
+    img_16 = models.ImageField(verbose_name="Картинка_16", blank=True, null=True, upload_to=article_img_path)
+    img_17 = models.ImageField(verbose_name="Картинка_17", blank=True, null=True, upload_to=article_img_path)
+    img_18 = models.ImageField(verbose_name="Картинка_18", blank=True, null=True, upload_to=article_img_path)
+    img_19 = models.ImageField(verbose_name="Картинка_19", blank=True, null=True, upload_to=article_img_path)
+    img_20 = models.ImageField(verbose_name="Картинка_20", blank=True, null=True, upload_to=article_img_path)
+    img_21 = models.ImageField(verbose_name="Картинка_21", blank=True, null=True, upload_to=article_img_path)
+    img_22 = models.ImageField(verbose_name="Картинка_22", blank=True, null=True, upload_to=article_img_path)
+    img_23 = models.ImageField(verbose_name="Картинка_23", blank=True, null=True, upload_to=article_img_path)
+    img_24 = models.ImageField(verbose_name="Картинка_24", blank=True, null=True, upload_to=article_img_path)
+    img_25 = models.ImageField(verbose_name="Картинка_25", blank=True, null=True, upload_to=article_img_path)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created", editable=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Edited", editable=False)

@@ -8,7 +8,14 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="bradcam_text">
-                        <h3>{{ qty }}+ Умных Устройств</h3>
+                        <h3>
+                            {% if view.kwargs %}
+                            {{ cat }}
+                            {% else %}
+                            Умные Устройства
+                            {% endif %}
+                            ({{ object_list|length }})
+                        </h3>
                     </div>
                 </div>
             </div>
