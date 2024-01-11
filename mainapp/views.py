@@ -27,7 +27,7 @@ class DevicesCategory(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(DevicesCategory, self).get_context_data(**kwargs)
-        context["cat"] = mainapp_models.DeviceCategory.objects.get(
+        context["cat_name"] = mainapp_models.DeviceCategory.objects.get(
             slug=self.kwargs["cat_slug"]
         ).title  # Получение названия категории
         return context
@@ -71,7 +71,7 @@ class ArticlesCategory(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesCategory, self).get_context_data(**kwargs)
-        context["cat"] = mainapp_models.ArticleCategory.objects.get(
+        context["cat_name"] = mainapp_models.ArticleCategory.objects.get(
             slug=self.kwargs["cat_slug"]
         ).title  # Получение названия категории
         return context
