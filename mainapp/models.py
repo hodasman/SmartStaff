@@ -40,6 +40,10 @@ class ArticleCategory(models.Model):
 
     def __str__(self) -> str:
         return f"{self.title}"
+    
+    def qty_articles_in_category(self):
+        qty = len(Articles.objects.filter(category__slug=self.slug, deleted=False))
+        return qty
 
 
 class DeviceCategory(models.Model):
