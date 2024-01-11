@@ -56,7 +56,7 @@ class ArticlesDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesDetailView, self).get_context_data(**kwargs)
-        context["qty"] = len(mainapp_models.Articles.objects.all())  # Количество статей
+        context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
         return context
 
 
