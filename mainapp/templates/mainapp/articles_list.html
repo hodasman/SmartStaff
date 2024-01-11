@@ -10,7 +10,7 @@
                     <div class="bradcam_text">
                         <h3>
                             {% if view.kwargs %}
-                            {{ cat }}
+                            {{ cat_name }}
                             {% else %}
                             Умные Устройства
                             {% endif %}
@@ -182,44 +182,17 @@
                         </aside>
 
                         <aside class="single_sidebar_widget post_category_widget">
-                            <h4 class="widget_title">Category</h4>
+                            <h4 class="widget_title">Категории статей</h4>
                             <ul class="list cat-list">
+                                {% for item in all_categories %}
                                 <li>
-                                    <a href="#" class="d-flex">
-                                        <p>Resaurant food</p>
-                                        <p>(37)</p>
+                                    <a href="{% url 'mainapp:articles_category' cat_slug=item.slug %}" class="d-flex">
+                                        <p>{{item.title}}</p>
+                                        <p>({{item.qty_articles_in_category}})</p>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#" class="d-flex">
-                                        <p>Travel news</p>
-                                        <p>(10)</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex">
-                                        <p>Modern technology</p>
-                                        <p>(03)</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex">
-                                        <p>Product</p>
-                                        <p>(11)</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex">
-                                        <p>Inspiration</p>
-                                        <p>21</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="d-flex">
-                                        <p>Health Care (21)</p>
-                                        <p>09</p>
-                                    </a>
-                                </li>
+                                {% endfor %}
+                                
                             </ul>
                         </aside>
 

@@ -27,7 +27,7 @@ class DevicesCategory(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(DevicesCategory, self).get_context_data(**kwargs)
-        context["cat"] = mainapp_models.DeviceCategory.objects.get(
+        context["cat_name"] = mainapp_models.DeviceCategory.objects.get(
             slug=self.kwargs["cat_slug"]
         ).title  # Получение названия категории
         return context
@@ -47,7 +47,7 @@ class ArticlesListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesListView, self).get_context_data(**kwargs)
-        print(context)
+        context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
         return context
 
 
@@ -56,7 +56,7 @@ class ArticlesDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesDetailView, self).get_context_data(**kwargs)
-        context["qty"] = len(mainapp_models.Articles.objects.all())  # Количество статей
+        context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
         return context
 
 
@@ -65,15 +65,16 @@ class ArticlesCategory(ListView):
     template_name = "mainapp/articles_list.html"
 
     def get_queryset(self):
-        """cat__slug – это способ обращения к слагу таблицы ArticlesCategory через объект category модели Articles
+        """cat__slug – это способ обращения к слагу таблицы ArticleCategory через объект category модели Articles
         функция выдает объект QuerySet с выборкой по категории"""
         return mainapp_models.Articles.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesCategory, self).get_context_data(**kwargs)
-        context["cat"] = mainapp_models.ArticleCategory.objects.get(
+        context["cat_name"] = mainapp_models.ArticleCategory.objects.get(
             slug=self.kwargs["cat_slug"]
         ).title  # Получение названия категории
+        context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
         return context
 
 
