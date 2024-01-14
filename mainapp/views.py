@@ -78,5 +78,9 @@ class ArticlesCategory(ListView):
         return context
 
 
-class ScenariosListView(TemplateView):
-    template_name = "mainapp/scenarios.html"
+class ScenariosListView(ListView):
+    model = mainapp_models.Scenarios
+
+
+class ScenariosDetailView(DetailView):
+    model = mainapp_models.Scenarios
