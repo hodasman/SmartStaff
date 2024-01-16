@@ -80,6 +80,7 @@ class ArticlesCategory(ListView):
 
 class ScenariosListView(ListView):
     model = mainapp_models.Scenarios
+    paginate_by = 5
 
 
 class ScenariosDetailView(DetailView):
