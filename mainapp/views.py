@@ -84,3 +84,16 @@ class ScenariosListView(ListView):
 
 class ScenariosDetailView(DetailView):
     model = mainapp_models.Scenarios
+    
+
+    def get_context_data(self, **kwargs):
+        context = super(ScenariosDetailView, self).get_context_data(**kwargs)
+        try:
+            context["next"] = self.get_object().next()
+        except Exception:
+            context["next"] = self.model.objects.first()
+        try:
+            context["prev"] = self.get_object().pre()
+        except Exception:
+            context["prev"] = self.model.objects.last()
+        return context
