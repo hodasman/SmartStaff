@@ -9,6 +9,7 @@ class MainPageView(TemplateView):
 
 class DevicesListView(ListView):
     model = mainapp_models.Devices
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super(DevicesListView, self).get_context_data(**kwargs)
@@ -19,6 +20,7 @@ class DevicesListView(ListView):
 class DevicesCategory(ListView):
     model = mainapp_models.Devices
     template_name = "mainapp/devices_list.html"
+    paginate_by = 5
 
     def get_queryset(self):
         """cat__slug – это способ обращения к слагу таблицы DeviceCategory через объект category модели Devices
@@ -44,6 +46,7 @@ class DevicesDetailView(DetailView):
 
 class ArticlesListView(ListView):
     model = mainapp_models.Articles
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesListView, self).get_context_data(**kwargs)
@@ -63,6 +66,7 @@ class ArticlesDetailView(DetailView):
 class ArticlesCategory(ListView):
     model = mainapp_models.Articles
     template_name = "mainapp/articles_list.html"
+    paginate_by = 5
 
     def get_queryset(self):
         """cat__slug – это способ обращения к слагу таблицы ArticleCategory через объект category модели Articles
@@ -80,6 +84,7 @@ class ArticlesCategory(ListView):
 
 class ScenariosListView(ListView):
     model = mainapp_models.Scenarios
+    paginate_by = 5
 
 
 class ScenariosDetailView(DetailView):
