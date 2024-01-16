@@ -9,6 +9,7 @@ class MainPageView(TemplateView):
 
 class DevicesListView(ListView):
     model = mainapp_models.Devices
+    paginate_by = 1
 
     def get_context_data(self, **kwargs):
         context = super(DevicesListView, self).get_context_data(**kwargs)
@@ -19,6 +20,7 @@ class DevicesListView(ListView):
 class DevicesCategory(ListView):
     model = mainapp_models.Devices
     template_name = "mainapp/devices_list.html"
+    paginate_by = 5
 
     def get_queryset(self):
         """cat__slug – это способ обращения к слагу таблицы DeviceCategory через объект category модели Devices
