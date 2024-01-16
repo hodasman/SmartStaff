@@ -203,3 +203,12 @@ class Scenarios(models.Model):
         verbose_name = "Сценарий"
         verbose_name_plural = "Сценарии"
         ordering = ["title"]
+
+    def next(self):
+        return self.get_next_by_created_at()
+
+    def pre(self):
+        return self.get_previous_by_created_at()
+    
+    def get_absolute_url(self):
+        return f'/mainapp/scenarios/{self.slug}'
