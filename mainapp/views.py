@@ -9,7 +9,7 @@ class MainPageView(TemplateView):
 
 class DevicesListView(ListView):
     model = mainapp_models.Devices
-    paginate_by = 1
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super(DevicesListView, self).get_context_data(**kwargs)
