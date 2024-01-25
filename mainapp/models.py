@@ -143,7 +143,7 @@ class Devices(models.Model):
     updated_at = models.DateTimeField(verbose_name="Обновлен", auto_now=True)
 
     def __str__(self) -> str:
-        return f"{self.pk} {self.title}"
+        return f"{self.title}"
 
     def delete(self, *args):
         self.deleted = True
