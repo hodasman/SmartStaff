@@ -32,6 +32,7 @@ class DevicesCategory(ListView):
         context["cat_name"] = mainapp_models.DeviceCategory.objects.get(
             slug=self.kwargs["cat_slug"]
         ).title  # Получение названия категории
+        context["qty"] = len(mainapp_models.Devices.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)) # Количество устройств в категории
         return context
 
 
