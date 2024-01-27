@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "core",
     "crispy_forms",
     "crispy_bootstrap4",
+    'django_filters',
 ]
 
 PYTHONINSTALLED_APPS = [

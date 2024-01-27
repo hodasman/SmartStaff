@@ -1,0 +1,154 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+{% load my_tags %}
+{% block content %}
+    <!-- bradcam_area  -->
+    <div class="bradcam_area bradcam_bg_1">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text">
+                        <h3>
+                            
+                            Умные Устройства
+                            
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ bradcam_area  -->
+
+    <!-- job_listing_area_start  -->
+    <div class="job_listing_area plus_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="job_filter white-bg">
+                        <div class="form_inner white-bg">
+                            <h3>Фильтры</h3>
+                            <form action="#" method="get">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="single_field">
+                                            {{ filter_form.form|crispy }}
+                                        </div>
+                                    </div>
+                                    
+                                    <input class="boxed-btn3 w-100" type="submit" />
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="recent_joblist_wrap">
+                        <div class="recent_joblist white-bg ">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h4>Сортировать</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="serch_cat d-flex justify-content-end">
+                                        <select>
+                                            <option data-display="Most Recent">Most Recent</option>
+                                            <option value="1">Marketer</option>
+                                            <option value="2">Wordpress </option>
+                                            <option value="4">Designer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="job_lists m-0">
+                        <div class="row">
+                            {% for item in filter %}
+                            <div class="col-lg-12 col-md-12">
+                                <div class="single_jobs white-bg d-flex justify-content-between">
+                                    <div class="jobs_left d-flex align-items-center">
+                                        <div class="thumb">
+                                            
+                                            {% if item.icon %}
+                                            <img src='{{item.icon.url}}' width="50" height="50"  alt="">
+                                            {% else %}
+                                            <img src='{% static "img/svg_icon/4.svg" %}' width="50" height="50" alt="">
+                                            {% endif %}
+                                            
+                                        </div>
+                                        <div class="jobs_conetent">
+                                            <a href="{% url 'mainapp:devices_detail' slug=item.slug %}"><h4>{{ item.title }}</h4></a>
+                                            <div class="links_locat d-flex align-items-center">
+                                                <div class="location">
+                                                    <p> <i class="fa fa-th-list"></i> {{item.category}}</p>
+                                                </div>
+                                                <div class="location">
+                                                    <p> <i class="fa fa-user"></i> {{item.author}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="jobs_right">
+                                        <div class="apply_now">
+                                            
+                                            <a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="boxed-btn3">Подробнее</a>
+                                        </div>
+                                        <div class="date">
+                                            <p> {{item.created_at|date:"Y-m-d"}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pagination_wrap">
+                                    <ul>
+                                        {% if filter.has_previous %}
+                                        <li><a href="?{% param_replace page=filter.previous_page_number %}"> <i class="ti-angle-left"></i> </a></li>
+                                        {% endif %}
+                                        {% for item in filter.paginator.page_range %}
+                                        <li class="{% if item == filter.number %}active{% endif %}"><a href="?{% param_replace page=item %}"><span>{{item}}</span></a></li>
+                                        {% endfor %}
+                                        {% if filter.has_next %}
+                                        <li><a href="?{% param_replace page=filter.next_page_number %}"> <i class="ti-angle-right"></i> </a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- job_listing_area_end  -->
+
+    
+
+	<script>
+        $( function() {
+            $( "#slider-range" ).slider({
+                range: true,
+                min: 0,
+                max: 24600,
+                values: [ 750, 24600 ],
+                slide: function( event, ui ) {
+                    $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] +"/ Year" );
+                }
+            });
+            $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+                " - $" + $( "#slider-range" ).slider( "values", 1 ) + "/ Year");
+        } );
+        </script>
+{% endblock content %}
