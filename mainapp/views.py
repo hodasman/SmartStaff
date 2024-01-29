@@ -1,6 +1,9 @@
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView, TemplateView
 
 from mainapp import models as mainapp_models
+from mainapp.filters import DevicesFilter
 
 
 class MainPageView(TemplateView):
@@ -103,3 +106,28 @@ class ScenariosDetailView(DetailView):
         except Exception:
             context["prev"] = self.model.objects.last()
         return context
+    
+
+def filtered_devices(request):
+    '''
+    Пагинация работает благодаря templatetags/my_tags.py. Так как этот плагин копирует гет параметры всех фильтров 
+    и передает его в ссылки на кнопках пагинатора. В шаблоне - param_replace
+    '''
+    f = DevicesFilter(request.GET, queryset=mainapp_models.Devices.objects.all())
+    paginator = Paginator(f.qs, 10)
+    page = request.GET.get('page', 1)
+    try:
+        response = paginator.page(page)
+    except PageNotAnInteger:
+        response = paginator.page(1)
+    except EmptyPage:
+        response = paginator.page(paginator.num_pages)
+    context = {'filter': response,'filter_form':f, 'qty': len(f.qs)}
+    return render(request, 'mainapp/devices_filter.html', context)
+
+# class DevicesFilteredViews(ListFilteredView):
+#     filter_set = DevicesFilter
+#     model = mainapp_models.Devices
+#     template_name = "mainapp/devices_form.html"
+#     paginate_by = 5
+

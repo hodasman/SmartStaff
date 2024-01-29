@@ -7,7 +7,7 @@ app_name = MainappConfig.name
 
 urlpatterns = [
     path("", views.MainPageView.as_view(), name="main_page"),
-    path("devices/", views.DevicesListView.as_view(), name="devices-list"),
+    path("devices/", views.filtered_devices, name="devices-list"),
     path(
         "devices/<slug:slug>",
         views.DevicesDetailView.as_view(),
@@ -19,4 +19,5 @@ urlpatterns = [
     path("articles/category/<slug:cat_slug>/", views.ArticlesCategory.as_view(), name="articles_category"),
     path("scenarios/", views.ScenariosListView.as_view(), name="scenarios"),
     path("scenarios/<slug:slug>", views.ScenariosDetailView.as_view(), name="scenario_detail"),
+    
 ]
