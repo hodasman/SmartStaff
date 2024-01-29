@@ -134,7 +134,7 @@ class Devices(models.Model):
     power = models.CharField(max_length=256, verbose_name="Питание")
     protocol = models.CharField(max_length=256, verbose_name="Поддерживаемые протоколы передачи")
     temperature = models.CharField(max_length=256, verbose_name="Рабочие температуры")
-    platforms = models.ManyToManyField(Platforms, verbose_name="Платформы")
+    platforms = models.ManyToManyField(Platforms, verbose_name="Платформы", blank=True)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
     set = models.CharField(max_length=256, verbose_name="Комплект")
     link_to_buy = models.CharField(max_length=256, verbose_name="Ссылка для покупки")
