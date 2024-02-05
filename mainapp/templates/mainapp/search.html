@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Поиск{% endblock %}
+{% load static %}
+{% block content %}
+
+    <!-- bradcam_area  -->
+    <div class="bradcam_area bradcam_bg_1">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="bradcam_text">
+                        <h3>
+                            
+                            Поиск
+                            
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ bradcam_area  -->
+
+
+   <!-- Start Sample Area -->
+	<section class="sample-text-area">
+		<div class="container box_1170">
+            
+            <h2 class="text-heading">Результаты поиска для &quot;{{request.GET.q}}&quot;</h2>
+            <h4>Найден{{ total_results|pluralize:"о" }} {{ total_results}} результат{{ total_results|pluralize:"ов" }}:</h4>
+            <p class="sample-text">
+                {% for item in object_list %}
+                    
+                    <h4><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h4>
+                    {{ item.text|truncatewords:15 }}
+                    
+                {%endfor%}
+            
+			</p>
+		</div>
+	</section>
+	<!-- End Sample Area -->
+
+    
+    <script>
+        $('#datepicker').datepicker({
+            iconsLibrary: 'fontawesome',
+            icons: {
+             rightIcon: '<span class="fa fa-caret-down"></span>'
+         }
+        });
+        $('#datepicker2').datepicker({
+            iconsLibrary: 'fontawesome',
+            icons: {
+             rightIcon: '<span class="fa fa-caret-down"></span>'
+         }
+
+        });
+    </script>
+{% endblock content %}

@@ -12,7 +12,7 @@
                             {% if view.kwargs %}
                             {{ cat_name }}
                             {% else %}
-                            Умные Устройства
+                            Статьи
                             {% endif %}
                             ({{ object_list|length }})
                         </h3>
@@ -83,19 +83,19 @@
                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">
                         <aside class="single_sidebar_widget search_widget">
-                            <form action="#">
+                            <form action="{% url 'mainapp:search_articles' %}" method="get">
                                 <div class="form-group">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder='Search Keyword'
+                                        <input name="q" type="text" class="form-control" placeholder='Поиск по статьям'
                                             onfocus="this.placeholder = ''"
-                                            onblur="this.placeholder = 'Search Keyword'">
+                                            onblur="this.placeholder = 'Поиск по статьям'">
                                         <div class="input-group-append">
                                             <button class="btn" type="button"><i class="ti-search"></i></button>
                                         </div>
                                     </div>
                                 </div>
                                 <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                                    type="submit">Search</button>
+                                    type="submit">Найти</button>
                             </form>
                         </aside>
 

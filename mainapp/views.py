@@ -1,4 +1,5 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView, TemplateView
 
@@ -131,3 +132,18 @@ def filtered_devices(request):
 #     template_name = "mainapp/devices_form.html"
 #     paginate_by = 5
 
+class SearchArticlesView(ListView):
+    model = mainapp_models.Articles
+    template_name = 'mainapp/search.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = mainapp_models.Articles.objects.filter(
+            Q(title__icontains=query) | Q(text__icontains=query)
+        )
+        return object_list
+    
+    def get_context_data(self, **kwargs):
+        context = super(SearchArticlesView, self).get_context_data(**kwargs)
+        context["total_results"] = self.get_queryset().count()
+        return context

@@ -115,6 +115,9 @@ class Articles(models.Model):
         verbose_name = "Статья"
         verbose_name_plural = "Статьи"
         ordering = ["title"]
+    
+    def get_absolute_url(self):
+        return f'/mainapp/articles/{self.slug}'
 
 
 class Devices(models.Model):
