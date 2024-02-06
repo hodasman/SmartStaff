@@ -1,6 +1,7 @@
 from autoslug import AutoSlugField
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Q
 
 
 def device_foto_path(instance, filename):
@@ -65,7 +66,20 @@ class DeviceCategory(models.Model):
         return f"{self.title}"
 
 
+class ObjectManager(models.Manager):
+    use_for_related_fields = True
+ 
+    def search(self, query=None):
+        qs = self.get_queryset()
+        if query:
+            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
+            qs = qs.filter(or_lookup)
+ 
+        return qs
+
+
 class Articles(models.Model):
+    objects = ObjectManager()
     title = models.CharField(max_length=256, verbose_name="Название")
     category = models.ForeignKey(
         ArticleCategory, verbose_name="Категория", on_delete=models.CASCADE, related_name="articles"
@@ -158,7 +172,9 @@ class Devices(models.Model):
         ordering = ["title"]
 
 
+
 class Scenarios(models.Model):
+    objects = ObjectManager()
     title = models.CharField(max_length=256, verbose_name="Название")
     slug = AutoSlugField(populate_from="title", verbose_name="URL")
     text = models.TextField(verbose_name="Текст", blank=True)

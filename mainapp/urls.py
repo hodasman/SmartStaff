@@ -19,6 +19,5 @@ urlpatterns = [
     path("articles/category/<slug:cat_slug>/", views.ArticlesCategory.as_view(), name="articles_category"),
     path("scenarios/", views.ScenariosListView.as_view(), name="scenarios"),
     path("scenarios/<slug:slug>", views.ScenariosDetailView.as_view(), name="scenario_detail"),
-    path("search/articles", views.SearchArticlesView.as_view(), name="search_articles"),
-    # path("search/scenarios", views.SearchScenariosView.as_view(), name="search_scenarios"),
+    path("search/", views.ESearchView.as_view(), name="search"),
 ]

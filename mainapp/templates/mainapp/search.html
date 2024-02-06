@@ -27,15 +27,24 @@
 		<div class="container box_1170">
             
             <h2 class="text-heading">Результаты поиска для &quot;{{request.GET.q}}&quot;</h2>
+            {% if object_list %}
             <h4>Найден{{ total_results|pluralize:"о" }} {{ total_results}} результат{{ total_results|pluralize:"ов" }}:</h4>
             <p class="sample-text">
                 {% for item in object_list %}
                     
                     <h4><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h4>
-                    {{ item.text|truncatewords:15 }}
+                    {{ item.text|truncatewords:15|safe }}
                     
                 {%endfor%}
-            
+            {% else %}
+                <p>Не найдено публикаций по вашему запросу<br>Попробуйте повторить запрос с другой формулировкой</p>
+                <form action="." method="get">
+                    <input name="q" type="text" class="form-control" placeholder='Поиск'
+                                            onfocus="this.placeholder = ''"
+                                            onblur="this.placeholder = 'Поиск'">
+
+                </form>
+            {% endif %}
 			</p>
 		</div>
 	</section>

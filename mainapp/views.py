@@ -1,6 +1,8 @@
+from itertools import chain
+
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import Q
 from django.shortcuts import render
+from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 
 from mainapp import models as mainapp_models
@@ -125,25 +127,37 @@ def filtered_devices(request):
         response = paginator.page(paginator.num_pages)
     context = {'filter': response,'filter_form':f, 'qty': len(f.qs)}
     return render(request, 'mainapp/devices_filter.html', context)
-
-# class DevicesFilteredViews(ListFilteredView):
-#     filter_set = DevicesFilter
-#     model = mainapp_models.Devices
-#     template_name = "mainapp/devices_form.html"
-#     paginate_by = 5
-
-class SearchArticlesView(ListView):
-    model = mainapp_models.Articles
-    template_name = 'mainapp/search.html'
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        object_list = mainapp_models.Articles.objects.filter(
-            Q(title__icontains=query) | Q(text__icontains=query)
-        )
-        return object_list
     
-    def get_context_data(self, **kwargs):
-        context = super(SearchArticlesView, self).get_context_data(**kwargs)
-        context["total_results"] = self.get_queryset().count()
-        return context
+
+class ESearchView(View):
+    template_name = 'mainapp/search.html'
+ 
+    def get(self, request, *args, **kwargs):
+        context = {}
+ 
+        q = request.GET.get('q')
+        if q:
+            query_sets = []  # Total QuerySet
+ 
+            # Searching for all models
+            query_sets.append(mainapp_models.Articles.objects.search(query=q))
+            query_sets.append(mainapp_models.Scenarios.objects.search(query=q))
+ 
+            # and combine results
+            final_set = list(chain(*query_sets))
+            final_set.sort(key=lambda x: x.created_at, reverse=True)  # Sorting
+ 
+            context['last_question'] = '?q=%s' % q
+            context['total_results'] = len(final_set)
+ 
+            current_page = Paginator(final_set, 10)
+ 
+            page = request.GET.get('page')
+            try:
+                context['object_list'] = current_page.page(page)
+            except PageNotAnInteger:
+                context['object_list'] = current_page.page(1)
+            except EmptyPage:
+                context['object_list'] = current_page.page(current_page.num_pages)
+ 
+        return render(request=request, template_name=self.template_name, context=context)

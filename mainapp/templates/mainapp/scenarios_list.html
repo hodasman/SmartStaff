@@ -79,12 +79,12 @@
                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">
                         <aside class="single_sidebar_widget search_widget">
-                            <form action="{% url 'mainapp:search_scenarios' %}" method="get">
+                            <form action="{% url 'mainapp:search' %}" method="get">
                                 <div class="form-group">
                                     <div class="input-group mb-3">
-                                        <input name="q" type="text" class="form-control" placeholder='Поиск по статьям'
+                                        <input name="q" type="text" class="form-control" placeholder='Поиск'
                                             onfocus="this.placeholder = ''"
-                                            onblur="this.placeholder = 'Поиск по статьям'">
+                                            onblur="this.placeholder = 'Поиск'">
                                         <div class="input-group-append">
                                             <button class="btn" type="button"><i class="ti-search"></i></button>
                                         </div>
