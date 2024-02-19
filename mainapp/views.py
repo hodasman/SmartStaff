@@ -1,12 +1,14 @@
 from itertools import chain
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 
 from mainapp import models as mainapp_models
 from mainapp.filters import DevicesFilter
+from mainapp.forms import RaitingForm
 
 
 class MainPageView(TemplateView):
@@ -108,6 +110,7 @@ class ScenariosDetailView(DetailView):
             context["prev"] = self.get_object().pre()
         except Exception:
             context["prev"] = self.model.objects.last()
+        context['star_form'] = RaitingForm() #форма звездного рейтинга из forms.py
         return context
     
 
@@ -161,3 +164,27 @@ class ESearchView(View):
                 context['object_list'] = current_page.page(current_page.num_pages)
  
         return render(request=request, template_name=self.template_name, context=context)
+    
+
+class AddStarRating(View):
+    """Добавление рейтинга сценарию"""
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+
+    def post(self, request):
+        '''Создает новый объект модели Rating'''
+        form = RaitingForm(request.POST)
+        if form.is_valid():
+            mainapp_models.Rating.objects.update_or_create(
+                ip=self.get_client_ip(request),
+                scenario_id=int(request.POST.get("scenario")),
+                defaults={'star_id': int(request.POST.get("star"))}
+            )
+            return HttpResponse(status=201)
+        else:
+            return HttpResponse(status=400)

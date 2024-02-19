@@ -231,3 +231,31 @@ class Scenarios(models.Model):
     
     def get_absolute_url(self):
         return f'/mainapp/scenarios/{self.slug}'
+    
+
+class RatingStar(models.Model):
+    '''Звезда рейтинга'''
+    value  = models.SmallIntegerField("Значение", default=0)
+
+    def __str__(self) -> str:
+        return f'{self.value}'
+
+    class Meta:
+        verbose_name = "Звезда рейтинга"
+        verbose_name_plural = "Звезды рейтинга"
+        ordering = ["-value"]
+
+
+class Rating(models.Model):
+    '''Рейтинг'''
+    ip = models.CharField('IP Адрес', max_length=15)
+    star = models.ForeignKey(RatingStar, on_delete=models.CASCADE, verbose_name="Звезда")
+    scenario = models.ForeignKey(Scenarios, on_delete=models.CASCADE, verbose_name="Сценарий",)
+
+    def __str__(self) -> str:
+        return f'{self.scenario} - {self.star}'
+    
+    class Meta:
+        verbose_name = "Рейтинг"
+        verbose_name_plural = "Рейтинги"
+        
