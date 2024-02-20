@@ -33,3 +33,7 @@ class ArticleCategoryAdmin(admin.ModelAdmin):
 @admin.register(mainapp_models.DeviceCategory)
 class DeviceCategory(admin.ModelAdmin):
     list_per_page = 10
+
+@admin.register(mainapp_models.RatingStar)
+class RatingStar(admin.ModelAdmin):
+    list_per_page = 10
