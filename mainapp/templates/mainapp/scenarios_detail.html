@@ -40,7 +40,7 @@
                                  <div class="simple-rating__items">
                                     {% for k, v in star_form.fields.star.choices %}
                                     <input id="simple-rating__{{v}}" type="radio" class="simple-rating__item"
-                                       value="{{k}}" name="star">
+                                       value="{{k}}" {% if k == object.get_rating %} checked {% endif %} name="star">
                                     <label for="simple-rating__{{v}}" class="simple-rating__label"></label>
                                     {% endfor %}
                                  </div>

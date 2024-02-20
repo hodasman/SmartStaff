@@ -232,9 +232,16 @@ class Scenarios(models.Model):
     def get_absolute_url(self):
         return f'/mainapp/scenarios/{self.slug}'
     
+    def get_rating(self) -> int:
+        query = Rating.objects.filter(scenario=self.id)
+        sum = 0
+        for item in query:
+            sum += item.star.value
+        return sum//len(query)
+    
 
 class RatingStar(models.Model):
-    '''Звезда рейтинга'''
+    '''Звезда рейтинга(1-5)'''
     value  = models.SmallIntegerField("Значение", default=0)
 
     def __str__(self) -> str:
