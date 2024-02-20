@@ -36,14 +36,26 @@
                     {{ item.text|truncatewords:15|safe }}
                     
                 {%endfor%}
+                <hr>    
+                <p>Не нашли то что искали? Попробуйте еще:</p>
+                <div class="input-group mb-3">
+                    <form action="." method="get">
+                        <input name="q" type="text" class="form-control" placeholder='Поиск'
+                                                onfocus="this.placeholder = ''"
+                                                onblur="this.placeholder = 'Поиск'">
+
+                    </form>
+                </div>
             {% else %}
                 <p>Не найдено публикаций по вашему запросу<br>Попробуйте повторить запрос с другой формулировкой</p>
-                <form action="." method="get">
-                    <input name="q" type="text" class="form-control" placeholder='Поиск'
-                                            onfocus="this.placeholder = ''"
-                                            onblur="this.placeholder = 'Поиск'">
+                <div class="input-group mb-3">
+                    <form action="." method="get">
+                        <input name="q" type="text" class="form-control" placeholder='Поиск'
+                                                onfocus="this.placeholder = ''"
+                                                onblur="this.placeholder = 'Поиск'">
 
-                </form>
+                    </form>
+                </div>
             {% endif %}
 			</p>
 		</div>
