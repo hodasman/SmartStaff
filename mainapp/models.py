@@ -266,3 +266,26 @@ class Rating(models.Model):
         verbose_name = "Рейтинг"
         verbose_name_plural = "Рейтинги"
         
+
+class ArticleComment(models.Model):
+    class Meta:
+        db_table = "article_comments"
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
+    article_id = models.ForeignKey(Articles, on_delete=models.CASCADE, verbose_name="Статья")
+    author_id = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор комментария")
+    content = models.TextField(verbose_name="Текст")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата комментария", editable=False)
+
+
+class ScenarioComment(models.Model):
+    class Meta:
+        db_table = "scenario_comments"
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
+    article_id = models.ForeignKey(Scenarios, on_delete=models.CASCADE, verbose_name="Статья")
+    author_id = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор комментария")
+    content = models.TextField(verbose_name="Текст")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата комментария", editable=False)
