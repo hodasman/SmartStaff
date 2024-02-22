@@ -16,3 +16,12 @@ class RaitingForm(forms.ModelForm):
     class Meta:
         model = Rating
         fields = ('star',)
+
+
+class CommentForm(forms.Form):
+ 
+ 
+    comment_area = forms.CharField(
+        label="",
+        widget=forms.Textarea
+    )
