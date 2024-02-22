@@ -1,14 +1,17 @@
 from itertools import chain
 
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+from django.views.decorators.http import require_http_methods
 from django.views.generic import DetailView, ListView, TemplateView
 
 from mainapp import models as mainapp_models
 from mainapp.filters import DevicesFilter
-from mainapp.forms import RaitingForm
+from mainapp.forms import CommentForm, RaitingForm
 
 
 class MainPageView(TemplateView):
@@ -65,11 +68,45 @@ class ArticlesListView(ListView):
 
 class ArticlesDetailView(DetailView):
     model = mainapp_models.Articles
+    comment_form = CommentForm
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesDetailView, self).get_context_data(**kwargs)
         context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
+        context['comments'] = mainapp_models.ArticleComment.objects.filter(article_id = context["object"].id)
+        user = auth.get_user(self.request)
+        if user.is_authenticated:
+            context['form'] = self.comment_form
         return context
+
+
+@login_required
+@require_http_methods(["POST"])
+def add_comment(request, article_id):
+ 
+    form = CommentForm(request.POST)
+    article = get_object_or_404(mainapp_models.Articles, id=article_id)
+ 
+    if form.is_valid():
+        comment = mainapp_models.ArticleComment()
+        comment.article_id = article
+        comment.author_id = auth.get_user(request)
+        comment.content = form.cleaned_data['comment_area']
+        comment.save()
+ 
+        # Django не позволяет увидеть ID комментария по мы не сохраним его, 
+        # хотя PostgreSQL имеет такие средства в своём арсенале, но пока не будем
+        # работать с сырыми SQL запросами, поэтому сформируем path после первого сохранения
+        # и пересохраним комментарий 
+        # try:
+        #     comment.path.extend(Comment.objects.get(id=form.cleaned_data['parent_comment']).path)
+        #     comment.path.append(comment.id)
+        # except ObjectDoesNotExist:
+        #     comment.path.append(comment.id)
+ 
+        # comment.save()
+ 
+    return redirect(article.get_absolute_url())
 
 
 class ArticlesCategory(ListView):
