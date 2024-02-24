@@ -76,37 +76,39 @@ class ArticlesDetailView(DetailView):
         context['comments'] = mainapp_models.ArticleComment.objects.filter(article_id = context["object"].id)
         user = auth.get_user(self.request)
         if user.is_authenticated:
-            context['form'] = self.comment_form
+            context['form'] = self.comment_form # передаем форму комментария
         return context
 
 
 @login_required
 @require_http_methods(["POST"])
-def add_comment(request, article_id):
-    
+def add_comment_article(request, article_id):
+    """Представление для добавления комментария к статье"""
     form = CommentForm(request.POST)
     article = get_object_or_404(mainapp_models.Articles, id=article_id)
 
     if form.is_valid():
         comment = mainapp_models.ArticleComment()
-        comment.article_id = article
-        comment.author_id = auth.get_user(request)
+        comment.article = article
+        comment.author = auth.get_user(request)
         comment.content = form.cleaned_data['comment_area']
         comment.save()
-
-        # Django не позволяет увидеть ID комментария по мы не сохраним его, 
-        # хотя PostgreSQL имеет такие средства в своём арсенале, но пока не будем
-        # работать с сырыми SQL запросами, поэтому сформируем path после первого сохранения
-        # и пересохраним комментарий 
-        # try:
-        #     comment.path.extend(Comment.objects.get(id=form.cleaned_data['parent_comment']).path)
-        #     comment.path.append(comment.id)
-        # except ObjectDoesNotExist:
-        #     comment.path.append(comment.id)
-
-        # comment.save()
- 
     return redirect(article.get_absolute_url())
+
+@login_required
+@require_http_methods(["POST"])
+def add_comment_scenario(request, scenario_id):
+    """Представление для добавления комментария к сценарию"""
+    form = CommentForm(request.POST)
+    scenario = get_object_or_404(mainapp_models.Scenarios, id=scenario_id)
+
+    if form.is_valid():
+        comment = mainapp_models.ScenarioComment()
+        comment.scenario = scenario
+        comment.author = auth.get_user(request)
+        comment.content = form.cleaned_data['comment_area']
+        comment.save()
+    return redirect(scenario.get_absolute_url())
 
 
 class ArticlesCategory(ListView):
@@ -135,10 +137,11 @@ class ScenariosListView(ListView):
 
 class ScenariosDetailView(DetailView):
     model = mainapp_models.Scenarios
-    
+    comment_form = CommentForm
 
     def get_context_data(self, **kwargs):
         context = super(ScenariosDetailView, self).get_context_data(**kwargs)
+        context['comments'] = mainapp_models.ScenarioComment.objects.filter(scenario_id = context["object"].id)
         try:
             context["next"] = self.get_object().next()
         except Exception:
@@ -148,6 +151,9 @@ class ScenariosDetailView(DetailView):
         except Exception:
             context["prev"] = self.model.objects.last()
         context['star_form'] = RaitingForm() #форма звездного рейтинга из forms.py
+        user = auth.get_user(self.request)
+        if user.is_authenticated:
+            context['form'] = self.comment_form # передаем форму комментария
         return context
     
 

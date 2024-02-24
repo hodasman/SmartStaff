@@ -21,6 +21,6 @@ urlpatterns = [
     path("scenarios/<slug:slug>", views.ScenariosDetailView.as_view(), name="scenario_detail"),
     path("search/", views.ESearchView.as_view(), name="search"),
     path("add-rating/", views.AddStarRating.as_view(), name='add_rating'),
-    path("articles/<int:article_id>/comment/", views.add_comment, name="comment_article"),
-    path("scenarios/comment/<slug:slug>", views.ScenariosDetailView.as_view(), name="comment_scenario"),
+    path("articles/<int:article_id>/comment/", views.add_comment_article, name="comment_article"),
+    path("scenarios/<int:scenario_id>/comment/", views.add_comment_scenario, name="comment_scenario"),
 ]

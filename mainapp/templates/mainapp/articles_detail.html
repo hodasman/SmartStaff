@@ -31,7 +31,7 @@
                      </h2>
                      <ul class="blog-info-link mt-3 mb-4">
                         <li><a href="#"><i class="fa fa-user"></i> {{object.category}}</a></li>
-                        <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+                        <li><a href="#"><i class="fa fa-comments"></i> Отзывов - {{comments|length}}</a></li>
                      </ul>
                      {{object.text|safe|escape}}
                   </div>
@@ -41,7 +41,7 @@
                      <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Lily and 4
                         people like this</p>
                      <div class="col-sm-4 text-center my-2 my-sm-0">
-                        <!-- <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> 06 Comments</p> -->
+                        <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> Отзывов - {{comments|length}}</p>
                      </div>
                      <ul class="social-icons">
                         <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
@@ -112,7 +112,7 @@
                      <div class="single-comment justify-content-between d-flex">
                         <div class="user justify-content-between d-flex">
                            <div class="thumb">
-                              <img src='{{comment.author_id.avatar.url}}' alt="">
+                              <img src='{{comment.author.avatar.url}}' alt="">
                            </div>
                            <div class="desc">
                               <p class="comment">
@@ -121,9 +121,9 @@
                               <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
                                     <h5>
-                                       <a href="#">{{comment.author_id.username}}</a>
+                                       <a href="#">{{comment.author.username}}</a>
                                     </h5>
-                                    <p class="date">{{comment.created_at|date:"DATETIME_FORMAT" }} </p>
+                                    <p class="date">{{comment.created_at|date:"j F Y | H:i" }} </p>
                                  </div>
                                  
                               </div>
@@ -135,6 +135,7 @@
                   
                </div>
                <div class="comment-form">
+                  {% if user.is_authenticated %}
                   <h4>Оставить отзыв</h4>
                   <form class="form-contact comment_form" action="{% url 'mainapp:comment_article' object.id %}" id="commentForm" method="post">
                      <div class="row">
@@ -149,6 +150,9 @@
                         <button type="submit" class="button button-contactForm btn_1 boxed-btn">Отправить</button>
                      </div>
                   </form>
+                  {%else%}
+                 <p> Для того чтобы оставить отзыв вам необходимо <a href="{% url 'authapp:login'%}">авторизоваться</a> на сайте</p>
+                  {%endif%}
                </div>
             </div>
             <div class="col-lg-4">

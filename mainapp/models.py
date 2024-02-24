@@ -273,8 +273,8 @@ class ArticleComment(models.Model):
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
 
-    article_id = models.ForeignKey(Articles, on_delete=models.CASCADE, verbose_name="Статья")
-    author_id = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор комментария")
+    article = models.ForeignKey(Articles, on_delete=models.CASCADE, verbose_name="Статья")
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор комментария")
     content = models.TextField(verbose_name="Текст")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата комментария", editable=False)
 
@@ -285,7 +285,7 @@ class ScenarioComment(models.Model):
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
 
-    article_id = models.ForeignKey(Scenarios, on_delete=models.CASCADE, verbose_name="Статья")
-    author_id = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор комментария")
+    scenario = models.ForeignKey(Scenarios, on_delete=models.CASCADE, verbose_name="Статья")
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор комментария")
     content = models.TextField(verbose_name="Текст")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата комментария", editable=False)
