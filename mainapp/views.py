@@ -1,14 +1,17 @@
 from itertools import chain
 
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+from django.views.decorators.http import require_http_methods
 from django.views.generic import DetailView, ListView, TemplateView
 
 from mainapp import models as mainapp_models
 from mainapp.filters import DevicesFilter
-from mainapp.forms import RaitingForm
+from mainapp.forms import CommentForm, RaitingForm
 
 
 class MainPageView(TemplateView):
@@ -65,11 +68,47 @@ class ArticlesListView(ListView):
 
 class ArticlesDetailView(DetailView):
     model = mainapp_models.Articles
+    comment_form = CommentForm
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesDetailView, self).get_context_data(**kwargs)
         context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
+        context['comments'] = mainapp_models.ArticleComment.objects.filter(article_id = context["object"].id)
+        user = auth.get_user(self.request)
+        if user.is_authenticated:
+            context['form'] = self.comment_form # передаем форму комментария
         return context
+
+
+@login_required
+@require_http_methods(["POST"])
+def add_comment_article(request, article_id):
+    """Представление для добавления комментария к статье"""
+    form = CommentForm(request.POST)
+    article = get_object_or_404(mainapp_models.Articles, id=article_id)
+
+    if form.is_valid():
+        comment = mainapp_models.ArticleComment()
+        comment.article = article
+        comment.author = auth.get_user(request)
+        comment.content = form.cleaned_data['comment_area']
+        comment.save()
+    return redirect(article.get_absolute_url())
+
+@login_required
+@require_http_methods(["POST"])
+def add_comment_scenario(request, scenario_id):
+    """Представление для добавления комментария к сценарию"""
+    form = CommentForm(request.POST)
+    scenario = get_object_or_404(mainapp_models.Scenarios, id=scenario_id)
+
+    if form.is_valid():
+        comment = mainapp_models.ScenarioComment()
+        comment.scenario = scenario
+        comment.author = auth.get_user(request)
+        comment.content = form.cleaned_data['comment_area']
+        comment.save()
+    return redirect(scenario.get_absolute_url())
 
 
 class ArticlesCategory(ListView):
@@ -98,10 +137,11 @@ class ScenariosListView(ListView):
 
 class ScenariosDetailView(DetailView):
     model = mainapp_models.Scenarios
-    
+    comment_form = CommentForm
 
     def get_context_data(self, **kwargs):
         context = super(ScenariosDetailView, self).get_context_data(**kwargs)
+        context['comments'] = mainapp_models.ScenarioComment.objects.filter(scenario_id = context["object"].id)
         try:
             context["next"] = self.get_object().next()
         except Exception:
@@ -111,6 +151,9 @@ class ScenariosDetailView(DetailView):
         except Exception:
             context["prev"] = self.model.objects.last()
         context['star_form'] = RaitingForm() #форма звездного рейтинга из forms.py
+        user = auth.get_user(self.request)
+        if user.is_authenticated:
+            context['form'] = self.comment_form # передаем форму комментария
         return context
     
 

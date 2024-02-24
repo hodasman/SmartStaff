@@ -37,3 +37,11 @@ class DeviceCategory(admin.ModelAdmin):
 @admin.register(mainapp_models.RatingStar)
 class RatingStar(admin.ModelAdmin):
     list_per_page = 10
+
+@admin.register(mainapp_models.ArticleComment)
+class ArticleComment(admin.ModelAdmin):
+    list_per_page = 10
+
+@admin.register(mainapp_models.ScenarioComment)
+class ScenarioComment(admin.ModelAdmin):
+    list_per_page = 10
