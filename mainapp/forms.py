@@ -20,8 +20,9 @@ class RaitingForm(forms.ModelForm):
 
 class CommentForm(forms.Form):
  
- 
     comment_area = forms.CharField(
         label="",
         widget=forms.Textarea
     )
+
+    

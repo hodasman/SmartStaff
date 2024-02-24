@@ -83,17 +83,17 @@ class ArticlesDetailView(DetailView):
 @login_required
 @require_http_methods(["POST"])
 def add_comment(request, article_id):
- 
+    
     form = CommentForm(request.POST)
     article = get_object_or_404(mainapp_models.Articles, id=article_id)
- 
+
     if form.is_valid():
         comment = mainapp_models.ArticleComment()
         comment.article_id = article
         comment.author_id = auth.get_user(request)
         comment.content = form.cleaned_data['comment_area']
         comment.save()
- 
+
         # Django не позволяет увидеть ID комментария по мы не сохраним его, 
         # хотя PostgreSQL имеет такие средства в своём арсенале, но пока не будем
         # работать с сырыми SQL запросами, поэтому сформируем path после первого сохранения
@@ -103,7 +103,7 @@ def add_comment(request, article_id):
         #     comment.path.append(comment.id)
         # except ObjectDoesNotExist:
         #     comment.path.append(comment.id)
- 
+
         # comment.save()
  
     return redirect(article.get_absolute_url())
