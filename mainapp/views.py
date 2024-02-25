@@ -77,6 +77,15 @@ class ArticlesDetailView(DetailView):
         user = auth.get_user(self.request)
         if user.is_authenticated:
             context['form'] = self.comment_form # передаем форму комментария
+        try:
+            context["next"] = self.get_object().next() # находим следующий объект
+        except Exception:
+            context["next"] = self.model.objects.first() # если его нет берем первый
+        try:
+            context["prev"] = self.get_object().pre()
+        except Exception:
+            context["prev"] = self.model.objects.last()
+
         return context
 
 
@@ -143,13 +152,14 @@ class ScenariosDetailView(DetailView):
         context = super(ScenariosDetailView, self).get_context_data(**kwargs)
         context['comments'] = mainapp_models.ScenarioComment.objects.filter(scenario_id = context["object"].id)
         try:
-            context["next"] = self.get_object().next()
+            context["next"] = self.get_object().next() # находим следующий объект
         except Exception:
-            context["next"] = self.model.objects.first()
+            context["next"] = self.model.objects.first() # если его нет берем первый
         try:
             context["prev"] = self.get_object().pre()
         except Exception:
             context["prev"] = self.model.objects.last()
+
         context['star_form'] = RaitingForm() #форма звездного рейтинга из forms.py
         user = auth.get_user(self.request)
         if user.is_authenticated:

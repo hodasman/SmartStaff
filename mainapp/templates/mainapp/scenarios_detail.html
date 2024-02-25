@@ -73,7 +73,7 @@
                         class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                         <div class="thumb">
                            <a href="{{prev.get_absolute_url}}">
-                              <img class="img-fluid" src='{{prev.main_img.url}}' alt="" width="75">
+                              <img class="img-fluid" src='{{prev.main_img.url}}' alt="">
                            </a>
                         </div>
                         <div class="arrow">
@@ -84,7 +84,7 @@
                         <div class="detials">
                            <p>Предыдущий </p>
                            <a href="{{prev.get_absolute_url}}">
-                              <h4>{{prev.title}}</h4>
+                              <h4>{{prev.title|truncatewords:5|safe}}</h4>
                            </a>
                         </div>
                      </div>
@@ -93,7 +93,7 @@
                         <div class="detials">
                            <p>Следующий</p>
                            <a href="{{next.get_absolute_url}}">
-                              <h4>{{next.title}}</h4>
+                              <h4>{{next.title|truncatewords:5|safe}}</h4>
                            </a>
                         </div>
                         <div class="arrow">
@@ -103,7 +103,7 @@
                         </div>
                         <div class="thumb">
                            <a href="{{next.get_absolute_url}}">
-                              <img class="img-fluid" src='{{next.main_img.url}}' alt="" width="75">
+                              <img class="img-fluid" src='{{next.main_img.url}}' alt="">
                            </a>
                         </div>
                      </div>
