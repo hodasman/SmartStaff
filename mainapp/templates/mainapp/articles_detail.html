@@ -30,8 +30,9 @@
                      <h2>{{object.title}}
                      </h2>
                      <ul class="blog-info-link mt-3 mb-4">
-                        <li><a href="#"><i class="fa fa-user"></i> {{object.category}}</a></li>
-                        <li><a href="#"><i class="fa fa-comments"></i> Отзывов - {{comments|length}}</a></li>
+                        <li><a href="{% url 'mainapp:articles_category' cat_slug=object.category.slug %}"><i  class="fa fa-th-list"></i> {{object.category}}</a></li>
+                        <li><i class="fa fa-user"></i> {{object.author.username}}</li>
+                        <li><a href="#comments"><i class="fa fa-comments"></i> Отзывов - {{comments|length}}</a></li>
                      </ul>
                      {{object.text|safe|escape}}
                   </div>
@@ -56,7 +57,7 @@
                            class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                            <div class="thumb">
                               <a href="{{prev.get_absolute_url}}">
-                                 <img class="img-fluid" src='{{prev.main_img.url}}' alt="">
+                                 <img class="img-mini" src='{{prev.main_img.url}}' alt="">
                               </a>
                            </div>
                            <div class="arrow">
@@ -86,7 +87,7 @@
                            </div>
                            <div class="thumb">
                               <a href="{{next.get_absolute_url}}">
-                                 <img class="img-fluid" src='{{next.main_img.url}}' alt="">
+                                 <img class="img-mini" src='{{next.main_img.url}}' alt="">
                               </a>
                            </div>
                         </div>
@@ -105,7 +106,7 @@
                      </div>
                   </div>
                </div>
-               <div class="comments-area">
+               <div class="comments-area" id="comments">
                   <h4>Отзывы ({{comments|length}})</h4>
                   {% for comment in comments %}
                   <div class="comment-list">

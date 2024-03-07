@@ -30,8 +30,8 @@
                   <h2>{{object.title}}
                   </h2>
                   <ul class="blog-info-link mt-3 mb-4">
-                     <li><a href="#"><i class="fa fa-user"></i> {{object.author}}</a></li>
-                     <li><a href="#"><i class="fa fa-comments"></i> Отзывов - {{comments|length}}</a></li>
+                     <li><i class="fa fa-user"></i> {{object.author}}</li>
+                     <li><a href="#comments"><i class="fa fa-comments"></i> Отзывов - {{comments|length}}</a></li>
                      <li>
                         <form action="{% url 'mainapp:add_rating' %}" method="post" name="rating">
                            {% csrf_token %}
@@ -73,7 +73,7 @@
                         class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                         <div class="thumb">
                            <a href="{{prev.get_absolute_url}}">
-                              <img class="img-fluid" src='{{prev.main_img.url}}' alt="">
+                              <img class="img-mini" src='{{prev.main_img.url}}' alt="">
                            </a>
                         </div>
                         <div class="arrow">
@@ -103,7 +103,7 @@
                         </div>
                         <div class="thumb">
                            <a href="{{next.get_absolute_url}}">
-                              <img class="img-fluid" src='{{next.main_img.url}}' alt="">
+                              <img class="img-mini" src='{{next.main_img.url}}' alt="">
                            </a>
                         </div>
                      </div>
@@ -122,7 +122,7 @@
                   </div>
                </div>
             </div>
-            <div class="comments-area">
+            <div class="comments-area" id="comments">
                {% if not comments %}
                <p>Отзывов пока нет. Будьте первым!</p>
                {%else%}

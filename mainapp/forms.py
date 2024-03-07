@@ -22,7 +22,8 @@ class CommentForm(forms.Form):
  
     comment_area = forms.CharField(
         label="",
-        widget=forms.Textarea
+        widget=forms.Textarea(attrs={'placeholder': 'Ваше сообщение'}),
+        
     )
 
     
