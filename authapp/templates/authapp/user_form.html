@@ -33,7 +33,7 @@
                     <form method="post" class="mt-2" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form|crispy }}
-                        
+                        <br><br>
                         <button class="boxed-btn3 w-100" type="submit">
                         {% if user.is_anonymous %}
                         Зарегистрироваться

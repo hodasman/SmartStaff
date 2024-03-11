@@ -12,27 +12,32 @@ class CreateUserForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         self.fields["password1"].label = "Пароль"
         self.fields["password2"].label = "Праверка пороля"
-
+        self.fields["country"].label = "Страна"
+        
         self.fields[
             "password1"
         ].help_text = "Ваш пароль не должен быть слишком похож на другую вашу личную информацию.<br>\
             Ваш пароль должен содержать не менее 8 символов.<br>\
             Ваш пароль не может быть полностью числовым."
         self.fields["password2"].help_text = "Введите пароль повторно"
-
+        
+    
     field_order = [
         "username",
+        "first_name",
+        "last_name",
         "email",
         "password1",
         "password2",
-        "avatar" "first_name",
+        "avatar",
         "age",
     ]
-
+    
     class Meta:
         model = get_user_model()
-        fields = ("username", "email", "first_name", "age", "avatar")
+        fields = ("username", "email", "first_name", "last_name", "age", "country", "avatar")
         field_classes = {"username": UsernameField}
+        
 
 
 class UserChangeForm(forms.ModelForm):

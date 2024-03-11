@@ -7,6 +7,7 @@ from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.core.validators import EmailValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django_countries.fields import CountryField
 
 
 def users_avatars_path(instance, filename):
@@ -65,7 +66,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     username_validator = ASCIIUsernameValidator()
     username = models.CharField(
-        _("Мянушка(login)"),
+        _("Мянушка(nickname)"),
         max_length=15,
         unique=True,
         help_text=_("Максимальное значение 15 символов. Используйте только буквы, цифры или знаки +/-/_"),
@@ -75,8 +76,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         },
     )
     first_name = models.CharField(_("Имя"), max_length=150, blank=True)
+    last_name = models.CharField(_("Фамилия"), max_length=150, blank=True, null=True)
     age = models.PositiveIntegerField(_("Возраст"), blank=True, null=True)
-    avatar = models.ImageField(upload_to=users_avatars_path, blank=True, null=True)
+    avatar = models.ImageField(_("Аватар"), upload_to=users_avatars_path, blank=True, null=True)
+    country = CountryField(blank=True, null=True)
     email = models.EmailField(
         verbose_name="Адрес электронной почты",
         unique=True,
@@ -96,7 +99,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "first_name", "age"]
+    REQUIRED_FIELDS = ["username", "first_name", "age",]
 
     def __str__(self):
         return f"{self.username}"
