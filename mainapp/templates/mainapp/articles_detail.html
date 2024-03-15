@@ -96,13 +96,16 @@
                </div>
                <div class="blog-author">
                   <div class="media align-items-center">
-                     <img src='{% static "img/blog/author.png" %}' alt="">
+                     <img src='{{object.author.avatar.url}}' alt="">
                      <div class="media-body">
-                        <a href="#">
-                           <h4>Harvard milan</h4>
-                        </a>
-                        <p>Second divided from form fish beast made. Every of seas all gathered use saying you're, he
-                           our dominion twon Second divided from</p>
+                        
+                           <h4>Звесткі пра аўтара</h4>
+                        
+                        <p>Гэты артыкул для вас падрыхтаваў {%if object.author.first_name%}{{object.author.first_name}}{%endif%}
+                           {%if object.author.last_name%}{{object.author.last_name}}{%endif%} 
+                           {%if not object.author.first_name and not object.author.last_name%}{%else%}з мянушкай{%endif%}
+                           {{object.author.username}}
+                           {%if object.author.first_name%}з краіны {{object.author.country.name}}{%endif%}</p>
                      </div>
                   </div>
                </div>
