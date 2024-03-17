@@ -9,30 +9,15 @@
             </div>
         </div>
         <div class="row">
+            {% for scenario in scenarios%}
             <div class="col-lg-4 col-xl-3 col-md-6">
                 <div class="single_catagory">
-                    <a href="#"><h4>Сценарий 1</h4></a>
-                    <p> <span>5</span> Устройств</p>
+                    <a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}"><h4>{{scenario.title}}</h4></a>
+                    <p> <span>{{scenario.devices.all|length}}</span> Устройств</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_catagory">
-                    <a href="#"><h4>Сценарий 2</h4></a>
-                    <p> <span>50</span> Устройств</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_catagory">
-                    <a href="#"><h4>Сценарий 3</h4></a>
-                    <p> <span>50</span> Устройств</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_catagory">
-                    <a href="#"><h4>Сценарий 4</h4></a>
-                    <p> <span>50</span> Устройств</p>
-                </div>
-            </div>
+            {% endfor %}
+            
             
         </div>
     </div>

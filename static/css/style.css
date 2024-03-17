@@ -2957,6 +2957,7 @@ h3 {
   -o-transition: 0.3s;
   transition: 0.3s;
   margin-bottom: 30px;
+  min-height: 193px;
 }
 
 /* line 12, ../../Arafath/CL/December/235. Job board/HTML/scss/_popular_catagory.scss */
@@ -3429,17 +3430,17 @@ h3 {
 }
 
 /* line 32, ../../Arafath/CL/December/235. Job board/HTML/scss/_job_list.scss */
-.job_listing_area .job_lists .single_jobs .jobs_left .thumb {
+.job_listing_area .job_lists .single_jobs .jobs_left .thumb img {
   float: left;
   width: 82px;
   height: 82px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  padding: 15px;
+  padding: 0px;
   background: #F5F7FA;
   margin-right: 25px;
-  border: 1px solid #F0F0F0;
+  border: 0px solid #F0F0F0;
 }
 
 /* line 46, ../../Arafath/CL/December/235. Job board/HTML/scss/_job_list.scss */
@@ -3903,13 +3904,13 @@ h3 {
 }
 
 /* line 21, ../../Arafath/CL/December/235. Job board/HTML/scss/_compani.scss */
-.top_companies_area .single_company .thumb {
-  width: 82px;
-  height: 82px;
+.top_companies_area .single_company .thumb img {
+  width: 100%;
+  max-height: 130px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  padding: 15px;
+  padding: 0px;
   background: #F5F7FA;
   margin-right: 25px;
   border: 1px solid #F0F0F0;
@@ -4055,14 +4056,14 @@ h3 {
 }
 
 /* line 18, ../../Arafath/CL/December/235. Job board/HTML/scss/_job_details.scss */
-.job_details_area .single_jobs .jobs_left .thumb {
+.job_details_area .single_jobs .jobs_left .thumb img {
   float: left;
   width: 82px;
   height: 82px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  padding: 15px;
+  padding: 0px;
   background: #F5F7FA;
   margin-right: 25px;
   border: 1px solid #F0F0F0;

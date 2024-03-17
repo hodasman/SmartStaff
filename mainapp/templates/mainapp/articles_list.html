@@ -33,7 +33,7 @@
                         {% for item in object_list %}
                         <article class="blog_item">
                             <div class="blog_item_img">
-                                <img src='{{item.main_img.url}}' alt="">
+                                <img class="card-img" src='{{item.main_img.url}}' alt="{{item.title}}">
                                 <a href="#" class="blog_item_date">
                                     <h3>{{item.created_at|date:"d"}}</h3>
                                     <p>{{item.created_at|date:"M"}}</p>
