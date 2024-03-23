@@ -1,1 +1,1 @@
-web: gunicorn smartstaff.wsgi --log-file -
+web: gunicorn SmartStaff.wsgi --log-file -
