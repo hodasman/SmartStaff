@@ -10,23 +10,28 @@
             </div>
             <div class="col-lg-6">
                 <div class="brouse_job text-right">
-                    <a href="#" class="boxed-btn4">Смотреть весь каталог</a>
+                    <a href="{% url 'mainapp:devices-list'%}" class="boxed-btn4">Смотреть весь каталог</a>
                 </div>
             </div>
         </div>
         <div class="job_lists">
             <div class="row">
+                {% for device in devices%}
                 <div class="col-lg-12 col-md-12">
                     <div class="single_jobs white-bg d-flex justify-content-between">
                         <div class="jobs_left d-flex align-items-center">
                             <div class="thumb">
-                                <img src='{% static "img/svg_icon/1.svg" %}' alt="">
+                                {% if device.icon %}
+                                <img src='{{device.icon.url}}' width="50" height="50"  alt="">
+                                {% else %}
+                                <img src='{% static "img/svg_icon/4.svg" %}' width="50" height="50" alt="">
+                                {% endif %}
                             </div>
                             <div class="jobs_conetent">
-                                <a href="#"><h4>Устройство 1</h4></a>
+                                <a href="{% url 'mainapp:devices_detail' slug=device.slug %}"><h4>{{ device.title }}</h4></a>
                                 <div class="links_locat d-flex align-items-center">
                                     <div class="location">
-                                        <p> <i class="fa-solid fa-house-circle-check"></i> Коммутация</p>
+                                        <p> <i class="fa fa-th-list"></i>{{device.category}}</p>
                                     </div>
                                     
                                 </div>
@@ -35,62 +40,14 @@
                         <div class="jobs_right">
                             <div class="apply_now">
                                 <!-- <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a> -->
-                                <a href="#" class="boxed-btn3">Подробнее</a>
+                                <a href="{% url 'mainapp:devices_detail' slug=device.slug %}" class="boxed-btn3">Подробнее</a>
                             </div>
                              
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12">
-                    <div class="single_jobs white-bg d-flex justify-content-between">
-                        <div class="jobs_left d-flex align-items-center">
-                            <div class="thumb">
-                                <img src='{% static "img/svg_icon/2.svg" %}' alt="">
-                            </div>
-                            <div class="jobs_conetent">
-                                <a href="#"><h4>Устройство 1</h4></a>
-                                <div class="links_locat d-flex align-items-center">
-                                    <div class="location">
-                                        <p> <i class="fa-solid fa-house-circle-check"></i> Коммутация</p>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="jobs_right">
-                            <div class="apply_now">
-                                <!-- <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a> -->
-                                <a href="#" class="boxed-btn3">Подробнее</a>
-                            </div>
-                             
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12 col-md-12">
-                    <div class="single_jobs white-bg d-flex justify-content-between">
-                        <div class="jobs_left d-flex align-items-center">
-                            <div class="thumb">
-                                <img src='{% static "img/svg_icon/3.svg" %}' alt="">
-                            </div>
-                            <div class="jobs_conetent">
-                                <a href="#"><h4>Устройство 1</h4></a>
-                                <div class="links_locat d-flex align-items-center">
-                                    <div class="location">
-                                        <p> <i class="fa-solid fa-house-circle-check"></i> Коммутация</p>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="jobs_right">
-                            <div class="apply_now">
-                                <!-- <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a> -->
-                                <a href="#" class="boxed-btn3">Подробнее</a>
-                            </div>
-                             
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
+                
             </div>
         </div>
     </div>

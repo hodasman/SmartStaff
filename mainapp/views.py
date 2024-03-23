@@ -17,6 +17,13 @@ from mainapp.forms import CommentForm, RaitingForm
 class MainPageView(TemplateView):
     template_name = "mainapp/index.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(MainPageView, self).get_context_data(**kwargs)
+        context["devices"] = mainapp_models.Devices.objects.all()[:4]  # Устройства 4 шт
+        context["scenarios"] = mainapp_models.Scenarios.objects.all()[:4]  # Сценарии 4 шт
+        context["articles"] = mainapp_models.Articles.objects.all()[:4]  # Статьи 4 шт
+        return context
+
 
 class DevicesListView(ListView):
     model = mainapp_models.Devices

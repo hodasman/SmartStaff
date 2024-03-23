@@ -9,20 +9,22 @@
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="brouse_job text-right">
-                    <a href="#" class="boxed-btn4">Смотреть все статьи</a>
+                    <a href="{% url 'mainapp:articles'%}" class="boxed-btn4">Смотреть все статьи</a>
                 </div>
             </div>
         </div>
         <div class="row">
+            {% for article in articles%}
             <div class="col-lg-4 col-xl-3 col-md-6">
                 <div class="single_company">
                     <div class="thumb">
-                        <img src='{% static "img/svg_icon/5.svg" %}' alt="">
+                        <img src='{{article.main_img.url}}' alt="{{artcle.title}}" >
                     </div>
-                    <a href="#"><h3>Статья 1</h3></a>
+                    <a href="{% url 'mainapp:article_detail' slug=article.slug %}"><h3>{{article.title}}</h3></a>
                     
                 </div>
             </div>
+            {% endfor %}
             <div class="col-lg-4 col-xl-3 col-md-6">
                 <div class="single_company">
                     <div class="thumb">
