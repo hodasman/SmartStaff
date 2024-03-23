@@ -239,6 +239,17 @@ class Scenarios(models.Model):
             sum += item.star.value
         return sum//len(query)
     
+    def get_quantity_devices(self,):
+        qty = len(self.devices.all())
+        if qty in [11, 12, 13, 14]:
+            return 'Устройств'
+        if qty % 10 == 1:
+            return 'Устройство'
+        if qty % 10 in [2, 3, 4]:
+            return 'Устройства'
+        else:
+            return 'Устройств'
+    
 
 class RatingStar(models.Model):
     '''Звезда рейтинга(1-5)'''

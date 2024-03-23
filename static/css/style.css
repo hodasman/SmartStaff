@@ -2958,6 +2958,12 @@ h3 {
   transition: 0.3s;
   margin-bottom: 30px;
   min-height: 193px;
+  
+  
+}
+
+.scenario_devices {
+  min-height: 87px;
 }
 
 /* line 12, ../../Arafath/CL/December/235. Job board/HTML/scss/_popular_catagory.scss */
