@@ -1,0 +1,1 @@
+[{"model": "mainapp.articlecategory", "pk": 1, "fields": {"title": "Обзоры", "slug": "obzoryi", "description": "Обзоры и сравнения различных умных устройств"}}, {"model": "mainapp.articlecategory", "pk": 2, "fields": {"title": "Своими руками", "slug": "svoimi-rukami", "description": "Монтаж и ремонт"}}]
