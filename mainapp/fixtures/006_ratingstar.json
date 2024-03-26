@@ -1,0 +1,1 @@
+[{"model": "mainapp.ratingstar", "pk": 1, "fields": {"value": 1}}, {"model": "mainapp.ratingstar", "pk": 2, "fields": {"value": 2}}, {"model": "mainapp.ratingstar", "pk": 3, "fields": {"value": 3}}, {"model": "mainapp.ratingstar", "pk": 4, "fields": {"value": 4}}, {"model": "mainapp.ratingstar", "pk": 5, "fields": {"value": 5}}]

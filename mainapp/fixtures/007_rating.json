@@ -1,0 +1,1 @@
+[{"model": "mainapp.rating", "pk": 1, "fields": {"ip": "127.0.0.1", "star": 3, "scenario": 1}}, {"model": "mainapp.rating", "pk": 2, "fields": {"ip": "127.0.0.1", "star": 2, "scenario": 3}}, {"model": "mainapp.rating", "pk": 3, "fields": {"ip": "127.0.0.1", "star": 3, "scenario": 2}}]
