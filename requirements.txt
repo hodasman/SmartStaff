@@ -11,7 +11,7 @@ Django==4.2.8
 django-autoslug==1.9.9
 django-countries==7.5.1
 django-crispy-forms
-
+django-enhanced-cbv
 django-filter==23.5
 django-haystack==3.2.1
 django-js-asset==2.2.0
