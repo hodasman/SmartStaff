@@ -112,7 +112,11 @@
             </div>
             <div class="blog-author">
                <div class="media align-items-center">
+                  {% if comment.author.avatar %}
                   <img src='{{object.author.avatar.url}}' alt="">
+                  {%else%}
+                  <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
+                  {%endif%}
                   <div class="media-body">
                      <h4>Звесткі пра аўтара</h4>
                         
@@ -134,7 +138,11 @@
                   <div class="single-comment justify-content-between d-flex">
                      <div class="user justify-content-between d-flex">
                         <div class="thumb">
+                           {% if comment.author.avatar %}
                            <img src='{{comment.author.avatar.url}}' alt="">
+                           {%else%}
+                           <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
+                           {%endif%}
                         </div>
                         <div class="desc">
                            <p class="comment">
