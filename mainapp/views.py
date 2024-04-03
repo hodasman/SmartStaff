@@ -80,7 +80,7 @@ class ArticlesDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ArticlesDetailView, self).get_context_data(**kwargs)
         context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
-        context['comments'] = mainapp_models.ArticleComment.objects.filter(article_id = context["object"].id)
+        # context['comments'] = mainapp_models.ArticleComment.objects.filter(article_id = context["object"].id)
         user = auth.get_user(self.request)
         if user.is_authenticated:
             context['form'] = self.comment_form # передаем форму комментария

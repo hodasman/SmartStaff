@@ -43,7 +43,7 @@
                                 <p>{{item.description|safe|escape}}</p>
                                 <ul class="blog-info-link">
                                     <li><i class="fa fa-user"></i> {{item.author}}</li>
-                                    <li><i class="fa fa-comments"></i> Отзывов - {{comments|length}}</li>
+                                    <li><i class="fa fa-comments"></i> Отзывов - {{item.get_all_comments|length}}</li>
                                 </ul>
                             </div>
                         </article>

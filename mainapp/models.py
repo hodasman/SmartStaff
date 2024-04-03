@@ -132,6 +132,11 @@ class Articles(models.Model):
     
     def get_absolute_url(self):
         return f'/mainapp/articles/{self.slug}'
+    
+    def get_all_comments(self):
+        '''Возвращает QuerySet объектов комментариев для данной статьи'''
+        comments = ArticleComment.objects.filter(article_id = self.id)
+        return comments
 
 
 class Devices(models.Model):
@@ -249,6 +254,11 @@ class Scenarios(models.Model):
             return 'Устройства'
         else:
             return 'Устройств'
+        
+    def get_all_comments(self):
+        '''Возвращает QuerySet объектов комментариев для данного сценария'''
+        comments = ScenarioComment.objects.filter(scenario_id = self.id)
+        return comments
     
 
 class RatingStar(models.Model):
