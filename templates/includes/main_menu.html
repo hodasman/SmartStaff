@@ -3,7 +3,7 @@
         <nav>
             <ul id="navigation">
             {% if user.is_superuser %}
-                <li><a href="{% url 'admin:index'%}">Админ</li>
+                <li><a href="{% url 'admin:index'%}">Админ</a></li>
             {% endif %}
             {% if user.is_authenticated %}
                 <li><a href="{% url 'authapp:profile_edit' pk=request.user.pk %}">Редактировать профиль</li>
