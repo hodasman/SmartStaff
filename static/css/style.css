@@ -118,7 +118,12 @@ p {
   margin-bottom: 13px;
   font-family: "Roboto", sans-serif;
 }
-
+.black-txt {
+  color: #000;
+}
+.break-word {
+  word-break: break-all;
+}
 /* line 69, ../../Arafath/CL/December/235. Job board/HTML/scss/theme-default.scss */
 label {
   color: #7e7e7e;
@@ -3974,7 +3979,10 @@ h3 {
   margin-top: 14px;
   margin-bottom: 27px;
 }
-
+.job_filter .personal-data p {
+  margin-top: 12px;
+  margin-bottom: 5px;
+}
 /* line 20, ../../Arafath/CL/December/235. Job board/HTML/scss/_range.scss */
 .job_filter p input {
   background-color: transparent;

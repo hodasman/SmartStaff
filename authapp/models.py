@@ -75,8 +75,8 @@ class User(AbstractBaseUser, PermissionsMixin):
             "unique": _("Такой пользователь уже существует"),
         },
     )
-    first_name = models.CharField(_("Имя"), max_length=150, blank=True)
-    last_name = models.CharField(_("Фамилия"), max_length=150, blank=True, null=True)
+    first_name = models.CharField(_("Имя"), max_length=20, blank=True)
+    last_name = models.CharField(_("Фамилия"), max_length=20, blank=True, null=True)
     age = models.PositiveIntegerField(_("Возраст"), blank=True, null=True)
     avatar = models.ImageField(_("Аватар"), upload_to=users_avatars_path, blank=True, null=True)
     country = CountryField(blank=True, null=True)
