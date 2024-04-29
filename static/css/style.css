@@ -124,6 +124,9 @@ p {
 .break-word {
   word-break: break-all;
 }
+.reset_btn {
+  margin-top: 25px;
+}
 /* line 69, ../../Arafath/CL/December/235. Job board/HTML/scss/theme-default.scss */
 label {
   color: #7e7e7e;

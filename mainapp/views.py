@@ -249,5 +249,5 @@ class AddStarRating(View):
         else:
             return HttpResponse(status=400)
         
-class PersonalPageView(TemplateView):
+class PersonalPageView(View):
     template_name = "mainapp/personal_page.html"
