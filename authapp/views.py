@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
-from django.views.generic import CreateView, UpdateView, View
+from django.views.generic import CreateView, UpdateView
 
 from authapp import forms
 
@@ -47,11 +47,3 @@ class ProfileEditView(UserPassesTestMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("authapp:profile_edit", args=[self.request.user.pk])
-
-
-class PersonalPageView(UserPassesTestMixin, View):
-    template_name = "authapp/personal_page.html"
-    user = get_user_model()
-
-    def test_func(self):
-        return True if self.request.user.pk == self.kwargs.get("pk") else False

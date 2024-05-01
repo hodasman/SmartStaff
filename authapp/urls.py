@@ -14,9 +14,4 @@ urlpatterns = [
         views.ProfileEditView.as_view(),
         name="profile_edit",
     ),
-    path(
-        "personal_page/<int:pk>/",
-        views.PersonalPageView.as_view(),
-        name="personal_page",
-    ),
 ]
