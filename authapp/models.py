@@ -9,6 +9,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 
+from mainapp.models import Device
+
 
 def users_avatars_path(instance, filename):
     # file will be uploaded to
@@ -97,6 +99,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     is_staff = models.BooleanField(default=False)
     objects = UserManager()
+    devices = models.ManyToManyField(Device, verbose_name="Устройства", blank=True, related_name="devices")
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "first_name", "age",]

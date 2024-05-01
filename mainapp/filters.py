@@ -1,7 +1,7 @@
 import django_filters
 from django.utils.translation import gettext_lazy as _
 
-from mainapp.models import Devices
+from mainapp.models import Device
 
 
 class DevicesFilter(django_filters.FilterSet):
@@ -21,7 +21,7 @@ class DevicesFilter(django_filters.FilterSet):
     o.descending_fmt = _("%s (обратный)")
     
     class Meta:
-        model = Devices
+        model = Device
         fields = {
             
             'category',

@@ -1,5 +1,5 @@
 from autoslug import AutoSlugField
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
 
@@ -21,7 +21,7 @@ def scenarios_img_path(instance, filename):
     return "scenarios_img/{0}/{1}".format(instance.slug, filename)
 
 
-class Platforms(models.Model):
+class Platform(models.Model):
     title = models.CharField(max_length=256, verbose_name="Название")
     description = models.TextField(blank=True, null=True, verbose_name="Описание")
 
@@ -48,7 +48,7 @@ class ArticleCategory(models.Model):
         return f"{self.title}"
     
     def qty_articles_in_category(self):
-        qty = len(Articles.objects.filter(category__slug=self.slug, deleted=False))
+        qty = len(Article.objects.filter(category__slug=self.slug, deleted=False))
         return qty
 
 
@@ -78,7 +78,7 @@ class ObjectManager(models.Manager):
         return qs
 
 
-class Articles(models.Model):
+class Article(models.Model):
     objects = ObjectManager()
     title = models.CharField(max_length=256, verbose_name="Название")
     category = models.ForeignKey(
@@ -113,7 +113,7 @@ class Articles(models.Model):
     img_23 = models.ImageField(verbose_name="Картинка_23", blank=True, null=True, upload_to=article_img_path)
     img_24 = models.ImageField(verbose_name="Картинка_24", blank=True, null=True, upload_to=article_img_path)
     img_25 = models.ImageField(verbose_name="Картинка_25", blank=True, null=True, upload_to=article_img_path)
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created", editable=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Edited", editable=False)
     deleted = models.BooleanField(default=False)
@@ -139,7 +139,7 @@ class Articles(models.Model):
         return comments
 
 
-class Devices(models.Model):
+class Device(models.Model):
     category = models.ForeignKey(
         DeviceCategory, verbose_name="Категория", on_delete=models.CASCADE, related_name="devices"
     )
@@ -156,8 +156,8 @@ class Devices(models.Model):
     power = models.CharField(max_length=256, verbose_name="Питание")
     protocol = models.CharField(max_length=256, verbose_name="Поддерживаемые протоколы передачи")
     temperature = models.CharField(max_length=256, verbose_name="Рабочие температуры")
-    platforms = models.ManyToManyField(Platforms, verbose_name="Платформы", blank=True)
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
+    platforms = models.ManyToManyField(Platform, verbose_name="Платформы", blank=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
     set = models.CharField(max_length=256, verbose_name="Комплект")
     link_to_buy = models.CharField(max_length=256, verbose_name="Ссылка для покупки")
     deleted = models.BooleanField(default=False)
@@ -178,7 +178,7 @@ class Devices(models.Model):
 
 
 
-class Scenarios(models.Model):
+class Scenario(models.Model):
     objects = ObjectManager()
     title = models.CharField(max_length=256, verbose_name="Название")
     slug = AutoSlugField(populate_from="title", verbose_name="URL")
@@ -210,8 +210,8 @@ class Scenarios(models.Model):
     img_23 = models.ImageField(verbose_name="Картинка_23", blank=True, null=True, upload_to=scenarios_img_path)
     img_24 = models.ImageField(verbose_name="Картинка_24", blank=True, null=True, upload_to=scenarios_img_path)
     img_25 = models.ImageField(verbose_name="Картинка_25", blank=True, null=True, upload_to=scenarios_img_path)
-    devices = models.ManyToManyField(Devices)
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
+    devices = models.ManyToManyField(Device)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания", editable=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата редактирования", editable=False)
     deleted = models.BooleanField(default=False)
@@ -278,7 +278,7 @@ class Rating(models.Model):
     '''Рейтинг'''
     ip = models.CharField('IP Адрес', max_length=15)
     star = models.ForeignKey(RatingStar, on_delete=models.CASCADE, verbose_name="Звезда")
-    scenario = models.ForeignKey(Scenarios, on_delete=models.CASCADE, verbose_name="Сценарий",)
+    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE, verbose_name="Сценарий",)
 
     def __str__(self) -> str:
         return f'{self.scenario} - {self.star}'
@@ -294,8 +294,8 @@ class ArticleComment(models.Model):
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
 
-    article = models.ForeignKey(Articles, on_delete=models.CASCADE, verbose_name="Статья")
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор комментария")
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name="Статья")
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор комментария")
     content = models.TextField(verbose_name="Текст")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата комментария", editable=False)
 
@@ -306,7 +306,7 @@ class ScenarioComment(models.Model):
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
 
-    scenario = models.ForeignKey(Scenarios, on_delete=models.CASCADE, verbose_name="Статья")
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name="Автор комментария")
+    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE, verbose_name="Статья")
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор комментария")
     content = models.TextField(verbose_name="Текст")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата комментария", editable=False)
