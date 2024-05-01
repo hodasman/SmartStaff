@@ -7,7 +7,8 @@ app_name = MainappConfig.name
 
 urlpatterns = [
     path("", views.MainPageView.as_view(), name="main_page"),
-    path("personal/", views.PersonalPageView.as_view(), name="personal_page"),
+    # path("personal/", views.PersonalPageView.as_view(), name="personal_page"),
+    path("personal/", views.view_personal_page, name="personal_page"),
     path("devices/", views.filtered_devices, name="devices-list"),
     path(
         "devices/<slug:slug>",

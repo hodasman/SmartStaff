@@ -1,6 +1,6 @@
 from itertools import chain
 
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
@@ -249,5 +249,15 @@ class AddStarRating(View):
         else:
             return HttpResponse(status=400)
         
-class PersonalPageView(View):
+class PersonalPageView(TemplateView):
     template_name = "mainapp/personal_page.html"
+    
+
+def view_personal_page(request):
+    current_user = request.user
+    if current_user.is_authenticated:
+        context = {'user': current_user,  }
+        return render(request, 'mainapp/personal_page.html', context)
+    else:
+        messages.error(request, 'Для входа в личный кабинет Вам необходимо авторизоваться')
+        return redirect('mainapp:main_page')
