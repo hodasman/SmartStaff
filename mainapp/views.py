@@ -261,3 +261,21 @@ def view_personal_page(request):
     else:
         messages.error(request, 'Для входа в личный кабинет Вам необходимо авторизоваться')
         return redirect('mainapp:main_page')
+    
+
+def add_device_to_user(request, slug):
+    current_user = request.user
+    device = get_object_or_404(mainapp_models.Device, slug=slug)
+    if current_user.is_authenticated:
+        if current_user not in device.user_set.all():
+            # В таблице authapp_usr_devices необходимо сделать соответствующую запись
+            current_user.devices.add(device)
+            current_user.save()
+            messages.info(request, f'Устройство {device.title} добавленно в ваш список')
+            return redirect('personal_page')
+        else:
+            messages.info(request, f'Устройство уже есть в вашем списке!')
+            return redirect('personal_page')
+    else:
+        messages.error(request, 'Для того чтобы добавить устройство в список, Вам необходимо авторизоваться')
+        return redirect('authapp:login')
