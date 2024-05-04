@@ -249,9 +249,6 @@ class AddStarRating(View):
         else:
             return HttpResponse(status=400)
         
-class PersonalPageView(TemplateView):
-    template_name = "mainapp/personal_page.html"
-    
 
 def view_personal_page(request):
     current_user = request.user
@@ -272,10 +269,10 @@ def add_device_to_user(request, slug):
             current_user.devices.add(device)
             current_user.save()
             messages.info(request, f'Устройство {device.title} добавленно в ваш список')
-            return redirect('personal_page')
+            return redirect(request.META.get('HTTP_REFERER'))
         else:
             messages.info(request, f'Устройство уже есть в вашем списке!')
-            return redirect('personal_page')
+            return redirect(request.META.get('HTTP_REFERER'))
     else:
         messages.error(request, 'Для того чтобы добавить устройство в список, Вам необходимо авторизоваться')
         return redirect('authapp:login')

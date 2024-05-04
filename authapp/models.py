@@ -99,7 +99,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     is_staff = models.BooleanField(default=False)
     objects = UserManager()
-    devices = models.ManyToManyField(Device, verbose_name="Устройства", blank=True, related_name="devices")
+    devices = models.ManyToManyField(Device, verbose_name="Устройства", blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "first_name", "age",]
