@@ -250,7 +250,7 @@ class AddStarRating(View):
             return HttpResponse(status=400)
         
 
-def view_personal_page(request):
+def view_personal_page(request, username):
     current_user = request.user
     if current_user.is_authenticated:
         context = {'user': current_user,  }
