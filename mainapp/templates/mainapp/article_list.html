@@ -48,7 +48,7 @@
                                 <ul class="blog-info-link">
                                     <li><a href="{% url 'mainapp:articles_category' cat_slug=item.category.slug %}"><i  class="fa fa-th-list"></i> {{item.category}}</a></li>
                                     <li><i class="fa fa-user"></i> {{item.author.username}}</li>
-                                    <li><i class="fa fa-comments"></i> Отзывов - {{comments|length}}</li>
+                                    <li><i class="fa fa-comments"></i> Отзывов - {{item.get_all_comments|length}}</li>
                                 </ul>
                             </div>
                         </article>

@@ -9,6 +9,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 
+from mainapp.models import Device
+
 
 def users_avatars_path(instance, filename):
     # file will be uploaded to
@@ -75,8 +77,8 @@ class User(AbstractBaseUser, PermissionsMixin):
             "unique": _("Такой пользователь уже существует"),
         },
     )
-    first_name = models.CharField(_("Имя"), max_length=150, blank=True)
-    last_name = models.CharField(_("Фамилия"), max_length=150, blank=True, null=True)
+    first_name = models.CharField(_("Имя"), max_length=20, blank=True)
+    last_name = models.CharField(_("Фамилия"), max_length=20, blank=True, null=True)
     age = models.PositiveIntegerField(_("Возраст"), blank=True, null=True)
     avatar = models.ImageField(_("Аватар"), upload_to=users_avatars_path, blank=True, null=True)
     country = CountryField(blank=True, null=True)
@@ -97,6 +99,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     is_staff = models.BooleanField(default=False)
     objects = UserManager()
+    devices = models.ManyToManyField(Device, verbose_name="Устройства", blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "first_name", "age",]

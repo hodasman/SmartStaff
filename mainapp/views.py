@@ -1,6 +1,6 @@
 from itertools import chain
 
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
@@ -19,52 +19,52 @@ class MainPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
-        context["devices"] = mainapp_models.Devices.objects.all()[:4]  # Устройства 4 шт
-        context["scenarios"] = mainapp_models.Scenarios.objects.all()[:4]  # Сценарии 4 шт
-        context["articles"] = mainapp_models.Articles.objects.all()[:4]  # Статьи 4 шт
+        context["devices"] = mainapp_models.Device.objects.all()[:4]  # Устройства 4 шт
+        context["scenarios"] = mainapp_models.Scenario.objects.all()[:4]  # Сценарии 4 шт
+        context["articles"] = mainapp_models.Article.objects.all()[:4]  # Статьи 4 шт
         return context
 
 
 class DevicesListView(ListView):
-    model = mainapp_models.Devices
+    model = mainapp_models.Device
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super(DevicesListView, self).get_context_data(**kwargs)
-        context["qty"] = len(mainapp_models.Devices.objects.all())  # Количество устройств
+        context["qty"] = len(mainapp_models.Device.objects.all())  # Количество устройств
         return context
 
 
 class DevicesCategory(ListView):
-    model = mainapp_models.Devices
+    model = mainapp_models.Device
     template_name = "mainapp/devices_list.html"
     paginate_by = 5
 
     def get_queryset(self):
         """cat__slug – это способ обращения к слагу таблицы DeviceCategory через объект category модели Devices
         функция выдает объект QuerySet с выборкой по категории"""
-        return mainapp_models.Devices.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
+        return mainapp_models.Device.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
 
     def get_context_data(self, **kwargs):
         context = super(DevicesCategory, self).get_context_data(**kwargs)
         context["cat_name"] = mainapp_models.DeviceCategory.objects.get(
             slug=self.kwargs["cat_slug"]
         ).title  # Получение названия категории
-        context["qty"] = len(mainapp_models.Devices.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)) # Количество устройств в категории
+        context["qty"] = len(mainapp_models.Device.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)) # Количество устройств в категории
         return context
 
 
 class DevicesDetailView(DetailView):
-    model = mainapp_models.Devices
+    model = mainapp_models.Device
 
     def get_context_data(self, **kwargs):
         context = super(DevicesDetailView, self).get_context_data(**kwargs)
-        context["qty"] = len(mainapp_models.Devices.objects.all())  # Количество устройств
+        context["qty"] = len(mainapp_models.Device.objects.all())  # Количество устройств
         return context
 
 
 class ArticlesListView(ListView):
-    model = mainapp_models.Articles
+    model = mainapp_models.Article
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
@@ -74,13 +74,13 @@ class ArticlesListView(ListView):
 
 
 class ArticlesDetailView(DetailView):
-    model = mainapp_models.Articles
+    model = mainapp_models.Article
     comment_form = CommentForm
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesDetailView, self).get_context_data(**kwargs)
         context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
-        context['comments'] = mainapp_models.ArticleComment.objects.filter(article_id = context["object"].id)
+        # context['comments'] = mainapp_models.ArticleComment.objects.filter(article_id = context["object"].id)
         user = auth.get_user(self.request)
         if user.is_authenticated:
             context['form'] = self.comment_form # передаем форму комментария
@@ -101,7 +101,7 @@ class ArticlesDetailView(DetailView):
 def add_comment_article(request, article_id):
     """Представление для добавления комментария к статье"""
     form = CommentForm(request.POST)
-    article = get_object_or_404(mainapp_models.Articles, id=article_id)
+    article = get_object_or_404(mainapp_models.Article, id=article_id)
 
     if form.is_valid():
         comment = mainapp_models.ArticleComment()
@@ -116,7 +116,7 @@ def add_comment_article(request, article_id):
 def add_comment_scenario(request, scenario_id):
     """Представление для добавления комментария к сценарию"""
     form = CommentForm(request.POST)
-    scenario = get_object_or_404(mainapp_models.Scenarios, id=scenario_id)
+    scenario = get_object_or_404(mainapp_models.Scenario, id=scenario_id)
 
     if form.is_valid():
         comment = mainapp_models.ScenarioComment()
@@ -128,14 +128,14 @@ def add_comment_scenario(request, scenario_id):
 
 
 class ArticlesCategory(ListView):
-    model = mainapp_models.Articles
+    model = mainapp_models.Article
     template_name = "mainapp/articles_list.html"
     paginate_by = 5
 
     def get_queryset(self):
         """cat__slug – это способ обращения к слагу таблицы ArticleCategory через объект category модели Articles
         функция выдает объект QuerySet с выборкой по категории"""
-        return mainapp_models.Articles.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
+        return mainapp_models.Article.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesCategory, self).get_context_data(**kwargs)
@@ -147,12 +147,12 @@ class ArticlesCategory(ListView):
 
 
 class ScenariosListView(ListView):
-    model = mainapp_models.Scenarios
+    model = mainapp_models.Scenario
     paginate_by = 5
 
 
 class ScenariosDetailView(DetailView):
-    model = mainapp_models.Scenarios
+    model = mainapp_models.Scenario
     comment_form = CommentForm
 
     def get_context_data(self, **kwargs):
@@ -179,7 +179,7 @@ def filtered_devices(request):
     Пагинация работает благодаря templatetags/my_tags.py. Так как этот плагин копирует гет параметры всех фильтров 
     и передает его в ссылки на кнопках пагинатора. В шаблоне - param_replace
     '''
-    f = DevicesFilter(request.GET, queryset=mainapp_models.Devices.objects.all())
+    f = DevicesFilter(request.GET, queryset=mainapp_models.Device.objects.all())
     paginator = Paginator(f.qs, 10)
     page = request.GET.get('page', 1)
     try:
@@ -203,8 +203,8 @@ class ESearchView(View):
             query_sets = []  # Total QuerySet
  
             # Searching for all models
-            query_sets.append(mainapp_models.Articles.objects.search(query=q))
-            query_sets.append(mainapp_models.Scenarios.objects.search(query=q))
+            query_sets.append(mainapp_models.Article.objects.search(query=q))
+            query_sets.append(mainapp_models.Scenario.objects.search(query=q))
  
             # and combine results
             final_set = list(chain(*query_sets))
@@ -248,3 +248,44 @@ class AddStarRating(View):
             return HttpResponse(status=201)
         else:
             return HttpResponse(status=400)
+        
+
+def view_personal_page(request):
+    current_user = request.user
+    if current_user.is_authenticated:
+        context = {'user': current_user,  }
+        return render(request, 'mainapp/personal_page.html', context)
+    else:
+        messages.error(request, 'Для входа в личный кабинет Вам необходимо авторизоваться')
+        return redirect('mainapp:main_page')
+    
+
+def add_device_to_user(request, slug):
+    current_user = request.user
+    device = get_object_or_404(mainapp_models.Device, slug=slug)
+    if current_user.is_authenticated:
+        if current_user not in device.user_set.all():
+            # В таблице authapp_usr_devices необходимо сделать соответствующую запись
+            current_user.devices.add(device)
+            current_user.save()
+            messages.info(request, f'Устройство {device.title} добавленно в ваш список')
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            messages.info(request, f'Устройство уже есть в вашем списке!')
+            return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        messages.error(request, 'Для того чтобы добавить устройство в список, Вам необходимо авторизоваться')
+        return redirect('authapp:login')
+    
+
+def delete_device_user(request, slug):
+    current_user = request.user
+    device = get_object_or_404(mainapp_models.Device, slug=slug)
+    if device in current_user.devices.all():
+        current_user.devices.remove(device)
+        current_user.save()
+        messages.info(request, f'Устройство {device.title} удалено из списка')
+        return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        messages.info(request, f'Устройства {device.title} нет в вашем списке!')
+        return redirect(request.META.get('HTTP_REFERER'))

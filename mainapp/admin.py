@@ -4,21 +4,21 @@ from authapp import models as authapp_models
 from mainapp import models as mainapp_models
 
 
-@admin.register(mainapp_models.Scenarios)
+@admin.register(mainapp_models.Scenario)
 class ScenariosAdmin(admin.ModelAdmin):
     list_per_page = 10
 
-@admin.register(mainapp_models.Devices)
+@admin.register(mainapp_models.Device)
 class DevicesAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "slug", "deleted"]
     list_per_page = 10
     ordering = ["title"]
 
-@admin.register(mainapp_models.Articles)
+@admin.register(mainapp_models.Article)
 class ArticlesAdmin(admin.ModelAdmin):
     list_per_page = 10
 
-@admin.register(mainapp_models.Platforms)
+@admin.register(mainapp_models.Platform)
 class PlatformsAdmin(admin.ModelAdmin):
     list_per_page = 10
 

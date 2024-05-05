@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<!-- bradcam_area  -->
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="bradcam_text">
+                    <h3>Личный кабинет</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ bradcam_area  -->
+<div class="job_listing_area ">
+    <div class="container">
+        <div class="section-top-border">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 mt-sm-30">
+                    <div class="job_filter white-bg">
+                        <h3>Личные данные</h3>
+                        {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" alt="" width="100%">
+                        {% else %}
+                        <!-- <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">  -->
+                        <img class="card-img" src='{% static "img/blog/blog_1.png" %}' alt="">
+                        {% endif %}
+
+                        <div class="personal-data d-flex justify-content-between">
+                            <p class="black-txt">Мянушка:</p>
+                            <p class="break-word">Hodas</p>
+                        </div>
+                        <div class="personal-data d-flex justify-content-between">
+                            <p class="black-txt">Имя:</p>
+                            <p class="break-word">Василий</p>
+                        </div>
+                        <div class="personal-data d-flex justify-content-between">
+                            <p class="black-txt">Фамилия:</p>
+                            <p class="break-word">Богданович</p>
+                        </div>
+                        <div class="personal-data d-flex justify-content-between">
+                            <p class="black-txt">Возраст:</p>
+                            <p>36 лет</p>
+                        </div>
+                        <div class="personal-data d-flex justify-content-between">
+                            <p class="black-txt">Страна:</p>
+                            <p class="break-word">Беларусь</p>
+                        </div>
+                        <div class="personal-data d-flex justify-content-between">
+                            <p class="black-txt"><i class="fa fa-envelope-o" aria-hidden="true"></i></p>
+                            <p class="break-word">abrakadabra@gmail.com</p>
+                        </div>
+                        <div class="reset_btn">
+                            <button class="boxed-btn3 w-100" type="submit">Изменить</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8">
+                    <div class="recent_joblist white-bg ">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h4>Мои устройства</h4>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="job_lists m-0">
+                        <div class="row">
+                        
+                            <div class="col-lg-12 col-md-12">
+                                <div class="single_jobs white-bg d-flex justify-content-between">
+                                    <div class="jobs_left d-flex align-items-center">
+                                        <div class="thumb">
+                                            <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                                        </div>
+                                        <div class="jobs_conetent">
+                                            <a href="job_details.html"><h4>Digital Marketer</h4></a>
+                                            <div class="links_locat d-flex align-items-center">
+                                                <div class="location">
+                                                    <p> <i class="fa fa-map-marker"></i> California, USA</p>
+                                                </div>
+                                                <div class="location">
+                                                    <p> <i class="fa fa-clock-o"></i> Part-time</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="jobs_right">
+                                        <div class="apply_now">
+                                            <a class="heart_mark" href="#"> <i class="fa fa-heart"></i> </a>
+                                            <a href="job_details.html" class="boxed-btn3">Apply Now</a>
+                                        </div>
+                                        <div class="date">
+                                            <p>Date line: 31 Jan 2020</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="single_jobs white-bg d-flex justify-content-between">
+                                    <div class="jobs_left d-flex align-items-center">
+                                        <div class="thumb">
+                                            <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                                        </div>
+                                        <div class="jobs_conetent">
+                                            <a href="job_details.html"><h4>Wordpress Developer</h4></a>
+                                            <div class="links_locat d-flex align-items-center">
+                                                <div class="location">
+                                                    <p> <i class="fa fa-map-marker"></i> California, USA</p>
+                                                </div>
+                                                <div class="location">
+                                                    <p> <i class="fa fa-clock-o"></i> Part-time</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="jobs_right">
+                                        <div class="apply_now">
+                                            <a class="heart_mark" href="#"> <i class="fa fa-heart"></i> </a>
+                                            <a href="job_details.html" class="boxed-btn3">Apply Now</a>
+                                        </div>
+                                        <div class="date">
+                                            <p>Date line: 31 Jan 2020</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="single_jobs white-bg d-flex justify-content-between">
+                                    <div class="jobs_left d-flex align-items-center">
+                                        <div class="thumb">
+                                            <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                                        </div>
+                                        <div class="jobs_conetent">
+                                            <a href="job_details.html"><h4>Visual Designer</h4></a>
+                                            
+                                            <div class="links_locat d-flex align-items-center">
+                                                <div class="location">
+                                                    <p> <i class="fa fa-map-marker"></i> California, USA</p>
+                                                </div>
+                                                <div class="location">
+                                                    <p> <i class="fa fa-clock-o"></i> Part-time</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="jobs_right">
+                                        <div class="apply_now">
+                                            <a class="heart_mark" href="#"> <i class="fa fa-heart"></i> </a>
+                                            <a href="job_details.html" class="boxed-btn3">Apply Now</a>
+                                        </div>
+                                        <div class="date">
+                                            <p>Date line: 31 Jan 2020</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="single_jobs white-bg d-flex justify-content-between">
+                                    <div class="jobs_left d-flex align-items-center">
+                                        <div class="thumb">
+                                            <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                                        </div>
+                                        <div class="jobs_conetent">
+                                            <a href="job_details.html"><h4>Software Engineer</h4></a>
+                                            <div class="links_locat d-flex align-items-center">
+                                                <div class="location">
+                                                    <p> <i class="fa fa-map-marker"></i> California, USA</p>
+                                                </div>
+                                                <div class="location">
+                                                    <p> <i class="fa fa-clock-o"></i> Part-time</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="jobs_right">
+                                        <div class="apply_now">
+                                            <a class="heart_mark" href="#"> <i class="fa fa-heart"></i> </a>
+                                            <a href="job_details.html" class="boxed-btn3">Apply Now</a>
+                                        </div>
+                                        <div class="date">
+                                            <p>Date line: 31 Jan 2020</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="pagination_wrap">
+                                    <ul>
+                                        <li><a href="#"> <i class="ti-angle-left"></i> </a></li>
+                                        <li><a href="#"><span>01</span></a></li>
+                                        <li><a href="#"><span>02</span></a></li>
+                                        <li><a href="#"> <i class="ti-angle-right"></i> </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="top_companies_area">
+    <div class="container">
+        <div class="row align-items-center mb-40">
+            <div class="col-lg-6 col-md-6">
+                <div class="section_title">
+                    <h3>Сценарии для ваших устройств</h3>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="brouse_job text-right">
+                    <a href="jobs.html" class="boxed-btn4">Browse More Job</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-xl-3 col-md-6">
+                <div class="single_company">
+                    <div class="thumb">
+                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                    </div>
+                    <a href="jobs.html"><h3>Snack Studio</h3></a>
+                    <p> <span>50</span> Available position</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-xl-3 col-md-6">
+                <div class="single_company">
+                    <div class="thumb">
+                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                    </div>
+                    <a href="jobs.html"><h3>Snack Studio</h3></a>
+                    <p> <span>50</span> Available position</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-xl-3 col-md-6">
+                <div class="single_company">
+                    <div class="thumb">
+                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                    </div>
+                    <a href="jobs.html"><h3>Snack Studio</h3></a>
+                    <p> <span>50</span> Available position</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-xl-3 col-md-6">
+                <div class="single_company">
+                    <div class="thumb">
+                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                    </div>
+                    <a href="jobs.html"><h3>Snack Studio</h3></a>
+                    <p> <span>50</span> Available position</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="top_companies_area">
+    <div class="container">
+        <div class="row align-items-center mb-40">
+            <div class="col-lg-6 col-md-6">
+                <div class="section_title">
+                    <h3>Не хватает устройств</h3>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="brouse_job text-right">
+                    <a href="jobs.html" class="boxed-btn4">Browse More Job</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-xl-3 col-md-6">
+                <div class="single_company">
+                    <div class="thumb">
+                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                    </div>
+                    <a href="jobs.html"><h3>Snack Studio</h3></a>
+                    <p> <span>50</span> Available position</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-xl-3 col-md-6">
+                <div class="single_company">
+                    <div class="thumb">
+                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                    </div>
+                    <a href="jobs.html"><h3>Snack Studio</h3></a>
+                    <p> <span>50</span> Available position</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-xl-3 col-md-6">
+                <div class="single_company">
+                    <div class="thumb">
+                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                    </div>
+                    <a href="jobs.html"><h3>Snack Studio</h3></a>
+                    <p> <span>50</span> Available position</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-xl-3 col-md-6">
+                <div class="single_company">
+                    <div class="thumb">
+                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                    </div>
+                    <a href="jobs.html"><h3>Snack Studio</h3></a>
+                    <p> <span>50</span> Available position</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

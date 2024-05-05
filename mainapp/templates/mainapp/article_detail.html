@@ -32,7 +32,7 @@
                      <ul class="blog-info-link mt-3 mb-4">
                         <li><a href="{% url 'mainapp:articles_category' cat_slug=object.category.slug %}"><i  class="fa fa-th-list"></i> {{object.category}}</a></li>
                         <li><i class="fa fa-user"></i> {{object.author.username}}</li>
-                        <li><a href="#comments"><i class="fa fa-comments"></i> Отзывов - {{comments|length}}</a></li>
+                        <li><a href="#comments"><i class="fa fa-comments"></i> Отзывов - {{object.get_all_comments|length}}</a></li>
                      </ul>
                      {{object.text|safe|escape}}
                   </div>
@@ -42,7 +42,7 @@
                      <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Lily and 4
                         people like this</p>
                      <div class="col-sm-4 text-center my-2 my-sm-0">
-                        <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> Отзывов - {{comments|length}}</p>
+                        <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> Отзывов - {{object.get_all_comments|length}}</p>
                      </div>
                      <ul class="social-icons">
                         <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
@@ -96,7 +96,11 @@
                </div>
                <div class="blog-author">
                   <div class="media align-items-center">
+                     {% if comment.author.avatar %}
                      <img src='{{object.author.avatar.url}}' alt="">
+                     {%else%}
+                     <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
+                     {%endif%}
                      <div class="media-body">
                         
                            <h4>Звесткі пра аўтара</h4>
@@ -110,13 +114,17 @@
                   </div>
                </div>
                <div class="comments-area" id="comments">
-                  <h4>Отзывы ({{comments|length}})</h4>
+                  <h4>Отзывы ({{object.get_all_comments|length}})</h4>
                   {% for comment in comments %}
                   <div class="comment-list">
                      <div class="single-comment justify-content-between d-flex">
                         <div class="user justify-content-between d-flex">
                            <div class="thumb">
+                              {% if comment.author.avatar %}
                               <img src='{{comment.author.avatar.url}}' alt="">
+                              {%else%}
+                              <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
+                              {%endif%}
                            </div>
                            <div class="desc">
                               <p class="comment">

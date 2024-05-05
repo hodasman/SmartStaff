@@ -81,7 +81,13 @@
                                     <div class="jobs_right">
                                         <div class="apply_now">
                                             
-                                            <a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="boxed-btn3">Подробнее</a>
+                                            <a href="{% url 'mainapp:add_device' slug=item.slug %}" class="boxed-btn3">
+                                                {% if user in item.user_set.all%}
+                                                В списке
+                                                {%else%}
+                                                Добавить
+                                                {%endif%}
+                                            </a>
                                         </div>
                                         <div class="date">
                                             <p> {{item.created_at|date:"Y-m-d"}}</p>
