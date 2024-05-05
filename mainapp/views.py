@@ -276,3 +276,16 @@ def add_device_to_user(request, slug):
     else:
         messages.error(request, 'Для того чтобы добавить устройство в список, Вам необходимо авторизоваться')
         return redirect('authapp:login')
+    
+
+def delete_device_user(request, slug):
+    current_user = request.user
+    device = get_object_or_404(mainapp_models.Device, slug=slug)
+    if device in current_user.devices.all():
+        current_user.devices.remove(device)
+        current_user.save()
+        messages.info(request, f'Устройство {device.title} удалено из списка')
+        return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        messages.info(request, f'Устройства {device.title} нет в вашем списке!')
+        return redirect(request.META.get('HTTP_REFERER'))
