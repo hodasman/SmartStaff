@@ -250,10 +250,24 @@ class AddStarRating(View):
             return HttpResponse(status=400)
         
 
-def view_personal_page(request):
+def view_personal_page(request, username):
     current_user = request.user
     if current_user.is_authenticated:
         context = {'user': current_user,  }
+        user_devices = set(current_user.devices.all()) # Устройства юзера
+        all_scenarios = mainapp_models.Scenario.objects.all() # Все сценарии в базе
+        right_scenarios = [] #Список сценариев которые доступны юзеру
+        almost_all = [] #Список сценариев где не хватает одного устройста
+        for scenario in all_scenarios: # Ищем совпадения устройств юзера с устройствами сценариев
+            scenario_devices = set(scenario.devices.all())
+            common = user_devices.intersection(scenario_devices) # пересечения двух множеств(общие элементы)
+            
+            if len(common) == len(scenario_devices):
+                right_scenarios.append(scenario)
+            elif len(scenario_devices) - len(common) == 1:
+                almost_all.append(scenario)
+        context['right_scenarios'] = right_scenarios
+        context['almost_all'] = almost_all
         return render(request, 'mainapp/personal_page.html', context)
     else:
         messages.error(request, 'Для входа в личный кабинет Вам необходимо авторизоваться')

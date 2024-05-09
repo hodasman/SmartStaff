@@ -145,42 +145,18 @@
             </div>
         </div>
         <div class="row">
+            {% for scenario in right_scenarios %}
             <div class="col-lg-4 col-xl-3 col-md-6">
                 <div class="single_company">
                     <div class="thumb">
-                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                        <img src='{{ scenario.main_img.url }}' alt="">
                     </div>
-                    <a href="jobs.html"><h3>Snack Studio</h3></a>
-                    <p> <span>50</span> Available position</p>
+                    <a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}"><h3>{{scenario.title}}</h3></a>
+                    <p> <span>{{scenario.devices.all|length}}</span> {{scenario.get_quantity_devices}}</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
-                    </div>
-                    <a href="jobs.html"><h3>Snack Studio</h3></a>
-                    <p> <span>50</span> Available position</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
-                    </div>
-                    <a href="jobs.html"><h3>Snack Studio</h3></a>
-                    <p> <span>50</span> Available position</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
-                    </div>
-                    <a href="jobs.html"><h3>Snack Studio</h3></a>
-                    <p> <span>50</span> Available position</p>
-                </div>
-            </div>
+            {%endfor%}
+            
         </div>
     </div>
 </div>
@@ -189,7 +165,7 @@
         <div class="row align-items-center mb-40">
             <div class="col-lg-6 col-md-6">
                 <div class="section_title">
-                    <h3>Не хватает устройств</h3>
+                    <h3>Не хватает одного устройства</h3>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -199,42 +175,18 @@
             </div>
         </div>
         <div class="row">
+            {% for scenario in almost_all %}
             <div class="col-lg-4 col-xl-3 col-md-6">
                 <div class="single_company">
                     <div class="thumb">
-                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                        <img src='{{ scenario.main_img.url }}' alt="">
                     </div>
-                    <a href="jobs.html"><h3>Snack Studio</h3></a>
-                    <p> <span>50</span> Available position</p>
+                    <a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}"><h3>{{scenario.title}}</h3></a>
+                    <p> <span>{{scenario.devices.all|length}}</span> {{scenario.get_quantity_devices}}</p>
                 </div>
             </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
-                    </div>
-                    <a href="jobs.html"><h3>Snack Studio</h3></a>
-                    <p> <span>50</span> Available position</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
-                    </div>
-                    <a href="jobs.html"><h3>Snack Studio</h3></a>
-                    <p> <span>50</span> Available position</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
-                    </div>
-                    <a href="jobs.html"><h3>Snack Studio</h3></a>
-                    <p> <span>50</span> Available position</p>
-                </div>
-            </div>
+            {%endfor%}
+            
         </div>
     </div>
 </div>

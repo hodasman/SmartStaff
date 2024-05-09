@@ -16,6 +16,9 @@
                 <li><a href="{% url menu_item.url %}">{{ menu_item }}</a></li>
                 {% endif %}
             {% endfor %}
+            {% if request.user.is_authenticated %}
+            <li><a href="{% url 'mainapp:personal_page' username=request.user.username %}">Личный кабинет </a></li>
+            {%endif%}
             </ul>
         </nav>
     </div>
