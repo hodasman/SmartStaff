@@ -268,6 +268,11 @@ def view_personal_page(request, username):
                 almost_all.append(scenario)
         context['right_scenarios'] = right_scenarios
         context['almost_all'] = almost_all
+        #Пагинация
+        paginator = Paginator(current_user.devices.all(), 4)  # Показывать по 4 устройств на странице
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
         return render(request, 'mainapp/personal_page.html', context)
     else:
         messages.error(request, 'Для входа в личный кабинет Вам необходимо авторизоваться')
