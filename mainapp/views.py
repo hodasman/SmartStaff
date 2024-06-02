@@ -96,6 +96,25 @@ class ArticlesDetailView(DetailView):
         return context
 
 
+class ArticlesCategory(ListView):
+    model = mainapp_models.Article
+    template_name = "mainapp/articles_list.html"
+    paginate_by = 5
+
+    def get_queryset(self):
+        """cat__slug – это способ обращения к слагу таблицы ArticleCategory через объект category модели Articles
+        функция выдает объект QuerySet с выборкой по категории"""
+        return mainapp_models.Article.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticlesCategory, self).get_context_data(**kwargs)
+        context["cat_name"] = mainapp_models.ArticleCategory.objects.get(
+            slug=self.kwargs["cat_slug"]
+        ).title  # Получение названия категории
+        context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
+        return context
+
+
 @login_required
 @require_http_methods(["POST"])
 def add_comment_article(request, article_id):
@@ -127,28 +146,14 @@ def add_comment_scenario(request, scenario_id):
     return redirect(scenario.get_absolute_url())
 
 
-class ArticlesCategory(ListView):
-    model = mainapp_models.Article
-    template_name = "mainapp/articles_list.html"
-    paginate_by = 5
-
-    def get_queryset(self):
-        """cat__slug – это способ обращения к слагу таблицы ArticleCategory через объект category модели Articles
-        функция выдает объект QuerySet с выборкой по категории"""
-        return mainapp_models.Article.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
-
-    def get_context_data(self, **kwargs):
-        context = super(ArticlesCategory, self).get_context_data(**kwargs)
-        context["cat_name"] = mainapp_models.ArticleCategory.objects.get(
-            slug=self.kwargs["cat_slug"]
-        ).title  # Получение названия категории
-        context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
-        return context
-
-
 class ScenariosListView(ListView):
     model = mainapp_models.Scenario
     paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super(ScenariosListView, self).get_context_data(**kwargs)
+        context["all_categories"] = mainapp_models.Platform.objects.all()
+        return context
 
 
 class ScenariosDetailView(DetailView):
@@ -171,8 +176,28 @@ class ScenariosDetailView(DetailView):
         user = auth.get_user(self.request)
         if user.is_authenticated:
             context['form'] = self.comment_form # передаем форму комментария
+        context["all_categories"] = mainapp_models.Platform.objects.all()
+        context['similar_scenarios'] = context["object"].get_similar_scenarios() # сценарии с этими же устройствами
         return context
     
+
+class ScenariosCategory(ListView):
+    model = mainapp_models.Scenario
+    template_name = "mainapp/scenario_list.html"
+    paginate_by = 5
+
+    def get_queryset(self):
+        """Получаем объект QuerySet выборку сценариев по категории (платформе)"""
+        return mainapp_models.Scenario.objects.filter(platform__id=self.kwargs["platform_id"], deleted=False)
+
+    def get_context_data(self, **kwargs):
+        context = super(ScenariosCategory, self).get_context_data(**kwargs)
+        context["platform"] = mainapp_models.Platform.objects.get(
+            id=self.kwargs["platform_id"]
+        ).title  # Получение названия категории(платформы)
+        context["all_categories"] = mainapp_models.Platform.objects.all()
+        return context
+
 
 def filtered_devices(request):
     '''

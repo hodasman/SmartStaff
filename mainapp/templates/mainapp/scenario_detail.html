@@ -27,7 +27,7 @@
                   <img class="img-fluid" src='{{object.main_img.url}}' alt="">
                </div>
                <div class="blog_details">
-                  <h2>{{object.title}}
+                  <h2>{{object.title}} ({{object.platform}})
                   </h2>
                   <ul class="blog-info-link mt-3 mb-4">
                      <li><i class="fa fa-user"></i> {{object.author}}</li>
@@ -51,7 +51,36 @@
                         </form>
                      </li>
                   </ul>
+
+                  {% if object.idea %}
+                  <h3 class="mb-20"> Идея</h3>
+                  {{object.idea.description|safe|escape}}
+                  {%endif%}
+
+                  <h3 class="mb-20">Устройства</h3>
+                  {% for item in object.devices.all %}
+                  <ol class="unordered-list">
+                     <li><a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="d-flex">
+                        {{item.title}}
+                     </a>
+                     </li>
+                  </ol>
+                  {%endfor%}
+
+                  <h3 class="mb-20">Пояснения</h3>
                   {{object.text|safe|escape}}
+
+                  {% if object.scheme %}
+                  <h3 class="mb-20">Логика</h3>
+                  <img class="img-fluid" src='{{object.scheme.url}}' alt="">
+                  {%endif%}
+                  
+                  <div class="quote-wrapper">
+                     <div class="quotes">
+                        Внимание! в зависимости от версии приложения названия опций могут немного различаться
+                     с указанными в схеме!
+                     </div>
+                  </div>
                </div>
             </div>
             <div class="navigation-top">
@@ -66,48 +95,6 @@
                      <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
                      <li><a href="#"><i class="fa fa-behance"></i></a></li>
                   </ul>
-               </div>
-               <div class="navigation-area">
-                  <div class="row">
-                     <div
-                        class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
-                        <div class="thumb">
-                           <a href="{{prev.get_absolute_url}}">
-                              <img class="img-mini" src='{{prev.main_img.url}}' alt="">
-                           </a>
-                        </div>
-                        <div class="arrow">
-                           <a href="{{prev.get_absolute_url}}">
-                              <span class="lnr text-white ti-arrow-left"></span>
-                           </a>
-                        </div>
-                        <div class="detials">
-                           <p>Предыдущий </p>
-                           <a href="{{prev.get_absolute_url}}">
-                              <h4>{{prev.title|truncatewords:5|safe}}</h4>
-                           </a>
-                        </div>
-                     </div>
-                     <div
-                        class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
-                        <div class="detials">
-                           <p>Следующий</p>
-                           <a href="{{next.get_absolute_url}}">
-                              <h4>{{next.title|truncatewords:5|safe}}</h4>
-                           </a>
-                        </div>
-                        <div class="arrow">
-                           <a href="{{next.get_absolute_url}}">
-                              <span class="lnr text-white ti-arrow-right"></span>
-                           </a>
-                        </div>
-                        <div class="thumb">
-                           <a href="{{next.get_absolute_url}}">
-                              <img class="img-mini" src='{{next.main_img.url}}' alt="">
-                           </a>
-                        </div>
-                     </div>
-                  </div>
                </div>
             </div>
             <div class="blog-author">
@@ -185,6 +172,20 @@
                  <p> Для того чтобы оставить отзыв вам необходимо <a href="{% url 'authapp:login'%}">авторизоваться</a> на сайте</p>
                {%endif%}
             </div>
+            <!-- Подборка сценариев  -->
+            {%if similar_scenarios%}
+            <h3 class="mb-20">Другие сценарии из этих же устройств</h3>
+            {% for item in similar_scenarios %}
+            <ol class="unordered-list">
+               <li><a href="{% url 'mainapp:scenario_detail' slug=item.slug %}" class="d-flex">
+                  {{item.title}}
+               </a>
+               </li>
+            </ol>
+            {%endfor%}
+            {%endif%}
+            <!--/ Подборка сценариев  -->
+
          </div>
          <div class="col-lg-4">
             <div class="blog_right_sidebar">
@@ -205,56 +206,34 @@
                  </form>
                </aside>
                <aside class="single_sidebar_widget post_category_widget">
-                  <h4 class="widget_title">Необходимые устройства ({{ object.devices.all|length }})</h4>
+                  <h4 class="widget_title">Платформы</h4>
                   <ul class="list cat-list">
-                     {% for item in object.devices.all %}
+                     {% for item in all_categories %}
                      <li>
-                        <a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="d-flex">
+                        <a href="{% url 'mainapp:scenarios_category' platform_id=item.id %}" class="d-flex">
                            <p>{{item.title}}</p>
-
+                           <p>({{item.qty_scenarios_in_platform}})</p>
                         </a>
                      </li>
                      {% endfor %}
                   </ul>
                </aside>
                <aside class="single_sidebar_widget popular_post_widget">
-                  <h3 class="widget_title">Recent Post</h3>
+                  {%if similar_scenarios%}
+                  <h3 class="widget_title">Другие сценарии из этих устройств</h3>
+                  {% for item in similar_scenarios %}
                   <div class="media post_item">
-                     <img src='{% static "img/post/post_1.png" %}' alt="post">
+                     <img class="img-mini" src='{{item.main_img.url}}' alt="{{item.title}}">
                      <div class="media-body">
-                        <a href="single-blog.html">
-                           <h3>From life was you fish...</h3>
+                        <a href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
+                           <h3>{{item.title}}</h3>
                         </a>
-                        <p>January 12, 2019</p>
+                        <p>{{item.devices.all|length}} {{item.get_quantity_devices}}</p>
                      </div>
                   </div>
-                  <div class="media post_item">
-                     <img src='{% static "img/post/post_2.png" %}' alt="post">
-                     <div class="media-body">
-                        <a href="single-blog.html">
-                           <h3>The Amazing Hubble</h3>
-                        </a>
-                        <p>02 Hours ago</p>
-                     </div>
-                  </div>
-                  <div class="media post_item">
-                     <img src='{% static "img/post/post_3.png" %}' alt="post">
-                     <div class="media-body">
-                        <a href="single-blog.html">
-                           <h3>Astronomy Or Astrology</h3>
-                        </a>
-                        <p>03 Hours ago</p>
-                     </div>
-                  </div>
-                  <div class="media post_item">
-                     <img src='{% static "img/post/post_4.png" %}' alt="post">
-                     <div class="media-body">
-                        <a href="single-blog.html">
-                           <h3>Asteroids telescope</h3>
-                        </a>
-                        <p>01 Hours ago</p>
-                     </div>
-                  </div>
+                  {%endfor%}
+                  {%endif%}
+                  
                </aside>
                <aside class="single_sidebar_widget tag_cloud_widget">
                   <h4 class="widget_title">Tag Clouds</h4>
@@ -336,6 +315,7 @@
       </div>
    </div>
 </section>
+
 <!--================ Blog Area end =================-->
 
 {% endblock content %}
