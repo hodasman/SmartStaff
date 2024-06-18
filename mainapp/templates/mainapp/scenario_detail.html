@@ -172,19 +172,6 @@
                  <p> Для того чтобы оставить отзыв вам необходимо <a href="{% url 'authapp:login'%}">авторизоваться</a> на сайте</p>
                {%endif%}
             </div>
-            <!-- Подборка сценариев  -->
-            {%if similar_scenarios%}
-            <h3 class="mb-20">Другие сценарии из этих же устройств</h3>
-            {% for item in similar_scenarios %}
-            <ol class="unordered-list">
-               <li><a href="{% url 'mainapp:scenario_detail' slug=item.slug %}" class="d-flex">
-                  {{item.title}}
-               </a>
-               </li>
-            </ol>
-            {%endfor%}
-            {%endif%}
-            <!--/ Подборка сценариев  -->
 
          </div>
          <div class="col-lg-4">
