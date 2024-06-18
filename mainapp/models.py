@@ -32,6 +32,24 @@ class Platform(models.Model):
 
     def __str__(self) -> str:
         return f"{self.title}"
+    
+    def qty_scenarios_in_platform(self):
+        '''Возвращает количество сценариев по платформе'''
+        qty = len(Scenario.objects.filter(platform__id=self.id, deleted=False))
+        return qty
+
+
+class Idea(models.Model):
+    title = models.CharField(max_length=256, verbose_name="Название")
+    description = models.TextField(blank=True, null=True, verbose_name="Описание")
+
+    class Meta:
+        verbose_name = "Идея"
+        verbose_name_plural = "Идеи"
+        ordering = ["title"]
+
+    def __str__(self) -> str:
+        return f"{self.title}"
 
 
 class ArticleCategory(models.Model):
@@ -209,9 +227,11 @@ class Scenario(models.Model):
     img_22 = models.ImageField(verbose_name="Картинка_22", blank=True, null=True, upload_to=scenarios_img_path)
     img_23 = models.ImageField(verbose_name="Картинка_23", blank=True, null=True, upload_to=scenarios_img_path)
     img_24 = models.ImageField(verbose_name="Картинка_24", blank=True, null=True, upload_to=scenarios_img_path)
-    img_25 = models.ImageField(verbose_name="Картинка_25", blank=True, null=True, upload_to=scenarios_img_path)
+    scheme = models.ImageField(verbose_name="Схема", blank=True, null=True, upload_to=scenarios_img_path)
     devices = models.ManyToManyField(Device)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
+    platform = models.ForeignKey(Platform, on_delete=models.CASCADE, blank=True, null=True)
+    idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания", editable=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата редактирования", editable=False)
     deleted = models.BooleanField(default=False)
@@ -259,6 +279,25 @@ class Scenario(models.Model):
         '''Возвращает QuerySet объектов комментариев для данного сценария'''
         comments = ScenarioComment.objects.filter(scenario_id = self.id)
         return comments
+    
+    def get_similar_scenarios(self):
+        '''
+        Функция ищет похожие сценарии устройства которых такие же как и заданного сценария.
+        Возвращает список сценариев которые можно реализовать из этих же устройств или 
+        сценариев где нужно докупить несколько устройств
+        '''
+        
+        similar_scenarios = []
+        devices = set(self.devices.all())
+        all_scenarios = Scenario.objects.all() # Все сценарии в базе
+        
+        for scenario in all_scenarios: # Проходим по всем сценариям и проверяем утсройства
+            scenario_devices = set(scenario.devices.all())
+            if devices <= scenario_devices and self.id != scenario.id: # <= означает вхождение подмножества в множество
+                similar_scenarios.append(scenario)
+            elif scenario_devices <= devices and self.id != scenario.id:
+                similar_scenarios.append(scenario)
+        return similar_scenarios
     
 
 class RatingStar(models.Model):

@@ -9,7 +9,11 @@
                 <div class="col-xl-12">
                     <div class="bradcam_text">
                         <h3>
+                            {% if view.kwargs %}
+                            Сценарии автоматизации {{ platform }}
+                            {% else %}
                             Сценарии автоматизации
+                            {% endif %}
                             ({{ object_list|length }})
                         </h3>
                     </div>
@@ -96,13 +100,13 @@
                         </aside>
 
                         <aside class="single_sidebar_widget post_category_widget">
-                            <h4 class="widget_title">Категории статей</h4>
+                            <h4 class="widget_title">Платформы</h4>
                             <ul class="list cat-list">
                                 {% for item in all_categories %}
                                 <li>
-                                    <a href="{% url 'mainapp:articles_category' cat_slug=item.slug %}" class="d-flex">
+                                    <a href="{% url 'mainapp:scenarios_category' platform_id=item.id %}" class="d-flex">
                                         <p>{{item.title}}</p>
-                                        <p>({{item.qty_articles_in_category}})</p>
+                                        <p>({{item.qty_scenarios_in_platform}})</p>
                                     </a>
                                 </li>
                                 {% endfor %}
