@@ -32,7 +32,7 @@
                   <ul class="blog-info-link mt-3 mb-4">
                      <li><i class="fa fa-user"></i> {{object.author}}</li>
                      <li><a href="#comments"><i class="fa fa-comments"></i> Отзывов - {{object.get_all_comments|length}}</a></li>
-                     <li>
+                     <li><i class="fa fa-tags"></i>
                         {% for tag in object.tags.all %}
                         <a href="{% url 'mainapp:list_by_tag' tag.slug %}">{{tag.name}}</a>; 
                         {%endfor%}

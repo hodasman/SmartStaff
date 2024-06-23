@@ -33,6 +33,11 @@
                         <li><a href="{% url 'mainapp:articles_category' cat_slug=object.category.slug %}"><i  class="fa fa-th-list"></i> {{object.category}}</a></li>
                         <li><i class="fa fa-user"></i> {{object.author.username}}</li>
                         <li><a href="#comments"><i class="fa fa-comments"></i> Отзывов - {{object.get_all_comments|length}}</a></li>
+                        <li><i class="fa fa-tags"></i>
+                           {% for tag in object.tags.all %}
+                           <a href="{% url 'mainapp:list_by_tag' tag.slug %}">{{tag.name}}</a>; 
+                           {%endfor%}
+                        </li>
                      </ul>
                      {{object.text|safe|escape}}
                   </div>
