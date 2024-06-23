@@ -32,6 +32,7 @@
                   <ul class="blog-info-link mt-3 mb-4">
                      <li><i class="fa fa-user"></i> {{object.author}}</li>
                      <li><a href="#comments"><i class="fa fa-comments"></i> Отзывов - {{object.get_all_comments|length}}</a></li>
+                     <li><i class="fa fa-tags" aria-hidden="true"></i> {{object.tags.all|join:", "}}</li>
                      <li>
                         <form action="{% url 'mainapp:add_rating' %}" method="post" name="rating">
                            {% csrf_token %}
@@ -50,6 +51,7 @@
 
                         </form>
                      </li>
+                     
                   </ul>
 
                   {% if object.idea %}
@@ -225,8 +227,12 @@
                <aside class="single_sidebar_widget tag_cloud_widget">
                   <h4 class="widget_title">Tag Clouds</h4>
                   <ul class="list">
+                     {% for tag in object.tags.all %}
                      <li>
-                        <a href="#">project</a>
+                        <a href="{% url 'mainapp:list_by_tag' tag.slug %}">
+                           {{ tag.name }}
+                       </a>
+                     {%endfor%}
                      </li>
                      <li>
                         <a href="#">love</a>

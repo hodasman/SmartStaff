@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap4",
     'django_filters',
     'django_countries',
+    'taggit',
 ]
 
 PYTHONINSTALLED_APPS = [

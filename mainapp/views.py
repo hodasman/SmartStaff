@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.decorators.http import require_http_methods
 from django.views.generic import DetailView, ListView, TemplateView
+from taggit.models import Tag
 
 from mainapp import models as mainapp_models
 from mainapp.filters import DevicesFilter
@@ -333,3 +334,26 @@ def delete_device_user(request, slug):
     else:
         messages.info(request, f'Устройства {device.title} нет в вашем списке!')
         return redirect(request.META.get('HTTP_REFERER'))
+    
+
+def tag_list(request, tag_slug=None):
+    '''Вьюха для страницы тегов. Выводит на страницу и статьи и сценарии по тегу'''
+    query_sets = []
+    tag = get_object_or_404(Tag, slug=tag_slug)
+    query_sets.append(mainapp_models.Article.objects.filter(tags__in=[tag]))
+    query_sets.append(mainapp_models.Scenario.objects.filter(tags__in=[tag]))
+    final_set = list(chain(*query_sets))
+
+    paginator = Paginator(final_set, 3) # 3 posts in each page
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        posts = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'mainapp/list_tag.html', {'page': page,
+                                                   'posts': posts,
+                                                   'tag': tag,})
