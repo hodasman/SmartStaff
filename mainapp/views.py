@@ -355,5 +355,5 @@ def tag_list(request, tag_slug=None):
         # If page is out of range deliver last page of results
         posts = paginator.page(paginator.num_pages)
     return render(request, 'mainapp/list_tag.html', {'page': page,
-                                                   'posts': posts,
+                                                   'page_obj': posts,
                                                    'tag': tag,})

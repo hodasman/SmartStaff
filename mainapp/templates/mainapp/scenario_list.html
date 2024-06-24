@@ -35,31 +35,8 @@
         </article>
         {% endfor %}
         
-
-        <nav class="blog-pagination justify-content-center d-flex">
-            <ul class="pagination">
-                {% if page_obj.has_previous %}
-                <li class="page-item">
-                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
-                        <i class="ti-angle-left"></i>
-                    </a>
-                </li>
-                {% endif %}
-                {% for item in page_obj.paginator.page_range %}
-                
-                <li class="page-item {% if item == page_obj.number %} active {% endif %}">
-                    <a href="?page={{ item }}" class="page-link">{{ item }}</a>
-                </li>
-                {% endfor %}
-                {% if page_obj.has_next %}
-                <li class="page-item">
-                    <a href="?page={{ page_obj.next_page_number }}" class="page-link" aria-label="Next">
-                        <i class="ti-angle-right"></i>
-                    </a>
-                </li>
-                {% endif %}
-            </ul>
-        </nav>
+        {% include "includes/pagination.html" %}
+        
     </div>
 </div>
 {% endblock left_sidebar %}
