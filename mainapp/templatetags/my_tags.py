@@ -1,4 +1,5 @@
 from django import template
+from taggit.models import Tag
 
 register = template.Library()
 
@@ -30,3 +31,7 @@ def param_replace(context, **kwargs):
     for k in [k for k, v in d.items() if not v]:
         del d[k]
     return d.urlencode()
+
+@register.simple_tag(takes_context=True)
+def get_cloud():
+    return Tag.objects.all()

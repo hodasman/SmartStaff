@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_countries',
     'taggit',
+    'taggit_templatetags2',
 ]
 
 PYTHONINSTALLED_APPS = [

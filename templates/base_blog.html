@@ -4,6 +4,7 @@
 со списком категорий так как он разный для статей и для сценариев-->
 {% extends 'base.html' %}
 {% load static %}
+{% load taggit_templatetags2_tags %}
 {% block content %}
  <!-- bradcam_area  -->
  <div class="bradcam_area bradcam_bg_1">
@@ -93,31 +94,13 @@
                     </aside>
                     <aside class="single_sidebar_widget tag_cloud_widget">
                         <h4 class="widget_title">Tag Clouds</h4>
+                        {% get_tagcloud as tags for 'mainapp' %}
                         <ul class="list">
+                            {% for tag in tags %}
                             <li>
-                                <a href="#">project</a>
+                                <a href="{% url 'mainapp:list_by_tag' tag.slug %}">{{tag}}</a>
                             </li>
-                            <li>
-                                <a href="#">love</a>
-                            </li>
-                            <li>
-                                <a href="#">technology</a>
-                            </li>
-                            <li>
-                                <a href="#">travel</a>
-                            </li>
-                            <li>
-                                <a href="#">restaurant</a>
-                            </li>
-                            <li>
-                                <a href="#">life style</a>
-                            </li>
-                            <li>
-                                <a href="#">design</a>
-                            </li>
-                            <li>
-                                <a href="#">illustration</a>
-                            </li>
+                            {%endfor%}
                         </ul>
                     </aside>
 
