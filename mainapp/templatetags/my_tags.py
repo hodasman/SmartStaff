@@ -1,5 +1,6 @@
 from django import template
-from taggit.models import Tag
+
+from mainapp import models as mainapp_models
 
 register = template.Library()
 
@@ -32,6 +33,6 @@ def param_replace(context, **kwargs):
         del d[k]
     return d.urlencode()
 
-@register.simple_tag(takes_context=True)
-def get_cloud():
-    return Tag.objects.all()
+@register.simple_tag()
+def get_article():
+    return mainapp_models.Article.objects.all().order_by('created_at')
