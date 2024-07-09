@@ -27,4 +27,5 @@ urlpatterns = [
     path("scenarios/<int:scenario_id>/comment/", views.add_comment_scenario, name="comment_scenario"),
     path('add-device/<str:slug>/', views.add_device_to_user, name='add_device'),
     path('delete-device/<str:slug>/', views.delete_device_user, name='delete_device'),
+    path('tag/<str:tag_slug>/', views.tag_list, name='list_by_tag'),
 ]

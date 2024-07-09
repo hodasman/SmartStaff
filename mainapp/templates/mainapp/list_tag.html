@@ -1,0 +1,52 @@
+{% extends 'base_blog.html' %}
+{% block title %}Поиск по тегу "{{ tag.name }}"{% endblock %}
+{% load static %}
+
+{% block left_sidebar %}
+<div class="col-lg-8 mb-5 mb-lg-0">
+    <div class="blog_left_sidebar">
+        {% for item in page_obj %}
+        <article class="blog_item">
+            <div class="blog_item_img">
+                <img class="card-img" src='{{item.main_img.url}}' alt="{{item.title}}">
+                <a href="#" class="blog_item_date">
+                    <h3>{{item.created_at|date:"d"}}</h3>
+                    <p>{{item.created_at|date:"M"}}</p>
+                </a>
+            </div>
+            {%if item.preambule%} <!-- Проверяем является ли объект статьей -->
+            <div class="blog_details">
+                <a class="d-inline-block" href="{% url 'mainapp:article_detail' slug=item.slug %}">
+                    <h2>{{item.title}}</h2>
+                </a>
+                <p>{{item.preambule}}</p>
+                <ul class="blog-info-link">
+                    <li><a href="{% url 'mainapp:articles_category' cat_slug=item.category.slug %}"><i  class="fa fa-th-list"></i> {{item.category}}</a></li>
+                    <li><i class="fa fa-user"></i> {{item.author.username}}</li>
+                    <li><i class="fa fa-comments"></i> Отзывов - {{item.get_all_comments|length}}</li>
+                </ul>
+            </div>
+            {%else%}
+            <div class="blog_details">
+                <a class="d-inline-block" href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
+                    <h2>{{item.title}}</h2>
+                </a>
+                <p>{{item.description|safe|escape}}</p>
+                <ul class="blog-info-link">
+                    <li><i class="fa fa-user"></i> {{item.author}}</li>
+                    <li><i class="fa fa-comments"></i> Отзывов - {{item.get_all_comments|length}}</li>
+                </ul>
+            </div>
+            {%endif%}
+        </article>
+        {% endfor %}
+        
+        {% include "includes/pagination.html" %}
+        
+    </div>
+</div>
+{%endblock left_sidebar%}
+
+{% block right_sidebar %}
+
+{%endblock right_sidebar%}

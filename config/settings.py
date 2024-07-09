@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     "crispy_bootstrap4",
     'django_filters',
     'django_countries',
+    'taggit',
+    'taggit_templatetags2',
 ]
 
 PYTHONINSTALLED_APPS = [
@@ -174,7 +176,9 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Heroku: Update database configuration from $DATABASE_URL.
-import dj_database_url
+# import dj_database_url
 
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
+
+TAGGIT_TAG_CLOUD_ORDER_BY = '-num_times' # Сортировка облака тегов по частате

@@ -1,5 +1,7 @@
 from django import template
 
+from mainapp import models as mainapp_models
+
 register = template.Library()
 
 
@@ -30,3 +32,7 @@ def param_replace(context, **kwargs):
     for k in [k for k, v in d.items() if not v]:
         del d[k]
     return d.urlencode()
+
+@register.simple_tag()
+def get_article():
+    return mainapp_models.Article.objects.all().order_by('created_at')

@@ -20,38 +20,11 @@
                     <div class="thumb">
                         <img src='{{article.main_img.url}}' alt="{{artcle.title}}" >
                     </div>
-                    <a href="{% url 'mainapp:article_detail' slug=article.slug %}"><h3>{{article.title}}</h3></a>
+                    <a href="{% url 'mainapp:article_detail' slug=article.slug %}"><h3>{{article.title|truncatechars:34}}</h3></a>
                     
                 </div>
             </div>
             {% endfor %}
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{% static "img/svg_icon/4.svg" %}' alt="">
-                    </div>
-                    <a href="#"><h3>Статья 2</h3></a>
-                    
-                </div>
-            </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{% static "img/svg_icon/3.svg" %}' alt="">
-                    </div>
-                    <a href="#"><h3>Статья 3</h3></a>
-                    
-                </div>
-            </div>
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{% static "img/svg_icon/1.svg" %}' alt="">
-                    </div>
-                    <a href="#"><h3>Статья 4</h3></a>
-                    
-                </div>
-            </div>
         </div>
     </div>
 </div>

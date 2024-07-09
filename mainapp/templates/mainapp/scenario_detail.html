@@ -1,308 +1,202 @@
-{% extends 'base.html' %}
+{% extends 'base_blog.html' %}
 {% load static %}
 {% load crispy_forms_tags %}  
-{% block content %}
+{% block title %}
+   Сценарии автоматизации
+{% endblock title %}
 
-<!-- bradcam_area  -->
-<div class="bradcam_area bradcam_bg_1">
-   <div class="container">
-      <div class="row">
-         <div class="col-xl-12">
-            <div class="bradcam_text">
-               <h3>Сценарии автоматизации</h3>
+
+{% block left_sidebar %}
+<div class="col-lg-8 posts-list">
+   <div class="single-post">
+      <div class="feature-img">
+         <img class="img-fluid" src='{{object.main_img.url}}' alt="">
+      </div>
+      <div class="blog_details">
+         <h2>{{object.title}} ({{object.platform}})
+         </h2>
+         <ul class="blog-info-link mt-3 mb-4">
+            <li><i class="fa fa-user"></i> {{object.author}}</li>
+            <li><a href="#comments"><i class="fa fa-comments"></i> Отзывов - {{object.get_all_comments|length}}</a></li>
+            <li><i class="fa fa-tags"></i>
+               {% for tag in object.tags.all %}
+               <a href="{% url 'mainapp:list_by_tag' tag.slug %}">{{tag.name}}</a>; 
+               {%endfor%}
+            </li>
+            <li>
+               <form action="{% url 'mainapp:add_rating' %}" method="post" name="rating">
+                  {% csrf_token %}
+                  <input type="hidden" value="{{ object.id }}" name="scenario">
+                  <div class="form__item">
+                     <div class="simple-rating">
+                        <div class="simple-rating__items">
+                           {% for k, v in star_form.fields.star.choices %}
+                           <input id="simple-rating__{{v}}" type="radio" class="simple-rating__item"
+                              value="{{k}}" {% if k == object.get_rating %} checked {% endif %} name="star">
+                           <label for="simple-rating__{{v}}" class="simple-rating__label"></label>
+                           {% endfor %}
+                        </div>
+                     </div>
+                  </div>
+
+               </form>
+            </li>
+            
+         </ul>
+
+         {% if object.idea %}
+         <h3 class="mb-20"> Идея</h3>
+         {{object.idea.description|safe|escape}}
+         {%endif%}
+
+         <h3 class="mb-20">Устройства</h3>
+         {% for item in object.devices.all %}
+         <ol class="unordered-list">
+            <li><a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="d-flex">
+               {{item.title}}
+            </a>
+            </li>
+         </ol>
+         {%endfor%}
+
+         <h3 class="mb-20">Пояснения</h3>
+         {{object.text|safe|escape}}
+
+         {% if object.scheme %}
+         <h3 class="mb-20">Логика</h3>
+         <img class="img-fluid" src='{{object.scheme.url}}' alt="">
+         {%endif%}
+         
+         <div class="quote-wrapper">
+            <div class="quotes">
+               Внимание! в зависимости от версии приложения названия опций могут немного различаться
+            с указанными в схеме!
             </div>
          </div>
       </div>
    </div>
-</div>
-<!--/ bradcam_area  -->
-
-<!--================Blog Area =================-->
-<section class="blog_area single-post-area section-padding">
-   <div class="container">
-      <div class="row">
-         <div class="col-lg-8 posts-list">
-            <div class="single-post">
-               <div class="feature-img">
-                  <img class="img-fluid" src='{{object.main_img.url}}' alt="">
-               </div>
-               <div class="blog_details">
-                  <h2>{{object.title}} ({{object.platform}})
-                  </h2>
-                  <ul class="blog-info-link mt-3 mb-4">
-                     <li><i class="fa fa-user"></i> {{object.author}}</li>
-                     <li><a href="#comments"><i class="fa fa-comments"></i> Отзывов - {{object.get_all_comments|length}}</a></li>
-                     <li>
-                        <form action="{% url 'mainapp:add_rating' %}" method="post" name="rating">
-                           {% csrf_token %}
-                           <input type="hidden" value="{{ object.id }}" name="scenario">
-                           <div class="form__item">
-                              <div class="simple-rating">
-                                 <div class="simple-rating__items">
-                                    {% for k, v in star_form.fields.star.choices %}
-                                    <input id="simple-rating__{{v}}" type="radio" class="simple-rating__item"
-                                       value="{{k}}" {% if k == object.get_rating %} checked {% endif %} name="star">
-                                    <label for="simple-rating__{{v}}" class="simple-rating__label"></label>
-                                    {% endfor %}
-                                 </div>
-                              </div>
-                           </div>
-
-                        </form>
-                     </li>
-                  </ul>
-
-                  {% if object.idea %}
-                  <h3 class="mb-20"> Идея</h3>
-                  {{object.idea.description|safe|escape}}
-                  {%endif%}
-
-                  <h3 class="mb-20">Устройства</h3>
-                  {% for item in object.devices.all %}
-                  <ol class="unordered-list">
-                     <li><a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="d-flex">
-                        {{item.title}}
-                     </a>
-                     </li>
-                  </ol>
-                  {%endfor%}
-
-                  <h3 class="mb-20">Пояснения</h3>
-                  {{object.text|safe|escape}}
-
-                  {% if object.scheme %}
-                  <h3 class="mb-20">Логика</h3>
-                  <img class="img-fluid" src='{{object.scheme.url}}' alt="">
-                  {%endif%}
-                  
-                  <div class="quote-wrapper">
-                     <div class="quotes">
-                        Внимание! в зависимости от версии приложения названия опций могут немного различаться
-                     с указанными в схеме!
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="navigation-top">
-               <div class="d-sm-flex justify-content-between text-center">
-                  <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> </p>
-                  <div class="col-sm-4 text-center my-2 my-sm-0">
-                     <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> Отзывов - {{object.get_all_comments|length}}</p>
-                  </div>
-                  <ul class="social-icons">
-                     <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                     <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                     <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                     <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                  </ul>
-               </div>
-            </div>
-            <div class="blog-author">
-               <div class="media align-items-center">
+   <div class="navigation-top">
+      <div class="d-sm-flex justify-content-between text-center">
+         <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> </p>
+         <div class="col-sm-4 text-center my-2 my-sm-0">
+            <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> Отзывов - {{object.get_all_comments|length}}</p>
+         </div>
+         <ul class="social-icons">
+            <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+         </ul>
+      </div>
+   </div>
+   <div class="blog-author">
+      <div class="media align-items-center">
+         {% if comment.author.avatar %}
+         <img src='{{object.author.avatar.url}}' alt="">
+         {%else%}
+         <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
+         {%endif%}
+         <div class="media-body">
+            <h4>Звесткі пра аўтара</h4>
+               
+               <p>Гэты артыкул для вас падрыхтаваў {%if object.author.first_name%}{{object.author.first_name}}{%endif%}
+                  {%if object.author.last_name%}{{object.author.last_name}}{%endif%} 
+                  {%if not object.author.first_name and not object.author.last_name%}{%else%}з мянушкай{%endif%}
+                  {{object.author.username}}
+                  {%if object.author.first_name%}з краіны {{object.author.country.name}}{%endif%}</p>
+         </div>
+      </div>
+   </div>
+   <div class="comments-area" id="comments">
+      {% if not comments %}
+      <p>Отзывов пока нет. Будьте первым!</p>
+      {%else%}
+      <h4>Отзывы ({{object.get_all_comments|length}})</h4>
+      {% for comment in comments %}
+      <div class="comment-list">
+         <div class="single-comment justify-content-between d-flex">
+            <div class="user justify-content-between d-flex">
+               <div class="thumb">
                   {% if comment.author.avatar %}
-                  <img src='{{object.author.avatar.url}}' alt="">
+                  <img src='{{comment.author.avatar.url}}' alt="">
                   {%else%}
                   <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
                   {%endif%}
-                  <div class="media-body">
-                     <h4>Звесткі пра аўтара</h4>
-                        
-                        <p>Гэты артыкул для вас падрыхтаваў {%if object.author.first_name%}{{object.author.first_name}}{%endif%}
-                           {%if object.author.last_name%}{{object.author.last_name}}{%endif%} 
-                           {%if not object.author.first_name and not object.author.last_name%}{%else%}з мянушкай{%endif%}
-                           {{object.author.username}}
-                           {%if object.author.first_name%}з краіны {{object.author.country.name}}{%endif%}</p>
+               </div>
+               <div class="desc">
+                  <p class="comment">
+                     {{comment.content}}
+                  </p>
+                  <div class="d-flex justify-content-between">
+                     <div class="d-flex align-items-center">
+                        <h5>
+                           <a href="#">{{comment.author.username}}</a>
+                        </h5>
+                        <p class="date">{{comment.created_at|date:"j F Y | H:i" }} </p>
+                     </div>
+                     
                   </div>
                </div>
-            </div>
-            <div class="comments-area" id="comments">
-               {% if not comments %}
-               <p>Отзывов пока нет. Будьте первым!</p>
-               {%else%}
-               <h4>Отзывы ({{object.get_all_comments|length}})</h4>
-               {% for comment in comments %}
-               <div class="comment-list">
-                  <div class="single-comment justify-content-between d-flex">
-                     <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                           {% if comment.author.avatar %}
-                           <img src='{{comment.author.avatar.url}}' alt="">
-                           {%else%}
-                           <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
-                           {%endif%}
-                        </div>
-                        <div class="desc">
-                           <p class="comment">
-                              {{comment.content}}
-                           </p>
-                           <div class="d-flex justify-content-between">
-                              <div class="d-flex align-items-center">
-                                 <h5>
-                                    <a href="#">{{comment.author.username}}</a>
-                                 </h5>
-                                 <p class="date">{{comment.created_at|date:"j F Y | H:i" }} </p>
-                              </div>
-                              
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               {%endfor%}
-               {%endif%}
-               
-            </div>
-            <div class="comment-form">
-               {% if user.is_authenticated %}
-               <h4>Оставить отзыв</h4>
-               <form class="form-contact comment_form" action="{% url 'mainapp:comment_scenario' object.id %}" id="commentForm" method="post">
-                  <div class="row">
-                     <div class="col-12">
-                        <div class="form-group">
-                           {% csrf_token %}
-                           {{form|crispy}}
-                        </div>
-                     </div>
-                  </div>
-                  <div class="form-group">
-                     <button type="submit" class="button button-contactForm btn_1 boxed-btn">Отправить</button>
-                  </div>
-               </form>
-               {%else%}
-                 <p> Для того чтобы оставить отзыв вам необходимо <a href="{% url 'authapp:login'%}">авторизоваться</a> на сайте</p>
-               {%endif%}
-            </div>
-
-         </div>
-         <div class="col-lg-4">
-            <div class="blog_right_sidebar">
-               <aside class="single_sidebar_widget search_widget">
-                  <form action="{% url 'mainapp:search' %}" method="get">
-                     <div class="form-group">
-                         <div class="input-group mb-3">
-                             <input name="q" type="text" class="form-control" placeholder='Поиск'
-                                 onfocus="this.placeholder = ''"
-                                 onblur="this.placeholder = 'Поиск'">
-                             <div class="input-group-append">
-                                 <button class="btn" type="button"><i class="ti-search"></i></button>
-                             </div>
-                         </div>
-                     </div>
-                     <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                         type="submit">Найти</button>
-                 </form>
-               </aside>
-               <aside class="single_sidebar_widget post_category_widget">
-                  <h4 class="widget_title">Платформы</h4>
-                  <ul class="list cat-list">
-                     {% for item in all_categories %}
-                     <li>
-                        <a href="{% url 'mainapp:scenarios_category' platform_id=item.id %}" class="d-flex">
-                           <p>{{item.title}}</p>
-                           <p>({{item.qty_scenarios_in_platform}})</p>
-                        </a>
-                     </li>
-                     {% endfor %}
-                  </ul>
-               </aside>
-               <aside class="single_sidebar_widget popular_post_widget">
-                  {%if similar_scenarios%}
-                  <h3 class="widget_title">Другие сценарии из этих устройств</h3>
-                  {% for item in similar_scenarios %}
-                  <div class="media post_item">
-                     <img class="img-mini" src='{{item.main_img.url}}' alt="{{item.title}}">
-                     <div class="media-body">
-                        <a href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
-                           <h3>{{item.title}}</h3>
-                        </a>
-                        <p>{{item.devices.all|length}} {{item.get_quantity_devices}}</p>
-                     </div>
-                  </div>
-                  {%endfor%}
-                  {%endif%}
-                  
-               </aside>
-               <aside class="single_sidebar_widget tag_cloud_widget">
-                  <h4 class="widget_title">Tag Clouds</h4>
-                  <ul class="list">
-                     <li>
-                        <a href="#">project</a>
-                     </li>
-                     <li>
-                        <a href="#">love</a>
-                     </li>
-                     <li>
-                        <a href="#">technology</a>
-                     </li>
-                     <li>
-                        <a href="#">travel</a>
-                     </li>
-                     <li>
-                        <a href="#">restaurant</a>
-                     </li>
-                     <li>
-                        <a href="#">life style</a>
-                     </li>
-                     <li>
-                        <a href="#">design</a>
-                     </li>
-                     <li>
-                        <a href="#">illustration</a>
-                     </li>
-                  </ul>
-               </aside>
-               <aside class="single_sidebar_widget instagram_feeds">
-                  <h4 class="widget_title">Instagram Feeds</h4>
-                  <ul class="instagram_row flex-wrap">
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src='{% static "img/post/post_5.png" %}' alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src='{% static "img/post/post_6.png" %}' alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src='{% static "img/post/post_7.png" %}' alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src='{% static "img/post/post_8.png" %}' alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src='{% static "img/post/post_9.png" %}' alt="">
-                        </a>
-                     </li>
-                     <li>
-                        <a href="#">
-                           <img class="img-fluid" src='{% static "img/post/post_10.png" %}' alt="">
-                        </a>
-                     </li>
-                  </ul>
-               </aside>
-               <aside class="single_sidebar_widget newsletter_widget">
-                  <h4 class="widget_title">Newsletter</h4>
-                  <form action="#">
-                     <div class="form-group">
-                        <input type="email" class="form-control" onfocus="this.placeholder = ''"
-                           onblur="this.placeholder = 'Enter email'" placeholder='Enter email' required>
-                     </div>
-                     <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                        type="submit">Subscribe</button>
-                  </form>
-               </aside>
             </div>
          </div>
       </div>
+      {%endfor%}
+      {%endif%}
+      
    </div>
-</section>
+   <div class="comment-form">
+      {% if user.is_authenticated %}
+      <h4>Оставить отзыв</h4>
+      <form class="form-contact comment_form" action="{% url 'mainapp:comment_scenario' object.id %}" id="commentForm" method="post">
+         <div class="row">
+            <div class="col-12">
+               <div class="form-group">
+                  {% csrf_token %}
+                  {{form|crispy}}
+               </div>
+            </div>
+         </div>
+         <div class="form-group">
+            <button type="submit" class="button button-contactForm btn_1 boxed-btn">Отправить</button>
+         </div>
+      </form>
+      {%else%}
+        <p> Для того чтобы оставить отзыв вам необходимо <a href="{% url 'authapp:login'%}">авторизоваться</a> на сайте</p>
+      {%endif%}
+   </div>
 
-<!--================ Blog Area end =================-->
-
-{% endblock content %}
+</div>
+{% endblock left_sidebar %}
+         
+{% block right_sidebar %}
+<aside class="single_sidebar_widget post_category_widget">
+   <h4 class="widget_title">Платформы</h4>
+   <ul class="list cat-list">
+      {% for item in all_categories %}
+      <li>
+         <a href="{% url 'mainapp:scenarios_category' platform_id=item.id %}" class="d-flex">
+            <p>{{item.title}}</p>
+            <p>({{item.qty_scenarios_in_platform}})</p>
+         </a>
+      </li>
+      {% endfor %}
+   </ul>
+</aside>
+<aside class="single_sidebar_widget popular_post_widget">
+   {%if similar_scenarios%}
+   <h3 class="widget_title">Другие сценарии из этих устройств</h3>
+   {% for item in similar_scenarios %}
+   <div class="media post_item">
+      <img class="img-mini" src='{{item.main_img.url}}' alt="{{item.title}}">
+      <div class="media-body">
+         <a href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
+            <h3>{{item.title}}</h3>
+         </a>
+         <p>{{item.devices.all|length}} {{item.get_quantity_devices}}</p>
+      </div>
+   </div>
+   {%endfor%}
+   {%endif%}
+   
+</aside>
+{% endblock right_sidebar %}

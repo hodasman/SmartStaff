@@ -2,6 +2,7 @@ from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
+from taggit.managers import TaggableManager
 
 
 def device_foto_path(instance, filename):
@@ -132,6 +133,7 @@ class Article(models.Model):
     img_24 = models.ImageField(verbose_name="Картинка_24", blank=True, null=True, upload_to=article_img_path)
     img_25 = models.ImageField(verbose_name="Картинка_25", blank=True, null=True, upload_to=article_img_path)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
+    tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created", editable=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Edited", editable=False)
     deleted = models.BooleanField(default=False)
@@ -232,6 +234,7 @@ class Scenario(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE, blank=True, null=True)
     idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
+    tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания", editable=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата редактирования", editable=False)
     deleted = models.BooleanField(default=False)
