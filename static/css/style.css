@@ -7803,3 +7803,9 @@ h6 {
   height:80px;
   object-fit:cover;
 }
+
+.alerts {
+  position:absolute;    
+  z-index:100;
+  width: 100%;
+}

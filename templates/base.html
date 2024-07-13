@@ -40,6 +40,7 @@
         <![endif]-->
 
     <!-- header-start -->
+    
     <header>
         <div class="header-area ">
             <div id="sticky-header" class="main-header-area">
@@ -85,7 +86,7 @@
         </div>
     </header>
     <!-- header-end -->
-
+    {% include 'includes/messages.html' %}
     {% block content %}
     
     {% endblock content %}
@@ -123,9 +124,10 @@
     <script src='{% static "js/jquery.form.js" %}'></script>
     <script src='{% static "js/jquery.validate.min.js" %}'></script>
     <script src='{% static "js/mail-script.js" %}'></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script src='{% static "js/main.js" %}'></script>
+    
 </body>
 
 </html>

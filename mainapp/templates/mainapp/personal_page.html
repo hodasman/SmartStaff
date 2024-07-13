@@ -55,7 +55,7 @@
                             <p class="break-word">{{user.email}}</p>
                         </div>
                         <div class="reset_btn">
-                            <button class="boxed-btn3 w-100" type="submit">Изменить</button>
+                            <a href="{% url 'authapp:profile_edit' pk=user.id%}"><button class="boxed-btn3 w-100">Изменить</button></a>
                         </div>
                     </div>
                 </div>
