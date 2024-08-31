@@ -1,4 +1,3 @@
 {
-    "debug.allowBreakpointsEverywhere": true,
-    "debug.autoExpandLazyVariables": true
+    "debug.allowBreakpointsEverywhere": true
 }
