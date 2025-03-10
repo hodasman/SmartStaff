@@ -171,6 +171,16 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
+
+# Настройки сервера исходящей почты (SMTP)
+DOMAIN_NAME = os.getenv("DOMAIN_NAME")
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'hodas.work@gmail.com'
+EMAIL_HOST_PASSWORD = 'uhgi hgau ltwl ldik'
+EMAIL_USE_TLS = True
+
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

@@ -186,8 +186,8 @@
    {%if similar_scenarios%}
    <h3 class="widget_title">Другие сценарии из этих устройств</h3>
    {% for item in similar_scenarios %}
-   <div class="media post_item">
-      <img class="img-mini" src='{{item.main_img.url}}' alt="{{item.title}}">
+      <div class="media post_item">
+      <img class="box" src='{{item.main_img.url}}' alt="{{item.title}}">
       <div class="media-body">
          <a href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
             <h3>{{item.title}}</h3>
