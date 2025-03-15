@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django_countries',
     'taggit',
     'taggit_templatetags2',
+    'subscribeapp',
 ]
 
 PYTHONINSTALLED_APPS = [

@@ -1,4 +1,5 @@
 {% load static %}
+{% load subscribe_tags %}
 <!-- footer start -->
 <footer class="footer">
     <div class="footer_top">
@@ -71,14 +72,7 @@
                 </div>
                 <div class="col-xl-4 col-md-6 col-lg-4">
                     <div class="footer_widget wow fadeInUp" data-wow-duration="1.3s" data-wow-delay=".6s">
-                        <h3 class="footer_title">
-                            Подписка на рассылку
-                        </h3>
-                        <form action="#" class="newsletter_form">
-                            <input type="text" placeholder="Enter your mail">
-                            <button type="submit">Подписаться</button>
-                        </form>
-                        <p class="newsletter_text">получать информацию о новых статьях и сценариях</p>
+                        {% subscribe_form %}
                     </div>
                 </div>
             </div>
