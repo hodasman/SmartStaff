@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
 from django.views.generic import CreateView
 
-from .forms import SubscribeForm
+from .forms import SubscribeForm, SubscribeFormRight
 from .models import Subscribers
 
 
@@ -17,3 +17,8 @@ class SubscribeView(CreateView):
         message = "Вы падпісаліся на рассылку навін!"
         messages.add_message(self.request, messages.INFO, mark_safe(message))
         return ret
+    
+
+class SubscribeViewRight(SubscribeView):
+    '''Вьюха для подписки в правом блоке в блоге'''
+    form_class = SubscribeFormRight

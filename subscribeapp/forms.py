@@ -8,7 +8,7 @@ class SubscribeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SubscribeForm, self).__init__(*args, **kwargs)
         self.fields['email'].label = ""
-        
+
     def clean_name(self):
         name = self.cleaned_data.get('email')
 
@@ -17,4 +17,21 @@ class SubscribeForm(forms.ModelForm):
         fields = ("email",)
         widgets = {
             "email": forms.EmailInput(attrs={'placeholder': 'email'})
+        }
+
+
+class SubscribeFormRight(forms.ModelForm):
+    '''Форма подписки по email в правом блоке'''
+    def __init__(self, *args, **kwargs):
+        super(SubscribeFormRight, self).__init__(*args, **kwargs)
+        self.fields['email'].label = ""
+        
+    def clean_name(self):
+        name = self.cleaned_data.get('email')
+
+    class Meta:
+        model = Subscribers
+        fields = ("email",)
+        widgets = {
+            "email": forms.EmailInput(attrs={'placeholder': 'email', "class": "form-control"})
         }
