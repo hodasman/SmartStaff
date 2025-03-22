@@ -24,6 +24,7 @@ urlpatterns = [
     path("", RedirectView.as_view(url="mainapp/")),
     path("mainapp/", include("mainapp.urls", namespace="mainapp")),
     path("authapp/", include("authapp.urls", namespace="authapp")),
+    path("subscribeapp/", include("subscribeapp.urls", namespace="subscribeapp"))
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,12 @@
+<h4 class="widget_title">Подписка на новости</h4>
+
+<form action="{% url 'subscribeapp:subscriberight' %}" method="post">
+    <div class="form-group">
+        <!-- <input type="email" class="form-control" onfocus="this.placeholder = ''"
+            onblur="this.placeholder = 'email'" placeholder='Enter email' required> -->
+            {% csrf_token %}
+            {{ subscribe_form_2 }}    
+    </div>
+    <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+        type="submit">Подписаться</button>
+</form>
