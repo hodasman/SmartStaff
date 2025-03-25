@@ -173,14 +173,17 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
-# Настройки сервера исходящей почты (SMTP)
-DOMAIN_NAME = os.getenv("DOMAIN_NAME")
+# Настройки сервера исходящей почты
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'hodas.work@gmail.com'
-EMAIL_HOST_PASSWORD = 'uhgi hgau ltwl ldik'
-EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
