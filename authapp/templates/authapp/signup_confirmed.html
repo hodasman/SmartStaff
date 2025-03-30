@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<!-- bradcam_area  -->
+<div class="bradcam_area bradcam_bg_1">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="bradcam_text">
+                    
+                    <h3>{{ title }}</h3>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ bradcam_area  -->
+    <div class="container mt-3 justify-content-center d-flex">
+        <div class="col-lg-4 col-sm-12">
+            <h2>Учётная запись активирована.</h2>
+            <p>Ваша электронная почта была подтверждена успешно.</p>
+            <a href="{% url 'authapp:profile_edit' pk=user.id %}" class="btn btn-primary my-btn mb-3">
+                Перейти в личный кабинет
+            </a>
+        </div>
+    </div>
+{% endblock %}
