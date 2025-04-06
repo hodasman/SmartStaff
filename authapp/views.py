@@ -6,12 +6,12 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.views import View
-from django.views.generic import CreateView, TemplateView, UpdateView
+from django.views.generic import CreateView, UpdateView
 
 from authapp import forms
 from authapp.tasks import activate_email_task
@@ -43,23 +43,16 @@ class CustomLogoutView(LogoutView):
 class RegisterView(SuccessMessageMixin, CreateView):
     model = get_user_model()
     form_class = forms.CreateUserForm
-    success_message = "Мае віншаванні! Цяпер у Вас есць свой асабісты кабінет у Смарт-хаце!"
-    # template_name = "authapp/signup.html"
 
     def get_success_url(self):
-        return reverse_lazy("authapp:signup_done")
+        return reverse_lazy("authapp:login")
 
     def form_valid(self, form):
-        user: User = form.save()
-        user.is_active = False
-        user.save()
-        activate_email_task(user)
+        self.object = form.save()
+        activate_email_task(self.object)
+        message = f'Амаль што ўсе! На ваш email адпраўлена спасылка для актывацыі уліковага запісу.'
+        messages.add_message(self.request, messages.WARNING, message)
         return HttpResponseRedirect(self.get_success_url())
-
-
-class RegisterDoneView(TemplateView):  
-    template_name = "authapp/signup_done.html"
-    extra_context = {"title": "Регистрация завершена, активируйте учётную запись."}
 
 
 class RegisterConfirmView(View): 
@@ -74,17 +67,13 @@ class RegisterConfirmView(View):
             user.is_active = True  
             user.save()  
             login(request, user)  
-            return render(  
-                request,  
-                "authapp/signup_confirmed.html",  
-                {"title": "Учётная запись активирована."},  
-            )  
+            message = f'Мае віншаванні! Цяпер у Вас есць свой асабісты кабінет у Смарт-хаце!'
+            messages.add_message(self.request, messages.SUCCESS, message)
+            return redirect('mainapp:personal_page', username=user.username)
         else:  
-            return render(  
-                request,  
-                "authapp/signup_not_confirmed.html",  
-                {"title": "Ошибка активации учётной записи."},  
-            )
+            message = f'Памылка актывацыі уліковага запісу! Пераканайцеся што скарысталі правільную спасылку з дасланага вам ліста'
+            messages.add_message(self.request, messages.WARNING, message)
+            return redirect('authapp:login')
 
 
 class ProfileEditView(UserPassesTestMixin, SuccessMessageMixin, UpdateView):

@@ -99,7 +99,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text=_("Автор может добавлять статьи на сайт"),
     )
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     objects = UserManager()
     devices = models.ManyToManyField(Device, verbose_name="Устройства", blank=True)
 
