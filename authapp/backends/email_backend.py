@@ -5,6 +5,7 @@ from django.utils.functional import cached_property
 
 
 class EmailBackend(SMTPBackend):
+    '''Для отправки писем при разработке. В продакшен раскоментировать в settings'''
     @cached_property
     def ssl_context(self):
         if self.ssl_certfile or self.ssl_keyfile:

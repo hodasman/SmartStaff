@@ -51,7 +51,7 @@ class RegisterView(SuccessMessageMixin, CreateView):
         self.object = form.save()
         activate_email_task(self.object)
         message = f'Амаль што ўсе! На ваш email адпраўлена спасылка для актывацыі уліковага запісу.'
-        messages.add_message(self.request, messages.WARNING, message)
+        messages.add_message(self.request, messages.INFO, message)
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -71,7 +71,7 @@ class RegisterConfirmView(View):
             messages.add_message(self.request, messages.SUCCESS, message)
             return redirect('mainapp:personal_page', username=user.username)
         else:  
-            message = f'Памылка актывацыі уліковага запісу! Пераканайцеся што скарысталі правільную спасылку з дасланага вам ліста'
+            message = f'Памылка актывацыі уліковага запісу! Пераканайцеся што скарысталі правільную спасылку з дасланага вам ліста!'
             messages.add_message(self.request, messages.WARNING, message)
             return redirect('authapp:login')
 
