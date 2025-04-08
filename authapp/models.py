@@ -4,6 +4,7 @@ from time import time
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin, UserManager
 from django.contrib.auth.validators import ASCIIUsernameValidator
+from django.core.mail import send_mail
 from django.core.validators import EmailValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -98,11 +99,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text=_("Автор может добавлять статьи на сайт"),
     )
     is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
     objects = UserManager()
     devices = models.ManyToManyField(Device, verbose_name="Устройства", blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "first_name", "age",]
+
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        """Send an email to this user."""
+        send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def __str__(self):
         return f"{self.username}"
