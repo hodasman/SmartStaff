@@ -1,8 +1,9 @@
 import os
 
 from django import forms
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, UsernameField
+from django.contrib.auth import get_user_model, password_validation
+from django.contrib.auth.forms import (PasswordResetForm, SetPasswordForm,
+                                       UserCreationForm, UsernameField)
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -65,3 +66,40 @@ class UserChangeForm(forms.ModelForm):
             if data < 10 or data > 100:
                 raise ValidationError(_("Напішыце свой узрост правільна"))
         return data
+
+
+class CustomPasswordResetForm(PasswordResetForm):  
+    email = forms.EmailField(  
+        label="Email",  
+        max_length=254,  
+        widget=forms.EmailInput(  
+            attrs={'class': 'form-control',  
+                   'placeholder': 'Введите Email',  
+                   "autocomplete": "email"}  
+        )  
+    )  
+
+
+class CustomSetPasswordForm(SetPasswordForm):  
+    error_messages = {  
+        "password_mismatch": "Пароли не совпадают"  
+    }  
+    new_password1 = forms.CharField(  
+        label='Новый пароль',  
+        widget=forms.PasswordInput(  
+            attrs={'class': 'form-control',  
+                   'placeholder': 'Введите новый пароль',  
+                   "autocomplete": "new-password"}  
+        ),  
+        strip=False,  
+        help_text=password_validation.password_validators_help_text_html(),  
+    )  
+    new_password2 = forms.CharField(  
+        label='Подтверждение нового пароля',  
+        strip=False,  
+        widget=forms.PasswordInput(  
+            attrs={'class': 'form-control',  
+                   'placeholder': 'Подтвердите новый пароль',  
+                   "autocomplete": "new-password"}  
+        ),  
+    )
