@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ["smarthouse-2c35141019ba.herokuapp.com", "127.0.0.1", "0.0.0.0"
 # Application definition
 
 INSTALLED_APPS = [
+    "authapp",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "mainapp",
-    "authapp",
     "sorl.thumbnail",
     "mptt",
     "core",

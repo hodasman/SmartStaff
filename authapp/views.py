@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.mixins import UserPassesTestMixin
-# from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import (LoginView, LogoutView,
+                                       PasswordResetConfirmView,
+                                       PasswordResetView)
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -14,6 +15,7 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView
 
 from authapp import forms
+from authapp.forms import CustomPasswordResetForm, CustomSetPasswordForm
 from authapp.tasks import activate_email_task
 
 
@@ -86,3 +88,16 @@ class ProfileEditView(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("authapp:profile_edit", args=[self.request.user.pk])
+
+
+class CustomPasswordResetView(PasswordResetView):  
+    template_name = 'registration/password_reset.html'  
+    email_template_name = 'registration/password_reset_email.html'  
+    form_class = CustomPasswordResetForm  
+    success_url = reverse_lazy('authapp:password_reset_done')  
+
+
+class CustomUserPasswordResetConfirmView(PasswordResetConfirmView):  
+    template_name = 'registration/password_reset_confirm.html'  
+    success_url = reverse_lazy('authapp:password_reset_complete')  
+    form_class = CustomSetPasswordForm
