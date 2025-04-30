@@ -16,5 +16,5 @@ def send_contact_email_message(subject, email, content, ip, user_id, name):
         'user': user,
         'name': name,
     })
-    email = EmailMessage(subject, message, settings.EMAIL_SERVER, settings.EMAIL_ADMIN)
+    email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [settings.EMAIL_ADMIN])
     email.send(fail_silently=False)

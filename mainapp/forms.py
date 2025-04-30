@@ -31,6 +31,10 @@ class FeedbackCreateForm(forms.ModelForm):
     """
     Форма отправки обратной связи
     """
+    def __init__(self, *args, **kwargs):
+        super(FeedbackCreateForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].label =""
 
     class Meta:
         model = Feedback
@@ -38,7 +42,7 @@ class FeedbackCreateForm(forms.ModelForm):
         widgets={
             'content': forms.Textarea(attrs={'class': 'col-12 form-group form-control w-100',
                                               'placeholder':  'Увядзіце тэкст паведамлення',
-                                              'autocomplete': 'off'}), 
+                                              'autocomplete': 'off', 'cols': "30", 'rows':"9"}), 
             'name': forms.TextInput(attrs={'class': 'col-sm-6 form-group form-control',
                                               'placeholder':  'Увядзіце свае імя',
                                               'autocomplete': 'off'}),
