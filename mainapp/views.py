@@ -370,7 +370,7 @@ class FeedbackCreateView(SuccessMessageMixin, CreateView):
     success_message = 'Ваш зварот паспяхова адпраўлены!'
     template_name = 'mainapp/contact.html'
     extra_context = {'title': 'Кантактная форма'}
-    success_url = reverse_lazy('mainapp:main_page')
+    success_url = reverse_lazy('mainapp:contact')
 
     def form_valid(self, form):
         if form.is_valid():
