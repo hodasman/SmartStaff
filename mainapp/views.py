@@ -2,17 +2,21 @@ from itertools import chain
 
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.decorators.http import require_http_methods
-from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 from taggit.models import Tag
 
 from mainapp import models as mainapp_models
 from mainapp.filters import DevicesFilter
-from mainapp.forms import CommentForm, RaitingForm
+from mainapp.forms import CommentForm, FeedbackCreateForm, RaitingForm
+from mainapp.services.email import send_contact_email_message
+from mainapp.services.utils import get_client_ip
 
 
 class MainPageView(TemplateView):
@@ -357,3 +361,22 @@ def tag_list(request, tag_slug=None):
     return render(request, 'mainapp/list_tag.html', {'page': page,
                                                    'page_obj': posts,
                                                    'tag': tag,})
+
+
+class FeedbackCreateView(SuccessMessageMixin, CreateView):
+    '''Для страницы облратной связи'''
+    model = mainapp_models.Feedback
+    form_class = FeedbackCreateForm
+    success_message = 'Ваш зварот паспяхова адпраўлены!'
+    template_name = 'mainapp/contact.html'
+    extra_context = {'title': 'Кантактная форма'}
+    success_url = reverse_lazy('main_page')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            feedback.ip_address = get_client_ip(self.request)
+            if self.request.user.is_authenticated:
+                feedback.user = self.request.user
+            send_contact_email_message(feedback.subject, feedback.email, feedback.content, feedback.ip_address, feedback.user_id, feedback.name)
+        return super().form_valid(form)
