@@ -9,7 +9,7 @@ def send_contact_email_message(subject, email, content, ip, user_id, name):
     Функция для отправки электронного письма из формы обратной связи сайта
     """
     user = User.objects.get(id=user_id) if user_id else None
-    message = render_to_string('system/email/feedback_email_send.html', {
+    message = render_to_string('mainapp/feedback_email_send.html', {
         'email': email,
         'content': content,
         'ip': ip,

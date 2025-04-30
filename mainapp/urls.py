@@ -28,4 +28,5 @@ urlpatterns = [
     path('add-device/<str:slug>/', views.add_device_to_user, name='add_device'),
     path('delete-device/<str:slug>/', views.delete_device_user, name='delete_device'),
     path('tag/<str:tag_slug>/', views.tag_list, name='list_by_tag'),
+    path('contact/', views.FeedbackCreateView.as_view(), name='contact'),
 ]

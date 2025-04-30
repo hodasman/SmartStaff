@@ -49,3 +49,9 @@ class ArticleComment(admin.ModelAdmin):
 @admin.register(mainapp_models.ScenarioComment)
 class ScenarioComment(admin.ModelAdmin):
     list_per_page = 10
+
+@admin.register(mainapp_models.Feedback)
+class Feedback(admin.ModelAdmin):
+    list_per_page = 10
+    list_display = ('email', 'ip_address', 'user', 'name')
+    list_display_links = ('email', 'ip_address')
