@@ -185,6 +185,7 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 # SERVER_EMAIL = EMAIL_HOST_USER
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = 'hodas.work@gmail.com'
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/

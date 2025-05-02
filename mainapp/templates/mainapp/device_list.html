@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load thumbnail %}
+{% block title %}
+    {% if view.kwargs %}
+    {{ cat_name }}
+    {% else %}
+    Умные Устройства
+    {% endif %}
+{% endblock %}
 {% block content %}
     <!-- bradcam_area  -->
     <div class="bradcam_area bradcam_bg_1">
