@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import CreateView, UpdateView
 
@@ -22,8 +23,9 @@ from authapp.tasks import activate_email_task
 class CustomLoginView(LoginView):
     def form_valid(self, form):
         ret = super().form_valid(form)
-        message = f"Паспяхова!<br>Вітаю вас, {self.request.user.username}!"
-        messages.add_message(self.request, messages.INFO, mark_safe(message))
+        message = _("Login success!<br>Hi, {username}!")
+        final_message = message.format(username=self.request.user.username)
+        messages.add_message(self.request, messages.INFO, mark_safe(final_message))
         return ret
 
     def form_invalid(self, form):
@@ -31,14 +33,14 @@ class CustomLoginView(LoginView):
             messages.add_message(
                 self.request,
                 messages.WARNING,
-                mark_safe(f"Что-то пошло не так:<br>{msg}"),
+                mark_safe(f"Something goes worng:<br>{msg}"),
             )
         return self.render_to_response(self.get_context_data(form=form))
 
 
 class CustomLogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
-        messages.add_message(self.request, messages.INFO, "Да сустрэчы!")
+        messages.add_message(self.request, messages.INFO, _("See you later!"))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -52,7 +54,7 @@ class RegisterView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         self.object = form.save()
         activate_email_task(self.object)
-        message = f'Амаль што ўсе! На ваш email адпраўлена спасылка для актывацыі уліковага запісу.'
+        message = _("A link to activate your account has been sent to your email.")
         messages.add_message(self.request, messages.INFO, message)
         return HttpResponseRedirect(self.get_success_url())
 
@@ -69,11 +71,11 @@ class RegisterConfirmView(View):
             user.is_active = True  
             user.save()  
             login(request, user)  
-            message = f'Мае віншаванні! Цяпер у Вас есць свой асабісты кабінет у Смарт-хаце!'
+            message = _('Congratulations! You now have your own personal account in Smart House!')
             messages.add_message(self.request, messages.SUCCESS, message)
             return redirect('mainapp:personal_page', username=user.username)
         else:  
-            message = f'Памылка актывацыі уліковага запісу! Пераканайцеся што скарысталі правільную спасылку з дасланага вам ліста!'
+            message = _('Account activation error! Make sure you used the correct link from the email you were sent!')
             messages.add_message(self.request, messages.WARNING, message)
             return redirect('authapp:login')
 
@@ -81,7 +83,7 @@ class RegisterConfirmView(View):
 class ProfileEditView(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     model = get_user_model()
     form_class = forms.UserChangeForm
-    success_message = "Вашыя даныя паспяхова зменены!"
+    success_message = _("Your data has been successfully changed!")
 
     def test_func(self):
         return True if self.request.user.pk == self.kwargs.get("pk") else False

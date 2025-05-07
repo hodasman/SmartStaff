@@ -1,7 +1,8 @@
 {% extends 'base_auth.html' %}
 {% load static %}
+{% load i18n %}
 {% block content %}
-    <h2>Вход пользователя</h2>
+    <h2>{% trans "User login" %}</h2>
     <form method="POST">
 
         {% csrf_token %}
@@ -15,20 +16,20 @@
                 class="textinput textInput form-control" required="" id="id_password" placeholder="Password">
         </p>
         <p>
-            <button type="submit" class="btn boxed-btn3 btn-block">Войти</button>
+            <button type="submit" class="btn boxed-btn3 btn-block">{% trans "Login" %}</button>
         </p>
     </form>
     <p>
     <div class="row justify-content-between">
         <div class="col">
-            <a href="{% url 'authapp:register' %}"><small>Регистрация</small></a>
+            <a href="{% url 'authapp:register' %}"><small>{% trans "Registration" %}</small></a>
         </div>
         <div class="col">
-            <a href="{% url 'authapp:password-reset' %}"><small>Забыли пароль?</small></a>
+            <a href="{% url 'authapp:password-reset' %}"><small>{% trans "Forgot password?" %}</small></a>
         </div>
     </div>
     </p>
-    <h4>Вход через социальные сети</h4>
+    <h4>{% trans "Login via social networks" %}</h4>
     <p>
         <div class="btn-group btn-block" role="group">
             <a class="btn boxed-btn3" href="#" role="button"><i class="ti-facebook"></i></a>
@@ -40,7 +41,7 @@
         
     </p>
     <p>
-        <div class="col"><a href="{% url 'mainapp:main_page' %}">На главную</a></div>
+        <div class="col"><a href="{% url 'mainapp:main_page' %}">{% trans "Home" %}</a></div>
     </p>
 
     {% endblock content %}

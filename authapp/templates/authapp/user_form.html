@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 {% block content %}
 <!-- bradcam_area  -->
@@ -10,9 +11,9 @@
                 <div class="bradcam_text">
                     
                     {% if user.is_anonymous %}
-                    <h3>Регистрация нового пользователя</h3>
+                    <h3>{% trans "New user registration" %}</h3>
                     {% else %}
-                    <h3>Редактировать профиль</h3>
+                    <h3>{% trans "Edit profile" %}</h3>
                     {% endif %}
                 </div>
             </div>
@@ -40,9 +41,9 @@
             <br><br>
             <button class="boxed-btn3 w-100" type="submit">
             {% if user.is_anonymous %}
-            Зарегистрироваться
+            {% trans "Register" %}
             {% else %}
-            Сохранить
+            {% trans "Save" %}
             {% endif %}
             </button>
         </form>
