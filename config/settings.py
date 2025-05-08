@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'taggit',
     'taggit_templatetags2',
     'subscribeapp',
+    'modeltranslation',
 ]
 
 PYTHONINSTALLED_APPS = [
