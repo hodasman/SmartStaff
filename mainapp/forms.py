@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from mainapp.models import Feedback, Rating, RatingStar
 
@@ -22,7 +23,7 @@ class CommentForm(forms.Form):
  
     comment_area = forms.CharField(
         label="",
-        widget=forms.Textarea(attrs={'placeholder': 'Ваше сообщение'}),
+        widget=forms.Textarea(attrs={'placeholder': _('Your message')}),
         
     )
 
@@ -41,20 +42,20 @@ class FeedbackCreateForm(forms.ModelForm):
         fields = ('content', 'name', 'email', 'subject',)
         widgets={
             'content': forms.Textarea(attrs={'class': 'col-12 form-group form-control w-100',
-                                              'placeholder':  'Увядзіце тэкст паведамлення',
+                                              'placeholder':  _('Enter your message'),
                                               'autocomplete': 'off', 'cols': "30", 'rows':"9",
                                               'onfocus': "this.placeholder = ''", 
-                                              'onblur':"this.placeholder = 'Увядзіце тэкст паведамлення'"}), 
+                                              'onblur':"this.placeholder = 'Enter your message text'"}), 
             'name': forms.TextInput(attrs={'class': 'col-sm-6 form-group form-control',
-                                              'placeholder':  'Увядзіце свае імя',
+                                              'placeholder':  _('Enter your name'),
                                               'autocomplete': 'off', 'onfocus': "this.placeholder = ''", 
-                                              'onblur':"this.placeholder = 'Увядзіце свае імя'"}),
+                                              'onblur':"this.placeholder = 'Enter your name'"}),
             'email': forms.EmailInput(attrs={'class': 'col-sm-6 form-group form-control',
-                                              'placeholder':  'Увядзіце свой email',
+                                              'placeholder':  _('Enter your email'),
                                               'autocomplete': 'off', 'onfocus': "this.placeholder = ''", 
-                                              'onblur':"this.placeholder = 'Увядзіце свой email'"}),
+                                              'onblur':"this.placeholder = 'Enter your email'"}),
             'subject': forms.TextInput(attrs={'class': 'col-12 form-group form-control',
-                                              'placeholder':  'Тэма зварота',
+                                              'placeholder':  _('Enter subject'),
                                               'autocomplete': 'off', 'onfocus': "this.placeholder = ''", 
-                                              'onblur':"this.placeholder = 'Тэма зварота'"}),
+                                              'onblur':"this.placeholder = 'Enter subject'"}),
         }
