@@ -97,11 +97,13 @@
             
                <h4>{% trans "Author information" %}</h4>
             
-            <p>{% trans "This article was prepared for you by" %} {%if object.author.first_name%}{{object.author.first_name}}{%endif%}
+            <p>
+               {% trans "This article was prepared for you by" %} {%if object.author.first_name%}{{object.author.first_name}}{%endif%}
                {%if object.author.last_name%}{{object.author.last_name}}{%endif%} 
                {%if not object.author.first_name and not object.author.last_name%}{%else%}{% trans "with the nickname" %}{%endif%}
                {{object.author.username}}
-               {%if object.author.first_name%}{% trans "from the country" %} {{object.author.country.name}}{%endif%}</p>
+               {%if object.author.first_name%}{% trans "from the country" %} {{object.author.country.name}}{%endif%}
+            </p>
          </div>
       </div>
    </div>
