@@ -22,6 +22,7 @@ ALLOWED_HOSTS = ["smarthouse-2c35141019ba.herokuapp.com", "127.0.0.1", "0.0.0.0"
 # Application definition
 
 INSTALLED_APPS = [
+    "modeltranslation",
     "authapp",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -35,12 +36,11 @@ INSTALLED_APPS = [
     "core",
     "crispy_forms",
     "crispy_bootstrap4",
-    'django_filters',
-    'django_countries',
-    'taggit',
-    'taggit_templatetags2',
-    'subscribeapp',
-    'modeltranslation',
+    "django_filters",
+    "django_countries",
+    "taggit",
+    "taggit_templatetags2",
+    "subscribeapp",
 ]
 
 PYTHONINSTALLED_APPS = [
