@@ -1,16 +1,17 @@
 {% load static %}
+{% load i18n %}
 <!-- device_listing_area  -->
 <div class="job_listing_area">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="section_title">
-                    <h3>Каталог устройств</h3>
+                    <h3>{% trans "Device catalog" %}</h3>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="brouse_job text-right">
-                    <a href="{% url 'mainapp:devices-list'%}" class="boxed-btn4">Смотреть весь каталог</a>
+                    <a href="{% url 'mainapp:devices-list'%}" class="boxed-btn4">{% trans "Browse more devices" %}</a>
                 </div>
             </div>
         </div>
@@ -40,7 +41,7 @@
                         <div class="jobs_right">
                             <div class="apply_now">
                                 <!-- <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a> -->
-                                <a href="{% url 'mainapp:devices_detail' slug=device.slug %}" class="boxed-btn3">Подробнее</a>
+                                <a href="{% url 'mainapp:devices_detail' slug=device.slug %}" class="boxed-btn3">{% trans "More details" %}</a>
                             </div>
                              
                         </div>
