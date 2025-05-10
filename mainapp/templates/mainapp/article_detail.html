@@ -106,6 +106,9 @@
       </div>
    </div>
    <div class="comments-area" id="comments">
+      {% if not comments %}
+      <p>{% trans "There are no comments yet. Be the first!" %}</p>
+      {%else%}
       <h4>{% trans "Comments" %} ({{object.get_all_comments|length}})</h4>
       {% for comment in comments %}
       <div class="comment-list">
@@ -136,6 +139,7 @@
          </div>
       </div>
       {%endfor%}
+      {%endif%}
       
    </div>
    <div class="comment-form">
