@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 {% block title %}
-    Пра ўсе
+{% trans "About" %}
 {% endblock title %}
 {% block content %}
     
@@ -11,7 +12,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="bradcam_text">
-                        <h3>Пра ўсе</h3>
+                        <h3>{% trans "About" %}</h3>
                     </div>
                 </div>
             </div>
@@ -21,22 +22,32 @@
     <!-- Start Sample Area -->
     <section class="sample-text-area">
         <div class="container box_1170">
-            <h3 class="text-heading">Вітаю!</h3>
+            <h3 class="text-heading">{% trans "Hello!" %}</h3>
             <p class="sample-text">
-                Гэта мой асабісты праект <b>Смарт-хата</b>. Гэта не камерцыйны праект і створаны ен найперш для таго каб паспрабаваць
-                свае сілы ў стварэнні сайта на фрэймворку Джанга. Але я буду вельмі рад калі ен вам будзе палезны. І яшчэ больш буду удзячны
-                калі вы падтрымаеце мой праект грашыма ці пасільнай дапамогай (напрыклад с перакладамі тэкстаў на беларусскую мову).
+                {% blocktrans trimmed with project_name='<b>Smart-hata</b>'|safe %}
+                This is my personal project {{ project_name }} . This is not a commercial project and was created primarily to try
+                my hand at creating a website using the Django framework. But I will be very glad if it is useful to you. And I will be even more grateful
+                if you support my project with money or possible help (for example, with translations of texts into Belarusian).
+                {% endblocktrans %}
             </p>
+            {% url 'mainapp:scenarios' as scenarios_url %}
             <p class="sample-text">
-                Чым жа гэты сайт зможа вас зацікавіць і чым ен выдзяляецца сярод іншых такіх праектаў? Па-першае, ен на беларусскай мове і я думаю такіх
-                не шмат. Па-другое, тут я паспрабаваў зайсці з другога накірунка ў справе знаемства з разумным домам. Не з боку разумных прылад (выключацелі, лямпачкі і г. д.),
-                а з боку вырашэння паўсядзенных клопатаў з дапамогай разумных прылад. Так мне здаецца прасцей зразумець навошта мне гэтыя смарт-цацкі. 
-                У раздзеле <a href="{% url 'mainapp:scenarios' %}"><u>сцэнары</u></a> я сабраў усе свае ідэі чым вам можа быць палезны разумны дом. Калі вам падабаўся нейкі сцэнар вы можаце бачыць набор прылад
-                якія вам спатрэбяцца каб рэалізаваць гэта ў сябе дома і спасылкі для набыцця гэтых прылад.
+                {% blocktrans trimmed with link='<a href="'|add:scenarios_url|add:'"><u>scenarios</u></a>'|safe %}
+                What could interest you about this site and what makes it stand out among other such projects? Firstly, it is in Belarusian and I think 
+                there are not many of them. Secondly, here I tried to approach the smart home from a different angle. Not from the side of smart 
+                devices (switches, light bulbs, etc.), but from the side of solving everyday problems with the help of smart devices. 
+                So it seems to me easier to understand why I need these smart toys.
+                In the {{ link }} section, I have collected all my ideas on how a smart home can be useful to you. If you liked a particular 
+                scenario, you can see a set of devices that you will need to implement it at home and links to purchase these devices.
+                {% endblocktrans %}
             </p>
+            {% url 'authapp:register' as register_url %}
             <p class="sample-text">
-                Калі вы прйдзеце <a href="{% url 'authapp:register' %}"><u>рэгістрацыю</u></a>, вам будзе даступны функцыянал асабістага кабінета. Вы зможаце дабаўляць прылады якія у вас ужо есць у свой асабісты спіс. 
-                Сістэма будзе прапанаваць вам другія сцэнары з гэтых жа прылад і сцэнары дзе не хапае одной ці дзвух прылад.
+                {% blocktrans trimmed with link='<a href="'|add:register_url|add:'"><u>registration</u></a>'|safe %}
+                When you come to {{ link }}, you will have access to the personal account functionality. You will be able to add devices 
+                that you already have to your personal list.
+                The system will offer you other scenarios from the same devices and scenarios where one or two devices are missing.
+                {% endblocktrans %}
             </p>
         </div>
     </section>
