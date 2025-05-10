@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Поиск{% endblock %}
+{% load i18n %}
 {% load static %}
+{% block title %}
+    {% trans "Search" %}
+{% endblock title %}    
 {% block content %}
 
     <!-- bradcam_area  -->
@@ -10,9 +13,7 @@
                 <div class="col-xl-12">
                     <div class="bradcam_text">
                         <h3>
-                            
-                            Поиск
-                            
+                            {% trans "Search" %}
                         </h3>
                     </div>
                 </div>
@@ -26,9 +27,14 @@
 	<section class="sample-text-area">
 		<div class="container box_1170">
             
-            <h2 class="text-heading">Результаты поиска для &quot;{{request.GET.q}}&quot;</h2>
+            <h2 class="text-heading">{% trans "Search results for" %} &quot;{{request.GET.q}}&quot;</h2>
             {% if object_list %}
-            <h4>Найден{{ total_results|pluralize:"о" }} {{ total_results}} результат{{ total_results|pluralize:"ов" }}:</h4>
+            {% blocktrans count total=total_results %}
+            <h4>Found {{ total }} result:</h4>
+            {% plural %}
+            <h4>Found {{ total }} results:</h4>
+            {% endblocktrans %}
+
             <p class="sample-text">
                 {% for item in object_list %}
                     
@@ -37,22 +43,27 @@
                     
                 {%endfor%}
                 <hr>    
-                <p>Не нашли то что искали? Попробуйте еще:</p>
+                <p>{% trans "Didn't find what you were looking for? Try again:" %}</p>
                 <div class="input-group mb-3">
                     <form action="." method="get">
-                        <input name="q" type="text" class="form-control" placeholder='Поиск'
+                        <input name="q" type="text" class="form-control" placeholder="{% trans 'Search' %}"
                                                 onfocus="this.placeholder = ''"
-                                                onblur="this.placeholder = 'Поиск'">
+                                                onblur="this.placeholder = 'Search'">
 
                     </form>
                 </div>
             {% else %}
-                <p>Не найдено публикаций по вашему запросу<br>Попробуйте повторить запрос с другой формулировкой</p>
+                <p>
+                    {% blocktrans trimmed %}
+                    Не найдено публикаций по вашему запросу
+                    Попробуйте повторить запрос с другой формулировкой
+                    {% endblocktrans %}
+                </p>
                 <div class="input-group mb-3">
                     <form action="." method="get">
-                        <input name="q" type="text" class="form-control" placeholder='Поиск'
+                        <input name="q" type="text" class="form-control" placeholder="{% trans 'Search' %}"
                                                 onfocus="this.placeholder = ''"
-                                                onblur="this.placeholder = 'Поиск'">
+                                                onblur="this.placeholder = 'Search'">
 
                     </form>
                 </div>
@@ -62,20 +73,4 @@
 	</section>
 	<!-- End Sample Area -->
 
-    
-    <script>
-        $('#datepicker').datepicker({
-            iconsLibrary: 'fontawesome',
-            icons: {
-             rightIcon: '<span class="fa fa-caret-down"></span>'
-         }
-        });
-        $('#datepicker2').datepicker({
-            iconsLibrary: 'fontawesome',
-            icons: {
-             rightIcon: '<span class="fa fa-caret-down"></span>'
-         }
-
-        });
-    </script>
 {% endblock content %}
