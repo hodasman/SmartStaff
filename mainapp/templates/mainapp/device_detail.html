@@ -1,7 +1,7 @@
 
 {% extends 'base.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block title %}
 {{ object.title}}
 {% endblock title %}
@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="bradcam_text">
-                        <h3>{{ qty }}+ Умных Устройств</h3>
+                        <h3>{{ qty }}+ {% trans "Smart Devices" %}</h3>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="descript_wrap white-bg">
                         <div class="single_wrap">
-                            <h4>Описание</h4>
+                            <h4>{% trans "Description" %}</h4>
                             <p>{{ object.description }}</p>
                             
                         </div>
@@ -100,16 +100,16 @@
                 <div class="col-lg-4">
                     <div class="job_sumary">
                         <div class="summery_header">
-                            <h3>Характеристики</h3>
+                            <h3>{% trans "Characteristics" %}</h3>
                         </div>
                         <div class="job_content">
                             <ul>
-                                <li>Модель: <span>{{object.model}}</span></li>
-                                <li>Протоколы: <span>{{object.protocol}}</span></li>
-                                <li>Питание: <span>{{object.power}}</span></li>
-                                <li>Размеры: <span>{{object.size}}</span></li>
-                                <li>Комплектация: <span>{{object.set}}</span></li>
-                                <li>Платформы: <span> {% for item in object.platforms.all %} {{item.title}}; {% endfor %}</span></li>
+                                <li>{% trans "Model:" %} <span>{{object.model}}</span></li>
+                                <li>{% trans "Protocols:" %} <span>{{object.protocol}}</span></li>
+                                <li>{% trans "Power:" %} <span>{{object.power}}</span></li>
+                                <li>{% trans "Dimensions:" %} <span>{{object.size}}</span></li>
+                                <li>{% trans "Equipment:" %} <span>{{object.set}}</span></li>
+                                <li>{% trans "Platforms:" %} <span> {% for item in object.platforms.all %} {{item.title}}; {% endfor %}</span></li>
                             
                             </ul>
                         </div>
