@@ -1,9 +1,10 @@
+{% load i18n %}
 <h3 class="footer_title">
-    Подписка на рассылку
+    {% trans "Subscribe to the newsletter" %}
 </h3>
 <form action="{% url 'subscribeapp:subscribe' %}" class="newsletter_form" method="post">
     {% csrf_token %}
     {{ subscribe_form }}
-    <button type="submit">Подписаться</button>
+    <button type="submit">{% trans "Subscribe" %}</button>
 </form>
-<p class="newsletter_text">получать информацию о новых статьях и сценариях</p>
+<p class="newsletter_text">{% trans "receive information about new articles and scenarios" %}</p>
