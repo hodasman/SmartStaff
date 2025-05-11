@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView
 
 from .forms import SubscribeForm, SubscribeFormRight
@@ -14,7 +15,7 @@ class SubscribeView(CreateView):
 
     def form_valid(self, form):
         ret = super().form_valid(form)
-        message = "Вы падпісаліся на рассылку навін!"
+        message = _("You have subscribed to the newsletter!")
         messages.add_message(self.request, messages.INFO, mark_safe(message))
         return ret
     
