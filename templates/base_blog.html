@@ -41,7 +41,7 @@
                         <form action="{% url 'mainapp:search' %}" method="get">
                             <div class="form-group">
                                 <div class="input-group mb-3">
-                                    <input name="q" type="text" class="form-control" placeholder='Поиск'
+                                    <input name="q" type="text" class="form-control" placeholder={% trans "Search" %}
                                         onfocus="this.placeholder = ''"
                                         onblur="this.placeholder = 'Поиск'">
                                     <div class="input-group-append">
