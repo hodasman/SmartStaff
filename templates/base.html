@@ -52,7 +52,7 @@
                                 <div class="logo-img">
                                     <a href="{% url 'mainapp:main_page' %}">
                                         <img src='{% static "img/logo.png" %}' alt="">
-                                        <h4 class="logo_name"> Смарт-хата</h4>
+                                        <h4 class="logo_name"> {% trans "Smart-hata" %}</h4>
                                     </a>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                                 <div class="Appointment">
                                     <div class="phone_num d-none d-xl-block">
                                         {% if user.is_superuser %}
-                                        <a href="{% url 'admin:index' %}">Админ</a>
+                                        <a href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
                                         {% endif %}
                                     </div>
                                     <div class="d-none d-lg-block">
