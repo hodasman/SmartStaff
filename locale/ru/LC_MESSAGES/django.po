@@ -1,0 +1,780 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-11 20:24+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: authapp/forms.py:14
+msgid "Password"
+msgstr "Пароль"
+
+#: authapp/forms.py:15
+msgid "Password verification"
+msgstr "Подтверждение пароля"
+
+#: authapp/forms.py:16
+msgid "Country"
+msgstr "Страна"
+
+#: authapp/forms.py:60
+msgid "Write your age correctly."
+msgstr "Укажите ваш возраст корректно."
+
+#: authapp/forms.py:70
+msgid "Enter Email"
+msgstr "Введите Email"
+
+#: authapp/forms.py:78
+msgid "The passwords do not match"
+msgstr "Пароли не совпадают"
+
+#: authapp/forms.py:81
+msgid "New password"
+msgstr "Новый пароль"
+
+#: authapp/forms.py:84
+msgid "Enter new password"
+msgstr "Введите новый пароль"
+
+#: authapp/forms.py:91 authapp/forms.py:95
+msgid "Confirm new password"
+msgstr "Подтвердите новый пароль"
+
+#: authapp/models.py:72
+msgid "username"
+msgstr "имя пользователя"
+
+#: authapp/models.py:75
+msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only"
+msgstr "Обязательно. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_"
+
+#: authapp/models.py:78
+msgid "A user with that username already exists."
+msgstr "Пользователь с таким именем уже существует."
+
+#: authapp/models.py:81
+msgid "first name"
+msgstr "имя"
+
+#: authapp/models.py:82
+msgid "last name"
+msgstr "фамилия"
+
+#: authapp/models.py:83
+msgid "age"
+msgstr "возраст"
+
+#: authapp/models.py:84
+msgid "avatar"
+msgstr "аватар"
+
+#: authapp/models.py:92
+msgid "A user with that email address already exists."
+msgstr "Пользователь с таким адресом электронной почты уже существует."
+
+#: authapp/models.py:95
+msgid "Date of creation"
+msgstr "Дата создания"
+
+#: authapp/models.py:97
+msgid "author status"
+msgstr "статус автора"
+
+#: authapp/models.py:99
+msgid "The author can add articles to the site"
+msgstr "Автор может добавлять статьи на сайт"
+
+#: authapp/tasks.py:18
+msgid "Activating an account on the site XXX"
+msgstr "Активация аккаунта на сайте XXX"
+
+#: authapp/tasks.py:19
+#, python-brace-format
+msgid ""
+"Thank you for registering on the site XXX.\n"
+"To activate your account, please follow the link:\n"
+"http://0.0.0.0:8000{reset_password_url}\n"
+msgstr ""
+"Спасибо за регистрацию на сайте XXX.\n"
+"Чтобы активировать ваш аккаунт, пожалуйста, перейдите по ссылке:\n"
+"http://0.0.0.0:8000{reset_password_url}\n"
+
+#: authapp/templates/authapp/user_form.html:14
+msgid "New user registration"
+msgstr "Регистрация нового пользователя"
+
+#: authapp/templates/authapp/user_form.html:16
+msgid "Edit profile"
+msgstr "Редактировать профиль"
+
+#: authapp/templates/authapp/user_form.html:44
+msgid "Register"
+msgstr "Зарегистрироваться"
+
+#: authapp/templates/authapp/user_form.html:46
+msgid "Save"
+msgstr "Сохранить"
+
+#: authapp/templates/registration/login.html:5
+msgid "User login"
+msgstr "Вход пользователя"
+
+#: authapp/templates/registration/login.html:19
+#: authapp/templates/registration/password_reset_complete.html:7
+#: templates/base.html:74
+msgid "Login"
+msgstr "Войти"
+
+#: authapp/templates/registration/login.html:25
+msgid "Registration"
+msgstr "Регистрация"
+
+#: authapp/templates/registration/login.html:28
+msgid "Forgot password?"
+msgstr "Забыли пароль?"
+
+#: authapp/templates/registration/login.html:32
+msgid "Login via social networks"
+msgstr "Вход через социальные сети"
+
+#: authapp/templates/registration/login.html:44
+#: authapp/templates/registration/password_reset_complete.html:10
+#: authapp/templates/registration/password_reset_done.html:7
+msgid "Home"
+msgstr "Главная"
+
+#: authapp/templates/registration/password_reset.html:4
+#: authapp/templates/registration/password_reset_confirm.html:4
+msgid "Password recovery"
+msgstr "Восстановление пароля"
+
+#: authapp/templates/registration/password_reset.html:8
+msgid "Request a new password"
+msgstr "Запросить новый пароль"
+
+#: authapp/templates/registration/password_reset_complete.html:4
+msgid "You have successfully updated your password."
+msgstr "Вы успешно обновили пароль."
+
+#: authapp/templates/registration/password_reset_complete.html:5
+msgid "Your password has been changed to a new one!"
+msgstr "Ваш пароль был изменён на новый!"
+
+#: authapp/templates/registration/password_reset_confirm.html:8
+msgid "Change password"
+msgstr "Сменить пароль"
+
+#: authapp/templates/registration/password_reset_done.html:4
+msgid "Check your email"
+msgstr "Проверьте вашу почту"
+
+#: authapp/templates/registration/password_reset_done.html:5
+msgid "A link to change your password has been sent to your email."
+msgstr "Ссылка для смены пароля была отправлена на вашу электронную почту."
+
+#: authapp/templates/registration/password_reset_email.html:2
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+"Вы получили это письмо, потому что запросили сброс пароля для вашей учётной записи на сайте %(site_name)s."
+
+#: authapp/templates/registration/password_reset_email.html:4
+msgid "Please go to the following page and choose a new password:"
+msgstr "Пожалуйста, перейдите по следующей ссылке и выберите новый пароль:"
+
+#: authapp/templates/registration/password_reset_email.html:8
+msgid "Your username, in case you’ve forgotten:"
+msgstr "Ваше имя пользователя, если вы его забыли:"
+
+#: authapp/templates/registration/password_reset_email.html:10
+msgid "Thanks for using our site!"
+msgstr "Спасибо за использование нашего сайта!"
+
+#: authapp/templates/registration/password_reset_email.html:12
+#, python-format
+msgid " %(site_name)s team"
+msgstr "Команда %(site_name)s"
+
+#: authapp/views.py:26
+#, python-brace-format
+msgid "Login success!<br>Hi, {username}!"
+msgstr "Вход выполнен успешно!<br>Привет, {username}!"
+
+#: authapp/views.py:43
+msgid "See you later!"
+msgstr "До встречи!"
+
+#: authapp/views.py:57
+msgid "A link to activate your account has been sent to your email."
+msgstr "Ссылка для активации аккаунта была отправлена на вашу электронную почту."
+
+#: authapp/views.py:74
+msgid "Congratulations! You now have your own personal account in Smart House!"
+msgstr "Поздравляем! Теперь у вас есть личный кабинет в Умном Доме!"
+
+#: authapp/views.py:78
+msgid ""
+"Account activation error! Make sure you used the correct link from the email "
+"you were sent!"
+msgstr ""
+"Ошибка активации аккаунта! Убедитесь, что вы использовали правильную ссылку из письма!"
+
+#: authapp/views.py:86
+msgid "Your data has been successfully changed!"
+msgstr "Ваши данные были успешно изменены!"
+
+#: config/settings.py:138
+msgid "English"
+msgstr "Английский"
+
+#: config/settings.py:139
+msgid "Russian"
+msgstr "Русский"
+
+#: config/settings.py:140
+msgid "Belarusian"
+msgstr "Белорусский"
+
+#: core/models.py:8
+msgid "link"
+msgstr "ссылка"
+
+#: core/models.py:10
+msgid "category slug "
+msgstr "слаг категории"
+
+#: core/models.py:15
+msgid "Position"
+msgstr "Позиция"
+
+#: core/models.py:25
+msgid "Menu item"
+msgstr "Пункт меню"
+
+#: core/models.py:26
+msgid "Menu items"
+msgstr "Пункты меню"
+
+#: core/templates/templatetags/menu.html:21
+#: mainapp/templates/mainapp/personal_page.html:6
+#: mainapp/templates/mainapp/personal_page.html:15
+msgid "Personal account"
+msgstr "Личный кабинет"
+
+#: mainapp/filters.py:8
+msgid "Search by name"
+msgstr "Поиск по названию"
+
+#: mainapp/filters.py:15
+msgid "By date"
+msgstr "По дате"
+
+#: mainapp/filters.py:16
+msgid "By name"
+msgstr "По имени"
+
+#: mainapp/filters.py:19
+msgid "Sorting"
+msgstr "Сортировка"
+
+#: mainapp/filters.py:21
+#, python-format
+msgid "%s (back)"
+msgstr "%s (обратно)"
+
+#: mainapp/forms.py:26
+msgid "Your message"
+msgstr "Ваше сообщение"
+
+#: mainapp/forms.py:45
+msgid "Enter your message"
+msgstr "Введите ваше сообщение"
+
+#: mainapp/forms.py:50
+msgid "Enter your name"
+msgstr "Введите ваше имя"
+
+#: mainapp/forms.py:54
+msgid "Enter your email"
+msgstr "Введите ваш email"
+
+#: mainapp/forms.py:58
+msgid "Enter subject"
+msgstr "Введите тему"
+
+#: mainapp/templates/mainapp/about.html:5
+#: mainapp/templates/mainapp/about.html:15
+#: templates/includes/footer.html:53
+msgid "About"
+msgstr "О проекте"
+
+#: mainapp/templates/mainapp/about.html:25
+msgid "Hello!"
+msgstr "Привет!"
+
+#: mainapp/templates/mainapp/about.html:27
+#, python-format
+msgid ""
+"This is my personal project %(project_name)s . This is not a commercial "
+"project and was created primarily to try my hand at creating a website using "
+"the Django framework. But I will be very glad if it is useful to you. And I "
+"will be even more grateful if you support my project with money or possible "
+"help (for example, with translations of texts into Belarusian)."
+msgstr ""
+"Это мой личный проект %(project_name)s. Это некоммерческий проект, созданный в первую очередь для того, чтобы попробовать себя в создании сайта с использованием фреймворка Django. Но я буду очень рад, если он окажется вам полезен. И буду еще более признателен, если вы поддержите мой проект финансово или возможной помощью (например, с переводом текстов на белорусский язык)."
+
+#: mainapp/templates/mainapp/about.html:35
+#, python-format
+msgid ""
+"What could interest you about this site and what makes it stand out among "
+"other such projects? Firstly, it is in Belarusian and I think there are not "
+"many of them. Secondly, here I tried to approach the smart home from a "
+"different angle. Not from the side of smart devices (switches, light bulbs, "
+"etc.), but from the side of solving everyday problems with the help of smart "
+"devices. So it seems to me easier to understand why I need these smart toys. "
+"In the %(link)s section, I have collected all my ideas on how a smart home "
+"can be useful to you. If you liked a particular scenario, you can see a set "
+"of devices that you will need to implement it at home and links to purchase "
+"these devices."
+msgstr ""
+"Что может вас заинтересовать на этом сайте и чем он выделяется среди других подобных проектов? Во-первых, он на белорусском языке, а таких, как мне кажется, не так уж много. Во-вторых, здесь я попытался подойти к теме умного дома с другой стороны. Не со стороны самих устройств (выключателей, лампочек и т.д.), а со стороны решения повседневных задач с их помощью. Так, мне кажется, легче понять, зачем мне эти умные игрушки. В разделе %(link)s я собрал все свои идеи о том, как умный дом может быть вам полезен. Если вам понравился какой-то сценарий, вы можете посмотреть, какие устройства понадобятся для его реализации у вас дома, и найти ссылки на их покупку."
+
+#: mainapp/templates/mainapp/about.html:46
+#, python-format
+msgid ""
+"When you come to %(link)s, you will have access to the personal account "
+"functionality. You will be able to add devices that you already have to your "
+"personal list. The system will offer you other scenarios from the same "
+"devices and scenarios where one or two devices are missing."
+msgstr ""
+"Когда вы перейдёте в раздел %(link)s, вам станет доступен функционал личного кабинета. Вы сможете добавить устройства, которые у вас уже есть, в свой личный список. Система предложит вам другие сценарии с использованием этих же устройств, а также сценарии, для которых не хватает одного-двух устройств."
+
+#: mainapp/templates/mainapp/article_detail.html:22
+#: mainapp/templates/mainapp/article_detail.html:37
+#: mainapp/templates/mainapp/article_detail.html:114
+#: mainapp/templates/mainapp/article_list.html:34
+#: mainapp/templates/mainapp/list_tag.html:28
+#: mainapp/templates/mainapp/list_tag.html:39
+#: mainapp/templates/mainapp/scenario_detail.html:21
+#: mainapp/templates/mainapp/scenario_detail.html:85
+#: mainapp/templates/mainapp/scenario_detail.html:117
+#: mainapp/templates/mainapp/scenario_list.html:33
+msgid "Comments"
+msgstr "Комментарии"
+
+#: mainapp/templates/mainapp/article_detail.html:61
+msgid "Previous"
+msgstr "Предыдущая"
+
+#: mainapp/templates/mainapp/article_detail.html:70
+msgid "Next"
+msgstr "Следующая"
+
+#: mainapp/templates/mainapp/article_detail.html:98
+#: mainapp/templates/mainapp/scenario_detail.html:103
+msgid "Author information"
+msgstr "Информация об авторе"
+
+#: mainapp/templates/mainapp/article_detail.html:101
+#: mainapp/templates/mainapp/scenario_detail.html:104
+msgid "This article was prepared for you by"
+msgstr "Эту статью подготовил для вас"
+
+#: mainapp/templates/mainapp/article_detail.html:103
+#: mainapp/templates/mainapp/scenario_detail.html:106
+msgid "with the nickname"
+msgstr "с никнеймом"
+
+#: mainapp/templates/mainapp/article_detail.html:105
+#: mainapp/templates/mainapp/scenario_detail.html:108
+msgid "from the country"
+msgstr "из страны"
+
+#: mainapp/templates/mainapp/article_detail.html:112
+#: mainapp/templates/mainapp/scenario_detail.html:115
+msgid "There are no comments yet. Be the first!"
+msgstr "Комментариев пока нет. Будьте первым!"
+
+#: mainapp/templates/mainapp/article_detail.html:149
+#: mainapp/templates/mainapp/scenario_detail.html:152
+msgid "Leave a comment"
+msgstr "Оставить комментарий"
+
+#: mainapp/templates/mainapp/article_detail.html:160
+#: mainapp/templates/mainapp/contact.html:40
+#: mainapp/templates/mainapp/scenario_detail.html:163
+msgid "Send"
+msgstr "Отправить"
+
+#: mainapp/templates/mainapp/article_detail.html:166
+#: mainapp/templates/mainapp/scenario_detail.html:169
+#, python-format
+msgid "In order to leave a review you need to %(link)s to the site!"
+msgstr "Чтобы оставить отзыв, вам нужно %(link)s на сайт!"
+
+#: mainapp/templates/mainapp/article_detail.html:177
+msgid "Article Categories"
+msgstr "Категории статей"
+
+#: mainapp/templates/mainapp/article_list.html:8
+#: mainapp/templates/mainapp/parts_pages/popular_articles.html:8
+msgid "Articles"
+msgstr "Статьи"
+
+#: mainapp/templates/mainapp/article_list.html:48
+msgid "Article categories"
+msgstr "Категории статей"
+
+#: mainapp/templates/mainapp/contact.html:5
+#: mainapp/templates/mainapp/contact.html:15
+#: templates/includes/footer.html:54
+msgid "Contact"
+msgstr "Контакты"
+
+#: mainapp/templates/mainapp/contact.html:31
+msgid "Contact us"
+msgstr "Свяжитесь с нами"
+
+#: mainapp/templates/mainapp/contact.html:48
+msgid "Mazyr, Belarus."
+msgstr "Мозырь, Беларусь."
+
+#: mainapp/templates/mainapp/contact.html:63
+msgid "Send your questions"
+msgstr "Отправьте ваши вопросы"
+
+#: mainapp/templates/mainapp/device_detail.html:16
+#: mainapp/templates/mainapp/devices_filter.html:18
+msgid "Smart Devices"
+msgstr "Умные устройства"
+
+#: mainapp/templates/mainapp/device_detail.html:59
+msgid "Description"
+msgstr "Описание"
+
+#: mainapp/templates/mainapp/device_detail.html:103
+msgid "Characteristics"
+msgstr "Характеристики"
+
+#: mainapp/templates/mainapp/device_detail.html:107
+msgid "Model:"
+msgstr "Модель:"
+
+#: mainapp/templates/mainapp/device_detail.html:108
+msgid "Protocols:"
+msgstr "Протоколы:"
+
+#: mainapp/templates/mainapp/device_detail.html:109
+msgid "Power:"
+msgstr "Питание:"
+
+#: mainapp/templates/mainapp/device_detail.html:110
+msgid "Dimensions:"
+msgstr "Размеры:"
+
+#: mainapp/templates/mainapp/device_detail.html:111
+msgid "Equipment:"
+msgstr "Комплектация:"
+
+#: mainapp/templates/mainapp/device_detail.html:112
+msgid "Platforms:"
+msgstr "Платформы:"
+
+#: mainapp/templates/mainapp/devices_filter.html:8
+msgid "Selecting devices from the catalog"
+msgstr "Выбор устройств из каталога"
+
+#: mainapp/templates/mainapp/devices_filter.html:35
+msgid "Filters"
+msgstr "Фильтры"
+
+#: mainapp/templates/mainapp/devices_filter.html:87
+msgid "i have"
+msgstr "у меня есть"
+
+#: mainapp/templates/mainapp/devices_filter.html:89
+msgid "add"
+msgstr "добавить"
+
+#: mainapp/templates/mainapp/list_tag.html:5
+msgid "Search by tag"
+msgstr "Поиск по тегу"
+
+#: mainapp/templates/mainapp/parts_pages/device_listing.html:9
+msgid "Device catalog"
+msgstr "Каталог устройств"
+
+#: mainapp/templates/mainapp/parts_pages/device_listing.html:14
+msgid "Browse more devices"
+msgstr "Посмотреть больше устройств"
+
+#: mainapp/templates/mainapp/parts_pages/device_listing.html:44
+#: mainapp/templates/mainapp/parts_pages/slider_area.html:14
+msgid "More details"
+msgstr "Подробнее"
+
+#: mainapp/templates/mainapp/parts_pages/popular_articles.html:13
+msgid "Browse more articles"
+msgstr "Посмотреть больше статей"
+
+#: mainapp/templates/mainapp/parts_pages/popular_scenarios.html:8
+msgid "Popular scenarios"
+msgstr "Популярные сценарии"
+
+#: mainapp/templates/mainapp/parts_pages/popular_scenarios.html:13
+msgid "Browse more scenarios"
+msgstr "Посмотреть больше сценариев"
+
+#: mainapp/templates/mainapp/parts_pages/slider_area.html:10
+msgid "Smart-hata is rich in wonders!"
+msgstr "Смарт-хата полна чудес!"
+
+#: mainapp/templates/mainapp/parts_pages/slider_area.html:11
+msgid "Make your life more comfortable"
+msgstr "Сделай свою жизнь комфортнее"
+
+#: mainapp/templates/mainapp/parts_pages/slider_area.html:12
+msgid "A site for smart people about smart things for a smart home"
+msgstr "Сайт для умных людей об умных вещах для умного дома"
+
+#: mainapp/templates/mainapp/personal_page.html:28
+msgid "Personal data"
+msgstr "Персональные данные"
+
+#: mainapp/templates/mainapp/personal_page.html:37
+msgid "Nickname:"
+msgstr "Никнейм:"
+
+#: mainapp/templates/mainapp/personal_page.html:41
+msgid "First name:"
+msgstr "Имя:"
+
+#: mainapp/templates/mainapp/personal_page.html:45
+msgid "Last name:"
+msgstr "Фамилия:"
+
+#: mainapp/templates/mainapp/personal_page.html:49
+msgid "Age:"
+msgstr "Возраст:"
+
+#: mainapp/templates/mainapp/personal_page.html:53
+msgid "Country:"
+msgstr "Страна:"
+
+#: mainapp/templates/mainapp/personal_page.html:61
+msgid "Change"
+msgstr "Изменить"
+
+#: mainapp/templates/mainapp/personal_page.html:69
+msgid "My devices"
+msgstr "Мои устройства"
+
+#: mainapp/templates/mainapp/personal_page.html:103
+msgid "Delete"
+msgstr "Удалить"
+
+#: mainapp/templates/mainapp/personal_page.html:146
+msgid "Scenarios for your devices"
+msgstr "Сценарии для ваших устройств"
+
+#: mainapp/templates/mainapp/personal_page.html:151
+#: mainapp/templates/mainapp/personal_page.html:181
+msgid "See all"
+msgstr "Смотреть все"
+
+#: mainapp/templates/mainapp/personal_page.html:176
+msgid "One device is missing"
+msgstr "Одного устройства не хватает"
+
+#: mainapp/templates/mainapp/scenario_detail.html:6
+#: mainapp/templates/mainapp/scenario_list.html:6
+#: mainapp/templates/mainapp/scenario_list.html:8
+msgid "Automation scenarios"
+msgstr "Сценарии автоматизации"
+
+#: mainapp/templates/mainapp/scenario_detail.html:49
+msgid "Idea"
+msgstr "Идея"
+
+#: mainapp/templates/mainapp/scenario_detail.html:53
+msgid "Devices"
+msgstr "Устройства"
+
+#: mainapp/templates/mainapp/scenario_detail.html:63
+msgid "Explanations"
+msgstr "Объяснения"
+
+#: mainapp/templates/mainapp/scenario_detail.html:67
+msgid "Logics"
+msgstr "Логика"
+
+#: mainapp/templates/mainapp/scenario_detail.html:73
+msgid ""
+"Attention! Depending on the version of the application, the names of the "
+"options may differ slightly from those indicated in the diagram!"
+msgstr ""
+"Внимание! В зависимости от версии приложения, названия опций могут немного "
+"отличаться от указанных на диаграмме!"
+
+#: mainapp/templates/mainapp/scenario_detail.html:181
+#: mainapp/templates/mainapp/scenario_list.html:46
+msgid "Platforms"
+msgstr "Платформы"
+
+#: mainapp/templates/mainapp/scenario_detail.html:195
+msgid "Other scenarios from these devices"
+msgstr "Другие сценарии для этих устройств"
+
+#: mainapp/templates/mainapp/search.html:5
+#: mainapp/templates/mainapp/search.html:16
+#: mainapp/templates/mainapp/search.html:49
+#: mainapp/templates/mainapp/search.html:64 templates/base_blog.html:44
+#: templates/base_blog.html:53
+msgid "Search"
+msgstr "Поиск"
+
+#: mainapp/templates/mainapp/search.html:30
+msgid "Search results for"
+msgstr "Результаты поиска для"
+
+#: mainapp/templates/mainapp/search.html:32
+#, python-format
+msgid ""
+"\n"
+"            <h4>Found %(total)s result:</h4>\n"
+"            "
+msgid_plural ""
+"\n"
+"            <h4>Found %(total)s results:</h4>\n"
+"            "
+msgstr[0] ""
+msgstr[1] ""
+
+#: mainapp/templates/mainapp/search.html:46
+msgid "Didn't find what you were looking for? Try again:"
+msgstr "Не нашли то, что искали? Попробуйте снова:"
+
+#: mainapp/templates/mainapp/search.html:57
+msgid ""
+"Не найдено публикаций по вашему запросу Попробуйте повторить запрос с другой "
+"формулировкой"
+msgstr "Не найдено публикаций по вашему запросу. Попробуйте повторить запрос с другой формулировкой."
+
+#: mainapp/views.py:309
+msgid "To enter your personal account, you need to log in"
+msgstr "Для входа в личный кабинет необходимо авторизоваться"
+
+#: mainapp/views.py:321
+#, python-format
+msgid "Device %(device_title)s added to your list"
+msgstr "Устройство %(device_title)s добавлено в ваш список"
+
+#: mainapp/views.py:324
+msgid "The device is already on your list.!"
+msgstr "Это устройство уже в вашем списке!"
+
+#: mainapp/views.py:327
+msgid "To add a device to the list, you need to log in"
+msgstr "Для добавления устройства в список необходимо авторизоваться"
+
+#: mainapp/views.py:337
+#, python-format
+msgid "Device %(device_title)s removed from your list"
+msgstr "Устройство %(device_title)s удалено из вашего списка"
+
+#: mainapp/views.py:340
+#, python-format
+msgid "Device %(device_title)s not on your list"
+msgstr "Устройство %(device_title)s нет в вашем списке"
+
+#: mainapp/views.py:371
+msgid "Your request has been successfully sent!"
+msgstr "Ваш запрос успешно отправлен!"
+
+#: subscribeapp/views.py:18
+msgid "You have subscribed to the newsletter!"
+msgstr "Вы подписались на рассылку!"
+
+#: templates/base.html:55 templates/base_auth.html:12
+msgid "Smart-hata"
+msgstr "Умный дом"
+
+#: templates/base.html:67
+msgid "Admin"
+msgstr "Админ"
+
+#: templates/base.html:72
+msgid "Log out"
+msgstr "Выйти"
+
+#: templates/base_blog.html:61
+msgid "Latest articles"
+msgstr "Последние статьи"
+
+#: templates/base_blog.html:78
+msgid "Tag Cloud"
+msgstr "Облако тегов"
+
+#: templates/base_blog.html:91
+msgid "Instagram Feeds"
+msgstr "Лента Instagram"
+
+#: templates/includes/footer.html:50
+msgid "Information"
+msgstr "Информация"
+
+#: templates/includes/footer.html:63
+msgid "Category"
+msgstr "Категория"
+
+#: templates/includes/footer.html:66
+msgid "Design & Art"
+msgstr "Дизайн и искусство"
+
+#: templates/includes/footer.html:67
+msgid "Engineering"
+msgstr "Инженерия"
+
+#: templates/includes/footer.html:68
+msgid "Sales & Marketing"
+msgstr "Продажи и маркетинг"
+
+#: templates/includes/footer.html:69
+msgid "Finance"
+msgstr "Финансы"
+
+#: templates/subscribe/tags/form.html:3
+msgid "Subscribe to the newsletter"
+msgstr "Подписаться на рассылку"
+
+#: templates/subscribe/tags/form.html:8
+#: templates/subscribe/tags/form_right.html:12
+msgid "Subscribe"
+msgstr "Подписаться"
+
+#: templates/subscribe/tags/form.html:10
+msgid "receive information about new articles and scenarios"
+msgstr "получать информацию о новых статьях и сценариях"
+
+#: templates/subscribe/tags/form_right.html:2
+msgid "Subscribe to news"
+msgstr "Подписаться на новости"
+
