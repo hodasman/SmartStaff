@@ -113,7 +113,7 @@ msgid ""
 msgstr ""
 "Дзякуй за рэгістрацыю на сайце XXX.\n"
 "Каб актываваць уліковы запіс, калі ласка, перайдзіце па спасылцы:\n"
-"http://0.0.0.0:8000%(reset_password_url)s\n"
+"http://0.0.0.0:8000{reset_password_url}\n"
 
 #: authapp/templates/authapp/user_form.html:14
 msgid "New user registration"
