@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from django.views.generic import RedirectView
+from django.views.i18n import set_language
 
 urlpatterns = [
     path('admin/password_reset/', auth_views.PasswordResetView.as_view(), name='admin_password_reset'),
@@ -26,6 +27,7 @@ urlpatterns = [
     path('admin/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('admin/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path("admin/", admin.site.urls),
+    path("i18n/setlang/", set_language, name="set_language"),
     path("", RedirectView.as_view(url="mainapp/")),
     path("mainapp/", include("mainapp.urls", namespace="mainapp")),
     path("authapp/", include("authapp.urls", namespace="authapp")),
