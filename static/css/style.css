@@ -7809,3 +7809,15 @@ h6 {
   z-index:100;
   width: 100%;
 }
+
+.language-selector {
+  background-color: #f8f9fa; /* Светлый фон */
+  border-radius: 6px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  margin-left: 10px;
+}
+
+.language-selector:hover {
+  background-color: #e9ecef;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}

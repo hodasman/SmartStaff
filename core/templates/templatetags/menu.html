@@ -3,6 +3,15 @@
     <div class="main-menu  d-none d-lg-block">
         <nav>
             <ul id="navigation">
+            <!-- Кнопка входа/выхода — только для мобильных -->
+            <li class="d-lg-none px-3 mt-2">
+                {% if user.is_authenticated %}
+                    <a class="btn btn-outline-primary btn-sm w-100" href="{% url 'authapp:logout' %}">{% trans "Log out" %}</a>
+                {% else %}
+                    <a class="btn btn-primary btn-sm w-100" href="{% url 'authapp:login' %}">{% trans "Login" %}</a>
+                {% endif %}
+            </li>
+
             {% for menu_item in menu_items %}
                 {% if menu_item.get_children %}
                 
