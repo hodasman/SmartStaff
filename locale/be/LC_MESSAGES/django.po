@@ -557,7 +557,7 @@ msgstr "Праглядзець больш сцэнарыяў"
 
 #: mainapp/templates/mainapp/parts_pages/slider_area.html:10
 msgid "Smart-hata is rich in wonders!"
-msgstr "Smart-hata багатая цудамі!"
+msgstr "Смарт-хата цудамі багата!"
 
 #: mainapp/templates/mainapp/parts_pages/slider_area.html:11
 msgid "Make your life more comfortable"
@@ -573,7 +573,7 @@ msgstr "Асабістыя дадзеныя"
 
 #: mainapp/templates/mainapp/personal_page.html:37
 msgid "Nickname:"
-msgstr "Псеўданім:"
+msgstr "Мянушка:"
 
 #: mainapp/templates/mainapp/personal_page.html:41
 msgid "First name:"
@@ -729,7 +729,7 @@ msgstr "Вы падпісаліся на рассылку!"
 
 #: templates/base.html:55 templates/base_auth.html:12
 msgid "Smart-hata"
-msgstr "Смарт-хаціна"
+msgstr "Смарт-хата"
 
 #: templates/base.html:67
 msgid "Admin"
