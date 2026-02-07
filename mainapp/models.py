@@ -2,6 +2,7 @@ from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
 from taggit.managers import TaggableManager
 
 
@@ -23,12 +24,12 @@ def scenarios_img_path(instance, filename):
 
 
 class Platform(models.Model):
-    title = models.CharField(max_length=256, verbose_name="Название")
-    description = models.TextField(blank=True, null=True, verbose_name="Описание")
+    title = models.CharField(max_length=256, verbose_name=_("Name"))
+    description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     class Meta:
-        verbose_name = "Платформа"
-        verbose_name_plural = "Платформы"
+        verbose_name = _("Platform")
+        verbose_name_plural = _("Platforms")
         ordering = ["title"]
 
     def __str__(self) -> str:
@@ -41,12 +42,12 @@ class Platform(models.Model):
 
 
 class Idea(models.Model):
-    title = models.CharField(max_length=256, verbose_name="Название")
-    description = models.TextField(blank=True, null=True, verbose_name="Описание")
+    title = models.CharField(max_length=256, verbose_name=_("Name"))
+    description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     class Meta:
-        verbose_name = "Идея"
-        verbose_name_plural = "Идеи"
+        verbose_name = _("Idea")
+        verbose_name_plural = _("Ideas")
         ordering = ["title"]
 
     def __str__(self) -> str:
@@ -54,13 +55,13 @@ class Idea(models.Model):
 
 
 class ArticleCategory(models.Model):
-    title = models.CharField(max_length=256, verbose_name="Название")
+    title = models.CharField(max_length=256, verbose_name=_("Name"))
     slug = AutoSlugField(populate_from="title")
-    description = models.TextField(blank=True, null=True, verbose_name="Описание")
+    description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     class Meta:
-        verbose_name = "Категория статьи"
-        verbose_name_plural = "Категории статей"
+        verbose_name = _("Article category")
+        verbose_name_plural = _("Article categories")
         ordering = ["title"]
 
     def __str__(self) -> str:
@@ -72,13 +73,13 @@ class ArticleCategory(models.Model):
 
 
 class DeviceCategory(models.Model):
-    title = models.CharField(max_length=256, verbose_name="Название")
+    title = models.CharField(max_length=256, verbose_name=_("Name"))
     slug = AutoSlugField(populate_from="title")
-    description = models.TextField(blank=True, null=True, verbose_name="Описание")
+    description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     class Meta:
-        verbose_name = "Категория устройства"
-        verbose_name_plural = "Категории устройств"
+        verbose_name = _("Device category")
+        verbose_name_plural = _("Device categories")
         ordering = ["title"]
 
     def __str__(self) -> str:
@@ -99,40 +100,40 @@ class ObjectManager(models.Manager):
 
 class Article(models.Model):
     objects = ObjectManager()
-    title = models.CharField(max_length=256, verbose_name="Название")
+    title = models.CharField(max_length=256, verbose_name=_("Name"))
     category = models.ForeignKey(
-        ArticleCategory, verbose_name="Категория", on_delete=models.CASCADE, related_name="articles"
+        ArticleCategory, verbose_name=_("Category"), on_delete=models.CASCADE, related_name="articles"
     )
     slug = AutoSlugField(populate_from="title", verbose_name="URL")
-    preambule = models.TextField(verbose_name="Краткое описание", blank=True)
-    text = models.TextField(verbose_name="Текст", blank=True)
-    main_img = models.ImageField(verbose_name="Заглавная картинка", blank=True, null=True, upload_to=article_img_path)
-    img_1 = models.ImageField(verbose_name="Картинка_1", blank=True, null=True, upload_to=article_img_path)
-    img_2 = models.ImageField(verbose_name="Картинка_2", blank=True, null=True, upload_to=article_img_path)
-    img_3 = models.ImageField(verbose_name="Картинка_3", blank=True, null=True, upload_to=article_img_path)
-    img_4 = models.ImageField(verbose_name="Картинка_4", blank=True, null=True, upload_to=article_img_path)
-    img_5 = models.ImageField(verbose_name="Картинка_5", blank=True, null=True, upload_to=article_img_path)
-    img_6 = models.ImageField(verbose_name="Картинка_6", blank=True, null=True, upload_to=article_img_path)
-    img_7 = models.ImageField(verbose_name="Картинка_7", blank=True, null=True, upload_to=article_img_path)
-    img_8 = models.ImageField(verbose_name="Картинка_8", blank=True, null=True, upload_to=article_img_path)
-    img_9 = models.ImageField(verbose_name="Картинка_9", blank=True, null=True, upload_to=article_img_path)
-    img_10 = models.ImageField(verbose_name="Картинка_10", blank=True, null=True, upload_to=article_img_path)
-    img_11 = models.ImageField(verbose_name="Картинка_11", blank=True, null=True, upload_to=article_img_path)
-    img_12 = models.ImageField(verbose_name="Картинка_12", blank=True, null=True, upload_to=article_img_path)
-    img_13 = models.ImageField(verbose_name="Картинка_13", blank=True, null=True, upload_to=article_img_path)
-    img_14 = models.ImageField(verbose_name="Картинка_14", blank=True, null=True, upload_to=article_img_path)
-    img_15 = models.ImageField(verbose_name="Картинка_15", blank=True, null=True, upload_to=article_img_path)
-    img_16 = models.ImageField(verbose_name="Картинка_16", blank=True, null=True, upload_to=article_img_path)
-    img_17 = models.ImageField(verbose_name="Картинка_17", blank=True, null=True, upload_to=article_img_path)
-    img_18 = models.ImageField(verbose_name="Картинка_18", blank=True, null=True, upload_to=article_img_path)
-    img_19 = models.ImageField(verbose_name="Картинка_19", blank=True, null=True, upload_to=article_img_path)
-    img_20 = models.ImageField(verbose_name="Картинка_20", blank=True, null=True, upload_to=article_img_path)
-    img_21 = models.ImageField(verbose_name="Картинка_21", blank=True, null=True, upload_to=article_img_path)
-    img_22 = models.ImageField(verbose_name="Картинка_22", blank=True, null=True, upload_to=article_img_path)
-    img_23 = models.ImageField(verbose_name="Картинка_23", blank=True, null=True, upload_to=article_img_path)
-    img_24 = models.ImageField(verbose_name="Картинка_24", blank=True, null=True, upload_to=article_img_path)
-    img_25 = models.ImageField(verbose_name="Картинка_25", blank=True, null=True, upload_to=article_img_path)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
+    preambule = models.TextField(verbose_name=_("Brief description"), blank=True)
+    text = models.TextField(verbose_name=_("Text"), blank=True)
+    main_img = models.ImageField(verbose_name=_("Main picture"), blank=True, null=True, upload_to=article_img_path)
+    img_1 = models.ImageField(verbose_name=_("Picture 1"), blank=True, null=True, upload_to=article_img_path)
+    img_2 = models.ImageField(verbose_name=_("Picture 2"), blank=True, null=True, upload_to=article_img_path)
+    img_3 = models.ImageField(verbose_name=_("Picture 3"), blank=True, null=True, upload_to=article_img_path)
+    img_4 = models.ImageField(verbose_name=_("Picture 4"), blank=True, null=True, upload_to=article_img_path)
+    img_5 = models.ImageField(verbose_name=_("Picture 5"), blank=True, null=True, upload_to=article_img_path)
+    img_6 = models.ImageField(verbose_name=_("Picture 6"), blank=True, null=True, upload_to=article_img_path)
+    img_7 = models.ImageField(verbose_name=_("Picture 7"), blank=True, null=True, upload_to=article_img_path)
+    img_8 = models.ImageField(verbose_name=_("Picture 8"), blank=True, null=True, upload_to=article_img_path)
+    img_9 = models.ImageField(verbose_name=_("Picture 9"), blank=True, null=True, upload_to=article_img_path)
+    img_10 = models.ImageField(verbose_name=_("Picture 10"), blank=True, null=True, upload_to=article_img_path)
+    img_11 = models.ImageField(verbose_name=_("Picture 11"), blank=True, null=True, upload_to=article_img_path)
+    img_12 = models.ImageField(verbose_name=_("Picture 12"), blank=True, null=True, upload_to=article_img_path)
+    img_13 = models.ImageField(verbose_name=_("Picture 13"), blank=True, null=True, upload_to=article_img_path)
+    img_14 = models.ImageField(verbose_name=_("Picture 14"), blank=True, null=True, upload_to=article_img_path)
+    img_15 = models.ImageField(verbose_name=_("Picture 15"), blank=True, null=True, upload_to=article_img_path)
+    img_16 = models.ImageField(verbose_name=_("Picture 16"), blank=True, null=True, upload_to=article_img_path)
+    img_17 = models.ImageField(verbose_name=_("Picture 17"), blank=True, null=True, upload_to=article_img_path)
+    img_18 = models.ImageField(verbose_name=_("Picture 18"), blank=True, null=True, upload_to=article_img_path)
+    img_19 = models.ImageField(verbose_name=_("Picture 19"), blank=True, null=True, upload_to=article_img_path)
+    img_20 = models.ImageField(verbose_name=_("Picture 20"), blank=True, null=True, upload_to=article_img_path)
+    img_21 = models.ImageField(verbose_name=_("Picture 21"), blank=True, null=True, upload_to=article_img_path)
+    img_22 = models.ImageField(verbose_name=_("Picture 22"), blank=True, null=True, upload_to=article_img_path)
+    img_23 = models.ImageField(verbose_name=_("Picture 23"), blank=True, null=True, upload_to=article_img_path)
+    img_24 = models.ImageField(verbose_name=_("Picture 24"), blank=True, null=True, upload_to=article_img_path)
+    img_25 = models.ImageField(verbose_name=_("Picture 25"), blank=True, null=True, upload_to=article_img_path)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
     tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created", editable=False)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Edited", editable=False)
@@ -146,8 +147,8 @@ class Article(models.Model):
         self.save()
 
     class Meta:
-        verbose_name = "Статья"
-        verbose_name_plural = "Статьи"
+        verbose_name = _("Article")
+        verbose_name_plural = _("Articles")
         ordering = ["title"]
     
     def get_absolute_url(self):
@@ -161,82 +162,83 @@ class Article(models.Model):
 
 class Device(models.Model):
     category = models.ForeignKey(
-        DeviceCategory, verbose_name="Категория", on_delete=models.CASCADE, related_name="devices"
+        DeviceCategory,
+        verbose_name=_("Category"),
+        on_delete=models.CASCADE,
+        related_name="devices"
     )
-    title = models.CharField(max_length=256, verbose_name="Название")
-    slug = AutoSlugField(populate_from="title", verbose_name="URL")
-    description = models.TextField(verbose_name="Описание", blank=True)
-    icon = models.ImageField(verbose_name="Иконка_устройства", blank=True, null=True, upload_to=device_foto_path)
-    foto1 = models.ImageField(verbose_name="Фото устройства_1", blank=True, null=True, upload_to=device_foto_path)
-    foto2 = models.ImageField(verbose_name="Фото устройства_2", blank=True, null=True, upload_to=device_foto_path)
-    foto3 = models.ImageField(verbose_name="Фото устройства_3", blank=True, null=True, upload_to=device_foto_path)
-    foto4 = models.ImageField(verbose_name="Фото устройства_4", blank=True, null=True, upload_to=device_foto_path)
-    model = models.CharField(max_length=256, verbose_name="Модель устройства")
-    size = models.CharField(max_length=256, verbose_name="Размеры")
-    power = models.CharField(max_length=256, verbose_name="Питание")
-    protocol = models.CharField(max_length=256, verbose_name="Поддерживаемые протоколы передачи")
-    temperature = models.CharField(max_length=256, verbose_name="Рабочие температуры")
-    platforms = models.ManyToManyField(Platform, verbose_name="Платформы", blank=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
-    set = models.CharField(max_length=256, verbose_name="Комплект")
-    link_to_buy = models.CharField(max_length=256, verbose_name="Ссылка для покупки")
+    title = models.CharField(max_length=256, verbose_name=_("Title"))
+    slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
+    description = models.TextField(verbose_name=_("Description"), blank=True)
+    icon = models.ImageField(verbose_name=_("Device icon"), blank=True, null=True, upload_to=device_foto_path)
+    foto1 = models.ImageField(verbose_name=_("Device photo 1"), blank=True, null=True, upload_to=device_foto_path)
+    foto2 = models.ImageField(verbose_name=_("Device photo 2"), blank=True, null=True, upload_to=device_foto_path)
+    foto3 = models.ImageField(verbose_name=_("Device photo 3"), blank=True, null=True, upload_to=device_foto_path)
+    foto4 = models.ImageField(verbose_name=_("Device photo 4"), blank=True, null=True, upload_to=device_foto_path)
+    model = models.CharField(max_length=256, verbose_name=_("Device model"))
+    size = models.CharField(max_length=256, verbose_name=_("Dimensions"))
+    power = models.CharField(max_length=256, verbose_name=_("Power supply"))
+    protocol = models.CharField(max_length=256, verbose_name=_("Supported protocols"))
+    temperature = models.CharField(max_length=256, verbose_name=_("Operating temperature"))
+    platforms = models.ManyToManyField(Platform, verbose_name=_("Platforms"), blank=True)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name=_("Author"),
+        blank=True,
+        null=True
+    )
+    set = models.CharField(max_length=256, verbose_name=_("Package contents"))
+    link_to_buy = models.CharField(max_length=256, verbose_name=_("Purchase link"))
     deleted = models.BooleanField(default=False)
-    created_at = models.DateTimeField(verbose_name="Создан", auto_now_add=True)
-    updated_at = models.DateTimeField(verbose_name="Обновлен", auto_now=True)
-
-    def __str__(self) -> str:
-        return f"{self.title}"
-
-    def delete(self, *args):
-        self.deleted = True
-        self.save()
+    created_at = models.DateTimeField(verbose_name=_("Created"), auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name=_("Updated"), auto_now=True)
 
     class Meta:
-        verbose_name = "Устройство"
-        verbose_name_plural = "Устройства"
+        verbose_name = _("Device")
+        verbose_name_plural = _("Devices")
         ordering = ["title"]
 
 
 
 class Scenario(models.Model):
-    objects = ObjectManager()
-    title = models.CharField(max_length=256, verbose_name="Название")
-    slug = AutoSlugField(populate_from="title", verbose_name="URL")
-    text = models.TextField(verbose_name="Текст", blank=True)
-    description = models.TextField(verbose_name="Описание", blank=True)
-    main_img = models.ImageField(verbose_name="Заглавная картинка", blank=True, null=True, upload_to=scenarios_img_path)
-    img_1 = models.ImageField(verbose_name="Картинка_1", blank=True, null=True, upload_to=scenarios_img_path)
-    img_2 = models.ImageField(verbose_name="Картинка_2", blank=True, null=True, upload_to=scenarios_img_path)
-    img_3 = models.ImageField(verbose_name="Картинка_3", blank=True, null=True, upload_to=scenarios_img_path)
-    img_4 = models.ImageField(verbose_name="Картинка_4", blank=True, null=True, upload_to=scenarios_img_path)
-    img_5 = models.ImageField(verbose_name="Картинка_5", blank=True, null=True, upload_to=scenarios_img_path)
-    img_6 = models.ImageField(verbose_name="Картинка_6", blank=True, null=True, upload_to=scenarios_img_path)
-    img_7 = models.ImageField(verbose_name="Картинка_7", blank=True, null=True, upload_to=scenarios_img_path)
-    img_8 = models.ImageField(verbose_name="Картинка_8", blank=True, null=True, upload_to=scenarios_img_path)
-    img_9 = models.ImageField(verbose_name="Картинка_9", blank=True, null=True, upload_to=scenarios_img_path)
-    img_10 = models.ImageField(verbose_name="Картинка_10", blank=True, null=True, upload_to=scenarios_img_path)
-    img_11 = models.ImageField(verbose_name="Картинка_11", blank=True, null=True, upload_to=scenarios_img_path)
-    img_12 = models.ImageField(verbose_name="Картинка_12", blank=True, null=True, upload_to=scenarios_img_path)
-    img_13 = models.ImageField(verbose_name="Картинка_13", blank=True, null=True, upload_to=scenarios_img_path)
-    img_14 = models.ImageField(verbose_name="Картинка_14", blank=True, null=True, upload_to=scenarios_img_path)
-    img_15 = models.ImageField(verbose_name="Картинка_15", blank=True, null=True, upload_to=scenarios_img_path)
-    img_16 = models.ImageField(verbose_name="Картинка_16", blank=True, null=True, upload_to=scenarios_img_path)
-    img_17 = models.ImageField(verbose_name="Картинка_17", blank=True, null=True, upload_to=scenarios_img_path)
-    img_18 = models.ImageField(verbose_name="Картинка_18", blank=True, null=True, upload_to=scenarios_img_path)
-    img_19 = models.ImageField(verbose_name="Картинка_19", blank=True, null=True, upload_to=scenarios_img_path)
-    img_20 = models.ImageField(verbose_name="Картинка_20", blank=True, null=True, upload_to=scenarios_img_path)
-    img_21 = models.ImageField(verbose_name="Картинка_21", blank=True, null=True, upload_to=scenarios_img_path)
-    img_22 = models.ImageField(verbose_name="Картинка_22", blank=True, null=True, upload_to=scenarios_img_path)
-    img_23 = models.ImageField(verbose_name="Картинка_23", blank=True, null=True, upload_to=scenarios_img_path)
-    img_24 = models.ImageField(verbose_name="Картинка_24", blank=True, null=True, upload_to=scenarios_img_path)
-    scheme = models.ImageField(verbose_name="Схема", blank=True, null=True, upload_to=scenarios_img_path)
+    title = models.CharField(max_length=256, verbose_name=_("Title"))
+    slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
+    text = models.TextField(verbose_name=_("Text"), blank=True)
+    description = models.TextField(verbose_name=_("Description"), blank=True)
+    main_img = models.ImageField(verbose_name=_("Main image"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_1 = models.ImageField(verbose_name=_("Image 1"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_2 = models.ImageField(verbose_name=_("Image 2"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_3 = models.ImageField(verbose_name=_("Image 3"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_4 = models.ImageField(verbose_name=_("Image 4"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_5 = models.ImageField(verbose_name=_("Image 5"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_6 = models.ImageField(verbose_name=_("Image 6"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_7 = models.ImageField(verbose_name=_("Image 7"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_8 = models.ImageField(verbose_name=_("Image 8"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_9 = models.ImageField(verbose_name=_("Image 9"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_10 = models.ImageField(verbose_name=_("Image 10"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_11 = models.ImageField(verbose_name=_("Image 11"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_12 = models.ImageField(verbose_name=_("Image 12"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_13 = models.ImageField(verbose_name=_("Image 13"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_14 = models.ImageField(verbose_name=_("Image 14"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_15 = models.ImageField(verbose_name=_("Image 15"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_16 = models.ImageField(verbose_name=_("Image 16"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_17 = models.ImageField(verbose_name=_("Image 17"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_18 = models.ImageField(verbose_name=_("Image 18"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_19 = models.ImageField(verbose_name=_("Image 19"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_20 = models.ImageField(verbose_name=_("Image 20"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_21 = models.ImageField(verbose_name=_("Image 21"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_22 = models.ImageField(verbose_name=_("Image 22"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_23 = models.ImageField(verbose_name=_("Image 23"), blank=True, null=True, upload_to=scenarios_img_path)
+    img_24 = models.ImageField(verbose_name=_("Image 24"), blank=True, null=True, upload_to=scenarios_img_path)
+    scheme = models.ImageField(verbose_name=_("Scheme"), blank=True, null=True, upload_to=scenarios_img_path)
     devices = models.ManyToManyField(Device)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор", blank=True, null=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE, blank=True, null=True)
     idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
     tags = TaggableManager()
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания", editable=False)
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата редактирования", editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), editable=False)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"), editable=False)
     deleted = models.BooleanField(default=False)
 
     def __str__(self) -> str:
@@ -247,8 +249,8 @@ class Scenario(models.Model):
         self.save()
 
     class Meta:
-        verbose_name = "Сценарий"
-        verbose_name_plural = "Сценарии"
+        verbose_name = _("Scenario")
+        verbose_name_plural = _("Scenarios")
         ordering = ["title"]
 
     def next(self):
@@ -311,16 +313,16 @@ class RatingStar(models.Model):
         return f'{self.value}'
 
     class Meta:
-        verbose_name = "Звезда рейтинга"
-        verbose_name_plural = "Звезды рейтинга"
+        verbose_name = _("Rating star")
+        verbose_name_plural = _("Rating stars")
         ordering = ["-value"]
 
 
 class Rating(models.Model):
     '''Рейтинг'''
     ip = models.CharField('IP Адрес', max_length=15)
-    star = models.ForeignKey(RatingStar, on_delete=models.CASCADE, verbose_name="Звезда")
-    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE, verbose_name="Сценарий",)
+    star = models.ForeignKey(RatingStar, on_delete=models.CASCADE, verbose_name=_("Star"))
+    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE, verbose_name=_("Scenario"))
 
     def __str__(self) -> str:
         return f'{self.scenario} - {self.star}'
@@ -331,44 +333,51 @@ class Rating(models.Model):
         
 
 class ArticleComment(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name=_("Article"))
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Comment author"))
+    content = models.TextField(verbose_name=_("Text"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Comment date"))
+
     class Meta:
         db_table = "article_comments"
-        verbose_name = "Комментарий"
-        verbose_name_plural = "Комментарии"
+        verbose_name = _("Comment")
+        verbose_name_plural = _("Comments")
 
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name="Статья")
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор комментария")
-    content = models.TextField(verbose_name="Текст")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата комментария", editable=False)
 
 
 class ScenarioComment(models.Model):
+    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE, verbose_name=_("Scenario"))
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Comment author"))
+    content = models.TextField(verbose_name=_("Text"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Comment date"))
+
     class Meta:
         db_table = "scenario_comments"
-        verbose_name = "Комментарий"
-        verbose_name_plural = "Комментарии"
-
-    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE, verbose_name="Статья")
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Автор комментария")
-    content = models.TextField(verbose_name="Текст")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата комментария", editable=False)
+        verbose_name = _("Comment")
+        verbose_name_plural = _("Comments")
 
 
 class Feedback(models.Model):
     """
     Модель обратной связи
     """
-    subject = models.CharField(max_length=255, verbose_name='Тема письма')
-    email = models.EmailField(max_length=255, verbose_name='Электронный адрес (email)')
-    content = models.TextField(verbose_name='Содержимое письма')
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата отправки')
-    ip_address = models.GenericIPAddressField(verbose_name='IP отправителя',  blank=True, null=True)
-    name = models.CharField(verbose_name='Имя отправителя', max_length=20, blank=True, null=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Пользователь', on_delete=models.CASCADE, null=True, blank=True)
+    subject = models.CharField(max_length=255, verbose_name=_("Subject"))
+    email = models.EmailField(max_length=255, verbose_name=_("Email"))
+    content = models.TextField(verbose_name=_("Message"))
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name=_("Sent at"))
+    ip_address = models.GenericIPAddressField(verbose_name=_("Sender IP"), blank=True, null=True)
+    name = models.CharField(verbose_name=_("Sender name"), max_length=20, blank=True, null=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_("User"),
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
 
     class Meta:
-        verbose_name = 'Обратная связь'
-        verbose_name_plural = 'Обратная связь'
+        verbose_name = _("Feedback")
+        verbose_name_plural = _("Feedback")
         ordering = ['-time_create']
 
     def __str__(self):
