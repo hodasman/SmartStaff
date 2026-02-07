@@ -71,9 +71,9 @@
                                         <form action="{% url 'set_language' %}" method="post">
                                             {% csrf_token %}
                                             <select name="language" onchange="this.form.submit()" class="form-select form-select-sm w-auto me-2 language-selector">
-                                                <option value="ru" {% if LANGUAGE_CODE == 'be' %}selected{% endif %}>Бел</option>
+                                                <option value="be" {% if LANGUAGE_CODE == 'be' %}selected{% endif %}>Бел</option>
                                                 <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>Eng</option>
-                                                <option value="be" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Рус</option>
+                                                <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Рус</option>
                                             </select>
                                         </form>
                                     </div>
