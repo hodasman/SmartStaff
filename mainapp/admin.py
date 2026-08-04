@@ -13,6 +13,7 @@ class DevicesAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "slug", "deleted"]
     list_per_page = 10
     ordering = ["title"]
+    search_fields = ("name",)
 
 @admin.register(mainapp_models.Article)
 class ArticlesAdmin(admin.ModelAdmin):

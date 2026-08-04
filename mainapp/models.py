@@ -199,6 +199,8 @@ class Device(models.Model):
         verbose_name_plural = _("Devices")
         ordering = ["title"]
 
+    def __str__(self):
+        return self.title
 
 
 class Scenario(models.Model):
