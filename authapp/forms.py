@@ -11,16 +11,9 @@ from django.utils.translation import gettext_lazy as _
 class CreateUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["password1"].label = "Пароль"
-        self.fields["password2"].label = "Праверка пороля"
-        self.fields["country"].label = "Страна"
-        
-        self.fields[
-            "password1"
-        ].help_text = "Ваш пароль не должен быть слишком похож на другую вашу личную информацию.<br>\
-            Ваш пароль должен содержать не менее 8 символов.<br>\
-            Ваш пароль не может быть полностью числовым."
-        self.fields["password2"].help_text = "Введите пароль повторно"
+        self.fields["password1"].label = _("Password")
+        self.fields["password2"].label = _("Password verification")
+        self.fields["country"].label = _("Country")
         
     
     field_order = [
@@ -64,7 +57,7 @@ class UserChangeForm(forms.ModelForm):
         data = self.cleaned_data.get("age")
         if data:
             if data < 10 or data > 100:
-                raise ValidationError(_("Напішыце свой узрост правільна"))
+                raise ValidationError(_("Write your age correctly."))
         return data
 
 
@@ -74,7 +67,7 @@ class CustomPasswordResetForm(PasswordResetForm):
         max_length=254,  
         widget=forms.EmailInput(  
             attrs={'class': 'form-control',  
-                   'placeholder': 'Введите Email',  
+                   'placeholder': _('Enter Email'),  
                    "autocomplete": "email"}  
         )  
     )  
@@ -82,24 +75,24 @@ class CustomPasswordResetForm(PasswordResetForm):
 
 class CustomSetPasswordForm(SetPasswordForm):  
     error_messages = {  
-        "password_mismatch": "Пароли не совпадают"  
+        "password_mismatch": _("The passwords do not match")  
     }  
     new_password1 = forms.CharField(  
-        label='Новый пароль',  
+        label=_('New password'),  
         widget=forms.PasswordInput(  
             attrs={'class': 'form-control',  
-                   'placeholder': 'Введите новый пароль',  
+                   'placeholder': _('Enter new password'),  
                    "autocomplete": "new-password"}  
         ),  
         strip=False,  
         help_text=password_validation.password_validators_help_text_html(),  
     )  
     new_password2 = forms.CharField(  
-        label='Подтверждение нового пароля',  
+        label=_('Confirm new password'),  
         strip=False,  
         widget=forms.PasswordInput(  
             attrs={'class': 'form-control',  
-                   'placeholder': 'Подтвердите новый пароль',  
+                   'placeholder': _('Confirm new password'),  
                    "autocomplete": "new-password"}  
         ),  
     )

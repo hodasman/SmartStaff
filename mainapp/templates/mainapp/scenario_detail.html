@@ -1,8 +1,9 @@
 {% extends 'base_blog.html' %}
 {% load static %}
+{% load i18n %}
 {% load crispy_forms_tags %}  
 {% block title %}
-   Сценарии автоматизации
+{% trans "Automation scenarios" %}
 {% endblock title %}
 
 
@@ -17,7 +18,7 @@
          </h2>
          <ul class="blog-info-link mt-3 mb-4">
             <li><i class="fa fa-user"></i> {{object.author}}</li>
-            <li><a href="#comments"><i class="fa fa-comments"></i> Отзывов - {{object.get_all_comments|length}}</a></li>
+            <li><a href="#comments"><i class="fa fa-comments"></i> {% trans "Comments" %} - {{object.get_all_comments|length}}</a></li>
             <li><i class="fa fa-tags"></i>
                {% for tag in object.tags.all %}
                <a href="{% url 'mainapp:list_by_tag' tag.slug %}">{{tag.name}}</a>; 
@@ -45,11 +46,11 @@
          </ul>
 
          {% if object.idea %}
-         <h3 class="mb-20"> Идея</h3>
+         <h3 class="mb-20"> {% trans "Idea" %}</h3>
          {{object.idea.description|safe|escape}}
          {%endif%}
 
-         <h3 class="mb-20">Устройства</h3>
+         <h3 class="mb-20">{% trans "Devices" %}</h3>
          {% for item in object.devices.all %}
          <ol class="unordered-list">
             <li><a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="d-flex">
@@ -59,19 +60,21 @@
          </ol>
          {%endfor%}
 
-         <h3 class="mb-20">Пояснения</h3>
+         <h3 class="mb-20">{% trans "Explanations" %}</h3>
          {{object.text|safe|escape}}
 
          {% if object.scheme %}
-         <h3 class="mb-20">Логика</h3>
+         <h3 class="mb-20">{% trans "Logics" %}</h3>
          <img class="img-fluid" src='{{object.scheme.url}}' alt="">
          {%endif%}
          
          <div class="quote-wrapper">
             <div class="quotes">
-               Внимание! в зависимости от версии приложения названия опций могут немного различаться
-            с указанными в схеме!
-            </div>
+               {% blocktrans trimmed %}
+               Attention! Depending on the version of the application, the names of the options may
+               differ slightly from those indicated in the diagram!
+               {% endblocktrans %}
+           </div>           
          </div>
       </div>
    </div>
@@ -79,7 +82,7 @@
       <div class="d-sm-flex justify-content-between text-center">
          <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> </p>
          <div class="col-sm-4 text-center my-2 my-sm-0">
-            <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> Отзывов - {{object.get_all_comments|length}}</p>
+            <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> {% trans "Comments" %} - {{object.get_all_comments|length}}</p>
          </div>
          <ul class="social-icons">
             <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
@@ -97,21 +100,21 @@
          <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
          {%endif%}
          <div class="media-body">
-            <h4>Звесткі пра аўтара</h4>
-               
-               <p>Гэты артыкул для вас падрыхтаваў {%if object.author.first_name%}{{object.author.first_name}}{%endif%}
-                  {%if object.author.last_name%}{{object.author.last_name}}{%endif%} 
-                  {%if not object.author.first_name and not object.author.last_name%}{%else%}з мянушкай{%endif%}
-                  {{object.author.username}}
-                  {%if object.author.first_name%}з краіны {{object.author.country.name}}{%endif%}</p>
+            <h4>{% trans "Author information" %}</h4>
+            <p>{% trans "This article was prepared for you by" %} {%if object.author.first_name%}{{object.author.first_name}}{%endif%}
+            {%if object.author.last_name%}{{object.author.last_name}}{%endif%} 
+            {%if not object.author.first_name and not object.author.last_name%}{%else%}{% trans "with the nickname" %}{%endif%}
+            {{object.author.username}}
+            {%if object.author.first_name%}{% trans "from the country" %} {{object.author.country.name}}{%endif%}
+            </p>
          </div>
       </div>
    </div>
    <div class="comments-area" id="comments">
       {% if not comments %}
-      <p>Отзывов пока нет. Будьте первым!</p>
+      <p>{% trans "There are no comments yet. Be the first!" %}</p>
       {%else%}
-      <h4>Отзывы ({{object.get_all_comments|length}})</h4>
+      <h4>{% trans "Comments" %} ({{object.get_all_comments|length}})</h4>
       {% for comment in comments %}
       <div class="comment-list">
          <div class="single-comment justify-content-between d-flex">
@@ -146,7 +149,7 @@
    </div>
    <div class="comment-form">
       {% if user.is_authenticated %}
-      <h4>Оставить отзыв</h4>
+      <h4>{% trans "Leave a comment" %}</h4>
       <form class="form-contact comment_form" action="{% url 'mainapp:comment_scenario' object.id %}" id="commentForm" method="post">
          <div class="row">
             <div class="col-12">
@@ -157,11 +160,16 @@
             </div>
          </div>
          <div class="form-group">
-            <button type="submit" class="button button-contactForm btn_1 boxed-btn">Отправить</button>
+            <button type="submit" class="button button-contactForm btn_1 boxed-btn">{% trans "Send" %}</button>
          </div>
       </form>
       {%else%}
-        <p> Для того чтобы оставить отзыв вам необходимо <a href="{% url 'authapp:login'%}">авторизоваться</a> на сайте</p>
+      {% url 'authapp:login' as login_url%}
+      <p> 
+         {% blocktrans trimmed with link='<a href="'|add:login_url|add:'"><u>log in</u></a>'|safe %}
+         In order to leave a review you need to {{ link }} to the site!
+         {% endblocktrans %}
+      </p>
       {%endif%}
    </div>
 
@@ -170,7 +178,7 @@
          
 {% block right_sidebar %}
 <aside class="single_sidebar_widget post_category_widget">
-   <h4 class="widget_title">Платформы</h4>
+   <h4 class="widget_title">{% trans "Platforms" %}</h4>
    <ul class="list cat-list">
       {% for item in all_categories %}
       <li>
@@ -184,7 +192,7 @@
 </aside>
 <aside class="single_sidebar_widget popular_post_widget">
    {%if similar_scenarios%}
-   <h3 class="widget_title">Другие сценарии из этих устройств</h3>
+   <h3 class="widget_title">{% trans "Other scenarios from these devices" %}</h3>
    {% for item in similar_scenarios %}
       <div class="media post_item">
       <img class="box" src='{{item.main_img.url}}' alt="{{item.title}}">

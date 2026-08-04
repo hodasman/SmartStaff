@@ -1,0 +1,1240 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-07 21:23+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: be\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: authapp/forms.py:14
+msgid "Password"
+msgstr "Пароль"
+
+#: authapp/forms.py:15
+msgid "Password verification"
+msgstr "Праверка пароля"
+
+#: authapp/forms.py:16
+msgid "Country"
+msgstr "Краіна"
+
+#: authapp/forms.py:60
+msgid "Write your age correctly."
+msgstr "Напішыце свой узрост правільна."
+
+#: authapp/forms.py:70
+msgid "Enter Email"
+msgstr "Увядзіце Email"
+
+#: authapp/forms.py:78
+msgid "The passwords do not match"
+msgstr "Паролі не супадаюць"
+
+#: authapp/forms.py:81
+msgid "New password"
+msgstr "Новы пароль"
+
+#: authapp/forms.py:84
+msgid "Enter new password"
+msgstr "Увядзіце новы пароль"
+
+#: authapp/forms.py:91 authapp/forms.py:95
+msgid "Confirm new password"
+msgstr "Пацвердзіце новы пароль"
+
+#: authapp/models.py:72
+msgid "username"
+msgstr "мянушка"
+
+#: authapp/models.py:75
+msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only"
+msgstr "Абавязкова. 150 сімвалаў або менш. Толькі літары, лічбы і @/./+/-/_"
+
+#: authapp/models.py:78
+msgid "A user with that username already exists."
+msgstr "Карыстальнік з такім імем карыстальніка ўжо існуе."
+
+#: authapp/models.py:81
+msgid "first name"
+msgstr "Імя"
+
+#: authapp/models.py:82
+msgid "last name"
+msgstr "прозвішча"
+
+#: authapp/models.py:83
+msgid "age"
+msgstr "узрост"
+
+#: authapp/models.py:84
+msgid "avatar"
+msgstr "аватар"
+
+#: authapp/models.py:92
+msgid "A user with that email address already exists."
+msgstr "Карыстальнік з такім адрасам электроннай пошты ўжо існуе."
+
+#: authapp/models.py:95
+msgid "Date of creation"
+msgstr "Дата стварэння"
+
+#: authapp/models.py:97
+msgid "author status"
+msgstr "статус аўтара"
+
+#: authapp/models.py:99
+msgid "The author can add articles to the site"
+msgstr "Аўтар можа дадаваць артыкулы на сайт"
+
+#: authapp/tasks.py:18
+msgid "Activating an account on the site XXX"
+msgstr "Актывацыя ўліковага запісу на сайце XXX"
+
+#: authapp/tasks.py:19
+#, python-brace-format
+msgid ""
+"Thank you for registering on the site XXX.\n"
+"To activate your account, please follow the link:\n"
+"http://0.0.0.0:8000{reset_password_url}\n"
+msgstr ""
+"Дзякуй за рэгістрацыю на сайце XXX.\n"
+"Каб актываваць уліковы запіс, калі ласка, перайдзіце па спасылцы:\n"
+"http://0.0.0.0:8000{reset_password_url}\n"
+
+#: authapp/templates/authapp/user_form.html:14
+msgid "New user registration"
+msgstr "Рэгістрацыя новага карыстальніка"
+
+#: authapp/templates/authapp/user_form.html:16
+msgid "Edit profile"
+msgstr "Рэдагаваць профіль"
+
+#: authapp/templates/authapp/user_form.html:44
+msgid "Register"
+msgstr "Зарэгістравацца"
+
+#: authapp/templates/authapp/user_form.html:46
+msgid "Save"
+msgstr "Захаваць"
+
+#: authapp/templates/registration/login.html:5
+msgid "User login"
+msgstr "Уваход карыстальніка"
+
+#: authapp/templates/registration/login.html:19
+#: authapp/templates/registration/password_reset_complete.html:7
+#: core/templates/templatetags/menu.html:11 templates/base.html:84
+msgid "Login"
+msgstr "Увайсці"
+
+#: authapp/templates/registration/login.html:25
+msgid "Registration"
+msgstr "Рэгістрацыя"
+
+#: authapp/templates/registration/login.html:28
+msgid "Forgot password?"
+msgstr "Забылі пароль?"
+
+#: authapp/templates/registration/login.html:32
+msgid "Login via social networks"
+msgstr "Уваход праз сацыяльныя сеткі"
+
+#: authapp/templates/registration/login.html:44
+#: authapp/templates/registration/password_reset_complete.html:10
+#: authapp/templates/registration/password_reset_done.html:7
+msgid "Home"
+msgstr "Галоўная"
+
+#: authapp/templates/registration/password_reset.html:4
+#: authapp/templates/registration/password_reset_confirm.html:4
+msgid "Password recovery"
+msgstr "Аднаўленне пароля"
+
+#: authapp/templates/registration/password_reset.html:8
+msgid "Request a new password"
+msgstr "Запытаць новы пароль"
+
+#: authapp/templates/registration/password_reset_complete.html:4
+msgid "You have successfully updated your password."
+msgstr "Вы паспяхова абнавілі свой пароль."
+
+#: authapp/templates/registration/password_reset_complete.html:5
+msgid "Your password has been changed to a new one!"
+msgstr "Ваш пароль быў зменены на новы!"
+
+#: authapp/templates/registration/password_reset_confirm.html:8
+msgid "Change password"
+msgstr "Змяніць пароль"
+
+#: authapp/templates/registration/password_reset_done.html:4
+msgid "Check your email"
+msgstr "Праверце сваю электронную пошту"
+
+#: authapp/templates/registration/password_reset_done.html:5
+msgid "A link to change your password has been sent to your email."
+msgstr "Спасылка для змены пароля была адпраўлена на вашу пошту."
+
+#: authapp/templates/registration/password_reset_email.html:2
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+"Вы атрымалі гэты ліст, таму што запыталі скід пароля для вашага акаўнта на "
+"сайце %(site_name)s."
+
+#: authapp/templates/registration/password_reset_email.html:4
+msgid "Please go to the following page and choose a new password:"
+msgstr "Калі ласка, перайдзіце на наступную старонку і выберыце новы пароль:"
+
+#: authapp/templates/registration/password_reset_email.html:8
+msgid "Your username, in case you’ve forgotten:"
+msgstr "Ваша імя карыстальніка, калі вы яго забылі:"
+
+#: authapp/templates/registration/password_reset_email.html:10
+msgid "Thanks for using our site!"
+msgstr "Дзякуй, што карыстаецеся нашым сайтам!"
+
+#: authapp/templates/registration/password_reset_email.html:12
+#, python-format
+msgid " %(site_name)s team"
+msgstr " Каманда %(site_name)s"
+
+#: authapp/views.py:26
+#, python-brace-format
+msgid "Login success!<br>Hi, {username}!"
+msgstr "Уваход выкананы паспяхова!<br>Прывітанне, {username}!"
+
+#: authapp/views.py:43
+msgid "See you later!"
+msgstr "Да сустрэчы!"
+
+#: authapp/views.py:57
+msgid "A link to activate your account has been sent to your email."
+msgstr "Спасылка для актывацыі вашага акаўнта была адпраўлена на вашу пошту."
+
+#: authapp/views.py:74
+msgid "Congratulations! You now have your own personal account in Smart House!"
+msgstr "Віншуем! Цяпер у вас ёсць уласны акаўнт у Смарт Хаце!"
+
+#: authapp/views.py:78
+msgid ""
+"Account activation error! Make sure you used the correct link from the email "
+"you were sent!"
+msgstr ""
+"Памылка актывацыі акаўнта! Пераканайцеся, што вы скарысталіся правільнай "
+"спасылкай з ліста!"
+
+#: authapp/views.py:86
+msgid "Your data has been successfully changed!"
+msgstr "Вашы дадзеныя паспяхова зменены!"
+
+#: config/settings.py:140
+msgid "English"
+msgstr "Англійская"
+
+#: config/settings.py:141
+msgid "Russian"
+msgstr "Руская"
+
+#: config/settings.py:142
+msgid "Belarusian"
+msgstr "Беларуская"
+
+#: core/models.py:8
+msgid "link"
+msgstr "спасылка"
+
+#: core/models.py:10
+msgid "category slug "
+msgstr "слуг катэгорыі"
+
+#: core/models.py:15
+msgid "Position"
+msgstr "Пазіцыя"
+
+#: core/models.py:25
+msgid "Menu item"
+msgstr "Пункт меню"
+
+#: core/models.py:26
+msgid "Menu items"
+msgstr "Пункты меню"
+
+#: core/templates/templatetags/menu.html:9 templates/base.html:82
+msgid "Log out"
+msgstr "Выйсці"
+
+#: core/templates/templatetags/menu.html:30
+#: mainapp/templates/mainapp/personal_page.html:6
+#: mainapp/templates/mainapp/personal_page.html:15
+msgid "Personal account"
+msgstr "Асабісты кабінет"
+
+#: mainapp/filters.py:8
+msgid "Search by name"
+msgstr "Пошук па імені"
+
+#: mainapp/filters.py:15
+msgid "By date"
+msgstr "Па даце"
+
+#: mainapp/filters.py:16
+msgid "By name"
+msgstr "Па імені"
+
+#: mainapp/filters.py:19
+msgid "Sorting"
+msgstr "Сарціроўка"
+
+#: mainapp/filters.py:21
+#, python-format
+msgid "%s (back)"
+msgstr "%s (назад)"
+
+#: mainapp/forms.py:26
+msgid "Your message"
+msgstr "Ваша паведамленне"
+
+#: mainapp/forms.py:45
+msgid "Enter your message"
+msgstr "Увядзіце ваша паведамленне"
+
+#: mainapp/forms.py:50
+msgid "Enter your name"
+msgstr "Увядзіце ваша імя"
+
+#: mainapp/forms.py:54
+msgid "Enter your email"
+msgstr "Увядзіце ваш email"
+
+#: mainapp/forms.py:58
+msgid "Enter subject"
+msgstr "Увядзіце тэму"
+
+#: mainapp/models.py:27 mainapp/models.py:45 mainapp/models.py:58
+#: mainapp/models.py:76 mainapp/models.py:103
+msgid "Name"
+msgstr "Назва"
+
+#: mainapp/models.py:28 mainapp/models.py:46 mainapp/models.py:60
+#: mainapp/models.py:78 mainapp/models.py:172 mainapp/models.py:208
+#: mainapp/templates/mainapp/device_detail.html:59
+msgid "Description"
+msgstr "Апісанне"
+
+#: mainapp/models.py:31
+#, fuzzy
+#| msgid "Platforms"
+msgid "Platform"
+msgstr "Платформы"
+
+#: mainapp/models.py:32 mainapp/models.py:183
+#: mainapp/templates/mainapp/scenario_detail.html:181
+#: mainapp/templates/mainapp/scenario_list.html:46
+msgid "Platforms"
+msgstr "Платформы"
+
+#: mainapp/models.py:49 mainapp/templates/mainapp/scenario_detail.html:49
+msgid "Idea"
+msgstr "Ідэя"
+
+#: mainapp/models.py:50
+#, fuzzy
+#| msgid "Idea"
+msgid "Ideas"
+msgstr "Ідэі"
+
+#: mainapp/models.py:63
+#, fuzzy
+#| msgid "Article categories"
+msgid "Article category"
+msgstr "Катэгорыі артыкулаў"
+
+#: mainapp/models.py:64 mainapp/templates/mainapp/article_list.html:48
+msgid "Article categories"
+msgstr "Катэгорыі артыкулаў"
+
+#: mainapp/models.py:81
+#, fuzzy
+#| msgid "Device catalog"
+msgid "Device category"
+msgstr "Каталог прылад"
+
+#: mainapp/models.py:82
+#, fuzzy
+#| msgid "Article categories"
+msgid "Device categories"
+msgstr "Катэгорыі артыкулаў"
+
+#: mainapp/models.py:105 mainapp/models.py:166
+#: templates/includes/footer.html:62
+msgid "Category"
+msgstr "Катэгорыя"
+
+#: mainapp/models.py:108
+#, fuzzy
+#| msgid "Description"
+msgid "Brief description"
+msgstr "Апісанне"
+
+#: mainapp/models.py:109 mainapp/models.py:207 mainapp/models.py:338
+#: mainapp/models.py:351
+msgid "Text"
+msgstr "Тэкст"
+
+#: mainapp/models.py:110
+msgid "Main picture"
+msgstr "Галоуная выява"
+
+#: mainapp/models.py:111
+msgid "Picture 1"
+msgstr "Выява 1"
+
+#: mainapp/models.py:112
+msgid "Picture 2"
+msgstr "Выява 2"
+
+#: mainapp/models.py:113
+msgid "Picture 3"
+msgstr "Выява 3"
+
+#: mainapp/models.py:114
+msgid "Picture 4"
+msgstr "Выява 4"
+
+#: mainapp/models.py:115
+msgid "Picture 5"
+msgstr "Выява 5"
+
+#: mainapp/models.py:116
+msgid "Picture 6"
+msgstr "Выява 6"
+
+#: mainapp/models.py:117
+msgid "Picture 7"
+msgstr "Выява 7"
+
+#: mainapp/models.py:118
+msgid "Picture 8"
+msgstr "Выява 8"
+
+#: mainapp/models.py:119
+msgid "Picture 9"
+msgstr "Выява 9"
+
+#: mainapp/models.py:120
+msgid "Picture 10"
+msgstr "Выява 10"
+
+#: mainapp/models.py:121
+msgid "Picture 11"
+msgstr "Выява 11"
+
+#: mainapp/models.py:122
+msgid "Picture 12"
+msgstr "Выява 12"
+
+#: mainapp/models.py:123
+msgid "Picture 13"
+msgstr "Выява 13"
+
+#: mainapp/models.py:124
+msgid "Picture 14"
+msgstr "Выява 14"
+
+#: mainapp/models.py:125
+msgid "Picture 15"
+msgstr "Выява 15"
+
+#: mainapp/models.py:126
+msgid "Picture 16"
+msgstr "Выява 16"
+
+#: mainapp/models.py:127
+msgid "Picture 17"
+msgstr "Выява 17"
+
+#: mainapp/models.py:128
+msgid "Picture 18"
+msgstr "Выява 18"
+
+#: mainapp/models.py:129
+msgid "Picture 19"
+msgstr "Выява 19"
+
+#: mainapp/models.py:130
+msgid "Picture 20"
+msgstr "Выява 20"
+
+#: mainapp/models.py:131
+msgid "Picture 21"
+msgstr "Выява 21"
+
+#: mainapp/models.py:132
+msgid "Picture 22"
+msgstr "Выява 22"
+
+#: mainapp/models.py:133
+msgid "Picture 23"
+msgstr "Выява 23"
+
+#: mainapp/models.py:134
+msgid "Picture 24"
+msgstr "Выява 24"
+
+#: mainapp/models.py:135
+msgid "Picture 25"
+msgstr "Выява 25"
+
+#: mainapp/models.py:136 mainapp/models.py:187 mainapp/models.py:236
+msgid "Author"
+msgstr "Аўтар"
+
+#: mainapp/models.py:150 mainapp/models.py:336
+#, fuzzy
+#| msgid "Articles"
+msgid "Article"
+msgstr "Артыкулы"
+
+#: mainapp/models.py:151 mainapp/templates/mainapp/article_list.html:8
+#: mainapp/templates/mainapp/parts_pages/popular_articles.html:8
+msgid "Articles"
+msgstr "Артыкулы"
+
+#: mainapp/models.py:170 mainapp/models.py:205
+msgid "Title"
+msgstr "Назва"
+
+#: mainapp/models.py:171 mainapp/models.py:206
+msgid "URL"
+msgstr "URL"
+
+#: mainapp/models.py:173
+#, fuzzy
+#| msgid "Device catalog"
+msgid "Device icon"
+msgstr "Іконка"
+
+#: mainapp/models.py:174
+#, fuzzy
+#| msgid "Device catalog"
+msgid "Device photo 1"
+msgstr "Фота 1"
+
+#: mainapp/models.py:175
+#, fuzzy
+#| msgid "Device catalog"
+msgid "Device photo 2"
+msgstr "Фота 2"
+
+#: mainapp/models.py:176
+#, fuzzy
+#| msgid "Device catalog"
+msgid "Device photo 3"
+msgstr "Фота 3"
+
+#: mainapp/models.py:177
+#, fuzzy
+#| msgid "Device catalog"
+msgid "Device photo 4"
+msgstr "Фота 4"
+
+#: mainapp/models.py:178
+#, fuzzy
+#| msgid "Devices"
+msgid "Device model"
+msgstr "Мадэль"
+
+#: mainapp/models.py:179
+#, fuzzy
+#| msgid "Dimensions:"
+msgid "Dimensions"
+msgstr "Памеры:"
+
+#: mainapp/models.py:180
+msgid "Power supply"
+msgstr "Напружанне"
+
+#: mainapp/models.py:181
+msgid "Supported protocols"
+msgstr "Падтрымка пратаколаў"
+
+#: mainapp/models.py:182
+msgid "Operating temperature"
+msgstr "Тэмпература"
+
+#: mainapp/models.py:191
+msgid "Package contents"
+msgstr "Камплект"
+
+#: mainapp/models.py:192
+msgid "Purchase link"
+msgstr "Спасылка"
+
+#: mainapp/models.py:194
+msgid "Created"
+msgstr "Створана"
+
+#: mainapp/models.py:195
+msgid "Updated"
+msgstr "Адрэдагавана"
+
+#: mainapp/models.py:198
+#, fuzzy
+#| msgid "Devices"
+msgid "Device"
+msgstr "Прылады"
+
+#: mainapp/models.py:199 mainapp/templates/mainapp/scenario_detail.html:53
+msgid "Devices"
+msgstr "Прылады"
+
+#: mainapp/models.py:209
+msgid "Main image"
+msgstr "Галоўнае фота"
+
+#: mainapp/models.py:210
+msgid "Image 1"
+msgstr "Відарыс 1"
+
+#: mainapp/models.py:211
+msgid "Image 2"
+msgstr "Відарыс 2"
+
+#: mainapp/models.py:212
+msgid "Image 3"
+msgstr "Відарыс 3"
+
+#: mainapp/models.py:213
+msgid "Image 4"
+msgstr "Відарыс 4"
+
+#: mainapp/models.py:214
+msgid "Image 5"
+msgstr "Відарыс 5"
+
+#: mainapp/models.py:215
+msgid "Image 6"
+msgstr "Відарыс 6"
+
+#: mainapp/models.py:216
+msgid "Image 7"
+msgstr "Відарыс 7"
+
+#: mainapp/models.py:217
+msgid "Image 8"
+msgstr "Відарыс 8"
+
+#: mainapp/models.py:218
+msgid "Image 9"
+msgstr "Відарыс 9"
+
+#: mainapp/models.py:219
+msgid "Image 10"
+msgstr "Відарыс 10"
+
+#: mainapp/models.py:220
+msgid "Image 11"
+msgstr "Відарыс 11"
+
+#: mainapp/models.py:221
+msgid "Image 12"
+msgstr "Відарыс 12"
+
+#: mainapp/models.py:222
+msgid "Image 13"
+msgstr "Відарыс 13"
+
+#: mainapp/models.py:223
+msgid "Image 14"
+msgstr "Відарыс 14"
+
+#: mainapp/models.py:224
+msgid "Image 15"
+msgstr "Відарыс 15"
+
+#: mainapp/models.py:225
+msgid "Image 16"
+msgstr "Відарыс 16"
+
+#: mainapp/models.py:226
+msgid "Image 17"
+msgstr "Відарыс 17"
+
+#: mainapp/models.py:227
+msgid "Image 18"
+msgstr "Відарыс 18"
+
+#: mainapp/models.py:228
+msgid "Image 19"
+msgstr "Відарыс 19"
+
+#: mainapp/models.py:229
+msgid "Image 20"
+msgstr "Відарыс 20"
+
+#: mainapp/models.py:230
+msgid "Image 21"
+msgstr "Відарыс 21"
+
+#: mainapp/models.py:231
+msgid "Image 22"
+msgstr "Відарыс 22"
+
+#: mainapp/models.py:232
+msgid "Image 23"
+msgstr "Відарыс 23"
+
+#: mainapp/models.py:233
+msgid "Image 24"
+msgstr "Відарыс 24"
+
+#: mainapp/models.py:234
+msgid "Scheme"
+msgstr "Схема"
+
+#: mainapp/models.py:240
+msgid "Created at"
+msgstr "Створана"
+
+#: mainapp/models.py:241
+msgid "Updated at"
+msgstr "Адрэдагавана"
+
+#: mainapp/models.py:252 mainapp/models.py:325 mainapp/models.py:349
+msgid "Scenario"
+msgstr "Сцэнар"
+
+#: mainapp/models.py:253
+#, fuzzy
+#| msgid "Popular scenarios"
+msgid "Scenarios"
+msgstr "Папулярныя сцэнары"
+
+#: mainapp/models.py:316
+msgid "Rating star"
+msgstr "Рэйтынг"
+
+#: mainapp/models.py:317
+msgid "Rating stars"
+msgstr "Рэйтынг"
+
+#: mainapp/models.py:324
+msgid "Star"
+msgstr "Зорка"
+
+#: mainapp/models.py:337 mainapp/models.py:350
+#, fuzzy
+#| msgid "Comments"
+msgid "Comment author"
+msgstr "Каментары"
+
+#: mainapp/models.py:339 mainapp/models.py:352
+#, fuzzy
+#| msgid "Comments"
+msgid "Comment date"
+msgstr "Каментары"
+
+#: mainapp/models.py:343 mainapp/models.py:356
+#, fuzzy
+#| msgid "Comments"
+msgid "Comment"
+msgstr "Каментары"
+
+#: mainapp/models.py:344 mainapp/models.py:357
+#: mainapp/templates/mainapp/article_detail.html:22
+#: mainapp/templates/mainapp/article_detail.html:37
+#: mainapp/templates/mainapp/article_detail.html:114
+#: mainapp/templates/mainapp/article_list.html:34
+#: mainapp/templates/mainapp/list_tag.html:28
+#: mainapp/templates/mainapp/list_tag.html:39
+#: mainapp/templates/mainapp/scenario_detail.html:21
+#: mainapp/templates/mainapp/scenario_detail.html:85
+#: mainapp/templates/mainapp/scenario_detail.html:117
+#: mainapp/templates/mainapp/scenario_list.html:33
+msgid "Comments"
+msgstr "Каментары"
+
+#: mainapp/models.py:364
+#, fuzzy
+#| msgid "Enter subject"
+msgid "Subject"
+msgstr "Увядзіце тэму"
+
+#: mainapp/models.py:365
+#, fuzzy
+#| msgid "Enter Email"
+msgid "Email"
+msgstr "Увядзіце Email"
+
+#: mainapp/models.py:366
+#, fuzzy
+#| msgid "Your message"
+msgid "Message"
+msgstr "Ваша паведамленне"
+
+#: mainapp/models.py:367
+msgid "Sent at"
+msgstr "Адправіць"
+
+#: mainapp/models.py:368
+#, fuzzy
+#| msgid "Send"
+msgid "Sender IP"
+msgstr "IP адправіцеля"
+
+#: mainapp/models.py:369
+#, fuzzy
+#| msgid "Search by name"
+msgid "Sender name"
+msgstr "Пошук па імені"
+
+#: mainapp/models.py:372
+msgid "User"
+msgstr "Карыстальнік"
+
+#: mainapp/models.py:379 mainapp/models.py:380
+msgid "Feedback"
+msgstr "Водгук"
+
+#: mainapp/templates/mainapp/about.html:5
+#: mainapp/templates/mainapp/about.html:15 templates/includes/footer.html:52
+msgid "About"
+msgstr "Пра нас"
+
+#: mainapp/templates/mainapp/about.html:25
+msgid "Hello!"
+msgstr "Прывітанне!"
+
+#: mainapp/templates/mainapp/about.html:27
+#, python-format
+msgid ""
+"This is my personal project %(project_name)s . This is not a commercial "
+"project and was created primarily to try my hand at creating a website using "
+"the Django framework. But I will be very glad if it is useful to you. And I "
+"will be even more grateful if you support my project with money or possible "
+"help (for example, with translations of texts into Belarusian)."
+msgstr ""
+"Гэта мой асабісты праект %(project_name)s. Гэта не камерцыйны праект і быў "
+"створаны галоўным чынам для таго, каб паспрабаваць сябе ў стварэнні вэб-"
+"сайта выкарыстоўваючы фреймворк Django. Але я буду вельмі рады, калі гэты "
+"праект будзе карысны для вас. І буду яшчэ больш удзячны, калі вы падтрымаеце "
+"мой праект фінансамі або магчымай дапамогай (напрыклад, з перакладамі "
+"тэкстаў на беларускую мову)."
+
+#: mainapp/templates/mainapp/about.html:35
+#, python-format
+msgid ""
+"What could interest you about this site and what makes it stand out among "
+"other such projects? Firstly, it is in Belarusian and I think there are not "
+"many of them. Secondly, here I tried to approach the smart home from a "
+"different angle. Not from the side of smart devices (switches, light bulbs, "
+"etc.), but from the side of solving everyday problems with the help of smart "
+"devices. So it seems to me easier to understand why I need these smart toys. "
+"In the %(link)s section, I have collected all my ideas on how a smart home "
+"can be useful to you. If you liked a particular scenario, you can see a set "
+"of devices that you will need to implement it at home and links to purchase "
+"these devices."
+msgstr ""
+"Што можа вас зацікавіць у гэтым сайце і што робіць яго адметным сярод іншых "
+"падобных праектаў? Па-першае, ён на беларускай мове, і я лічу, што такіх "
+"праектаў няшмат. Па-другое, тут я спрабаваў падысці да разумнага дому з "
+"іншага боку. Не з боку разумных прылад (пераключальнікаў, лямпачак і г.д.), "
+"а з боку вырашэння паўсядзённых праблем з дапамогай разумных прылад. Таму "
+"мне здаецца, што так лягчэй зразумець, чаму мне патрэбныя гэтыя разумныя "
+"гульні. У раздзеле %(link)s я сабраў усе мае ідэі аб тым, як разумны дом "
+"можа быць карысны для вас. Калі вам спадабаўся канкрэтны сцэнар, вы можаце "
+"пабачыць набор прылад, якія вам спатрэбяцца для рэалізацыі гэтай ідэі ў "
+"доме, а таксама спасылкі на пакупку гэтых прылад."
+
+#: mainapp/templates/mainapp/about.html:46
+#, python-format
+msgid ""
+"When you come to %(link)s, you will have access to the personal account "
+"functionality. You will be able to add devices that you already have to your "
+"personal list. The system will offer you other scenarios from the same "
+"devices and scenarios where one or two devices are missing."
+msgstr ""
+"Калі вы зайдзеце ў %(link)s, вам будзе даступны функцыянал асабістага "
+"кабінета. Вы зможаце дадаць прылады, якія ўжо маеце, у ваш асабісты спіс. "
+"Сістэма прапануе вам іншыя сцэнары з гэтымі ж прыладамі і сцэнары, дзе не "
+"хапае адной ці двух прылад."
+
+#: mainapp/templates/mainapp/article_detail.html:61
+msgid "Previous"
+msgstr "Папярэдні"
+
+#: mainapp/templates/mainapp/article_detail.html:70
+msgid "Next"
+msgstr "Наступны"
+
+#: mainapp/templates/mainapp/article_detail.html:98
+#: mainapp/templates/mainapp/scenario_detail.html:103
+msgid "Author information"
+msgstr "Інфармацыя пра аўтара"
+
+#: mainapp/templates/mainapp/article_detail.html:101
+#: mainapp/templates/mainapp/scenario_detail.html:104
+msgid "This article was prepared for you by"
+msgstr "Гэты артыкул падрыхтаваны для вас"
+
+#: mainapp/templates/mainapp/article_detail.html:103
+#: mainapp/templates/mainapp/scenario_detail.html:106
+msgid "with the nickname"
+msgstr "пад псеўданімам"
+
+#: mainapp/templates/mainapp/article_detail.html:105
+#: mainapp/templates/mainapp/scenario_detail.html:108
+msgid "from the country"
+msgstr "з краіны"
+
+#: mainapp/templates/mainapp/article_detail.html:112
+#: mainapp/templates/mainapp/scenario_detail.html:115
+msgid "There are no comments yet. Be the first!"
+msgstr "Каментароў пакуль няма. Будзьце першымі!"
+
+#: mainapp/templates/mainapp/article_detail.html:149
+#: mainapp/templates/mainapp/scenario_detail.html:152
+msgid "Leave a comment"
+msgstr "Пакінуць каментар"
+
+#: mainapp/templates/mainapp/article_detail.html:160
+#: mainapp/templates/mainapp/contact.html:40
+#: mainapp/templates/mainapp/scenario_detail.html:163
+msgid "Send"
+msgstr "Адправіць"
+
+#: mainapp/templates/mainapp/article_detail.html:166
+#: mainapp/templates/mainapp/scenario_detail.html:169
+#, python-format
+msgid "In order to leave a review you need to %(link)s to the site!"
+msgstr "Каб пакінуць водгук, вам трэба %(link)s на сайт!"
+
+#: mainapp/templates/mainapp/article_detail.html:177
+msgid "Article Categories"
+msgstr "Катэгорыі артыкулаў"
+
+#: mainapp/templates/mainapp/contact.html:5
+#: mainapp/templates/mainapp/contact.html:15 templates/includes/footer.html:53
+msgid "Contact"
+msgstr "Кантакты"
+
+#: mainapp/templates/mainapp/contact.html:31
+msgid "Contact us"
+msgstr "Кантактуйцеся з намі"
+
+#: mainapp/templates/mainapp/contact.html:48
+msgid "Mazyr, Belarus."
+msgstr "Мазыр, Беларусь."
+
+#: mainapp/templates/mainapp/contact.html:63
+msgid "Send your questions"
+msgstr "Адпраўце свае пытанні"
+
+#: mainapp/templates/mainapp/device_detail.html:16
+#: mainapp/templates/mainapp/devices_filter.html:18
+msgid "Smart Devices"
+msgstr "Разумныя прылады"
+
+#: mainapp/templates/mainapp/device_detail.html:103
+msgid "Characteristics"
+msgstr "Характарыстыкі"
+
+#: mainapp/templates/mainapp/device_detail.html:107
+msgid "Model:"
+msgstr "Мадэль:"
+
+#: mainapp/templates/mainapp/device_detail.html:108
+msgid "Protocols:"
+msgstr "Пратаколы:"
+
+#: mainapp/templates/mainapp/device_detail.html:109
+msgid "Power:"
+msgstr "Энергія:"
+
+#: mainapp/templates/mainapp/device_detail.html:110
+msgid "Dimensions:"
+msgstr "Памеры:"
+
+#: mainapp/templates/mainapp/device_detail.html:111
+msgid "Equipment:"
+msgstr "Абсталяванне:"
+
+#: mainapp/templates/mainapp/device_detail.html:112
+msgid "Platforms:"
+msgstr "Платформы:"
+
+#: mainapp/templates/mainapp/devices_filter.html:8
+msgid "Selecting devices from the catalog"
+msgstr "Выбар прылад з каталога"
+
+#: mainapp/templates/mainapp/devices_filter.html:35
+msgid "Filters"
+msgstr "Фільтры"
+
+#: mainapp/templates/mainapp/devices_filter.html:87
+msgid "i have"
+msgstr "У мяне ёсць"
+
+#: mainapp/templates/mainapp/devices_filter.html:89
+msgid "add"
+msgstr "дадаць"
+
+#: mainapp/templates/mainapp/list_tag.html:5
+msgid "Search by tag"
+msgstr "Пошук па тэгах"
+
+#: mainapp/templates/mainapp/parts_pages/device_listing.html:9
+msgid "Device catalog"
+msgstr "Каталог прылад"
+
+#: mainapp/templates/mainapp/parts_pages/device_listing.html:14
+msgid "Browse more devices"
+msgstr "Праглядзець больш прылад"
+
+#: mainapp/templates/mainapp/parts_pages/device_listing.html:44
+#: mainapp/templates/mainapp/parts_pages/slider_area.html:14
+msgid "More details"
+msgstr "Больш падрабязна"
+
+#: mainapp/templates/mainapp/parts_pages/popular_articles.html:13
+msgid "Browse more articles"
+msgstr "Праглядзець больш артыкулаў"
+
+#: mainapp/templates/mainapp/parts_pages/popular_scenarios.html:8
+msgid "Popular scenarios"
+msgstr "Папулярныя сцэнары"
+
+#: mainapp/templates/mainapp/parts_pages/popular_scenarios.html:13
+msgid "Browse more scenarios"
+msgstr "Праглядзець больш сцэнарыяў"
+
+#: mainapp/templates/mainapp/parts_pages/slider_area.html:10
+msgid "Smart-hata is rich in wonders!"
+msgstr "Смарт-хата цудамі багата!"
+
+#: mainapp/templates/mainapp/parts_pages/slider_area.html:11
+msgid "Make your life more comfortable"
+msgstr "Зрабіце сваё жыццё больш камфортным"
+
+#: mainapp/templates/mainapp/parts_pages/slider_area.html:12
+msgid "A site for smart people about smart things for a smart home"
+msgstr "Сайт для разумных людзей аб разумных рэчах для разумнага дома"
+
+#: mainapp/templates/mainapp/personal_page.html:28
+msgid "Personal data"
+msgstr "Асабістыя дадзеныя"
+
+#: mainapp/templates/mainapp/personal_page.html:37
+msgid "Nickname:"
+msgstr "Мянушка:"
+
+#: mainapp/templates/mainapp/personal_page.html:41
+msgid "First name:"
+msgstr "Імя:"
+
+#: mainapp/templates/mainapp/personal_page.html:45
+msgid "Last name:"
+msgstr "Прозвішча:"
+
+#: mainapp/templates/mainapp/personal_page.html:49
+msgid "Age:"
+msgstr "Узрост:"
+
+#: mainapp/templates/mainapp/personal_page.html:53
+msgid "Country:"
+msgstr "Краіна:"
+
+#: mainapp/templates/mainapp/personal_page.html:61
+msgid "Change"
+msgstr "Змяніць"
+
+#: mainapp/templates/mainapp/personal_page.html:69
+msgid "My devices"
+msgstr "Мае прылады"
+
+#: mainapp/templates/mainapp/personal_page.html:103
+msgid "Delete"
+msgstr "Выдаліць"
+
+#: mainapp/templates/mainapp/personal_page.html:146
+msgid "Scenarios for your devices"
+msgstr "Сцэнары для вашых прылад"
+
+#: mainapp/templates/mainapp/personal_page.html:151
+#: mainapp/templates/mainapp/personal_page.html:181
+msgid "See all"
+msgstr "Праглядзець усе"
+
+#: mainapp/templates/mainapp/personal_page.html:176
+msgid "One device is missing"
+msgstr "Адна прылада адсутнічае"
+
+#: mainapp/templates/mainapp/scenario_detail.html:6
+#: mainapp/templates/mainapp/scenario_list.html:6
+#: mainapp/templates/mainapp/scenario_list.html:8
+msgid "Automation scenarios"
+msgstr "Сцэнары аўтаматызацыі"
+
+#: mainapp/templates/mainapp/scenario_detail.html:63
+msgid "Explanations"
+msgstr "Тлумачэнні"
+
+#: mainapp/templates/mainapp/scenario_detail.html:67
+msgid "Logics"
+msgstr "Лагіка"
+
+#: mainapp/templates/mainapp/scenario_detail.html:73
+msgid ""
+"Attention! Depending on the version of the application, the names of the "
+"options may differ slightly from those indicated in the diagram!"
+msgstr ""
+"Увага! У залежнасці ад версіі прыкладання, назвы опцый могуць трохі "
+"адрознівацца ад тых, што паказаны на дыяграме!"
+
+#: mainapp/templates/mainapp/scenario_detail.html:195
+msgid "Other scenarios from these devices"
+msgstr "Іншыя сцэнары для гэтых прылад"
+
+#: mainapp/templates/mainapp/search.html:5
+#: mainapp/templates/mainapp/search.html:16
+#: mainapp/templates/mainapp/search.html:49
+#: mainapp/templates/mainapp/search.html:63 templates/base_blog.html:44
+#: templates/base_blog.html:53
+msgid "Search"
+msgstr "Пошук"
+
+#: mainapp/templates/mainapp/search.html:30
+msgid "Search results for"
+msgstr "Рэштвы пошуку для"
+
+#: mainapp/templates/mainapp/search.html:32
+#, python-format
+msgid ""
+"\n"
+"            <h4>Found %(total)s result:</h4>\n"
+"            "
+msgid_plural ""
+"\n"
+"            <h4>Found %(total)s results:</h4>\n"
+"            "
+msgstr[0] ""
+msgstr[1] ""
+
+#: mainapp/templates/mainapp/search.html:46
+msgid "Didn't find what you were looking for? Try again:"
+msgstr "Не знайшлі тое, што шукалі? Паспрабуйце яшчэ раз:"
+
+#: mainapp/templates/mainapp/search.html:57
+msgid ""
+"No publications were found for your query. Please try again with a different "
+"formulation"
+msgstr ""
+"Не знойдзена публікацый па вашым запыце. Паспрабуйце паўтарыць запыт з іншай "
+"фармуляроўкай"
+
+#: mainapp/views.py:309
+msgid "To enter your personal account, you need to log in"
+msgstr "Для ўходу ў асабісты кабінет трэба ўвайсці"
+
+#: mainapp/views.py:321
+#, python-format
+msgid "Device %(device_title)s added to your list"
+msgstr "Прылада %(device_title)s дададзена ў ваш спіс"
+
+#: mainapp/views.py:324
+msgid "The device is already on your list.!"
+msgstr "Прылада ўжо ёсць у вашым спісе!"
+
+#: mainapp/views.py:327
+msgid "To add a device to the list, you need to log in"
+msgstr "Каб дадаць прыладу ў спіс, трэба ўвайсці"
+
+#: mainapp/views.py:337
+#, python-format
+msgid "Device %(device_title)s removed from your list"
+msgstr "Прылада %(device_title)s выдаленая з вашага спіса"
+
+#: mainapp/views.py:340
+#, python-format
+msgid "Device %(device_title)s not on your list"
+msgstr "Прылада %(device_title)s няма ў вашым спісе"
+
+#: mainapp/views.py:371
+msgid "Your request has been successfully sent!"
+msgstr "Ваш запыт паспяхова адправлены!"
+
+#: subscribeapp/views.py:18
+msgid "You have subscribed to the newsletter!"
+msgstr "Вы падпісаліся на рассылку!"
+
+#: templates/base.html:55 templates/base_auth.html:12
+msgid "Smart-hata"
+msgstr "Смарт-хата"
+
+#: templates/base.html:67
+msgid "Admin"
+msgstr "Адміністратар"
+
+#: templates/base_blog.html:61
+msgid "Latest articles"
+msgstr "Апошнія артыкулы"
+
+#: templates/base_blog.html:78
+msgid "Tag Cloud"
+msgstr "Аблок тэгаў"
+
+#: templates/base_blog.html:91
+msgid "Instagram Feeds"
+msgstr "Струмні Instagram"
+
+#: templates/includes/footer.html:49
+msgid "Information"
+msgstr "Інфармацыя"
+
+#: templates/includes/footer.html:65
+msgid "Design & Art"
+msgstr ""
+
+#: templates/includes/footer.html:66
+msgid "Engineering"
+msgstr ""
+
+#: templates/includes/footer.html:67
+msgid "Sales & Marketing"
+msgstr ""
+
+#: templates/includes/footer.html:68
+msgid "Finance"
+msgstr ""
+
+#: templates/subscribe/tags/form.html:3
+msgid "Subscribe to the newsletter"
+msgstr "Падпісацца на рассылку"
+
+#: templates/subscribe/tags/form.html:8
+#: templates/subscribe/tags/form_right.html:12
+msgid "Subscribe"
+msgstr "Падпісацца"
+
+#: templates/subscribe/tags/form.html:10
+msgid "receive information about new articles and scenarios"
+msgstr "атрымаць інфармацыю пра новыя артыкулы і сцэнары"
+
+#: templates/subscribe/tags/form_right.html:2
+msgid "Subscribe to news"
+msgstr "Падпісацца на навіны"

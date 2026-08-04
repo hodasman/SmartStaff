@@ -7,6 +7,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.decorators.http import require_http_methods
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
@@ -85,7 +86,7 @@ class ArticlesDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ArticlesDetailView, self).get_context_data(**kwargs)
         context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
-        # context['comments'] = mainapp_models.ArticleComment.objects.filter(article_id = context["object"].id)
+        context['comments'] = mainapp_models.ArticleComment.objects.filter(article_id = context["object"].id)
         user = auth.get_user(self.request)
         if user.is_authenticated:
             context['form'] = self.comment_form # передаем форму комментария
@@ -305,7 +306,7 @@ def view_personal_page(request, username):
         context['page_obj'] = page_obj
         return render(request, 'mainapp/personal_page.html', context)
     else:
-        messages.error(request, 'Для входа в личный кабинет Вам необходимо авторизоваться')
+        messages.error(request, _('To enter your personal account, you need to log in'))
         return redirect('mainapp:main_page')
     
 
@@ -317,13 +318,13 @@ def add_device_to_user(request, slug):
             # В таблице authapp_usr_devices необходимо сделать соответствующую запись
             current_user.devices.add(device)
             current_user.save()
-            messages.info(request, f'Устройство {device.title} добавленно в ваш список')
+            messages.info(request, _('Device %(device_title)s added to your list') % {'device_title': device.title})
             return redirect(request.META.get('HTTP_REFERER'))
         else:
-            messages.info(request, f'Устройство уже есть в вашем списке!')
+            messages.info(request, _('The device is already on your list.!'))
             return redirect(request.META.get('HTTP_REFERER'))
     else:
-        messages.error(request, 'Для того чтобы добавить устройство в список, Вам необходимо авторизоваться')
+        messages.error(request, _('To add a device to the list, you need to log in'))
         return redirect('authapp:login')
     
 
@@ -333,10 +334,10 @@ def delete_device_user(request, slug):
     if device in current_user.devices.all():
         current_user.devices.remove(device)
         current_user.save()
-        messages.info(request, f'Устройство {device.title} удалено из списка')
+        messages.info(request, _('Device %(device_title)s removed from your list') % {'device_title': device.title})
         return redirect(request.META.get('HTTP_REFERER'))
     else:
-        messages.info(request, f'Устройства {device.title} нет в вашем списке!')
+        messages.info(request, _('Device %(device_title)s not on your list') % {'device_title': device.title})
         return redirect(request.META.get('HTTP_REFERER'))
     
 
@@ -367,7 +368,7 @@ class FeedbackCreateView(SuccessMessageMixin, CreateView):
     '''Для страницы облратной связи'''
     model = mainapp_models.Feedback
     form_class = FeedbackCreateForm
-    success_message = 'Ваш зварот паспяхова адпраўлены!'
+    success_message = _('Your request has been successfully sent!')
     template_name = 'mainapp/contact.html'
     extra_context = {'title': 'Кантактная форма'}
     success_url = reverse_lazy('mainapp:contact')

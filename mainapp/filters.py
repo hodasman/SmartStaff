@@ -5,20 +5,20 @@ from mainapp.models import Device
 
 
 class DevicesFilter(django_filters.FilterSet):
-    title = django_filters.CharFilter(label='Поиск по названию', field_name='title', lookup_expr='contains')
+    title = django_filters.CharFilter(label=_('Search by name'), field_name='title', lookup_expr='contains')
     def __init__(self, *args, **kwargs):
         super(DevicesFilter, self).__init__(*args, **kwargs)
 
     o = django_filters.OrderingFilter(
         # tuple-mapping retains order
         fields=(
-            ('created_at', 'По дате'),
-            ('title', 'По названию'),
+            ('created_at', _('By date')),
+            ('title', _('By name')),
         ),
 
-        label = 'Сортировка'
+        label = _('Sorting')
     )
-    o.descending_fmt = _("%s (обратный)")
+    o.descending_fmt = _("%s (back)")
     
     class Meta:
         model = Device

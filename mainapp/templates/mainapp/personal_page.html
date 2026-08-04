@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load i18n %}
 {% block title %}
-    Асабісты кабінет {{user.username}}
+{% trans "Personal account" %} {{user.username}}
 {% endblock title %}
 {% block content %}
 <!-- bradcam_area  -->
@@ -11,7 +12,7 @@
         <div class="row">
             <div class="col-xl-12">
                 <div class="bradcam_text">
-                    <h3>Личный кабинет</h3>
+                    <h3>{% trans "Personal account" %}</h3>
                 </div>
             </div>
         </div>
@@ -24,7 +25,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-4 mt-sm-30">
                     <div class="job_filter white-bg">
-                        <h3>Личные данные</h3>
+                        <h3>{% trans "Personal data" %}</h3>
                         {% if user.avatar %}
                         <img src="{{ user.avatar.url }}" alt="" width="100%">
                         {% else %}
@@ -33,23 +34,23 @@
                         {% endif %}
 
                         <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">Мянушка:</p>
+                            <p class="black-txt">{% trans "Nickname:" %}</p>
                             <p class="break-word">{{user.username}}</p>
                         </div>
                         <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">Имя:</p>
+                            <p class="black-txt">{% trans "First name:" %}</p>
                             <p class="break-word">{{user.first_name}}</p>
                         </div>
                         <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">Фамилия:</p>
+                            <p class="black-txt">{% trans "Last name:" %}</p>
                             <p class="break-word">{{user.last_name}}</p>
                         </div>
                         <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">Возраст:</p>
-                            <p>{{user.age}} лет</p>
+                            <p class="black-txt">{% trans "Age:" %}</p>
+                            <p>{{user.age}}</p>
                         </div>
                         <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">Страна:</p>
+                            <p class="black-txt">{% trans "Country:" %}</p>
                             <p class="break-word">{{user.country.name}}</p>
                         </div>
                         <div class="personal-data d-flex justify-content-between">
@@ -57,7 +58,7 @@
                             <p class="break-word">{{user.email}}</p>
                         </div>
                         <div class="reset_btn">
-                            <a href="{% url 'authapp:profile_edit' pk=user.id%}"><button class="boxed-btn3 w-100">Изменить</button></a>
+                            <a href="{% url 'authapp:profile_edit' pk=user.id%}"><button class="boxed-btn3 w-100">{% trans "Change" %}</button></a>
                         </div>
                     </div>
                 </div>
@@ -65,7 +66,7 @@
                     <div class="recent_joblist white-bg ">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <h4>Мои устройства</h4>
+                                <h4>{% trans "My devices" %}</h4>
                             </div>
                             
                         </div>
@@ -99,7 +100,7 @@
                                         <div class="apply_now">
                                             
                                             <a href="{% url 'mainapp:delete_device' slug=device.slug %}" class="boxed-btn3">
-                                                Удалить
+                                                {% trans "Delete" %}
                                             </a>
                                         </div>
                                         <div class="date">
@@ -142,12 +143,12 @@
         <div class="row align-items-center mb-40">
             <div class="col-lg-6 col-md-6">
                 <div class="section_title">
-                    <h3>Сценарии для ваших устройств</h3>
+                    <h3>{% trans "Scenarios for your devices" %}</h3>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="brouse_job text-right">
-                    <a href="{% url 'mainapp:scenarios'%}" class="boxed-btn4">Смотреть все</a>
+                    <a href="{% url 'mainapp:scenarios'%}" class="boxed-btn4">{% trans "See all" %}</a>
                 </div>
             </div>
         </div>
@@ -172,12 +173,12 @@
         <div class="row align-items-center mb-40">
             <div class="col-lg-6 col-md-6">
                 <div class="section_title">
-                    <h3>Не хватает одного устройства</h3>
+                    <h3>{% trans "One device is missing" %}</h3>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="brouse_job text-right">
-                    <a href="{% url 'mainapp:scenarios'%}" class="boxed-btn4">Смотреть все</a>
+                    <a href="{% url 'mainapp:scenarios'%}" class="boxed-btn4">{% trans "See all" %}</a>
                 </div>
             </div>
         </div>

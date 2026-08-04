@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 {% load common_tags %}
 <!doctype html>
 <html class="no-js" lang="zxx">
@@ -51,7 +52,7 @@
                                 <div class="logo-img">
                                     <a href="{% url 'mainapp:main_page' %}">
                                         <img src='{% static "img/logo.png" %}' alt="">
-                                        <h4 class="logo_name"> Смарт-хата</h4>
+                                        <h4 class="logo_name"> {% trans "Smart-hata" %}</h4>
                                     </a>
                                 </div>
                             </div>
@@ -63,14 +64,24 @@
                                 <div class="Appointment">
                                     <div class="phone_num d-none d-xl-block">
                                         {% if user.is_superuser %}
-                                        <a href="{% url 'admin:index' %}">Админ</a>
+                                        <a href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
                                         {% endif %}
                                     </div>
-                                    <div class="d-none d-lg-block">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <form action="{% url 'set_language' %}" method="post">
+                                            {% csrf_token %}
+                                            <select name="language" onchange="this.form.submit()" class="form-select form-select-sm w-auto me-2 language-selector">
+                                                <option value="be" {% if LANGUAGE_CODE == 'be' %}selected{% endif %}>Бел</option>
+                                                <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>Eng</option>
+                                                <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Рус</option>
+                                            </select>
+                                        </form>
+                                    </div>
+                                    <div class="d-none d-lg-block btn-sm">
                                         {% if user.is_authenticated %}
-                                        <a class="boxed-btn3" href="{% url 'authapp:logout'%}">Выйти</a>
+                                        <a class="boxed-btn3" href="{% url 'authapp:logout'%}">{% trans "Log out" %}</a>
                                         {% else %}
-                                        <a class="boxed-btn3" href="{% url 'authapp:login'%}">Войти</a>
+                                        <a class="boxed-btn3" href="{% url 'authapp:login'%}">{% trans "Login" %}</a>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -78,6 +89,16 @@
                             <div class="col-12">
                                 <div class="mobile_menu d-block d-lg-none"></div>
                             </div>
+                            <div class="col-12 d-flex justify-content-end align-items-center d-lg-none px-3 mt-2">
+                                <form action="{% url 'set_language' %}" method="post" class="w-20">
+                                    {% csrf_token %}
+                                    <select name="language" onchange="this.form.submit()" class="form-select form-select-sm">
+                                        <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Рус</option>
+                                        <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>Eng</option>
+                                        <option value="be" {% if LANGUAGE_CODE == 'be' %}selected{% endif %}>Бел</option>
+                                    </select>
+                                </form>
+                            </div>                            
                         </div>
                     </div>
 
@@ -97,7 +118,8 @@
     <!-- link that opens popup -->
     <!-- JS here -->
     <script src='{% static "js/vendor/modernizr-3.5.0.min.js" %}'></script>
-    <script src='{% static "js/vendor/jquery-1.12.4.min.js" %}'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- <script src='{% static "js/vendor/jquery-1.12.4.min.js" %}'></script> -->
     <script src='{% static "js/popper.min.js" %}'></script>
     <script src='{% static "js/bootstrap.min.js" %}'></script>
     <script src='{% static "js/owl.carousel.min.js" %}'></script>
@@ -124,7 +146,7 @@
     <script src='{% static "js/jquery.form.js" %}'></script>
     <script src='{% static "js/jquery.validate.min.js" %}'></script>
     <script src='{% static "js/mail-script.js" %}'></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
 
     <script src='{% static "js/main.js" %}'></script>
     

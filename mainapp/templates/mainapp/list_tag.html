@@ -1,7 +1,9 @@
 {% extends 'base_blog.html' %}
-{% block title %}Поиск по тегу "{{ tag.name }}"{% endblock %}
 {% load static %}
-
+{% load i18n %}
+{% block title %}
+{% trans "Search by tag" %} "{{ tag.name }}"
+{% endblock %}
 {% block left_sidebar %}
 <div class="col-lg-8 mb-5 mb-lg-0">
     <div class="blog_left_sidebar">
@@ -23,7 +25,7 @@
                 <ul class="blog-info-link">
                     <li><a href="{% url 'mainapp:articles_category' cat_slug=item.category.slug %}"><i  class="fa fa-th-list"></i> {{item.category}}</a></li>
                     <li><i class="fa fa-user"></i> {{item.author.username}}</li>
-                    <li><i class="fa fa-comments"></i> Отзывов - {{item.get_all_comments|length}}</li>
+                    <li><i class="fa fa-comments"></i> {% trans "Comments" %} - {{item.get_all_comments|length}}</li>
                 </ul>
             </div>
             {%else%}
@@ -34,7 +36,7 @@
                 <p>{{item.description|safe|escape}}</p>
                 <ul class="blog-info-link">
                     <li><i class="fa fa-user"></i> {{item.author}}</li>
-                    <li><i class="fa fa-comments"></i> Отзывов - {{item.get_all_comments|length}}</li>
+                    <li><i class="fa fa-comments"></i> {% trans "Comments" %} - {{item.get_all_comments|length}}</li>
                 </ul>
             </div>
             {%endif%}

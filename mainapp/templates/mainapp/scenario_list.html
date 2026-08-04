@@ -1,10 +1,11 @@
 {% extends 'base_blog.html' %}
 {% load static %}
+{% load i18n %}
 {% block title %}
     {% if view.kwargs %}
-    Сценарии автоматизации {{ platform }}
+    {% trans "Automation scenarios" %} {{ platform }}
     {% else %}
-    Сценарии автоматизации
+    {% trans "Automation scenarios" %}
     {% endif %}
     ({{ object_list|length }})
 {% endblock title %}
@@ -29,7 +30,7 @@
                 <p>{{item.description|safe|escape}}</p>
                 <ul class="blog-info-link">
                     <li><i class="fa fa-user"></i> {{item.author}}</li>
-                    <li><i class="fa fa-comments"></i> Отзывов - {{item.get_all_comments|length}}</li>
+                    <li><i class="fa fa-comments"></i> {% trans "Comments" %} - {{item.get_all_comments|length}}</li>
                 </ul>
             </div>
         </article>
@@ -42,7 +43,7 @@
 {% endblock left_sidebar %}
 {% block right_sidebar %}
 <aside class="single_sidebar_widget post_category_widget">
-    <h4 class="widget_title">Платформы</h4>
+    <h4 class="widget_title">{% trans "Platforms" %}</h4>
     <ul class="list cat-list">
         {% for item in all_categories %}
         <li>
@@ -57,19 +58,4 @@
 </aside>
 {%endblock right_sidebar%}
 
-    
-    <script>
-        $('#datepicker').datepicker({
-            iconsLibrary: 'fontawesome',
-            icons: {
-             rightIcon: '<span class="fa fa-caret-down"></span>'
-         }
-        });
-        $('#datepicker2').datepicker({
-            iconsLibrary: 'fontawesome',
-            icons: {
-             rightIcon: '<span class="fa fa-caret-down"></span>'
-         }
-
-        });
-    </script>
+  

@@ -1,4 +1,5 @@
-<h4 class="widget_title">Подписка на новости</h4>
+{% load i18n %}
+<h4 class="widget_title">{% trans "Subscribe to news" %}</h4>
 
 <form action="{% url 'subscribeapp:subscriberight' %}" method="post">
     <div class="form-group">
@@ -8,5 +9,5 @@
             {{ subscribe_form_2 }}    
     </div>
     <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-        type="submit">Подписаться</button>
+        type="submit">{% trans "Subscribe" %}</button>
 </form>

@@ -1,15 +1,16 @@
+{% load i18n %}
 <!-- popular_scenario  -->
 <div class="popular_catagory_area">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-6">
                 <div class="section_title mb-40">
-                    <h3>Популярные сценарии</h3>
+                    <h3>{% trans "Popular scenarios" %}</h3>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="brouse_job text-right">
-                    <a href="{% url 'mainapp:scenarios'%}" class="boxed-btn4">Смотреть все сценарии</a>
+                    <a href="{% url 'mainapp:scenarios'%}" class="boxed-btn4">{% trans "Browse more scenarios" %}</a>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@
 со списком категорий так как он разный для статей и для сценариев-->
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% load taggit_templatetags2_tags %}
 {% load my_tags %}
 {% load subscribe_tags %}
@@ -40,7 +41,7 @@
                         <form action="{% url 'mainapp:search' %}" method="get">
                             <div class="form-group">
                                 <div class="input-group mb-3">
-                                    <input name="q" type="text" class="form-control" placeholder='Поиск'
+                                    <input name="q" type="text" class="form-control" placeholder={% trans "Search" %}
                                         onfocus="this.placeholder = ''"
                                         onblur="this.placeholder = 'Поиск'">
                                     <div class="input-group-append">
@@ -49,7 +50,7 @@
                                 </div>
                             </div>
                             <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                                type="submit">Найти</button>
+                                type="submit">{% trans "Search" %}</button>
                         </form>
                     </aside>
 
@@ -57,7 +58,7 @@
                     {%endblock%}
 
                     <aside class="single_sidebar_widget popular_post_widget">
-                        <h3 class="widget_title">Последние статьи</h3>
+                        <h3 class="widget_title">{% trans "Latest articles" %}</h3>
                         {% get_article as posts %}
                         {% for post in posts %}
                         <div class="media post_item">
@@ -74,7 +75,7 @@
                         {%endfor%}
                     </aside>
                     <aside class="single_sidebar_widget tag_cloud_widget">
-                        <h4 class="widget_title">Облако Тегов</h4>
+                        <h4 class="widget_title">{% trans "Tag Cloud" %}</h4>
                         {% get_tagcloud as tags for 'mainapp' %}
                         <ul class="list">
                             {% for tag in tags %}
@@ -87,7 +88,7 @@
 
 
                     <aside class="single_sidebar_widget instagram_feeds">
-                        <h4 class="widget_title">Instagram Feeds</h4>
+                        <h4 class="widget_title">{% trans "Instagram Feeds" %}</h4>
                         <ul class="instagram_row flex-wrap">
                             <li>
                                 <a href="#">
