@@ -86,6 +86,33 @@ class DeviceCategory(models.Model):
         return f"{self.title}"
 
 
+class DeviceType(models.Model):
+    category = models.ForeignKey(
+        DeviceCategory,
+        on_delete=models.CASCADE,
+        related_name="device_types",
+        verbose_name=_("Category"),
+    )
+    title = models.CharField(
+        max_length=256,
+        verbose_name=_("Name"),
+    )
+    slug = AutoSlugField(populate_from="title")
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_("Description"),
+    )
+
+    class Meta:
+        verbose_name = _("Device type")
+        verbose_name_plural = _("Device types")
+        ordering = ["title"]
+
+    def __str__(self) -> str:
+        return self.title
+
+
 class ObjectManager(models.Manager):
     use_for_related_fields = True
  
@@ -166,6 +193,12 @@ class Device(models.Model):
         verbose_name=_("Category"),
         on_delete=models.CASCADE,
         related_name="devices"
+    )
+    device_type = models.ForeignKey(
+        DeviceType,
+        on_delete=models.PROTECT,
+        related_name="devices",
+        verbose_name=_("Device type"),
     )
     title = models.CharField(max_length=256, verbose_name=_("Title"))
     slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))

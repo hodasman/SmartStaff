@@ -36,8 +36,12 @@ class DevicesListView(ListView):
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
-        context = super(DevicesListView, self).get_context_data(**kwargs)
-        context["qty"] = len(mainapp_models.Device.objects.all())  # Количество устройств
+        context = super().get_context_data(**kwargs)
+
+        context["qty"] = mainapp_models.Device.objects.filter(
+            deleted=False
+        ).count()
+
         return context
 
 
@@ -47,16 +51,25 @@ class DevicesCategory(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        """cat__slug – это способ обращения к слагу таблицы DeviceCategory через объект category модели Devices
-        функция выдает объект QuerySet с выборкой по категории"""
-        return mainapp_models.Device.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
+        return mainapp_models.Device.objects.filter(
+            device_type__category__slug=self.kwargs["cat_slug"],
+            deleted=False,
+        )
 
     def get_context_data(self, **kwargs):
-        context = super(DevicesCategory, self).get_context_data(**kwargs)
-        context["cat_name"] = mainapp_models.DeviceCategory.objects.get(
+        context = super().get_context_data(**kwargs)
+
+        category = mainapp_models.DeviceCategory.objects.get(
             slug=self.kwargs["cat_slug"]
-        ).title  # Получение названия категории
-        context["qty"] = len(mainapp_models.Device.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)) # Количество устройств в категории
+        )
+
+        context["cat_name"] = category.title
+
+        context["qty"] = mainapp_models.Device.objects.filter(
+            device_type__category=category,
+            deleted=False,
+        ).count()
+
         return context
 
 
@@ -64,8 +77,12 @@ class DevicesDetailView(DetailView):
     model = mainapp_models.Device
 
     def get_context_data(self, **kwargs):
-        context = super(DevicesDetailView, self).get_context_data(**kwargs)
-        context["qty"] = len(mainapp_models.Device.objects.all())  # Количество устройств
+        context = super().get_context_data(**kwargs)
+
+        context["qty"] = mainapp_models.Device.objects.filter(
+            deleted=False
+        ).count()
+
         return context
 
 
