@@ -8,12 +8,20 @@ from mainapp import models as mainapp_models
 class ScenariosAdmin(admin.ModelAdmin):
     list_per_page = 10
 
+class DeviceImageInline(admin.TabularInline):
+    model = mainapp_models.DeviceImage
+    extra = 1
+    readonly_fields = ("created_at",)
+    fields = ("image", "alt", "is_main", "order")
+
+
 @admin.register(mainapp_models.Device)
 class DevicesAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "slug", "deleted"]
     list_per_page = 10
     ordering = ["title"]
-    search_fields = ("name",)
+    search_fields = ("title", "model")
+    inlines = [DeviceImageInline]
 
 @admin.register(mainapp_models.Article)
 class ArticlesAdmin(admin.ModelAdmin):

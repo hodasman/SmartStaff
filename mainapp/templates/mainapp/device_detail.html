@@ -64,36 +64,15 @@
                     </div>
 
             
-				    <div class="row gallery-item">
-                        {% if object.foto1 %}
-                        <div class="col-md-6">
-                            <a href="{{object.foto1.url }}" class="img-pop-up">
-                                <div class="single-gallery-image" style="background: url('{{object.foto1.url }}');"></div>
-                            </a>
+    				<div class="row gallery-item">
+                            {% for img in object.images.all %}
+                            <div class="col-md-6">
+                                <a href="{{ img.image.url }}" class="img-pop-up">
+                                    <div class="single-gallery-image" style="background: url('{{ img.image.url }}');"></div>
+                                </a>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endif %}
-                        {% if object.foto2 %}
-                        <div class="col-md-6">
-                            <a href="{{object.foto2.url }}" class="img-pop-up">
-                                <div class="single-gallery-image" style="background: url('{{object.foto2.url }}');"></div>
-                            </a>
-                        </div>
-                        {% endif %}
-                        {% if object.foto3 %}
-                        <div class="col-md-6">
-                            <a href="{{object.foto3.url }}" class="img-pop-up">
-                                <div class="single-gallery-image" style="background: url('{{object.foto3.url }}');"></div>
-                            </a>
-                        </div>
-                        {% endif %}
-                        {% if object.foto4 %}
-                        <div class="col-md-6">
-                            <a href="{{object.foto4.url }}" class="img-pop-up">
-                                <div class="single-gallery-image" style="background: url('{{object.foto4.url }}');"></div>
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
 
                     
                 </div>

@@ -204,10 +204,6 @@ class Device(models.Model):
     slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
     description = models.TextField(verbose_name=_("Description"), blank=True)
     icon = models.ImageField(verbose_name=_("Device icon"), blank=True, null=True, upload_to=device_foto_path)
-    foto1 = models.ImageField(verbose_name=_("Device photo 1"), blank=True, null=True, upload_to=device_foto_path)
-    foto2 = models.ImageField(verbose_name=_("Device photo 2"), blank=True, null=True, upload_to=device_foto_path)
-    foto3 = models.ImageField(verbose_name=_("Device photo 3"), blank=True, null=True, upload_to=device_foto_path)
-    foto4 = models.ImageField(verbose_name=_("Device photo 4"), blank=True, null=True, upload_to=device_foto_path)
     model = models.CharField(max_length=256, verbose_name=_("Device model"))
     size = models.CharField(max_length=256, verbose_name=_("Dimensions"))
     power = models.CharField(max_length=256, verbose_name=_("Power supply"))
@@ -234,6 +230,34 @@ class Device(models.Model):
 
     def __str__(self):
         return self.title
+
+
+def device_image_path(instance, filename):
+    # сохраняем в MEDIA_ROOT / devices_foto / <device-slug> / <filename>
+    slug = getattr(instance.device, 'slug', instance.device.id)
+    return f"devices_foto/{slug}/{filename}"
+
+
+class DeviceImage(models.Model):
+    device = models.ForeignKey(
+        "mainapp.Device",
+        on_delete=models.CASCADE,
+        related_name="images",
+        verbose_name=_("Device"),
+    )
+    image = models.ImageField(upload_to=device_image_path, verbose_name=_("Image"))
+    alt = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Alt text"))
+    is_main = models.BooleanField(default=False, verbose_name=_("Main image"))
+    order = models.PositiveSmallIntegerField(default=0, verbose_name=_("Order"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+
+    class Meta:
+        verbose_name = _("Device image")
+        verbose_name_plural = _("Device images")
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"{self.device.title} — image #{self.id}"
 
 
 class Scenario(models.Model):
