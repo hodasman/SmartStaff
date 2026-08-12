@@ -86,6 +86,33 @@ class DeviceCategory(models.Model):
         return f"{self.title}"
 
 
+class DeviceType(models.Model):
+    category = models.ForeignKey(
+        DeviceCategory,
+        on_delete=models.CASCADE,
+        related_name="device_types",
+        verbose_name=_("Category"),
+    )
+    title = models.CharField(
+        max_length=256,
+        verbose_name=_("Name"),
+    )
+    slug = AutoSlugField(populate_from="title")
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_("Description"),
+    )
+
+    class Meta:
+        verbose_name = _("Device type")
+        verbose_name_plural = _("Device types")
+        ordering = ["title"]
+
+    def __str__(self) -> str:
+        return self.title
+
+
 class ObjectManager(models.Manager):
     use_for_related_fields = True
  
@@ -167,18 +194,20 @@ class Device(models.Model):
         on_delete=models.CASCADE,
         related_name="devices"
     )
+    device_type = models.ForeignKey(
+        DeviceType,
+        on_delete=models.PROTECT,
+        related_name="devices",
+        verbose_name=_("Device type"),
+    )
     title = models.CharField(max_length=256, verbose_name=_("Title"))
     slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
     description = models.TextField(verbose_name=_("Description"), blank=True)
     icon = models.ImageField(verbose_name=_("Device icon"), blank=True, null=True, upload_to=device_foto_path)
-    foto1 = models.ImageField(verbose_name=_("Device photo 1"), blank=True, null=True, upload_to=device_foto_path)
-    foto2 = models.ImageField(verbose_name=_("Device photo 2"), blank=True, null=True, upload_to=device_foto_path)
-    foto3 = models.ImageField(verbose_name=_("Device photo 3"), blank=True, null=True, upload_to=device_foto_path)
-    foto4 = models.ImageField(verbose_name=_("Device photo 4"), blank=True, null=True, upload_to=device_foto_path)
     model = models.CharField(max_length=256, verbose_name=_("Device model"))
     size = models.CharField(max_length=256, verbose_name=_("Dimensions"))
     power = models.CharField(max_length=256, verbose_name=_("Power supply"))
-    protocol = models.CharField(max_length=256, verbose_name=_("Supported protocols"))
+        protocols = models.ManyToManyField('Protocol', verbose_name=_("Supported protocols"), blank=True)
     temperature = models.CharField(max_length=256, verbose_name=_("Operating temperature"))
     platforms = models.ManyToManyField(Platform, verbose_name=_("Platforms"), blank=True)
     author = models.ForeignKey(
@@ -188,8 +217,7 @@ class Device(models.Model):
         blank=True,
         null=True
     )
-    set = models.CharField(max_length=256, verbose_name=_("Package contents"))
-    link_to_buy = models.CharField(max_length=256, verbose_name=_("Purchase link"))
+    package_contents = models.TextField(verbose_name=_("Package contents"))
     deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(verbose_name=_("Created"), auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name=_("Updated"), auto_now=True)
@@ -201,6 +229,82 @@ class Device(models.Model):
 
     def __str__(self):
         return self.title
+
+
+def device_image_path(instance, filename):
+    # сохраняем в MEDIA_ROOT / devices_foto / <device-slug> / <filename>
+    slug = getattr(instance.device, 'slug', instance.device.id)
+    return f"devices_foto/{slug}/{filename}"
+
+
+class DeviceImage(models.Model):
+    device = models.ForeignKey(
+        "mainapp.Device",
+        on_delete=models.CASCADE,
+        related_name="images",
+        verbose_name=_("Device"),
+    )
+    image = models.ImageField(upload_to=device_image_path, verbose_name=_("Image"))
+    alt = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Alt text"))
+    is_main = models.BooleanField(default=False, verbose_name=_("Main image"))
+    order = models.PositiveSmallIntegerField(default=0, verbose_name=_("Order"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+
+    class Meta:
+        verbose_name = _("Device image")
+        verbose_name_plural = _("Device images")
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"{self.device.title} — image #{self.id}"
+
+
+class Protocol(models.Model):
+    title = models.CharField(max_length=64, verbose_name=_("Name"))
+    slug = models.SlugField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Protocol")
+        verbose_name_plural = _("Protocols")
+        ordering = ["title"]
+
+    def __str__(self):
+        return self.title
+
+
+class PurchaseLink(models.Model):
+    MARKETPLACE_OZON = 'ozon'
+    MARKETPLACE_WB = 'wb'
+    MARKETPLACE_ALI = 'aliexpress'
+    MARKETPLACE_OTHER = 'other'
+
+    MARKETPLACE_CHOICES = [
+        (MARKETPLACE_OZON, 'Ozon'),
+        (MARKETPLACE_WB, 'Wildberries'),
+        (MARKETPLACE_ALI, 'AliExpress'),
+        (MARKETPLACE_OTHER, 'Other'),
+    ]
+
+    device = models.ForeignKey(
+        "mainapp.Device",
+        on_delete=models.CASCADE,
+        related_name="purchase_links",
+        verbose_name=_("Device"),
+    )
+    marketplace = models.CharField(max_length=32, choices=MARKETPLACE_CHOICES, verbose_name=_("Marketplace"))
+    url = models.URLField(verbose_name=_("URL"))
+    # price and currency removed because marketplace prices are dynamic
+    affiliate = models.BooleanField(default=False, verbose_name=_("Affiliate"))
+    note = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Note"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+
+    class Meta:
+        verbose_name = _("Purchase link")
+        verbose_name_plural = _("Purchase links")
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.get_marketplace_display()} — {self.device.title}"
 
 
 class Scenario(models.Model):

@@ -1,0 +1,998 @@
+[
+  {
+    "model": "mainapp.devicetype",
+    "pk": 1,
+    "fields": {
+      "category": 2,
+      "title": "Zigbee Gateway",
+      "slug": "zigbee-gateway",
+      "description": "Шлюз для подключения Zigbee-устройств"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 2,
+    "fields": {
+      "category": 2,
+      "title": "Bluetooth Gateway",
+      "slug": "bluetooth-gateway",
+      "description": "Шлюз для подключения Bluetooth-устройств"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 3,
+    "fields": {
+      "category": 2,
+      "title": "Wi-Fi Gateway",
+      "slug": "wifi-gateway",
+      "description": "Шлюз для подключения Wi-Fi-устройств"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 4,
+    "fields": {
+      "category": 2,
+      "title": "Matter Hub",
+      "slug": "matter-hub",
+      "description": "Центр управления устройствами Matter"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 5,
+    "fields": {
+      "category": 2,
+      "title": "Thread Border Router",
+      "slug": "thread-border-router",
+      "description": "Маршрутизатор Thread для подключения устройств"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 6,
+    "fields": {
+      "category": 2,
+      "title": "Центральный хаб",
+      "slug": "hub",
+      "description": "Центральный контроллер умного дома"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 7,
+    "fields": {
+      "category": 4,
+      "title": "Лампа",
+      "slug": "lamp",
+      "description": "Умные лампы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 8,
+    "fields": {
+      "category": 4,
+      "title": "Светильник",
+      "slug": "light",
+      "description": "Умные светильники"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 9,
+    "fields": {
+      "category": 4,
+      "title": "LED-лента",
+      "slug": "led-strip",
+      "description": "Умные светодиодные ленты"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 10,
+    "fields": {
+      "category": 4,
+      "title": "Ночник",
+      "slug": "night-light",
+      "description": "Умные ночники"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 11,
+    "fields": {
+      "category": 4,
+      "title": "Прожектор",
+      "slug": "spotlight",
+      "description": "Умные прожекторы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 12,
+    "fields": {
+      "category": 4,
+      "title": "Диммер",
+      "slug": "dimmer",
+      "description": "Устройства регулировки яркости освещения"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 13,
+    "fields": {
+      "category": 5,
+      "title": "Кнопка",
+      "slug": "button",
+      "description": "Умные кнопки и беспроводные кнопки"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 14,
+    "fields": {
+      "category": 5,
+      "title": "Пульт",
+      "slug": "remote",
+      "description": "Пульты управления устройствами"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 15,
+    "fields": {
+      "category": 5,
+      "title": "IR-контроллер",
+      "slug": "ir-controller",
+      "description": "Инфракрасный контроллер для управления бытовой техникой"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 16,
+    "fields": {
+      "category": 5,
+      "title": "RF-контроллер",
+      "slug": "rf-controller",
+      "description": "Радиочастотный контроллер"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 17,
+    "fields": {
+      "category": 5,
+      "title": "Панель управления",
+      "slug": "control-panel",
+      "description": "Настенные и сенсорные панели управления"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 18,
+    "fields": {
+      "category": 11,
+      "title": "Датчик движения",
+      "slug": "motion-sensor",
+      "description": "Датчики обнаружения движения"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 19,
+    "fields": {
+      "category": 11,
+      "title": "Датчик присутствия",
+      "slug": "presence-sensor",
+      "description": "Датчики присутствия человека"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 20,
+    "fields": {
+      "category": 11,
+      "title": "Датчик температуры",
+      "slug": "temperature-sensor",
+      "description": "Датчики температуры"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 21,
+    "fields": {
+      "category": 11,
+      "title": "Датчик влажности",
+      "slug": "humidity-sensor",
+      "description": "Датчики влажности"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 22,
+    "fields": {
+      "category": 11,
+      "title": "Датчик температуры и влажности",
+      "slug": "temperature-humidity-sensor",
+      "description": "Комбинированные датчики температуры и влажности"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 23,
+    "fields": {
+      "category": 11,
+      "title": "Датчик открытия",
+      "slug": "contact-sensor",
+      "description": "Датчики открытия дверей, окон и других объектов"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 24,
+    "fields": {
+      "category": 11,
+      "title": "Датчик освещенности",
+      "slug": "light-sensor",
+      "description": "Датчики уровня освещенности"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 25,
+    "fields": {
+      "category": 11,
+      "title": "Датчик качества воздуха",
+      "slug": "air-quality-sensor",
+      "description": "Датчики качества воздуха"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 26,
+    "fields": {
+      "category": 11,
+      "title": "Датчик CO₂",
+      "slug": "co2-sensor",
+      "description": "Датчики концентрации углекислого газа"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 27,
+    "fields": {
+      "category": 11,
+      "title": "Датчик дыма",
+      "slug": "smoke-sensor",
+      "description": "Датчики дыма"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 28,
+    "fields": {
+      "category": 11,
+      "title": "Датчик газа",
+      "slug": "gas-sensor",
+      "description": "Датчики утечки газа"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 29,
+    "fields": {
+      "category": 11,
+      "title": "Датчик протечки",
+      "slug": "water-leak-sensor",
+      "description": "Датчики обнаружения протечки воды"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 30,
+    "fields": {
+      "category": 11,
+      "title": "Датчик вибрации",
+      "slug": "vibration-sensor",
+      "description": "Датчики вибрации и сотрясения"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 31,
+    "fields": {
+      "category": 11,
+      "title": "Датчик шума",
+      "slug": "noise-sensor",
+      "description": "Датчики уровня шума"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 32,
+    "fields": {
+      "category": 11,
+      "title": "Датчик давления",
+      "slug": "pressure-sensor",
+      "description": "Датчики давления"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 33,
+    "fields": {
+      "category": 11,
+      "title": "Датчик расстояния",
+      "slug": "distance-sensor",
+      "description": "Датчики измерения расстояния"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 34,
+    "fields": {
+      "category": 12,
+      "title": "Умная розетка",
+      "slug": "smart-plug",
+      "description": "Умные розетки и устройства управления питанием"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 35,
+    "fields": {
+      "category": 12,
+      "title": "Умный выключатель",
+      "slug": "smart-switch",
+      "description": "Умные настенные выключатели"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 36,
+    "fields": {
+      "category": 12,
+      "title": "Реле",
+      "slug": "relay",
+      "description": "Умные реле для управления электрическими устройствами"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 37,
+    "fields": {
+      "category": 12,
+      "title": "Удлинитель",
+      "slug": "power-strip",
+      "description": "Умные сетевые удлинители"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 38,
+    "fields": {
+      "category": 12,
+      "title": "Умный автомат",
+      "slug": "smart-breaker",
+      "description": "Умные автоматические выключатели"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 39,
+    "fields": {
+      "category": 13,
+      "title": "Камера",
+      "slug": "camera",
+      "description": "Умные камеры видеонаблюдения"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 40,
+    "fields": {
+      "category": 13,
+      "title": "Видеодомофон",
+      "slug": "video-intercom",
+      "description": "Умные видеодомофоны"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 41,
+    "fields": {
+      "category": 13,
+      "title": "Видеозвонок",
+      "slug": "video-doorbell",
+      "description": "Умные дверные видеозвонки"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 42,
+    "fields": {
+      "category": 13,
+      "title": "Умный замок",
+      "slug": "smart-lock",
+      "description": "Умные электронные замки"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 43,
+    "fields": {
+      "category": 13,
+      "title": "Сирена",
+      "slug": "siren",
+      "description": "Умные сирены и звуковые оповещатели"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 44,
+    "fields": {
+      "category": 13,
+      "title": "Сигнализация",
+      "slug": "alarm",
+      "description": "Системы охранной сигнализации"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 45,
+    "fields": {
+      "category": 14,
+      "title": "Кондиционер",
+      "slug": "air-conditioner",
+      "description": "Умные кондиционеры"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 46,
+    "fields": {
+      "category": 14,
+      "title": "Термостат",
+      "slug": "thermostat",
+      "description": "Умные термостаты"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 47,
+    "fields": {
+      "category": 14,
+      "title": "Обогреватель",
+      "slug": "heater",
+      "description": "Умные обогреватели"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 48,
+    "fields": {
+      "category": 14,
+      "title": "Теплый пол",
+      "slug": "floor-heating",
+      "description": "Системы управления теплым полом"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 49,
+    "fields": {
+      "category": 14,
+      "title": "Вентилятор",
+      "slug": "fan",
+      "description": "Умные вентиляторы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 50,
+    "fields": {
+      "category": 14,
+      "title": "Увлажнитель",
+      "slug": "humidifier",
+      "description": "Умные увлажнители воздуха"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 51,
+    "fields": {
+      "category": 14,
+      "title": "Осушитель",
+      "slug": "dehumidifier",
+      "description": "Умные осушители воздуха"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 52,
+    "fields": {
+      "category": 14,
+      "title": "Очиститель воздуха",
+      "slug": "air-purifier",
+      "description": "Умные очистители воздуха"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 53,
+    "fields": {
+      "category": 14,
+      "title": "Вентиляция",
+      "slug": "ventilation",
+      "description": "Умные системы вентиляции"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 54,
+    "fields": {
+      "category": 15,
+      "title": "Шторы",
+      "slug": "curtain",
+      "description": "Умные шторы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 55,
+    "fields": {
+      "category": 15,
+      "title": "Рулонные шторы",
+      "slug": "roller-blind",
+      "description": "Умные рулонные шторы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 56,
+    "fields": {
+      "category": 15,
+      "title": "Жалюзи",
+      "slug": "blind",
+      "description": "Умные жалюзи"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 57,
+    "fields": {
+      "category": 15,
+      "title": "Карниз",
+      "slug": "curtain-rail",
+      "description": "Умные карнизы и приводы для штор"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 58,
+    "fields": {
+      "category": 16,
+      "title": "Робот-пылесос",
+      "slug": "robot-vacuum",
+      "description": "Роботы-пылесосы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 59,
+    "fields": {
+      "category": 16,
+      "title": "Робот-мойщик окон",
+      "slug": "window-cleaning-robot",
+      "description": "Роботы для мытья окон"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 60,
+    "fields": {
+      "category": 16,
+      "title": "Робот-газонокосилка",
+      "slug": "robot-lawn-mower",
+      "description": "Роботы для ухода за газоном"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 61,
+    "fields": {
+      "category": 17,
+      "title": "Стиральная машина",
+      "slug": "washing-machine",
+      "description": "Умные стиральные машины"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 62,
+    "fields": {
+      "category": 17,
+      "title": "Сушильная машина",
+      "slug": "dryer",
+      "description": "Умные сушильные машины"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 63,
+    "fields": {
+      "category": 17,
+      "title": "Посудомоечная машина",
+      "slug": "dishwasher",
+      "description": "Умные посудомоечные машины"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 64,
+    "fields": {
+      "category": 17,
+      "title": "Холодильник",
+      "slug": "refrigerator",
+      "description": "Умные холодильники"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 65,
+    "fields": {
+      "category": 17,
+      "title": "Телевизор",
+      "slug": "tv",
+      "description": "Умные телевизоры"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 66,
+    "fields": {
+      "category": 17,
+      "title": "Проектор",
+      "slug": "projector",
+      "description": "Умные проекторы"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 67,
+    "fields": {
+      "category": 18,
+      "title": "Чайник",
+      "slug": "kettle",
+      "description": "Умные чайники"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 68,
+    "fields": {
+      "category": 18,
+      "title": "Кофемашина",
+      "slug": "coffee-machine",
+      "description": "Умные кофемашины"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 69,
+    "fields": {
+      "category": 18,
+      "title": "Мультиварка",
+      "slug": "multicooker",
+      "description": "Умные мультиварки"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 70,
+    "fields": {
+      "category": 18,
+      "title": "Аэрогриль",
+      "slug": "air-fryer",
+      "description": "Умные аэрогрили"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 71,
+    "fields": {
+      "category": 18,
+      "title": "Духовка",
+      "slug": "oven",
+      "description": "Умные духовки"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 72,
+    "fields": {
+      "category": 18,
+      "title": "Микроволновка",
+      "slug": "microwave",
+      "description": "Умные микроволновые печи"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 73,
+    "fields": {
+      "category": 19,
+      "title": "Умный кран",
+      "slug": "smart-faucet",
+      "description": "Умные краны"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 74,
+    "fields": {
+      "category": 19,
+      "title": "Умный клапан",
+      "slug": "smart-valve",
+      "description": "Клапаны управления подачей воды"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 75,
+    "fields": {
+      "category": 19,
+      "title": "Насос",
+      "slug": "water-pump",
+      "description": "Умные водяные насосы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 76,
+    "fields": {
+      "category": 19,
+      "title": "Водонагреватель",
+      "slug": "water-heater",
+      "description": "Умные водонагреватели"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 77,
+    "fields": {
+      "category": 19,
+      "title": "Счетчик воды",
+      "slug": "water-meter",
+      "description": "Умные счетчики воды"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 78,
+    "fields": {
+      "category": 20,
+      "title": "Система полива",
+      "slug": "irrigation-system",
+      "description": "Автоматические системы полива"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 79,
+    "fields": {
+      "category": 20,
+      "title": "Контроллер полива",
+      "slug": "irrigation-controller",
+      "description": "Контроллеры автоматического полива"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 80,
+    "fields": {
+      "category": 20,
+      "title": "Датчик влажности почвы",
+      "slug": "soil-moisture-sensor",
+      "description": "Датчики влажности почвы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 81,
+    "fields": {
+      "category": 20,
+      "title": "Датчик дождя",
+      "slug": "rain-sensor",
+      "description": "Датчики дождя"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 82,
+    "fields": {
+      "category": 21,
+      "title": "Умная колонка",
+      "slug": "smart-speaker",
+      "description": "Умные колонки и голосовые помощники"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 83,
+    "fields": {
+      "category": 21,
+      "title": "Умный дисплей",
+      "slug": "smart-display",
+      "description": "Умные дисплеи"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 84,
+    "fields": {
+      "category": 21,
+      "title": "Аудиосистема",
+      "slug": "audio-system",
+      "description": "Умные аудиосистемы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 85,
+    "fields": {
+      "category": 21,
+      "title": "Медиаплеер",
+      "slug": "media-player",
+      "description": "Умные медиаплееры"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 86,
+    "fields": {
+      "category": 21,
+      "title": "Саундбар",
+      "slug": "soundbar",
+      "description": "Умные саундбары"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 87,
+    "fields": {
+      "category": 22,
+      "title": "Счетчик электроэнергии",
+      "slug": "electricity-meter",
+      "description": "Умные счетчики электроэнергии"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 88,
+    "fields": {
+      "category": 22,
+      "title": "Монитор энергопотребления",
+      "slug": "energy-monitor",
+      "description": "Устройства мониторинга энергопотребления"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 89,
+    "fields": {
+      "category": 22,
+      "title": "Инвертор",
+      "slug": "inverter",
+      "description": "Умные инверторы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 90,
+    "fields": {
+      "category": 22,
+      "title": "Аккумуляторная система",
+      "slug": "battery-system",
+      "description": "Системы хранения электроэнергии"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 91,
+    "fields": {
+      "category": 22,
+      "title": "Зарядная станция",
+      "slug": "ev-charger",
+      "description": "Умные зарядные станции"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 92,
+    "fields": {
+      "category": 23,
+      "title": "GPS-трекер",
+      "slug": "gps-tracker",
+      "description": "Умные GPS-трекеры"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 93,
+    "fields": {
+      "category": 23,
+      "title": "Автомобильный адаптер",
+      "slug": "car-adapter",
+      "description": "Умные автомобильные адаптеры"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 94,
+    "fields": {
+      "category": 23,
+      "title": "Монитор аккумулятора",
+      "slug": "battery-monitor",
+      "description": "Устройства мониторинга автомобильного аккумулятора"
+    }
+  },
+
+  {
+    "model": "mainapp.devicetype",
+    "pk": 95,
+    "fields": {
+      "category": 24,
+      "title": "Умные весы",
+      "slug": "smart-scale",
+      "description": "Умные весы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 96,
+    "fields": {
+      "category": 24,
+      "title": "Умные часы",
+      "slug": "smart-watch",
+      "description": "Умные часы"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 97,
+    "fields": {
+      "category": 24,
+      "title": "Кормушка для животных",
+      "slug": "pet-feeder",
+      "description": "Умные кормушки для домашних животных"
+    }
+  },
+  {
+    "model": "mainapp.devicetype",
+    "pk": 98,
+    "fields": {
+      "category": 24,
+      "title": "Другое устройство",
+      "slug": "other",
+      "description": "Устройства, не вошедшие в другие типы"
+    }
+  }
+]

@@ -8,12 +8,27 @@ from mainapp import models as mainapp_models
 class ScenariosAdmin(admin.ModelAdmin):
     list_per_page = 10
 
+class DeviceImageInline(admin.TabularInline):
+    model = mainapp_models.DeviceImage
+    extra = 1
+    readonly_fields = ("created_at",)
+    fields = ("image", "alt", "is_main", "order")
+
+
+class PurchaseLinkInline(admin.TabularInline):
+    model = mainapp_models.PurchaseLink
+    extra = 1
+    fields = ("marketplace", "url", "affiliate")
+
+
 @admin.register(mainapp_models.Device)
 class DevicesAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "slug", "deleted"]
     list_per_page = 10
     ordering = ["title"]
-    search_fields = ("name",)
+    search_fields = ("title", "model")
+    filter_horizontal = ("protocols",)
+    inlines = [DeviceImageInline, PurchaseLinkInline]
 
 @admin.register(mainapp_models.Article)
 class ArticlesAdmin(admin.ModelAdmin):
@@ -38,6 +53,16 @@ class ArticleCategoryAdmin(admin.ModelAdmin):
 @admin.register(mainapp_models.DeviceCategory)
 class DeviceCategory(admin.ModelAdmin):
     list_per_page = 10
+
+@admin.register(mainapp_models.DeviceType)
+class DeviceType(admin.ModelAdmin):
+    list_per_page = 10
+
+
+@admin.register(mainapp_models.Protocol)
+class ProtocolAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "slug")
+    list_per_page = 20
 
 @admin.register(mainapp_models.RatingStar)
 class RatingStar(admin.ModelAdmin):

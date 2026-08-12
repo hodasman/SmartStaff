@@ -1,1 +1,155 @@
-[{"model": "mainapp.devicecategory", "pk": 2, "fields": {"title": "Хабы", "slug": "habyi", "description": "Мосты, шлюзы, хабы"}}, {"model": "mainapp.devicecategory", "pk": 4, "fields": {"title": "Свет", "slug": "svet", "description": "лампы, светильники"}}, {"model": "mainapp.devicecategory", "pk": 5, "fields": {"title": "Пульт управления", "slug": "pult-upravleniya", "description": "Беспроводные кнопки, выключатели"}}, {"model": "mainapp.devicecategory", "pk": 11, "fields": {"title": "Датчики", "slug": "datchiki", "description": "Разные датчики"}}, {"model": "mainapp.devicecategory", "pk": 12, "fields": {"title": "Коммутационные устройства", "slug": "kommutatsionnyie-ustrojstva", "description": "Розетки, выключатели, реле и т. д."}}, {"model": "mainapp.devicecategory", "pk": 13, "fields": {"title": "Камеры видеонаблюдения", "slug": "kameryi-videonablyudeniya", "description": "Камеры видеонаблюдения"}}]
+[
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 2,
+    "fields": {
+      "title": "Шлюзы",
+      "slug": "habyi",
+      "description": "Мосты, шлюзы, хабы и контроллеры подключения устройств"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 4,
+    "fields": {
+      "title": "Освещение",
+      "slug": "svet",
+      "description": "Лампы, светильники, LED-ленты, ночники и другие устройства освещения"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 5,
+    "fields": {
+      "title": "Пульт управления",
+      "slug": "pult-upravleniya",
+      "description": "Беспроводные кнопки, пульты, панели управления и контроллеры"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 11,
+    "fields": {
+      "title": "Датчики",
+      "slug": "datchiki",
+      "description": "Датчики температуры, влажности, движения, открытия, протечки, качества воздуха и другие датчики"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 12,
+    "fields": {
+      "title": "Электрика",
+      "slug": "kommutatsionnyie-ustrojstva",
+      "description": "Розетки, выключатели, реле, диммеры и другие устройства управления электричеством"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 13,
+    "fields": {
+      "title": "Безопасность",
+      "slug": "kameryi-videonablyudeniya",
+      "description": "Камеры, видеозвонки, видеодомофоны, умные замки, сирены и системы сигнализации"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 14,
+    "fields": {
+      "title": "Климат",
+      "slug": "klimat",
+      "description": "Кондиционеры, термостаты, обогреватели, вентиляторы, увлажнители, осушители и очистители воздуха"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 15,
+    "fields": {
+      "title": "Шторы и жалюзи",
+      "slug": "shtory-i-zhalyuzi",
+      "description": "Умные шторы, карнизы, рулонные шторы, жалюзи и приводы"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 16,
+    "fields": {
+      "title": "Уборка",
+      "slug": "uborka",
+      "description": "Роботы-пылесосы, роботы-мойщики окон, роботы для бассейнов и другие устройства для уборки"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 17,
+    "fields": {
+      "title": "Бытовая техника",
+      "slug": "bytovaya-tehnika",
+      "description": "Стиральные и сушильные машины, холодильники, телевизоры, проекторы и другая бытовая техника"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 18,
+    "fields": {
+      "title": "Кухонная техника",
+      "slug": "kuhonnaya-tehnika",
+      "description": "Чайники, кофемашины, мультиварки, духовки, микроволновки и другая кухонная техника"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 19,
+    "fields": {
+      "title": "Вода",
+      "slug": "voda",
+      "description": "Умные краны, клапаны, насосы, водонагреватели, бойлеры и счетчики воды"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 20,
+    "fields": {
+      "title": "Сад",
+      "slug": "sad",
+      "description": "Системы полива, контроллеры, датчики почвы, садовое освещение и устройства для сада"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 21,
+    "fields": {
+      "title": "Мультимедиа",
+      "slug": "multimedia",
+      "description": "Умные колонки, дисплеи, аудиосистемы, медиаплееры и другие мультимедийные устройства"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 22,
+    "fields": {
+      "title": "Энергия",
+      "slug": "energiya",
+      "description": "Счетчики электроэнергии, мониторы энергопотребления, инверторы, аккумуляторы и зарядные станции"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 23,
+    "fields": {
+      "title": "Транспорт",
+      "slug": "transport",
+      "description": "Зарядные станции, автомобильные устройства, GPS-трекеры и другие устройства для транспорта"
+    }
+  },
+  {
+    "model": "mainapp.devicecategory",
+    "pk": 24,
+    "fields": {
+      "title": "Другое",
+      "slug": "drugoe",
+      "description": "Устройства, которые не относятся к другим категориям"
+    }
+  }
+]

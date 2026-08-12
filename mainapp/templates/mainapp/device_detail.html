@@ -64,36 +64,15 @@
                     </div>
 
             
-				    <div class="row gallery-item">
-                        {% if object.foto1 %}
-                        <div class="col-md-6">
-                            <a href="{{object.foto1.url }}" class="img-pop-up">
-                                <div class="single-gallery-image" style="background: url('{{object.foto1.url }}');"></div>
-                            </a>
+    				<div class="row gallery-item">
+                            {% for img in object.images.all %}
+                            <div class="col-md-6">
+                                <a href="{{ img.image.url }}" class="img-pop-up">
+                                    <div class="single-gallery-image" style="background: url('{{ img.image.url }}');"></div>
+                                </a>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endif %}
-                        {% if object.foto2 %}
-                        <div class="col-md-6">
-                            <a href="{{object.foto2.url }}" class="img-pop-up">
-                                <div class="single-gallery-image" style="background: url('{{object.foto2.url }}');"></div>
-                            </a>
-                        </div>
-                        {% endif %}
-                        {% if object.foto3 %}
-                        <div class="col-md-6">
-                            <a href="{{object.foto3.url }}" class="img-pop-up">
-                                <div class="single-gallery-image" style="background: url('{{object.foto3.url }}');"></div>
-                            </a>
-                        </div>
-                        {% endif %}
-                        {% if object.foto4 %}
-                        <div class="col-md-6">
-                            <a href="{{object.foto4.url }}" class="img-pop-up">
-                                <div class="single-gallery-image" style="background: url('{{object.foto4.url }}');"></div>
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
 
                     
                 </div>
@@ -105,10 +84,10 @@
                         <div class="job_content">
                             <ul>
                                 <li>{% trans "Model:" %} <span>{{object.model}}</span></li>
-                                <li>{% trans "Protocols:" %} <span>{{object.protocol}}</span></li>
+                                <li>{% trans "Protocols:" %} <span>{% for p in object.protocols.all %}{{p.title}}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}</span></li>
                                 <li>{% trans "Power:" %} <span>{{object.power}}</span></li>
                                 <li>{% trans "Dimensions:" %} <span>{{object.size}}</span></li>
-                                <li>{% trans "Equipment:" %} <span>{{object.set}}</span></li>
+                                <li>{% trans "Equipment:" %} <span>{{object.package_contents}}</span></li>
                                 <li>{% trans "Platforms:" %} <span> {% for item in object.platforms.all %} {{item.title}}; {% endfor %}</span></li>
                             
                             </ul>
@@ -123,7 +102,18 @@
                             <li><a href="#"> <i class="fa fa-envelope"></i></a> </li>
                         </ul>
                     </div>
-                    
+                    <div class="buy_links mt-3">
+                        <h4>{% trans "Purchase" %}</h4>
+                        <div class="d-flex flex-wrap">
+                            {% for pl in object.purchase_links.all %}
+                                <a href="{{ pl.url }}" target="_blank" class="btn btn-outline-primary mr-2 mb-2">
+                                    {{ pl.get_marketplace_display }}
+                                </a>
+                            {% empty %}
+                                <p class="text-muted">{% trans "No purchase links" %}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
