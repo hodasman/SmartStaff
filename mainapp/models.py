@@ -207,7 +207,7 @@ class Device(models.Model):
     model = models.CharField(max_length=256, verbose_name=_("Device model"))
     size = models.CharField(max_length=256, verbose_name=_("Dimensions"))
     power = models.CharField(max_length=256, verbose_name=_("Power supply"))
-    protocol = models.CharField(max_length=256, verbose_name=_("Supported protocols"))
+        protocols = models.ManyToManyField('Protocol', verbose_name=_("Supported protocols"), blank=True)
     temperature = models.CharField(max_length=256, verbose_name=_("Operating temperature"))
     platforms = models.ManyToManyField(Platform, verbose_name=_("Platforms"), blank=True)
     author = models.ForeignKey(
@@ -257,6 +257,19 @@ class DeviceImage(models.Model):
 
     def __str__(self):
         return f"{self.device.title} — image #{self.id}"
+
+
+class Protocol(models.Model):
+    title = models.CharField(max_length=64, verbose_name=_("Name"))
+    slug = models.SlugField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Protocol")
+        verbose_name_plural = _("Protocols")
+        ordering = ["title"]
+
+    def __str__(self):
+        return self.title
 
 
 class PurchaseLink(models.Model):

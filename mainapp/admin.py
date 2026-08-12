@@ -27,6 +27,7 @@ class DevicesAdmin(admin.ModelAdmin):
     list_per_page = 10
     ordering = ["title"]
     search_fields = ("title", "model")
+    filter_horizontal = ("protocols",)
     inlines = [DeviceImageInline, PurchaseLinkInline]
 
 @admin.register(mainapp_models.Article)
@@ -56,6 +57,12 @@ class DeviceCategory(admin.ModelAdmin):
 @admin.register(mainapp_models.DeviceType)
 class DeviceType(admin.ModelAdmin):
     list_per_page = 10
+
+
+@admin.register(mainapp_models.Protocol)
+class ProtocolAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "slug")
+    list_per_page = 20
 
 @admin.register(mainapp_models.RatingStar)
 class RatingStar(admin.ModelAdmin):
