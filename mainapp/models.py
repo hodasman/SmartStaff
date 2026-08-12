@@ -217,7 +217,7 @@ class Device(models.Model):
         blank=True,
         null=True
     )
-    set = models.CharField(max_length=256, verbose_name=_("Package contents"))
+    package_contents = models.TextField(verbose_name=_("Package contents"))
     deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(verbose_name=_("Created"), auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name=_("Updated"), auto_now=True)
