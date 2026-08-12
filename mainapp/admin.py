@@ -15,13 +15,19 @@ class DeviceImageInline(admin.TabularInline):
     fields = ("image", "alt", "is_main", "order")
 
 
+class PurchaseLinkInline(admin.TabularInline):
+    model = mainapp_models.PurchaseLink
+    extra = 1
+    fields = ("marketplace", "url", "affiliate")
+
+
 @admin.register(mainapp_models.Device)
 class DevicesAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "slug", "deleted"]
     list_per_page = 10
     ordering = ["title"]
     search_fields = ("title", "model")
-    inlines = [DeviceImageInline]
+    inlines = [DeviceImageInline, PurchaseLinkInline]
 
 @admin.register(mainapp_models.Article)
 class ArticlesAdmin(admin.ModelAdmin):

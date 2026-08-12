@@ -218,7 +218,6 @@ class Device(models.Model):
         null=True
     )
     set = models.CharField(max_length=256, verbose_name=_("Package contents"))
-    link_to_buy = models.CharField(max_length=256, verbose_name=_("Purchase link"))
     deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(verbose_name=_("Created"), auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name=_("Updated"), auto_now=True)
@@ -258,6 +257,41 @@ class DeviceImage(models.Model):
 
     def __str__(self):
         return f"{self.device.title} — image #{self.id}"
+
+
+class PurchaseLink(models.Model):
+    MARKETPLACE_OZON = 'ozon'
+    MARKETPLACE_WB = 'wb'
+    MARKETPLACE_ALI = 'aliexpress'
+    MARKETPLACE_OTHER = 'other'
+
+    MARKETPLACE_CHOICES = [
+        (MARKETPLACE_OZON, 'Ozon'),
+        (MARKETPLACE_WB, 'Wildberries'),
+        (MARKETPLACE_ALI, 'AliExpress'),
+        (MARKETPLACE_OTHER, 'Other'),
+    ]
+
+    device = models.ForeignKey(
+        "mainapp.Device",
+        on_delete=models.CASCADE,
+        related_name="purchase_links",
+        verbose_name=_("Device"),
+    )
+    marketplace = models.CharField(max_length=32, choices=MARKETPLACE_CHOICES, verbose_name=_("Marketplace"))
+    url = models.URLField(verbose_name=_("URL"))
+    # price and currency removed because marketplace prices are dynamic
+    affiliate = models.BooleanField(default=False, verbose_name=_("Affiliate"))
+    note = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Note"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+
+    class Meta:
+        verbose_name = _("Purchase link")
+        verbose_name_plural = _("Purchase links")
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.get_marketplace_display()} — {self.device.title}"
 
 
 class Scenario(models.Model):

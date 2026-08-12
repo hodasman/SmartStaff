@@ -102,7 +102,18 @@
                             <li><a href="#"> <i class="fa fa-envelope"></i></a> </li>
                         </ul>
                     </div>
-                    
+                    <div class="buy_links mt-3">
+                        <h4>{% trans "Purchase" %}</h4>
+                        <div class="d-flex flex-wrap">
+                            {% for pl in object.purchase_links.all %}
+                                <a href="{{ pl.url }}" target="_blank" class="btn btn-outline-primary mr-2 mb-2">
+                                    {{ pl.get_marketplace_display }}
+                                </a>
+                            {% empty %}
+                                <p class="text-muted">{% trans "No purchase links" %}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
