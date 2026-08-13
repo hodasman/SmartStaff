@@ -204,12 +204,12 @@ class Device(models.Model):
     slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
     description = models.TextField(verbose_name=_("Description"), blank=True)
     icon = models.ImageField(verbose_name=_("Device icon"), blank=True, null=True, upload_to=device_foto_path)
-    model = models.CharField(max_length=256, verbose_name=_("Device model"))
+    model_name = models.CharField(max_length=256, verbose_name=_("Device model"))
     size = models.CharField(max_length=256, verbose_name=_("Dimensions"))
     power = models.CharField(max_length=256, verbose_name=_("Power supply"))
     protocols = models.ManyToManyField('Protocol', verbose_name=_("Supported protocols"), blank=True)
     temperature = models.CharField(max_length=256, verbose_name=_("Operating temperature"))
-    platforms = models.ManyToManyField(Platform, verbose_name=_("Platforms"), blank=True)
+    ecosystem = models.ManyToManyField(Platform, verbose_name=_("Ecosystem"), blank=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

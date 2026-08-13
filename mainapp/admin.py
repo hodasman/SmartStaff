@@ -26,7 +26,7 @@ class DevicesAdmin(admin.ModelAdmin):
     list_display = ["id", "title", "slug", "deleted"]
     list_per_page = 10
     ordering = ["title"]
-    search_fields = ("title", "model")
+    search_fields = ("title", "model_name")
     filter_horizontal = ("protocols",)
     inlines = [DeviceImageInline, PurchaseLinkInline]
 

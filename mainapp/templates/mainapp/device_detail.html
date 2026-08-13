@@ -88,7 +88,8 @@
                                 <li>{% trans "Power:" %} <span>{{object.power}}</span></li>
                                 <li>{% trans "Dimensions:" %} <span>{{object.size}}</span></li>
                                 <li>{% trans "Equipment:" %} <span>{{object.package_contents}}</span></li>
-                                <li>{% trans "Platforms:" %} <span> {% for item in object.platforms.all %} {{item.title}}; {% endfor %}</span></li>
+                                    <li>{% trans "Model:" %} <span>{{object.model_name}}</span></li>
+                                    <li>{% trans "Platforms:" %} <span> {% for item in object.ecosystem.all %} {{item.title}}; {% endfor %}</span></li>
                             
                             </ul>
                         </div>

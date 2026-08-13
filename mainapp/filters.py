@@ -25,7 +25,7 @@ class DevicesFilter(django_filters.FilterSet):
         fields = {
             
             'category',
-            'platforms',
+            'ecosystem',
             'author',
         }
         
