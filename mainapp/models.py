@@ -207,7 +207,7 @@ class Device(models.Model):
     model = models.CharField(max_length=256, verbose_name=_("Device model"))
     size = models.CharField(max_length=256, verbose_name=_("Dimensions"))
     power = models.CharField(max_length=256, verbose_name=_("Power supply"))
-        protocols = models.ManyToManyField('Protocol', verbose_name=_("Supported protocols"), blank=True)
+    protocols = models.ManyToManyField('Protocol', verbose_name=_("Supported protocols"), blank=True)
     temperature = models.CharField(max_length=256, verbose_name=_("Operating temperature"))
     platforms = models.ManyToManyField(Platform, verbose_name=_("Platforms"), blank=True)
     author = models.ForeignKey(
