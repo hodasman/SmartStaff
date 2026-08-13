@@ -23,9 +23,7 @@ class DevicesFilter(django_filters.FilterSet):
     class Meta:
         model = Device
         fields = {
-            
             'category',
             'ecosystem',
-            'author',
         }
         
