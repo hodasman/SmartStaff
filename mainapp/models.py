@@ -24,7 +24,7 @@ def scenarios_img_path(instance, filename):
 
 
 class Platform(models.Model):
-    title = models.CharField(max_length=256, verbose_name=_("Name"))
+    title = models.CharField(max_length=256, verbose_name=_("Name"), db_index=True)
     description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     class Meta:
@@ -56,7 +56,7 @@ class Idea(models.Model):
 
 class ArticleCategory(models.Model):
     title = models.CharField(max_length=256, verbose_name=_("Name"))
-    slug = AutoSlugField(populate_from="title", unique=True)
+    slug = AutoSlugField(populate_from="title", unique=True, db_index=True)
     description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     class Meta:
@@ -137,9 +137,9 @@ class Article(models.Model):
     main_img = models.ImageField(verbose_name=_("Main picture"), blank=True, null=True, upload_to=article_img_path)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
     tags = TaggableManager()
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created", editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created", editable=False, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Edited", editable=False)
-    deleted = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False, db_index=True)
 
     def __str__(self) -> str:
         return f"{self.pk} {self.title}"
