@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 from taggit.managers import TaggableManager
 
 
@@ -348,7 +349,7 @@ class Scenario(models.Model):
     main_img = models.ImageField(verbose_name=_("Main image"), blank=True, null=True, upload_to=scenarios_img_path)
     devices = models.ManyToManyField(Device)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
-    platform = models.ForeignKey(Platform, on_delete=models.CASCADE, blank=True, null=True)
+    # `platform` removed: scenario may have multiple variants per ecosystem
     idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
     tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), editable=False)
@@ -476,6 +477,61 @@ class ScenarioManager(models.Manager):
 # attach manager to Scenario
 Scenario.objects = ScenarioManager()
 Scenario.objects.model = Scenario
+
+
+class ScenarioVariant(models.Model):
+    """Вариант реализации сценария для конкретной экосистемы (platform).
+    Содержит связь на конкретные устройства или типы устройств через RequiredDevice.
+    """
+    scenario = models.ForeignKey(
+        'mainapp.Scenario', on_delete=models.CASCADE, related_name='variants', verbose_name=_('Scenario')
+    )
+    platform = models.ForeignKey(
+        Platform, on_delete=models.CASCADE, related_name='scenario_variants', verbose_name=_('Platform')
+    )
+    title = models.CharField(max_length=256, blank=True, null=True, verbose_name=_('Title'))
+    description = models.TextField(blank=True, null=True, verbose_name=_('Description'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+
+    class Meta:
+        verbose_name = _('Scenario variant')
+        verbose_name_plural = _('Scenario variants')
+        unique_together = (('scenario', 'platform'),)
+
+    def __str__(self) -> str:
+        return f"{self.scenario.title} — {self.platform.title}"
+
+
+class RequiredDevice(models.Model):
+    """Требуемое устройство (конкретное или по типу) для варианта сценария.
+    Указывайте либо `device`, либо `device_type`, но не оба одновременно.
+    """
+    variant = models.ForeignKey(
+        ScenarioVariant, on_delete=models.CASCADE, related_name='required_devices', verbose_name=_('Variant')
+    )
+    device = models.ForeignKey(
+        Device, on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('Device')
+    )
+    device_type = models.ForeignKey(
+        DeviceType, on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('Device type')
+    )
+    quantity = models.PositiveSmallIntegerField(default=1, verbose_name=_('Quantity'))
+    note = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Note'))
+
+    class Meta:
+        verbose_name = _('Required device')
+        verbose_name_plural = _('Required devices')
+
+    def clean(self):
+        # ensure at least one of device or device_type is set
+        if not self.device and not self.device_type:
+            raise ValidationError(_('Either device or device_type must be set.'))
+        if self.device and self.device_type:
+            raise ValidationError(_('Specify only one of device or device_type, not both.'))
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        return super().save(*args, **kwargs)
     
 
 class RatingStar(models.Model):
