@@ -1,6 +1,7 @@
 {% extends 'base_blog.html' %}
 {% load static %}
 {% load i18n %}
+{% load icon_tags %}
 {% load crispy_forms_tags %}  
 
 {% block title %}
@@ -17,7 +18,7 @@
          <h2>{{object.title}}
          </h2>
          <ul class="blog-info-link mt-3 mb-4">
-            <li><a href="{% url 'mainapp:articles_category' cat_slug=object.category.slug %}"><i  class="fa fa-th-list"></i> {{object.category}}</a></li>
+            <li><a href="{% url 'mainapp:articles_category' cat_slug=object.category.slug %}"><i  class="fa {{ object.category|get_icon }}"></i> {{object.category}}</a></li>
             <li><i class="fa fa-user"></i> {{object.author.username}}</li>
             <li><a href="#comments"><i class="fa fa-comments"></i> {% trans "Comments" %} - {{object.get_all_comments|length}}</a></li>
             <li><i class="fa fa-tags"></i>

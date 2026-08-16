@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load icon_tags %}
 {% load i18n %}
 {% block title %}
 {% trans "Personal account" %} {{user.username}}
@@ -88,7 +89,7 @@
                                             <a href="{% url 'mainapp:devices_detail' slug=device.slug %}"><h4>{{ device.title }}</h4></a>
                                             <div class="links_locat d-flex align-items-center">
                                                 <div class="location">
-                                                    <p> <i class="fa fa-th-list"></i> {{device.category}}</p>
+                                                    <p> <i class="fa {{ device.category|get_icon }}"></i> {{device.category}}</p>
                                                 </div>
                                                 <div class="location">
                                                     <p> <i class="fa fa-user"></i> {{device.author}}</p>
