@@ -58,7 +58,7 @@
          {%endif%}
 
          <h3 class="mb-20">{% trans "Devices" %}</h3>
-         {% for item in object.devices.all %}
+             {% for item in object.devices.all %}
          <ol class="unordered-list">
             <li><a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="d-flex">
                {{item.title}}
@@ -66,6 +66,32 @@
             </li>
          </ol>
          {%endfor%}
+
+             {% if object.variants.all %}
+             <h3 class="mb-20">{% trans "Variants by platform" %}</h3>
+             {% for variant in object.variants.all %}
+                <div class="variant-block">
+                   <h4>{{ variant.platform.title }}</h4>
+                   {% if variant.required_devices.all %}
+                      <ul>
+                         {% for rd in variant.required_devices.all %}
+                            <li>
+                               {% if rd.device %}
+                                  <a href="{% url 'mainapp:devices_detail' slug=rd.device.slug %}">{{ rd.device.title }}</a>
+                               {% else %}
+                                  {{ rd.device_type.title }}
+                               {% endif %}
+                               {% if rd.quantity and rd.quantity|int > 1 %} — x{{ rd.quantity }}{% endif %}
+                               {% if rd.note %} ({{ rd.note }}){% endif %}
+                            </li>
+                         {% endfor %}
+                      </ul>
+                   {% else %}
+                      <p>{% trans "No specific required devices listed for this variant." %}</p>
+                   {% endif %}
+                </div>
+             {% endfor %}
+             {% endif %}
 
          <h3 class="mb-20">{% trans "Explanations" %}</h3>
          {{object.text|safe|escape}}
