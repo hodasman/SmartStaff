@@ -1,6 +1,7 @@
 
 {% extends 'base.html' %}
 {% load static %}
+{% load icon_tags %}
 {% load i18n %}
 {% block title %}
 {{ object.title}}
@@ -39,10 +40,10 @@
                                     <h4>{{ object.title }}</h4>
                                     <div class="links_locat d-flex align-items-center">
                                         <div class="location">
-                                            <p> <i class="fa fa-th-list"></i> {{object.category}}</p>
+                                            <p> <i class="fa {{ object.category|get_icon }}"></i> {{object.category}}</p>
                                         </div>
                                         <div class="location">
-                                            <p> <i class="fa fa-microchip"></i> {{object.device_type}}</p>
+                                            <p> <i class="fa {{ object.device_type|get_icon }}"></i> {{object.device_type}}</p>
                                         </div>
                                         <div class="location">
                                             <p> <i class="fa fa-user"></i> {{object.author}}</p>
