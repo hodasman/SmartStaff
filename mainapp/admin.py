@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from authapp import models as authapp_models
 from mainapp import models as mainapp_models
@@ -7,6 +8,25 @@ from mainapp import models as mainapp_models
 @admin.register(mainapp_models.Scenario)
 class ScenariosAdmin(admin.ModelAdmin):
     list_per_page = 10
+    inlines = [ScenarioImageInline]
+
+
+class ScenarioImageInline(admin.TabularInline):
+    model = mainapp_models.ScenarioImage
+    extra = 1
+    readonly_fields = ("created_at", "preview")
+    fields = ("image", "preview", "alt", "is_main", "order")
+
+    def preview(self, obj):
+        if not obj or not obj.image:
+            return ""
+        try:
+            url = obj.image.url
+        except Exception:
+            return ""
+        return format_html('<img src="{}" style="max-height:100px;"/>', url)
+
+    preview.short_description = "Preview"
 
 class DeviceImageInline(admin.TabularInline):
     model = mainapp_models.DeviceImage
