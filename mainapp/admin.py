@@ -28,6 +28,26 @@ class ScenarioImageInline(admin.TabularInline):
 
     preview.short_description = "Preview"
 
+
+class RequiredDeviceInline(admin.TabularInline):
+    model = mainapp_models.RequiredDevice
+    extra = 1
+    fields = ("device", "device_type", "quantity", "note")
+
+
+class ScenarioVariantInline(admin.TabularInline):
+    model = mainapp_models.ScenarioVariant
+    extra = 1
+    readonly_fields = ("created_at",)
+    fields = ("platform", "title", "description", "created_at")
+
+
+@admin.register(mainapp_models.ScenarioVariant)
+class ScenarioVariantAdmin(admin.ModelAdmin):
+    list_display = ("id", "scenario", "platform")
+    inlines = [RequiredDeviceInline]
+    list_per_page = 20
+
 class DeviceImageInline(admin.TabularInline):
     model = mainapp_models.DeviceImage
     extra = 1
