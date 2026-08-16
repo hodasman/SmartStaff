@@ -56,7 +56,7 @@ class Idea(models.Model):
 
 class ArticleCategory(models.Model):
     title = models.CharField(max_length=256, verbose_name=_("Name"))
-    slug = AutoSlugField(populate_from="title")
+    slug = AutoSlugField(populate_from="title", unique=True)
     description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     class Meta:
@@ -131,7 +131,7 @@ class Article(models.Model):
     category = models.ForeignKey(
         ArticleCategory, verbose_name=_("Category"), on_delete=models.CASCADE, related_name="articles"
     )
-    slug = AutoSlugField(populate_from="title", verbose_name="URL")
+    slug = AutoSlugField(populate_from="title", verbose_name="URL", unique=True)
     preambule = models.TextField(verbose_name=_("Brief description"), blank=True)
     text = models.TextField(verbose_name=_("Text"), blank=True)
     main_img = models.ImageField(verbose_name=_("Main picture"), blank=True, null=True, upload_to=article_img_path)
