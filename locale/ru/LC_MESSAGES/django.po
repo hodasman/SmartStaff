@@ -654,11 +654,11 @@ msgstr ""
 
 #: mainapp/models.py:302
 msgid "Purchase link"
-msgstr "Ссылка на покупку"
+msgstr "Ссылка для покупки"
 
 #: mainapp/models.py:303
 msgid "Purchase links"
-msgstr "Ссылки на покупку"
+msgstr "Ссылки для покупки"
 
 #: mainapp/models.py:316
 msgid "Image 1"

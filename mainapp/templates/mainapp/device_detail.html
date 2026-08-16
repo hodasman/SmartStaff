@@ -42,6 +42,9 @@
                                             <p> <i class="fa fa-th-list"></i> {{object.category}}</p>
                                         </div>
                                         <div class="location">
+                                            <p> <i class="fa fa-microchip"></i> {{object.device_type}}</p>
+                                        </div>
+                                        <div class="location">
                                             <p> <i class="fa fa-user"></i> {{object.author}}</p>
                                         </div>
                                     </div>
@@ -102,8 +105,8 @@
                             <li><a href="#"> <i class="fa fa-envelope"></i></a> </li>
                         </ul>
                     </div>
-                    <div class="buy_links mt-3">
-                        <h4>{% trans "Purchase link" %}</h4>
+                    <div class="buy_links mt-3 share_wrap white-bg">
+                        <span>{% trans "Purchase links" %}:</span>
                         <div class="d-flex flex-wrap">
                             {% for pl in object.purchase_links.all %}
                                 <a href="{{ pl.url }}" target="_blank" class="btn btn-outline-primary mr-2 mb-2">

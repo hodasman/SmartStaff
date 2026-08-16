@@ -655,7 +655,7 @@ msgstr "Спасылка на пакупку"
 
 #: mainapp/models.py:303
 msgid "Purchase links"
-msgstr "Спасылкі на пакупку"
+msgstr "Спасылкі на куплю"
 
 #: mainapp/models.py:316
 msgid "Image 1"
