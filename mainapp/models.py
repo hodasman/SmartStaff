@@ -135,31 +135,6 @@ class Article(models.Model):
     preambule = models.TextField(verbose_name=_("Brief description"), blank=True)
     text = models.TextField(verbose_name=_("Text"), blank=True)
     main_img = models.ImageField(verbose_name=_("Main picture"), blank=True, null=True, upload_to=article_img_path)
-    img_1 = models.ImageField(verbose_name=_("Picture 1"), blank=True, null=True, upload_to=article_img_path)
-    img_2 = models.ImageField(verbose_name=_("Picture 2"), blank=True, null=True, upload_to=article_img_path)
-    img_3 = models.ImageField(verbose_name=_("Picture 3"), blank=True, null=True, upload_to=article_img_path)
-    img_4 = models.ImageField(verbose_name=_("Picture 4"), blank=True, null=True, upload_to=article_img_path)
-    img_5 = models.ImageField(verbose_name=_("Picture 5"), blank=True, null=True, upload_to=article_img_path)
-    img_6 = models.ImageField(verbose_name=_("Picture 6"), blank=True, null=True, upload_to=article_img_path)
-    img_7 = models.ImageField(verbose_name=_("Picture 7"), blank=True, null=True, upload_to=article_img_path)
-    img_8 = models.ImageField(verbose_name=_("Picture 8"), blank=True, null=True, upload_to=article_img_path)
-    img_9 = models.ImageField(verbose_name=_("Picture 9"), blank=True, null=True, upload_to=article_img_path)
-    img_10 = models.ImageField(verbose_name=_("Picture 10"), blank=True, null=True, upload_to=article_img_path)
-    img_11 = models.ImageField(verbose_name=_("Picture 11"), blank=True, null=True, upload_to=article_img_path)
-    img_12 = models.ImageField(verbose_name=_("Picture 12"), blank=True, null=True, upload_to=article_img_path)
-    img_13 = models.ImageField(verbose_name=_("Picture 13"), blank=True, null=True, upload_to=article_img_path)
-    img_14 = models.ImageField(verbose_name=_("Picture 14"), blank=True, null=True, upload_to=article_img_path)
-    img_15 = models.ImageField(verbose_name=_("Picture 15"), blank=True, null=True, upload_to=article_img_path)
-    img_16 = models.ImageField(verbose_name=_("Picture 16"), blank=True, null=True, upload_to=article_img_path)
-    img_17 = models.ImageField(verbose_name=_("Picture 17"), blank=True, null=True, upload_to=article_img_path)
-    img_18 = models.ImageField(verbose_name=_("Picture 18"), blank=True, null=True, upload_to=article_img_path)
-    img_19 = models.ImageField(verbose_name=_("Picture 19"), blank=True, null=True, upload_to=article_img_path)
-    img_20 = models.ImageField(verbose_name=_("Picture 20"), blank=True, null=True, upload_to=article_img_path)
-    img_21 = models.ImageField(verbose_name=_("Picture 21"), blank=True, null=True, upload_to=article_img_path)
-    img_22 = models.ImageField(verbose_name=_("Picture 22"), blank=True, null=True, upload_to=article_img_path)
-    img_23 = models.ImageField(verbose_name=_("Picture 23"), blank=True, null=True, upload_to=article_img_path)
-    img_24 = models.ImageField(verbose_name=_("Picture 24"), blank=True, null=True, upload_to=article_img_path)
-    img_25 = models.ImageField(verbose_name=_("Picture 25"), blank=True, null=True, upload_to=article_img_path)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
     tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created", editable=False)
@@ -185,6 +160,28 @@ class Article(models.Model):
         '''Возвращает QuerySet объектов комментариев для данной статьи'''
         comments = ArticleComment.objects.filter(article_id = self.id)
         return comments
+
+
+class ArticleImage(models.Model):
+    article = models.ForeignKey(
+        'mainapp.Article',
+        on_delete=models.CASCADE,
+        related_name='images',
+        verbose_name=_('Article'),
+    )
+    image = models.ImageField(verbose_name=_('Image'), upload_to=article_img_path)
+    alt = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Alt text'))
+    is_main = models.BooleanField(default=False, verbose_name=_('Main image'))
+    order = models.PositiveSmallIntegerField(default=0, verbose_name=_('Order'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+
+    class Meta:
+        verbose_name = _('Article image')
+        verbose_name_plural = _('Article images')
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"{self.article.title} — image #{self.id}"
 
 
 class Device(models.Model):
