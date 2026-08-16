@@ -211,7 +211,7 @@ class ScenariosCategory(ListView):
 
     def get_queryset(self):
         """Получаем объект QuerySet выборку сценариев по категории (платформе)"""
-        return mainapp_models.Scenario.objects.filter(platform__id=self.kwargs["platform_id"], deleted=False)
+        return mainapp_models.Scenario.objects.filter(platform__id=self.kwargs["platform_id"])
 
     def get_context_data(self, **kwargs):
         context = super(ScenariosCategory, self).get_context_data(**kwargs)

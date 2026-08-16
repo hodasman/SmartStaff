@@ -37,7 +37,7 @@ class Platform(models.Model):
     
     def qty_scenarios_in_platform(self):
         '''Возвращает количество сценариев по платформе'''
-        qty = len(Scenario.objects.filter(platform__id=self.id, deleted=False))
+        qty = Scenario.objects.filter(platform__id=self.id).count()
         return qty
 
 
@@ -332,6 +332,9 @@ class PurchaseLink(models.Model):
 
 
 class Scenario(models.Model):
+    objects = None
+    
+    # soft-delete queryset/manager will be attached below
     title = models.CharField(max_length=256, verbose_name=_("Title"))
     slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
     text = models.TextField(verbose_name=_("Text"), blank=True)
@@ -433,6 +436,37 @@ class Scenario(models.Model):
             elif scenario_devices <= devices and self.id != scenario.id:
                 similar_scenarios.append(scenario)
         return similar_scenarios
+
+
+# Custom queryset + manager for Scenario to support soft-delete semantics
+class ScenarioQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(deleted=False)
+
+    def with_deleted(self):
+        return self.all()
+
+    def search(self, query=None):
+        qs = self
+        if query:
+            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
+            qs = qs.filter(or_lookup)
+        return qs
+
+
+class ScenarioManager(models.Manager):
+    def get_queryset(self):
+        return ScenarioQuerySet(self.model, using=self._db).filter(deleted=False)
+
+    def with_deleted(self):
+        return ScenarioQuerySet(self.model, using=self._db)
+
+    def search(self, query=None):
+        return self.get_queryset().search(query)
+
+
+# attach manager to Scenario
+Scenario.objects = ScenarioManager()
     
 
 class RatingStar(models.Model):
