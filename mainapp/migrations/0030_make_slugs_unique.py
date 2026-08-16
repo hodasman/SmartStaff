@@ -1,4 +1,5 @@
 from django.db import migrations
+from autoslug import AutoSlugField
 
 
 def make_unique_slugs(apps, schema_editor):
@@ -39,11 +40,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='articlecategory',
             name='slug',
-            field=__import__('autoslug').autoslug.AutoSlugField(populate_from='title', unique=True),
+            field=AutoSlugField(populate_from='title', unique=True),
         ),
         migrations.AlterField(
             model_name='article',
             name='slug',
-            field=__import__('autoslug').autoslug.AutoSlugField(populate_from='title', verbose_name='URL', unique=True),
+            field=AutoSlugField(populate_from='title', verbose_name='URL', unique=True),
         ),
     ]
