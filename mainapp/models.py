@@ -68,7 +68,7 @@ class ArticleCategory(models.Model):
         return f"{self.title}"
     
     def qty_articles_in_category(self):
-        qty = len(Article.objects.filter(category__slug=self.slug, deleted=False))
+        qty = Article.objects.filter(category__slug=self.slug).count()
         return qty
 
 

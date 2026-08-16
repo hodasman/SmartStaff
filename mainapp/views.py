@@ -127,7 +127,7 @@ class ArticlesCategory(ListView):
     def get_queryset(self):
         """cat__slug – это способ обращения к слагу таблицы ArticleCategory через объект category модели Articles
         функция выдает объект QuerySet с выборкой по категории"""
-        return mainapp_models.Article.objects.filter(category__slug=self.kwargs["cat_slug"], deleted=False)
+        return mainapp_models.Article.objects.filter(category__slug=self.kwargs["cat_slug"])
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesCategory, self).get_context_data(**kwargs)
