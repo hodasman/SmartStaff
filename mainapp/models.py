@@ -478,6 +478,7 @@ class ScenarioManager(models.Manager):
 
 # attach manager to Scenario
 Scenario.objects = ScenarioManager()
+Scenario.objects.model = Scenario
     
 
 class RatingStar(models.Model):
