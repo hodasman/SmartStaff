@@ -15,6 +15,13 @@ class DeviceImageInline(admin.TabularInline):
     fields = ("image", "alt", "is_main", "order")
 
 
+class ArticleImageInline(admin.TabularInline):
+    model = mainapp_models.ArticleImage
+    extra = 1
+    readonly_fields = ("created_at",)
+    fields = ("image", "alt", "is_main", "order")
+
+
 class PurchaseLinkInline(admin.TabularInline):
     model = mainapp_models.PurchaseLink
     extra = 1
@@ -32,7 +39,13 @@ class DevicesAdmin(admin.ModelAdmin):
 
 @admin.register(mainapp_models.Article)
 class ArticlesAdmin(admin.ModelAdmin):
-    list_per_page = 10
+    list_per_page = 20
+    list_display = ("id", "title", "slug", "category", "author", "created_at", "deleted")
+    list_filter = ("category", "author", "deleted", "created_at")
+    search_fields = ("title", "preambule", "text")
+    raw_id_fields = ("author",)
+    inlines = [ArticleImageInline]
+    ordering = ("-created_at",)
 
 @admin.register(mainapp_models.Platform)
 class PlatformsAdmin(admin.ModelAdmin):
