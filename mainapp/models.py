@@ -125,8 +125,35 @@ class ObjectManager(models.Manager):
         return qs
 
 
+# Custom queryset + manager for Article to support soft-delete semantics
+class ArticleQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(deleted=False)
+
+    def with_deleted(self):
+        return self.all()
+
+    def search(self, query=None):
+        qs = self
+        if query:
+            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
+            qs = qs.filter(or_lookup)
+        return qs
+
+
+class ArticleManager(models.Manager):
+    def get_queryset(self):
+        return ArticleQuerySet(self.model, using=self._db).filter(deleted=False)
+
+    def with_deleted(self):
+        return ArticleQuerySet(self.model, using=self._db)
+
+    def search(self, query=None):
+        return self.get_queryset().search(query)
+
+
 class Article(models.Model):
-    objects = ObjectManager()
+    objects = ArticleManager()
     title = models.CharField(max_length=256, verbose_name=_("Name"))
     category = models.ForeignKey(
         ArticleCategory, verbose_name=_("Category"), on_delete=models.CASCADE, related_name="articles"
