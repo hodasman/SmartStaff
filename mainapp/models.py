@@ -38,7 +38,9 @@ class Platform(models.Model):
     
     def qty_scenarios_in_platform(self):
         '''Возвращает количество сценариев по платформе'''
-        qty = Scenario.objects.filter(platform__id=self.id).count()
+        # count ScenarioVariant entries linked to this platform
+        from .models import ScenarioVariant
+        qty = ScenarioVariant.objects.filter(platform__id=self.id).count()
         return qty
 
 

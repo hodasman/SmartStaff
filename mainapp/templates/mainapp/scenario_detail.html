@@ -14,8 +14,15 @@
          <img class="img-fluid" src='{{object.main_img.url}}' alt="">
       </div>
       <div class="blog_details">
-         <h2>{{object.title}} ({{object.platform}})
+         <h2>{{object.title}}
          </h2>
+         {% if object.variants.all %}
+         <p>
+            {% for v in object.variants.all %}
+               <a href="{% url 'mainapp:scenarios_category' platform_id=v.platform.id %}">{{ v.platform.title }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+         </p>
+         {% endif %}
          <ul class="blog-info-link mt-3 mb-4">
             <li><i class="fa fa-user"></i> {{object.author}}</li>
             <li><a href="#comments"><i class="fa fa-comments"></i> {% trans "Comments" %} - {{object.get_all_comments|length}}</a></li>
@@ -63,10 +70,7 @@
          <h3 class="mb-20">{% trans "Explanations" %}</h3>
          {{object.text|safe|escape}}
 
-         {% if object.scheme %}
-         <h3 class="mb-20">{% trans "Logics" %}</h3>
-         <img class="img-fluid" src='{{object.scheme.url}}' alt="">
-         {%endif%}
+         {# scheme moved to ScenarioImage/ScenarioImageInline; no direct scheme field on Scenario #}
          
          <div class="quote-wrapper">
             <div class="quotes">
