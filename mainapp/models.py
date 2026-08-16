@@ -128,7 +128,10 @@ class ObjectManager(models.Manager):
 # Custom queryset + manager for Article to support soft-delete semantics
 class ArticleQuerySet(models.QuerySet):
     def active(self):
-        return self.filter(deleted=False)
+        # guard: only filter if model has `deleted` field
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return self.filter(deleted=False)
+        return self
 
     def with_deleted(self):
         return self.all()
@@ -143,7 +146,10 @@ class ArticleQuerySet(models.QuerySet):
 
 class ArticleManager(models.Manager):
     def get_queryset(self):
-        return ArticleQuerySet(self.model, using=self._db).filter(deleted=False)
+        qs = ArticleQuerySet(self.model, using=self._db)
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return qs.filter(deleted=False)
+        return qs
 
     def with_deleted(self):
         return ArticleQuerySet(self.model, using=self._db)
@@ -441,7 +447,9 @@ class Scenario(models.Model):
 # Custom queryset + manager for Scenario to support soft-delete semantics
 class ScenarioQuerySet(models.QuerySet):
     def active(self):
-        return self.filter(deleted=False)
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return self.filter(deleted=False)
+        return self
 
     def with_deleted(self):
         return self.all()
@@ -456,7 +464,10 @@ class ScenarioQuerySet(models.QuerySet):
 
 class ScenarioManager(models.Manager):
     def get_queryset(self):
-        return ScenarioQuerySet(self.model, using=self._db).filter(deleted=False)
+        qs = ScenarioQuerySet(self.model, using=self._db)
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return qs.filter(deleted=False)
+        return qs
 
     def with_deleted(self):
         return ScenarioQuerySet(self.model, using=self._db)
