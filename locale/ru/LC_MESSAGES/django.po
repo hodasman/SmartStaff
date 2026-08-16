@@ -654,13 +654,11 @@ msgstr ""
 
 #: mainapp/models.py:302
 msgid "Purchase link"
-msgstr "Ссылка"
+msgstr "Ссылка на покупку"
 
 #: mainapp/models.py:303
-#, fuzzy
-#| msgid "Purchase link"
 msgid "Purchase links"
-msgstr "Ссылка"
+msgstr "Ссылки на покупку"
 
 #: mainapp/models.py:316
 msgid "Image 1"
@@ -1032,17 +1030,9 @@ msgstr "Комплектация:"
 msgid "Platforms:"
 msgstr "Платформы:"
 
-#: mainapp/templates/mainapp/device_detail.html:106
-#, fuzzy
-#| msgid "Purchase link"
-msgid "Purchase"
-msgstr "Ссылка"
-
 #: mainapp/templates/mainapp/device_detail.html:113
-#, fuzzy
-#| msgid "Purchase link"
 msgid "No purchase links"
-msgstr "Ссылка"
+msgstr "Нет ссылок на покупку"
 
 #: mainapp/templates/mainapp/devices_filter.html:8
 msgid "Selecting devices from the catalog"

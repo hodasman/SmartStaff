@@ -83,12 +83,12 @@
                         </div>
                         <div class="job_content">
                             <ul>
-                                <li>{% trans "Model:" %} <span>{{object.model}}</span></li>
+                                <li>{% trans "Model:" %} <span>{{object.model_name}}</span></li>
                                 <li>{% trans "Protocols:" %} <span>{% for p in object.protocols.all %}{{p.title}}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}</span></li>
                                 <li>{% trans "Power:" %} <span>{{object.power}}</span></li>
                                 <li>{% trans "Dimensions:" %} <span>{{object.size}}</span></li>
                                 <li>{% trans "Equipment:" %} <span>{{object.package_contents}}</span></li>
-                                <li>{% trans "Platforms:" %} <span> {% for item in object.platforms.all %} {{item.title}}; {% endfor %}</span></li>
+                                <li>{% trans "Ecosystem" %}: <span> {% for item in object.ecosystem.all %} {{item.title}}; {% endfor %}</span></li>
                             
                             </ul>
                         </div>
@@ -103,7 +103,7 @@
                         </ul>
                     </div>
                     <div class="buy_links mt-3">
-                        <h4>{% trans "Purchase" %}</h4>
+                        <h4>{% trans "Purchase link" %}</h4>
                         <div class="d-flex flex-wrap">
                             {% for pl in object.purchase_links.all %}
                                 <a href="{{ pl.url }}" target="_blank" class="btn btn-outline-primary mr-2 mb-2">
