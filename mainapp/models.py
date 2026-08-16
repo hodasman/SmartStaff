@@ -346,31 +346,6 @@ class Scenario(models.Model):
     text = models.TextField(verbose_name=_("Text"), blank=True)
     description = models.TextField(verbose_name=_("Description"), blank=True)
     main_img = models.ImageField(verbose_name=_("Main image"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_1 = models.ImageField(verbose_name=_("Image 1"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_2 = models.ImageField(verbose_name=_("Image 2"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_3 = models.ImageField(verbose_name=_("Image 3"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_4 = models.ImageField(verbose_name=_("Image 4"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_5 = models.ImageField(verbose_name=_("Image 5"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_6 = models.ImageField(verbose_name=_("Image 6"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_7 = models.ImageField(verbose_name=_("Image 7"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_8 = models.ImageField(verbose_name=_("Image 8"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_9 = models.ImageField(verbose_name=_("Image 9"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_10 = models.ImageField(verbose_name=_("Image 10"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_11 = models.ImageField(verbose_name=_("Image 11"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_12 = models.ImageField(verbose_name=_("Image 12"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_13 = models.ImageField(verbose_name=_("Image 13"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_14 = models.ImageField(verbose_name=_("Image 14"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_15 = models.ImageField(verbose_name=_("Image 15"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_16 = models.ImageField(verbose_name=_("Image 16"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_17 = models.ImageField(verbose_name=_("Image 17"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_18 = models.ImageField(verbose_name=_("Image 18"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_19 = models.ImageField(verbose_name=_("Image 19"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_20 = models.ImageField(verbose_name=_("Image 20"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_21 = models.ImageField(verbose_name=_("Image 21"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_22 = models.ImageField(verbose_name=_("Image 22"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_23 = models.ImageField(verbose_name=_("Image 23"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_24 = models.ImageField(verbose_name=_("Image 24"), blank=True, null=True, upload_to=scenarios_img_path)
-    scheme = models.ImageField(verbose_name=_("Scheme"), blank=True, null=True, upload_to=scenarios_img_path)
     devices = models.ManyToManyField(Device)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE, blank=True, null=True)
@@ -460,6 +435,28 @@ class ScenarioQuerySet(models.QuerySet):
             or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
             qs = qs.filter(or_lookup)
         return qs
+
+
+class ScenarioImage(models.Model):
+    scenario = models.ForeignKey(
+        'mainapp.Scenario',
+        on_delete=models.CASCADE,
+        related_name='images',
+        verbose_name=_('Scenario'),
+    )
+    image = models.ImageField(verbose_name=_('Image'), upload_to=scenarios_img_path)
+    alt = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Alt text'))
+    is_main = models.BooleanField(default=False, verbose_name=_('Main image'))
+    order = models.PositiveSmallIntegerField(default=0, verbose_name=_('Order'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+
+    class Meta:
+        verbose_name = _('Scenario image')
+        verbose_name_plural = _('Scenario images')
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"{self.scenario.title} — image #{self.id}"
 
 
 class ScenarioManager(models.Manager):
