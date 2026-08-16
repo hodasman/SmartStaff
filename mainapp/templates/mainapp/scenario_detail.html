@@ -81,7 +81,7 @@
                                {% else %}
                                   {{ rd.device_type.title }}
                                {% endif %}
-                               {% if rd.quantity and rd.quantity|int > 1 %} — x{{ rd.quantity }}{% endif %}
+                               {% if rd.quantity and rd.quantity > 1 %} — x{{ rd.quantity }}{% endif %}
                                {% if rd.note %} ({{ rd.note }}){% endif %}
                             </li>
                          {% endfor %}
