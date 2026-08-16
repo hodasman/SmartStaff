@@ -5,12 +5,6 @@ from authapp import models as authapp_models
 from mainapp import models as mainapp_models
 
 
-@admin.register(mainapp_models.Scenario)
-class ScenariosAdmin(admin.ModelAdmin):
-    list_per_page = 10
-    inlines = [ScenarioImageInline]
-
-
 class ScenarioImageInline(admin.TabularInline):
     model = mainapp_models.ScenarioImage
     extra = 1
@@ -47,6 +41,12 @@ class ScenarioVariantAdmin(admin.ModelAdmin):
     list_display = ("id", "scenario", "platform")
     inlines = [RequiredDeviceInline]
     list_per_page = 20
+
+
+@admin.register(mainapp_models.Scenario)
+class ScenariosAdmin(admin.ModelAdmin):
+    list_per_page = 10
+    inlines = [ScenarioImageInline, ScenarioVariantInline]
 
 class DeviceImageInline(admin.TabularInline):
     model = mainapp_models.DeviceImage
