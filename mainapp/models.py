@@ -2,7 +2,7 @@ from autoslug import AutoSlugField
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.utils.translation import gettext_lazy as _
 from taggit.managers import TaggableManager
 
@@ -432,24 +432,28 @@ class Scenario(models.Model):
         comments = ScenarioComment.objects.filter(scenario_id = self.id)
         return comments
     
-    def get_similar_scenarios(self):
+    def get_similar_scenarios(self, limit=5):
         '''
         Функция ищет похожие сценарии устройства которых такие же как и заданного сценария.
         Возвращает список сценариев которые можно реализовать из этих же устройств или 
         сценариев где нужно докупить несколько устройств
         '''
         
-        similar_scenarios = []
-        devices = set(self.devices.all())
-        all_scenarios = Scenario.objects.all() # Все сценарии в базе
+        # Получить ID устройств текущего сценария
+        device_ids = self.devices.values_list('id', flat=True)
         
-        for scenario in all_scenarios: # Проходим по всем сценариям и проверяем утсройства
-            scenario_devices = set(scenario.devices.all())
-            if devices <= scenario_devices and self.id != scenario.id: # <= означает вхождение подмножества в множество
-                similar_scenarios.append(scenario)
-            elif scenario_devices <= devices and self.id != scenario.id:
-                similar_scenarios.append(scenario)
-        return similar_scenarios
+        if not device_ids:
+            return Scenario.objects.none()
+        
+        # Найти сценарии с общими устройствами, отсортировав по количеству общих
+        return (
+            Scenario.objects
+            .exclude(id=self.id)
+            .filter(devices__in=device_ids)
+            .annotate(common_count=Count('devices', filter=Q(devices__in=device_ids)))
+            .order_by('-common_count')
+            .distinct()[:limit]
+        )
 
 
 class ScenarioImage(models.Model):
