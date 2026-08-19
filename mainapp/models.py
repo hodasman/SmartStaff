@@ -1,9 +1,9 @@
 from autoslug import AutoSlugField
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
 from taggit.managers import TaggableManager
 
 
@@ -340,10 +340,40 @@ class PurchaseLink(models.Model):
         return f"{self.get_marketplace_display()} — {self.device.title}"
 
 
+# Custom queryset + manager for Scenario to support soft-delete semantics
+class ScenarioQuerySet(models.QuerySet):
+    def active(self):
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return self.filter(deleted=False)
+        return self
+
+    def with_deleted(self):
+        return self.all()
+
+    def search(self, query=None):
+        qs = self
+        if query:
+            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
+            qs = qs.filter(or_lookup)
+        return qs
+
+
+class ScenarioManager(models.Manager):
+    def get_queryset(self):
+        qs = ScenarioQuerySet(self.model, using=self._db)
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return qs.filter(deleted=False)
+        return qs
+
+    def with_deleted(self):
+        return ScenarioQuerySet(self.model, using=self._db)
+
+    def search(self, query=None):
+        return self.get_queryset().search(query)
+
+
 class Scenario(models.Model):
-    objects = None
-    
-    # soft-delete queryset/manager will be attached below
+    objects = ScenarioManager()
     title = models.CharField(max_length=256, verbose_name=_("Title"))
     slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
     text = models.TextField(verbose_name=_("Text"), blank=True)
@@ -422,24 +452,6 @@ class Scenario(models.Model):
         return similar_scenarios
 
 
-# Custom queryset + manager for Scenario to support soft-delete semantics
-class ScenarioQuerySet(models.QuerySet):
-    def active(self):
-        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
-            return self.filter(deleted=False)
-        return self
-
-    def with_deleted(self):
-        return self.all()
-
-    def search(self, query=None):
-        qs = self
-        if query:
-            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
-            qs = qs.filter(or_lookup)
-        return qs
-
-
 class ScenarioImage(models.Model):
     scenario = models.ForeignKey(
         'mainapp.Scenario',
@@ -461,24 +473,6 @@ class ScenarioImage(models.Model):
     def __str__(self):
         return f"{self.scenario.title} — image #{self.id}"
 
-
-class ScenarioManager(models.Manager):
-    def get_queryset(self):
-        qs = ScenarioQuerySet(self.model, using=self._db)
-        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
-            return qs.filter(deleted=False)
-        return qs
-
-    def with_deleted(self):
-        return ScenarioQuerySet(self.model, using=self._db)
-
-    def search(self, query=None):
-        return self.get_queryset().search(query)
-
-
-# attach manager to Scenario
-Scenario.objects = ScenarioManager()
-Scenario.objects.model = Scenario
 
 
 class ScenarioVariant(models.Model):
