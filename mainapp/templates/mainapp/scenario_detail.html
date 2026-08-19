@@ -14,8 +14,15 @@
          <img class="img-fluid" src='{{object.main_img.url}}' alt="">
       </div>
       <div class="blog_details">
-         <h2>{{object.title}} ({{object.platform}})
+         <h2>{{object.title}}
          </h2>
+         {% if object.variants.all %}
+         <p>
+            {% for v in object.variants.all %}
+               <a href="{% url 'mainapp:scenarios_category' platform_id=v.platform.id %}">{{ v.platform.title }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+         </p>
+         {% endif %}
          <ul class="blog-info-link mt-3 mb-4">
             <li><i class="fa fa-user"></i> {{object.author}}</li>
             <li><a href="#comments"><i class="fa fa-comments"></i> {% trans "Comments" %} - {{object.get_all_comments|length}}</a></li>
@@ -51,7 +58,7 @@
          {%endif%}
 
          <h3 class="mb-20">{% trans "Devices" %}</h3>
-         {% for item in object.devices.all %}
+             {% for item in object.devices.all %}
          <ol class="unordered-list">
             <li><a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="d-flex">
                {{item.title}}
@@ -60,13 +67,36 @@
          </ol>
          {%endfor%}
 
+             {% if object.variants.all %}
+             <h3 class="mb-20">{% trans "Variants by platform" %}</h3>
+             {% for variant in object.variants.all %}
+                <div class="variant-block">
+                   <h4>{{ variant.platform.title }}</h4>
+                   {% if variant.required_devices.all %}
+                      <ul>
+                         {% for rd in variant.required_devices.all %}
+                            <li>
+                               {% if rd.device %}
+                                  <a href="{% url 'mainapp:devices_detail' slug=rd.device.slug %}">{{ rd.device.title }}</a>
+                               {% else %}
+                                  {{ rd.device_type.title }}
+                               {% endif %}
+                               {% if rd.quantity and rd.quantity > 1 %} — x{{ rd.quantity }}{% endif %}
+                               {% if rd.note %} ({{ rd.note }}){% endif %}
+                            </li>
+                         {% endfor %}
+                      </ul>
+                   {% else %}
+                      <p>{% trans "No specific required devices listed for this variant." %}</p>
+                   {% endif %}
+                </div>
+             {% endfor %}
+             {% endif %}
+
          <h3 class="mb-20">{% trans "Explanations" %}</h3>
          {{object.text|safe|escape}}
 
-         {% if object.scheme %}
-         <h3 class="mb-20">{% trans "Logics" %}</h3>
-         <img class="img-fluid" src='{{object.scheme.url}}' alt="">
-         {%endif%}
+         {# scheme moved to ScenarioImage/ScenarioImageInline; no direct scheme field on Scenario #}
          
          <div class="quote-wrapper">
             <div class="quotes">

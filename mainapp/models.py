@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 from taggit.managers import TaggableManager
 
 
@@ -24,7 +25,7 @@ def scenarios_img_path(instance, filename):
 
 
 class Platform(models.Model):
-    title = models.CharField(max_length=256, verbose_name=_("Name"))
+    title = models.CharField(max_length=256, verbose_name=_("Name"), db_index=True)
     description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     class Meta:
@@ -37,7 +38,9 @@ class Platform(models.Model):
     
     def qty_scenarios_in_platform(self):
         '''Возвращает количество сценариев по платформе'''
-        qty = len(Scenario.objects.filter(platform__id=self.id, deleted=False))
+        # count ScenarioVariant entries linked to this platform
+        from .models import ScenarioVariant
+        qty = ScenarioVariant.objects.filter(platform__id=self.id).count()
         return qty
 
 
@@ -56,7 +59,7 @@ class Idea(models.Model):
 
 class ArticleCategory(models.Model):
     title = models.CharField(max_length=256, verbose_name=_("Name"))
-    slug = AutoSlugField(populate_from="title")
+    slug = AutoSlugField(populate_from="title", unique=True, db_index=True)
     description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
 
     class Meta:
@@ -68,7 +71,7 @@ class ArticleCategory(models.Model):
         return f"{self.title}"
     
     def qty_articles_in_category(self):
-        qty = len(Article.objects.filter(category__slug=self.slug, deleted=False))
+        qty = Article.objects.filter(category__slug=self.slug).count()
         return qty
 
 
@@ -125,46 +128,54 @@ class ObjectManager(models.Manager):
         return qs
 
 
+# Custom queryset + manager for Article to support soft-delete semantics
+class ArticleQuerySet(models.QuerySet):
+    def active(self):
+        # guard: only filter if model has `deleted` field
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return self.filter(deleted=False)
+        return self
+
+    def with_deleted(self):
+        return self.all()
+
+    def search(self, query=None):
+        qs = self
+        if query:
+            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
+            qs = qs.filter(or_lookup)
+        return qs
+
+
+class ArticleManager(models.Manager):
+    def get_queryset(self):
+        qs = ArticleQuerySet(self.model, using=self._db)
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return qs.filter(deleted=False)
+        return qs
+
+    def with_deleted(self):
+        return ArticleQuerySet(self.model, using=self._db)
+
+    def search(self, query=None):
+        return self.get_queryset().search(query)
+
+
 class Article(models.Model):
-    objects = ObjectManager()
+    objects = ArticleManager()
     title = models.CharField(max_length=256, verbose_name=_("Name"))
     category = models.ForeignKey(
         ArticleCategory, verbose_name=_("Category"), on_delete=models.CASCADE, related_name="articles"
     )
-    slug = AutoSlugField(populate_from="title", verbose_name="URL")
+    slug = AutoSlugField(populate_from="title", verbose_name="URL", unique=True)
     preambule = models.TextField(verbose_name=_("Brief description"), blank=True)
     text = models.TextField(verbose_name=_("Text"), blank=True)
     main_img = models.ImageField(verbose_name=_("Main picture"), blank=True, null=True, upload_to=article_img_path)
-    img_1 = models.ImageField(verbose_name=_("Picture 1"), blank=True, null=True, upload_to=article_img_path)
-    img_2 = models.ImageField(verbose_name=_("Picture 2"), blank=True, null=True, upload_to=article_img_path)
-    img_3 = models.ImageField(verbose_name=_("Picture 3"), blank=True, null=True, upload_to=article_img_path)
-    img_4 = models.ImageField(verbose_name=_("Picture 4"), blank=True, null=True, upload_to=article_img_path)
-    img_5 = models.ImageField(verbose_name=_("Picture 5"), blank=True, null=True, upload_to=article_img_path)
-    img_6 = models.ImageField(verbose_name=_("Picture 6"), blank=True, null=True, upload_to=article_img_path)
-    img_7 = models.ImageField(verbose_name=_("Picture 7"), blank=True, null=True, upload_to=article_img_path)
-    img_8 = models.ImageField(verbose_name=_("Picture 8"), blank=True, null=True, upload_to=article_img_path)
-    img_9 = models.ImageField(verbose_name=_("Picture 9"), blank=True, null=True, upload_to=article_img_path)
-    img_10 = models.ImageField(verbose_name=_("Picture 10"), blank=True, null=True, upload_to=article_img_path)
-    img_11 = models.ImageField(verbose_name=_("Picture 11"), blank=True, null=True, upload_to=article_img_path)
-    img_12 = models.ImageField(verbose_name=_("Picture 12"), blank=True, null=True, upload_to=article_img_path)
-    img_13 = models.ImageField(verbose_name=_("Picture 13"), blank=True, null=True, upload_to=article_img_path)
-    img_14 = models.ImageField(verbose_name=_("Picture 14"), blank=True, null=True, upload_to=article_img_path)
-    img_15 = models.ImageField(verbose_name=_("Picture 15"), blank=True, null=True, upload_to=article_img_path)
-    img_16 = models.ImageField(verbose_name=_("Picture 16"), blank=True, null=True, upload_to=article_img_path)
-    img_17 = models.ImageField(verbose_name=_("Picture 17"), blank=True, null=True, upload_to=article_img_path)
-    img_18 = models.ImageField(verbose_name=_("Picture 18"), blank=True, null=True, upload_to=article_img_path)
-    img_19 = models.ImageField(verbose_name=_("Picture 19"), blank=True, null=True, upload_to=article_img_path)
-    img_20 = models.ImageField(verbose_name=_("Picture 20"), blank=True, null=True, upload_to=article_img_path)
-    img_21 = models.ImageField(verbose_name=_("Picture 21"), blank=True, null=True, upload_to=article_img_path)
-    img_22 = models.ImageField(verbose_name=_("Picture 22"), blank=True, null=True, upload_to=article_img_path)
-    img_23 = models.ImageField(verbose_name=_("Picture 23"), blank=True, null=True, upload_to=article_img_path)
-    img_24 = models.ImageField(verbose_name=_("Picture 24"), blank=True, null=True, upload_to=article_img_path)
-    img_25 = models.ImageField(verbose_name=_("Picture 25"), blank=True, null=True, upload_to=article_img_path)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
     tags = TaggableManager()
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created", editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created", editable=False, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Edited", editable=False)
-    deleted = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False, db_index=True)
 
     def __str__(self) -> str:
         return f"{self.pk} {self.title}"
@@ -185,6 +196,28 @@ class Article(models.Model):
         '''Возвращает QuerySet объектов комментариев для данной статьи'''
         comments = ArticleComment.objects.filter(article_id = self.id)
         return comments
+
+
+class ArticleImage(models.Model):
+    article = models.ForeignKey(
+        'mainapp.Article',
+        on_delete=models.CASCADE,
+        related_name='images',
+        verbose_name=_('Article'),
+    )
+    image = models.ImageField(verbose_name=_('Image'), upload_to=article_img_path)
+    alt = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Alt text'))
+    is_main = models.BooleanField(default=False, verbose_name=_('Main image'))
+    order = models.PositiveSmallIntegerField(default=0, verbose_name=_('Order'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+
+    class Meta:
+        verbose_name = _('Article image')
+        verbose_name_plural = _('Article images')
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"{self.article.title} — image #{self.id}"
 
 
 class Device(models.Model):
@@ -308,39 +341,17 @@ class PurchaseLink(models.Model):
 
 
 class Scenario(models.Model):
+    objects = None
+    
+    # soft-delete queryset/manager will be attached below
     title = models.CharField(max_length=256, verbose_name=_("Title"))
     slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
     text = models.TextField(verbose_name=_("Text"), blank=True)
     description = models.TextField(verbose_name=_("Description"), blank=True)
     main_img = models.ImageField(verbose_name=_("Main image"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_1 = models.ImageField(verbose_name=_("Image 1"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_2 = models.ImageField(verbose_name=_("Image 2"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_3 = models.ImageField(verbose_name=_("Image 3"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_4 = models.ImageField(verbose_name=_("Image 4"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_5 = models.ImageField(verbose_name=_("Image 5"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_6 = models.ImageField(verbose_name=_("Image 6"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_7 = models.ImageField(verbose_name=_("Image 7"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_8 = models.ImageField(verbose_name=_("Image 8"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_9 = models.ImageField(verbose_name=_("Image 9"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_10 = models.ImageField(verbose_name=_("Image 10"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_11 = models.ImageField(verbose_name=_("Image 11"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_12 = models.ImageField(verbose_name=_("Image 12"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_13 = models.ImageField(verbose_name=_("Image 13"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_14 = models.ImageField(verbose_name=_("Image 14"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_15 = models.ImageField(verbose_name=_("Image 15"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_16 = models.ImageField(verbose_name=_("Image 16"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_17 = models.ImageField(verbose_name=_("Image 17"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_18 = models.ImageField(verbose_name=_("Image 18"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_19 = models.ImageField(verbose_name=_("Image 19"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_20 = models.ImageField(verbose_name=_("Image 20"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_21 = models.ImageField(verbose_name=_("Image 21"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_22 = models.ImageField(verbose_name=_("Image 22"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_23 = models.ImageField(verbose_name=_("Image 23"), blank=True, null=True, upload_to=scenarios_img_path)
-    img_24 = models.ImageField(verbose_name=_("Image 24"), blank=True, null=True, upload_to=scenarios_img_path)
-    scheme = models.ImageField(verbose_name=_("Scheme"), blank=True, null=True, upload_to=scenarios_img_path)
     devices = models.ManyToManyField(Device)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
-    platform = models.ForeignKey(Platform, on_delete=models.CASCADE, blank=True, null=True)
+    # `platform` removed: scenario may have multiple variants per ecosystem
     idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
     tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), editable=False)
@@ -409,6 +420,120 @@ class Scenario(models.Model):
             elif scenario_devices <= devices and self.id != scenario.id:
                 similar_scenarios.append(scenario)
         return similar_scenarios
+
+
+# Custom queryset + manager for Scenario to support soft-delete semantics
+class ScenarioQuerySet(models.QuerySet):
+    def active(self):
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return self.filter(deleted=False)
+        return self
+
+    def with_deleted(self):
+        return self.all()
+
+    def search(self, query=None):
+        qs = self
+        if query:
+            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
+            qs = qs.filter(or_lookup)
+        return qs
+
+
+class ScenarioImage(models.Model):
+    scenario = models.ForeignKey(
+        'mainapp.Scenario',
+        on_delete=models.CASCADE,
+        related_name='images',
+        verbose_name=_('Scenario'),
+    )
+    image = models.ImageField(verbose_name=_('Image'), upload_to=scenarios_img_path)
+    alt = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Alt text'))
+    is_main = models.BooleanField(default=False, verbose_name=_('Main image'))
+    order = models.PositiveSmallIntegerField(default=0, verbose_name=_('Order'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+
+    class Meta:
+        verbose_name = _('Scenario image')
+        verbose_name_plural = _('Scenario images')
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"{self.scenario.title} — image #{self.id}"
+
+
+class ScenarioManager(models.Manager):
+    def get_queryset(self):
+        qs = ScenarioQuerySet(self.model, using=self._db)
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return qs.filter(deleted=False)
+        return qs
+
+    def with_deleted(self):
+        return ScenarioQuerySet(self.model, using=self._db)
+
+    def search(self, query=None):
+        return self.get_queryset().search(query)
+
+
+# attach manager to Scenario
+Scenario.objects = ScenarioManager()
+Scenario.objects.model = Scenario
+
+
+class ScenarioVariant(models.Model):
+    """Вариант реализации сценария для конкретной экосистемы (platform).
+    Содержит связь на конкретные устройства или типы устройств через RequiredDevice.
+    """
+    scenario = models.ForeignKey(
+        'mainapp.Scenario', on_delete=models.CASCADE, related_name='variants', verbose_name=_('Scenario')
+    )
+    platform = models.ForeignKey(
+        Platform, on_delete=models.CASCADE, related_name='scenario_variants', verbose_name=_('Platform')
+    )
+    title = models.CharField(max_length=256, blank=True, null=True, verbose_name=_('Title'))
+    description = models.TextField(blank=True, null=True, verbose_name=_('Description'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Created at'))
+
+    class Meta:
+        verbose_name = _('Scenario variant')
+        verbose_name_plural = _('Scenario variants')
+        unique_together = (('scenario', 'platform'),)
+
+    def __str__(self) -> str:
+        return f"{self.scenario.title} — {self.platform.title}"
+
+
+class RequiredDevice(models.Model):
+    """Требуемое устройство (конкретное или по типу) для варианта сценария.
+    Указывайте либо `device`, либо `device_type`, но не оба одновременно.
+    """
+    variant = models.ForeignKey(
+        ScenarioVariant, on_delete=models.CASCADE, related_name='required_devices', verbose_name=_('Variant')
+    )
+    device = models.ForeignKey(
+        Device, on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('Device')
+    )
+    device_type = models.ForeignKey(
+        DeviceType, on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('Device type')
+    )
+    quantity = models.PositiveSmallIntegerField(default=1, verbose_name=_('Quantity'))
+    note = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Note'))
+
+    class Meta:
+        verbose_name = _('Required device')
+        verbose_name_plural = _('Required devices')
+
+    def clean(self):
+        # ensure at least one of device or device_type is set
+        if not self.device and not self.device_type:
+            raise ValidationError(_('Either device or device_type must be set.'))
+        if self.device and self.device_type:
+            raise ValidationError(_('Specify only one of device or device_type, not both.'))
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        return super().save(*args, **kwargs)
     
 
 class RatingStar(models.Model):
