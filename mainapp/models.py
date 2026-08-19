@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Count, Q
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from taggit.managers import TaggableManager
 
@@ -413,7 +414,7 @@ class Scenario(models.Model):
         return self.get_previous_by_created_at()
     
     def get_absolute_url(self):
-        return f'/mainapp/scenarios/{self.slug}'
+        return reverse('mainapp:scenario-detail', kwargs={'slug': self.slug})
     
     def get_rating(self) -> int:
         query = Rating.objects.filter(scenario=self.id)
