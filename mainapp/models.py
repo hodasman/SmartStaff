@@ -384,9 +384,9 @@ class Scenario(models.Model):
     # `platform` removed: scenario may have multiple variants per ecosystem
     idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
     tags = TaggableManager()
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), editable=False)
-    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"), editable=False)
-    deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), editable=False, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"), editable=False, db_index=True)
+    deleted = models.BooleanField(default=False, db_index=True)
 
     def __str__(self) -> str:
         return f"{self.pk} {self.title}"
@@ -399,6 +399,12 @@ class Scenario(models.Model):
         verbose_name = _("Scenario")
         verbose_name_plural = _("Scenarios")
         ordering = ["title"]
+        # Составной индекс для часто используемых фильтров
+        indexes = [
+            models.Index(fields=['deleted', '-created_at']),
+            models.Index(fields=['author', 'deleted']),
+            models.Index(fields=['deleted', 'created_at']),
+        ]
 
     def next(self):
         return self.get_next_by_created_at()
