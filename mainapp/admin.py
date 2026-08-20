@@ -26,7 +26,7 @@ class ScenarioImageInline(admin.TabularInline):
 class RequiredDeviceInline(admin.TabularInline):
     model = mainapp_models.RequiredDevice
     extra = 1
-    fields = ("device", "device_type", "quantity", "note")
+    fields = ("device", "quantity", "note")
 
 
 class ScenarioVariantInline(admin.TabularInline):

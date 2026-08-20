@@ -1,9 +1,9 @@
 from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
-from django.db.models import Q
+from django.db.models import Avg, Count, Q
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
 from taggit.managers import TaggableManager
 
 
@@ -340,88 +340,6 @@ class PurchaseLink(models.Model):
         return f"{self.get_marketplace_display()} — {self.device.title}"
 
 
-class Scenario(models.Model):
-    objects = None
-    
-    # soft-delete queryset/manager will be attached below
-    title = models.CharField(max_length=256, verbose_name=_("Title"))
-    slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
-    text = models.TextField(verbose_name=_("Text"), blank=True)
-    description = models.TextField(verbose_name=_("Description"), blank=True)
-    main_img = models.ImageField(verbose_name=_("Main image"), blank=True, null=True, upload_to=scenarios_img_path)
-    devices = models.ManyToManyField(Device)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
-    # `platform` removed: scenario may have multiple variants per ecosystem
-    idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
-    tags = TaggableManager()
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), editable=False)
-    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"), editable=False)
-    deleted = models.BooleanField(default=False)
-
-    def __str__(self) -> str:
-        return f"{self.pk} {self.title}"
-
-    def delete(self, *args):
-        self.deleted = True
-        self.save()
-
-    class Meta:
-        verbose_name = _("Scenario")
-        verbose_name_plural = _("Scenarios")
-        ordering = ["title"]
-
-    def next(self):
-        return self.get_next_by_created_at()
-
-    def pre(self):
-        return self.get_previous_by_created_at()
-    
-    def get_absolute_url(self):
-        return f'/mainapp/scenarios/{self.slug}'
-    
-    def get_rating(self) -> int:
-        query = Rating.objects.filter(scenario=self.id)
-        sum = 0
-        for item in query:
-            sum += item.star.value
-        return sum//len(query)
-    
-    def get_quantity_devices(self,):
-        qty = len(self.devices.all())
-        if qty in [11, 12, 13, 14]:
-            return 'Устройств'
-        if qty % 10 == 1:
-            return 'Устройство'
-        if qty % 10 in [2, 3, 4]:
-            return 'Устройства'
-        else:
-            return 'Устройств'
-        
-    def get_all_comments(self):
-        '''Возвращает QuerySet объектов комментариев для данного сценария'''
-        comments = ScenarioComment.objects.filter(scenario_id = self.id)
-        return comments
-    
-    def get_similar_scenarios(self):
-        '''
-        Функция ищет похожие сценарии устройства которых такие же как и заданного сценария.
-        Возвращает список сценариев которые можно реализовать из этих же устройств или 
-        сценариев где нужно докупить несколько устройств
-        '''
-        
-        similar_scenarios = []
-        devices = set(self.devices.all())
-        all_scenarios = Scenario.objects.all() # Все сценарии в базе
-        
-        for scenario in all_scenarios: # Проходим по всем сценариям и проверяем утсройства
-            scenario_devices = set(scenario.devices.all())
-            if devices <= scenario_devices and self.id != scenario.id: # <= означает вхождение подмножества в множество
-                similar_scenarios.append(scenario)
-            elif scenario_devices <= devices and self.id != scenario.id:
-                similar_scenarios.append(scenario)
-        return similar_scenarios
-
-
 # Custom queryset + manager for Scenario to support soft-delete semantics
 class ScenarioQuerySet(models.QuerySet):
     def active(self):
@@ -438,6 +356,110 @@ class ScenarioQuerySet(models.QuerySet):
             or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
             qs = qs.filter(or_lookup)
         return qs
+
+
+class ScenarioManager(models.Manager):
+    def get_queryset(self):
+        qs = ScenarioQuerySet(self.model, using=self._db)
+        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
+            return qs.filter(deleted=False)
+        return qs
+
+    def with_deleted(self):
+        return ScenarioQuerySet(self.model, using=self._db)
+
+    def search(self, query=None):
+        return self.get_queryset().search(query)
+
+
+class Scenario(models.Model):
+    objects = ScenarioManager()
+    title = models.CharField(max_length=256, verbose_name=_("Title"))
+    slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
+    text = models.TextField(verbose_name=_("Text"), blank=True)
+    description = models.TextField(verbose_name=_("Description"), blank=True)
+    main_img = models.ImageField(verbose_name=_("Main image"), blank=True, null=True, upload_to=scenarios_img_path)
+    devices = models.ManyToManyField(Device)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
+    # `platform` removed: scenario may have multiple variants per ecosystem
+    idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
+    tags = TaggableManager()
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), editable=False, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"), editable=False, db_index=True)
+    deleted = models.BooleanField(default=False, db_index=True)
+
+    def __str__(self) -> str:
+        return f"{self.pk} {self.title}"
+
+    def delete(self, *args):
+        self.deleted = True
+        self.save()
+
+    class Meta:
+        verbose_name = _("Scenario")
+        verbose_name_plural = _("Scenarios")
+        ordering = ["title"]
+        # Составной индекс для часто используемых фильтров
+        indexes = [
+            models.Index(fields=['deleted', '-created_at']),
+            models.Index(fields=['author', 'deleted']),
+            models.Index(fields=['deleted', 'created_at']),
+        ]
+
+    def next(self):
+        return self.get_next_by_created_at()
+
+    def pre(self):
+        return self.get_previous_by_created_at()
+    
+    def get_absolute_url(self):
+        return reverse('mainapp:scenario-detail', kwargs={'slug': self.slug})
+    
+    def get_rating(self) -> int:
+        """Средняя оценка сценария (0, если оценок нет)."""
+        avg_rating = Rating.objects.filter(scenario=self).aggregate(
+            avg=Avg('star__value')
+        )['avg']
+        return round(avg_rating) if avg_rating else 0
+    
+    @property
+    def devices_count(self):
+        """Количество устройств (эффективно, через SQL COUNT())."""
+        return self.devices.count()
+
+    def get_devices_display(self):
+        """Количество устройств с правильным склонением, например: '3 Устройства'."""
+        from .utils import decline_devices
+        count = self.devices_count
+        return f"{count} {decline_devices(count)}"
+        
+    def get_all_comments(self):
+        '''Возвращает QuerySet объектов комментариев для данного сценария'''
+        comments = ScenarioComment.objects.filter(scenario_id = self.id)
+        return comments
+    
+    def get_similar_scenarios(self, limit=5):
+        '''
+        Функция ищет похожие сценарии устройства которых такие же как и заданного сценария.
+        Возвращает список сценариев которые можно реализовать из этих же устройств или 
+        сценариев где нужно докупить несколько устройств
+        '''
+        
+        # Получить ID устройств текущего сценария
+        device_ids = self.devices.values_list('id', flat=True)
+        
+        if not device_ids:
+            return Scenario.objects.none()
+        
+        # Найти сценарии с общими устройствами, отсортировав по количеству общих
+        return (
+            Scenario.objects
+            .exclude(id=self.id)
+            .filter(devices__in=device_ids)
+            .annotate(common_count=Count('devices', filter=Q(devices__in=device_ids)))
+            .order_by('-common_count')
+            .distinct()[:limit]
+        )
 
 
 class ScenarioImage(models.Model):
@@ -462,28 +484,10 @@ class ScenarioImage(models.Model):
         return f"{self.scenario.title} — image #{self.id}"
 
 
-class ScenarioManager(models.Manager):
-    def get_queryset(self):
-        qs = ScenarioQuerySet(self.model, using=self._db)
-        if any(f.name == 'deleted' for f in self.model._meta.get_fields()):
-            return qs.filter(deleted=False)
-        return qs
-
-    def with_deleted(self):
-        return ScenarioQuerySet(self.model, using=self._db)
-
-    def search(self, query=None):
-        return self.get_queryset().search(query)
-
-
-# attach manager to Scenario
-Scenario.objects = ScenarioManager()
-Scenario.objects.model = Scenario
-
 
 class ScenarioVariant(models.Model):
     """Вариант реализации сценария для конкретной экосистемы (platform).
-    Содержит связь на конкретные устройства или типы устройств через RequiredDevice.
+    Содержит связь на конкретные устройства через RequiredDevice.
     """
     scenario = models.ForeignKey(
         'mainapp.Scenario', on_delete=models.CASCADE, related_name='variants', verbose_name=_('Scenario')
@@ -505,17 +509,12 @@ class ScenarioVariant(models.Model):
 
 
 class RequiredDevice(models.Model):
-    """Требуемое устройство (конкретное или по типу) для варианта сценария.
-    Указывайте либо `device`, либо `device_type`, но не оба одновременно.
-    """
+    """Требуемое конкретное устройство для варианта сценария."""
     variant = models.ForeignKey(
         ScenarioVariant, on_delete=models.CASCADE, related_name='required_devices', verbose_name=_('Variant')
     )
     device = models.ForeignKey(
-        Device, on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('Device')
-    )
-    device_type = models.ForeignKey(
-        DeviceType, on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('Device type')
+        Device, on_delete=models.CASCADE, verbose_name=_('Device')
     )
     quantity = models.PositiveSmallIntegerField(default=1, verbose_name=_('Quantity'))
     note = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Note'))
@@ -523,17 +522,6 @@ class RequiredDevice(models.Model):
     class Meta:
         verbose_name = _('Required device')
         verbose_name_plural = _('Required devices')
-
-    def clean(self):
-        # ensure at least one of device or device_type is set
-        if not self.device and not self.device_type:
-            raise ValidationError(_('Either device or device_type must be set.'))
-        if self.device and self.device_type:
-            raise ValidationError(_('Specify only one of device or device_type, not both.'))
-
-    def save(self, *args, **kwargs):
-        self.clean()
-        return super().save(*args, **kwargs)
     
 
 class RatingStar(models.Model):

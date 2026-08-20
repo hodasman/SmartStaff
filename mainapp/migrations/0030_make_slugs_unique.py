@@ -1,5 +1,5 @@
-from django.db import migrations
 from autoslug import AutoSlugField
+from django.db import migrations
 
 
 def make_unique_slugs(apps, schema_editor):

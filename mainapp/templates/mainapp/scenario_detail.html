@@ -76,11 +76,7 @@
                       <ul>
                          {% for rd in variant.required_devices.all %}
                             <li>
-                               {% if rd.device %}
-                                  <a href="{% url 'mainapp:devices_detail' slug=rd.device.slug %}">{{ rd.device.title }}</a>
-                               {% else %}
-                                  {{ rd.device_type.title }}
-                               {% endif %}
+                               <a href="{% url 'mainapp:devices_detail' slug=rd.device.slug %}">{{ rd.device.title }}</a>
                                {% if rd.quantity and rd.quantity > 1 %} — x{{ rd.quantity }}{% endif %}
                                {% if rd.note %} ({{ rd.note }}){% endif %}
                             </li>
@@ -230,7 +226,7 @@
          <a href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
             <h3>{{item.title}}</h3>
          </a>
-         <p>{{item.devices.all|length}} {{item.get_quantity_devices}}</p>
+         <p>{{item.get_devices_display}}</p>
       </div>
    </div>
    {%endfor%}
