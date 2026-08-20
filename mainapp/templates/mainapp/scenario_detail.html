@@ -230,7 +230,7 @@
          <a href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
             <h3>{{item.title}}</h3>
          </a>
-         <p>{{item.devices.all|length}} {{item.get_quantity_devices}}</p>
+         <p>{{item.get_devices_display}}</p>
       </div>
    </div>
    {%endfor%}

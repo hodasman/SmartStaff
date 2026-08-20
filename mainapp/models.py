@@ -423,16 +423,16 @@ class Scenario(models.Model):
             sum += item.star.value
         return sum//len(query)
     
-    def get_quantity_devices(self,):
-        qty = len(self.devices.all())
-        if qty in [11, 12, 13, 14]:
-            return 'Устройств'
-        if qty % 10 == 1:
-            return 'Устройство'
-        if qty % 10 in [2, 3, 4]:
-            return 'Устройства'
-        else:
-            return 'Устройств'
+    @property
+    def devices_count(self):
+        """Количество устройств (эффективно, через SQL COUNT())."""
+        return self.devices.count()
+
+    def get_devices_display(self):
+        """Количество устройств с правильным склонением, например: '3 Устройства'."""
+        from .utils import decline_devices
+        count = self.devices_count
+        return f"{count} {decline_devices(count)}"
         
     def get_all_comments(self):
         '''Возвращает QuerySet объектов комментариев для данного сценария'''
