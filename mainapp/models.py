@@ -2,7 +2,7 @@ from autoslug import AutoSlugField
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Count, Q
+from django.db.models import Avg, Count, Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from taggit.managers import TaggableManager
@@ -417,11 +417,11 @@ class Scenario(models.Model):
         return reverse('mainapp:scenario-detail', kwargs={'slug': self.slug})
     
     def get_rating(self) -> int:
-        query = Rating.objects.filter(scenario=self.id)
-        sum = 0
-        for item in query:
-            sum += item.star.value
-        return sum//len(query)
+        """Средняя оценка сценария (0, если оценок нет)."""
+        avg_rating = Rating.objects.filter(scenario=self).aggregate(
+            avg=Avg('star__value')
+        )['avg']
+        return round(avg_rating) if avg_rating else 0
     
     @property
     def devices_count(self):
