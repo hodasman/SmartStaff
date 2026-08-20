@@ -1,6 +1,5 @@
 from autoslug import AutoSlugField
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Avg, Count, Q
 from django.urls import reverse
@@ -488,7 +487,7 @@ class ScenarioImage(models.Model):
 
 class ScenarioVariant(models.Model):
     """Вариант реализации сценария для конкретной экосистемы (platform).
-    Содержит связь на конкретные устройства или типы устройств через RequiredDevice.
+    Содержит связь на конкретные устройства через RequiredDevice.
     """
     scenario = models.ForeignKey(
         'mainapp.Scenario', on_delete=models.CASCADE, related_name='variants', verbose_name=_('Scenario')
@@ -510,17 +509,12 @@ class ScenarioVariant(models.Model):
 
 
 class RequiredDevice(models.Model):
-    """Требуемое устройство (конкретное или по типу) для варианта сценария.
-    Указывайте либо `device`, либо `device_type`, но не оба одновременно.
-    """
+    """Требуемое конкретное устройство для варианта сценария."""
     variant = models.ForeignKey(
         ScenarioVariant, on_delete=models.CASCADE, related_name='required_devices', verbose_name=_('Variant')
     )
     device = models.ForeignKey(
-        Device, on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('Device')
-    )
-    device_type = models.ForeignKey(
-        DeviceType, on_delete=models.CASCADE, blank=True, null=True, verbose_name=_('Device type')
+        Device, on_delete=models.CASCADE, verbose_name=_('Device')
     )
     quantity = models.PositiveSmallIntegerField(default=1, verbose_name=_('Quantity'))
     note = models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Note'))
@@ -528,17 +522,6 @@ class RequiredDevice(models.Model):
     class Meta:
         verbose_name = _('Required device')
         verbose_name_plural = _('Required devices')
-
-    def clean(self):
-        # ensure at least one of device or device_type is set
-        if not self.device and not self.device_type:
-            raise ValidationError(_('Either device or device_type must be set.'))
-        if self.device and self.device_type:
-            raise ValidationError(_('Specify only one of device or device_type, not both.'))
-
-    def save(self, *args, **kwargs):
-        self.clean()
-        return super().save(*args, **kwargs)
     
 
 class RatingStar(models.Model):
