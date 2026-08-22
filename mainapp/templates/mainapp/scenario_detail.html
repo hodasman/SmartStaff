@@ -58,15 +58,12 @@
          {{object.idea.description|safe|escape}}
          {%endif%}
 
-         <h3 class="mb-20">{% trans "Devices" %}</h3>
-             {% for item in object.devices.all %}
+         <h3 class="mb-20">{% trans "Device types" %}</h3>
          <ol class="unordered-list">
-            <li><a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="d-flex">
-               {{item.title}}
-            </a>
-            </li>
+             {% for item in object.device_types.all %}
+            <li>{{item.title}}</li>
+             {%endfor%}
          </ol>
-         {%endfor%}
 
              {% if object.variants.all %}
              <h3 class="mb-20">{% trans "Variants by ecosystem" %}</h3>
@@ -269,7 +266,7 @@
          <a href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
             <h3>{{item.title}}</h3>
          </a>
-         <p>{{item.get_devices_display}}</p>
+         <p>{{item.get_device_types_display}}</p>
       </div>
    </div>
    {%endfor%}

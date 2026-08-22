@@ -161,7 +161,7 @@
                         <img src='{{ scenario.main_img.url }}' alt="">
                     </div>
                     <a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}"><h3>{{scenario.title}}</h3></a>
-                    <p>{{scenario.get_devices_display}}</p>
+                    <p>{{scenario.get_device_types_display}}</p>
                 </div>
             </div>
             {%endfor%}
@@ -191,7 +191,7 @@
                         <img src='{{ scenario.main_img.url }}' alt="">
                     </div>
                     <a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}"><h3>{{scenario.title}}</h3></a>
-                    <p>{{scenario.get_devices_display}}</p>
+                    <p>{{scenario.get_device_types_display}}</p>
                 </div>
             </div>
             {%endfor%}

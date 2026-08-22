@@ -386,16 +386,12 @@ msgid "Category"
 msgstr "Катэгорыя"
 
 #: mainapp/models.py:108 mainapp/models.py:201
-#, fuzzy
-#| msgid "Devices"
 msgid "Device type"
-msgstr "Прылады"
+msgstr "Тып прылады"
 
 #: mainapp/models.py:109
-#, fuzzy
-#| msgid "Devices"
 msgid "Device types"
-msgstr "Прылады"
+msgstr "Тыпы прылад"
 
 #: mainapp/models.py:135
 #, fuzzy
