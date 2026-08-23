@@ -1,6 +1,7 @@
 {% extends 'base_blog.html' %}
 {% load static %}
 {% load i18n %}
+{% load icon_tags %}
 {% load crispy_forms_tags %}  
 {% block title %}
 {% trans "Automation scenarios" %}
@@ -16,14 +17,14 @@
       <div class="blog_details">
          <h2>{{object.title}}
          </h2>
-         {% if object.variants.all %}
-         <p>
-            {% for v in object.variants.all %}
-               <a href="{% url 'mainapp:scenarios_category' platform_id=v.platform.id %}">{{ v.platform.title }}</a>{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-         </p>
-         {% endif %}
          <ul class="blog-info-link mt-3 mb-4">
+            {% if object.variants.all %}
+            <li><i class="fa {{ object.variants.first.platform|get_icon }}"></i>
+               {% for v in object.variants.all %}
+                  <a href="{% url 'mainapp:scenarios_category' platform_id=v.platform.id %}">{{ v.platform.title }}</a>{% if not forloop.last %}, {% endif %}
+               {% endfor %}
+            </li>
+            {% endif %}
             <li><i class="fa fa-user"></i> {{object.author}}</li>
             <li><a href="#comments"><i class="fa fa-comments"></i> {% trans "Comments" %} - {{object.get_all_comments|length}}</a></li>
             <li><i class="fa fa-tags"></i>
@@ -57,23 +58,20 @@
          {{object.idea.description|safe|escape}}
          {%endif%}
 
-         <h3 class="mb-20">{% trans "Devices" %}</h3>
-             {% for item in object.devices.all %}
+         <h3 class="mb-20">{% trans "Device types" %}</h3>
          <ol class="unordered-list">
-            <li><a href="{% url 'mainapp:devices_detail' slug=item.slug %}" class="d-flex">
-               {{item.title}}
-            </a>
-            </li>
+             {% for item in object.device_types.all %}
+            <li>{{item.title}}</li>
+             {%endfor%}
          </ol>
-         {%endfor%}
 
              {% if object.variants.all %}
-             <h3 class="mb-20">{% trans "Variants by platform" %}</h3>
+             <h3 class="mb-20">{% trans "Variants by ecosystem" %}</h3>
              {% for variant in object.variants.all %}
                 <div class="variant-block">
                    <h4>{{ variant.platform.title }}</h4>
                    {% if variant.required_devices.all %}
-                      <ul>
+                      <ol class="unordered-list">
                          {% for rd in variant.required_devices.all %}
                             <li>
                                <a href="{% url 'mainapp:devices_detail' slug=rd.device.slug %}">{{ rd.device.title }}</a>
@@ -81,7 +79,7 @@
                                {% if rd.note %} ({{ rd.note }}){% endif %}
                             </li>
                          {% endfor %}
-                      </ul>
+                      </ol>
                    {% else %}
                       <p>{% trans "No specific required devices listed for this variant." %}</p>
                    {% endif %}
@@ -117,10 +115,52 @@
             <li><a href="#"><i class="fa fa-behance"></i></a></li>
          </ul>
       </div>
+      <div class="navigation-area">
+         <div class="row">
+            <div
+               class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+               <div class="thumb">
+                  <a href="{% url 'mainapp:scenario_detail' slug=prev.slug %}">
+                     <img class="img-fluid" src='{{prev.main_img.url}}' alt="">
+                  </a>
+               </div>
+               <div class="arrow">
+                  <a href="{% url 'mainapp:scenario_detail' slug=prev.slug %}">
+                     <span class="lnr text-white ti-arrow-left"></span>
+                  </a>
+               </div>
+               <div class="detials">
+                  <p>{% trans "Previous" %} </p>
+                  <a href="{% url 'mainapp:scenario_detail' slug=prev.slug %}">
+                     <h4>{{prev.title|truncatewords:5|safe}}</h4>
+                  </a>
+               </div>
+            </div>
+            <div
+               class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+               <div class="detials">
+                  <p>{% trans "Next" %}</p>
+                  <a href="{% url 'mainapp:scenario_detail' slug=next.slug %}">
+                     <h4>{{next.title|truncatewords:5|safe}}</h4>
+                  </a>
+               </div>
+               <div class="arrow">
+                  <a href="{% url 'mainapp:scenario_detail' slug=next.slug %}">
+                     <span class="lnr text-white ti-arrow-right"></span>
+                  </a>
+               </div>
+               <div class="thumb">
+                  <a href="{% url 'mainapp:scenario_detail' slug=next.slug %}">
+                     <img class="img-fluid" src='{{next.main_img.url}}' alt="">
+                  </a>
+               </div>
+            </div>
+         </div>
+      </div>
    </div>
    <div class="blog-author">
       <div class="media align-items-center">
-         {% if comment.author.avatar %}
+         {% if object.author.avatar %}
          <img src='{{object.author.avatar.url}}' alt="">
          {%else%}
          <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
@@ -203,19 +243,6 @@
 {% endblock left_sidebar %}
          
 {% block right_sidebar %}
-<aside class="single_sidebar_widget post_category_widget">
-   <h4 class="widget_title">{% trans "Platforms" %}</h4>
-   <ul class="list cat-list">
-      {% for item in all_categories %}
-      <li>
-         <a href="{% url 'mainapp:scenarios_category' platform_id=item.id %}" class="d-flex">
-            <p>{{item.title}}</p>
-            <p>({{item.qty_scenarios_in_platform}})</p>
-         </a>
-      </li>
-      {% endfor %}
-   </ul>
-</aside>
 <aside class="single_sidebar_widget popular_post_widget">
    {%if similar_scenarios%}
    <h3 class="widget_title">{% trans "Other scenarios from these devices" %}</h3>
@@ -226,7 +253,7 @@
          <a href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
             <h3>{{item.title}}</h3>
          </a>
-         <p>{{item.get_devices_display}}</p>
+         <p>{{item.get_device_types_display}}</p>
       </div>
    </div>
    {%endfor%}

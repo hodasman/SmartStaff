@@ -46,6 +46,7 @@ class ScenarioVariantAdmin(admin.ModelAdmin):
 @admin.register(mainapp_models.Scenario)
 class ScenariosAdmin(admin.ModelAdmin):
     list_per_page = 10
+    filter_horizontal = ("device_types",)
     inlines = [ScenarioImageInline, ScenarioVariantInline]
 
 class DeviceImageInline(admin.TabularInline):

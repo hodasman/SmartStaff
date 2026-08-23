@@ -200,7 +200,7 @@ class ScenariosDetailView(DetailView):
         if user.is_authenticated:
             context['form'] = self.comment_form # передаем форму комментария
         context["all_categories"] = mainapp_models.Platform.objects.all()
-        context['similar_scenarios'] = context["object"].get_similar_scenarios() # сценарии с этими же устройствами
+        context['similar_scenarios'] = context["object"].get_similar_scenarios() # сценарии с этими же типами устройств
         return context
     
 
@@ -302,17 +302,20 @@ def view_personal_page(request, username):
     current_user = request.user
     if current_user.is_authenticated:
         context = {'user': current_user,  }
-        user_devices = set(current_user.devices.all()) # Устройства юзера
+        # Типы устройств, которые уже есть у пользователя
+        user_device_types = set(
+            current_user.devices.values_list('device_type_id', flat=True)
+        )
         all_scenarios = mainapp_models.Scenario.objects.all() # Все сценарии в базе
-        right_scenarios = [] #Список сценариев которые доступны юзеру
-        almost_all = [] #Список сценариев где не хватает одного устройста
-        for scenario in all_scenarios: # Ищем совпадения устройств юзера с устройствами сценариев
-            scenario_devices = set(scenario.devices.all())
-            common = user_devices.intersection(scenario_devices) # пересечения двух множеств(общие элементы)
+        right_scenarios = [] #Список сценариев, для которых у юзера есть все типы устройств
+        almost_all = [] #Список сценариев, где не хватает одного типа устройства
+        for scenario in all_scenarios: # Сравниваем типы устройств юзера с типами устройств сценариев
+            scenario_types = set(scenario.device_types.values_list('id', flat=True))
+            common = user_device_types.intersection(scenario_types) # пересечение двух множеств(общие элементы)
             
-            if len(common) == len(scenario_devices):
+            if len(common) == len(scenario_types):
                 right_scenarios.append(scenario)
-            elif len(scenario_devices) - len(common) == 1:
+            elif len(scenario_types) - len(common) == 1:
                 almost_all.append(scenario)
         context['right_scenarios'] = right_scenarios
         context['almost_all'] = almost_all

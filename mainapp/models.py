@@ -10,7 +10,7 @@ from taggit.managers import TaggableManager
 def device_foto_path(instance, filename):
     # file will be uploaded to
     #   MEDIA_ROOT / devices_foto / <model> / <filename>
-    return "devices_foto/{0}/{1}".format(instance.model, filename)
+    return "devices_foto/{0}/{1}".format(instance.model_name, filename)
 
 
 def article_img_path(instance, filename):
@@ -379,7 +379,7 @@ class Scenario(models.Model):
     text = models.TextField(verbose_name=_("Text"), blank=True)
     description = models.TextField(verbose_name=_("Description"), blank=True)
     main_img = models.ImageField(verbose_name=_("Main image"), blank=True, null=True, upload_to=scenarios_img_path)
-    devices = models.ManyToManyField(Device)
+    device_types = models.ManyToManyField(DeviceType, related_name="scenarios", verbose_name=_("Device types"))
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
     # `platform` removed: scenario may have multiple variants per ecosystem
     idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
@@ -423,15 +423,15 @@ class Scenario(models.Model):
         return round(avg_rating) if avg_rating else 0
     
     @property
-    def devices_count(self):
-        """Количество устройств (эффективно, через SQL COUNT())."""
-        return self.devices.count()
+    def device_types_count(self):
+        """Количество типов устройств (эффективно, через SQL COUNT())."""
+        return self.device_types.count()
 
-    def get_devices_display(self):
-        """Количество устройств с правильным склонением, например: '3 Устройства'."""
-        from .utils import decline_devices
-        count = self.devices_count
-        return f"{count} {decline_devices(count)}"
+    def get_device_types_display(self):
+        """Количество типов устройств, например: '3 типа устройств'."""
+        from .utils import decline_device_types
+        count = self.device_types_count
+        return f"{count} {decline_device_types(count)}"
         
     def get_all_comments(self):
         '''Возвращает QuerySet объектов комментариев для данного сценария'''
@@ -440,23 +440,23 @@ class Scenario(models.Model):
     
     def get_similar_scenarios(self, limit=5):
         '''
-        Функция ищет похожие сценарии устройства которых такие же как и заданного сценария.
-        Возвращает список сценариев которые можно реализовать из этих же устройств или 
-        сценариев где нужно докупить несколько устройств
+        Функция ищет похожие сценарии на основе общих типов устройств.
+        Возвращает сценарии, которые можно реализовать на тех же типах устройств
+        либо докупив один-другой тип устройства.
         '''
         
-        # Получить ID устройств текущего сценария
-        device_ids = self.devices.values_list('id', flat=True)
+        # Получить ID типов устройств текущего сценария
+        type_ids = self.device_types.values_list('id', flat=True)
         
-        if not device_ids:
+        if not type_ids:
             return Scenario.objects.none()
         
-        # Найти сценарии с общими устройствами, отсортировав по количеству общих
+        # Найти сценарии с общими типами устройств, отсортировав по количеству общих
         return (
             Scenario.objects
             .exclude(id=self.id)
-            .filter(devices__in=device_ids)
-            .annotate(common_count=Count('devices', filter=Q(devices__in=device_ids)))
+            .filter(device_types__in=type_ids)
+            .annotate(common_count=Count('device_types', filter=Q(device_types__in=type_ids)))
             .order_by('-common_count')
             .distinct()[:limit]
         )

@@ -1,0 +1,58 @@
+[
+{
+  "model": "mainapp.platform",
+  "pk": 1,
+  "fields": {
+    "title": "Tuya (Smart Life)",
+    "description": ""
+  }
+},
+{
+  "model": "mainapp.platform",
+  "pk": 2,
+  "fields": {
+    "title": "Apple Home (HomeKit)",
+    "description": "Умный дом от Apple"
+  }
+},
+{
+  "model": "mainapp.platform",
+  "pk": 3,
+  "fields": {
+    "title": "Mi Home (Xiaomi)",
+    "description": ""
+  }
+},
+{
+  "model": "mainapp.platform",
+  "pk": 4,
+  "fields": {
+    "title": "Yandex Alice",
+    "description": "Умный дом с Алисой"
+  }
+},
+{
+  "model": "mainapp.platform",
+  "pk": 5,
+  "fields": {
+    "title": "Aqara Home",
+    "description": ""
+  }
+},
+{
+  "model": "mainapp.platform",
+  "pk": 6,
+  "fields": {
+    "title": "Apple Home (with Hub)",
+    "description": "Устройство условно работает в системе Apple Home для этого нужен дополнительный хаб, который будет работать как мост между двумя экосистемами. Обычно это фирменный хаб устройства."
+  }
+},
+{
+  "model": "mainapp.platform",
+  "pk": 7,
+  "fields": {
+    "title": "Yandex Alice (with Hub)",
+    "description": "Для добавления в экосистему Яндекса этого устройства нужен дополнительный Хаб, который будет выступать в роли мостика между двумя экосистемами. Обычно это фирменный Хаб устройства."
+  }
+}
+]
