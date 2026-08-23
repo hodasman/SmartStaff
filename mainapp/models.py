@@ -10,7 +10,7 @@ from taggit.managers import TaggableManager
 def device_foto_path(instance, filename):
     # file will be uploaded to
     #   MEDIA_ROOT / devices_foto / <model> / <filename>
-    return "devices_foto/{0}/{1}".format(instance.model, filename)
+    return "devices_foto/{0}/{1}".format(instance.model_name, filename)
 
 
 def article_img_path(instance, filename):

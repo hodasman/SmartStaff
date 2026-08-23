@@ -1,0 +1,66 @@
+[
+{
+  "model": "mainapp.protocol",
+  "pk": 1,
+  "fields": {
+    "title": "Wi‑Fi",
+    "slug": "wifi"
+  }
+},
+{
+  "model": "mainapp.protocol",
+  "pk": 2,
+  "fields": {
+    "title": "Zigbee 1.2/2.0",
+    "slug": "zigbee"
+  }
+},
+{
+  "model": "mainapp.protocol",
+  "pk": 3,
+  "fields": {
+    "title": "Bluetooth (BLE)",
+    "slug": "bluetooth"
+  }
+},
+{
+  "model": "mainapp.protocol",
+  "pk": 4,
+  "fields": {
+    "title": "Z-Wave",
+    "slug": "zwave"
+  }
+},
+{
+  "model": "mainapp.protocol",
+  "pk": 5,
+  "fields": {
+    "title": "Thread",
+    "slug": "thread"
+  }
+},
+{
+  "model": "mainapp.protocol",
+  "pk": 6,
+  "fields": {
+    "title": "Zigbee 3.0",
+    "slug": "zigbee3"
+  }
+},
+{
+  "model": "mainapp.protocol",
+  "pk": 7,
+  "fields": {
+    "title": "Thread / Matter",
+    "slug": "threadmatter"
+  }
+},
+{
+  "model": "mainapp.protocol",
+  "pk": 8,
+  "fields": {
+    "title": "Wi-Fi / Matter",
+    "slug": "wifimatter"
+  }
+}
+]
