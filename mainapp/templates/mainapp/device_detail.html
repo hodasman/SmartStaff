@@ -61,7 +61,7 @@
                     <div class="descript_wrap white-bg">
                         <div class="single_wrap">
                             <h4>{% trans "Description" %}</h4>
-                            <p>{{ object.description }}</p>
+                            {{ object.description|linebreaks }}
                             
                         </div>
                         
