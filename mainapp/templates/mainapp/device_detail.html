@@ -54,7 +54,7 @@
                             <div class="jobs_right">
                                 <div class="apply_now">
                                     {% if user in object.user_set.all %}
-                                    <a class="heart_mark" title="{% trans "Remove from my list" %}" href="{% url 'mainapp:delete_device' slug=object.slug %}"> <i class="ti-minus"></i> </a>
+                                    <a class="heart_mark remove-from-list-btn" title="{% trans "Remove from my list" %}" href="{% url 'mainapp:delete_device' slug=object.slug %}"> <i class="ti-minus"></i> </a>
                                     {% else %}
                                     <a class="heart_mark" title="{% trans "Add to my list" %}" href="{% url 'mainapp:add_device' slug=object.slug %}"> <i class="ti-plus"></i> </a>
                                     {% endif %}

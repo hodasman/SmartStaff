@@ -84,7 +84,7 @@
                                         <div class="apply_now">
 
                                             {% if user in item.user_set.all %}
-                                            <a href="{% url 'mainapp:delete_device' slug=item.slug %}" class="boxed-btn3">
+                                            <a href="{% url 'mainapp:delete_device' slug=item.slug %}" class="boxed-btn3 remove-from-list-btn">
                                                 {% trans "Remove from my list" %}
                                             </a>
                                             {% else %}
