@@ -3,8 +3,8 @@
   "model": "mainapp.protocol",
   "pk": 1,
   "fields": {
-    "title": "Wi‑Fi",
-    "slug": "wifi"
+    "title": "Wi‑Fi 2.4 GHz",
+    "slug": "wifi24"
   }
 },
 {
@@ -61,6 +61,14 @@
   "fields": {
     "title": "Wi-Fi / Matter",
     "slug": "wifimatter"
+  }
+},
+{
+  "model": "mainapp.protocol",
+  "pk": 9,
+  "fields": {
+    "title": "Wi‑Fi 5 GHz",
+    "slug": "wifi5"
   }
 }
 ]
