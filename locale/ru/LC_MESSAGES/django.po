@@ -1006,7 +1006,7 @@ msgstr "Сценарии автоматизации"
 
 #: mainapp/templates/mainapp/scenario_detail.html:69
 msgid "Variants by ecosystem"
-msgstr ""
+msgstr "Список устройств для разных экосистем"
 
 #: mainapp/templates/mainapp/scenario_detail.html:84
 msgid "No specific required devices listed for this variant."
