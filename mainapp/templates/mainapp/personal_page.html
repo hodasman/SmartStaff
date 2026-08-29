@@ -100,12 +100,9 @@
                                     <div class="jobs_right">
                                         <div class="apply_now">
                                             
-                                            <a href="{% url 'mainapp:delete_device' slug=device.slug %}" class="boxed-btn3">
+                                            <a href="{% url 'mainapp:delete_device' slug=device.slug %}" class="boxed-btn3 remove-from-list-btn">
                                                 {% trans "Delete" %}
                                             </a>
-                                        </div>
-                                        <div class="date">
-                                            <p> {{device.created_at|date:"Y-m-d"}}</p>
                                         </div>
                                     </div>
                                 </div>

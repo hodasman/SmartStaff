@@ -27,5 +27,6 @@ class DevicesFilter(django_filters.FilterSet):
         fields = {
             'category',
             'ecosystem',
+            'protocols',
         }
         

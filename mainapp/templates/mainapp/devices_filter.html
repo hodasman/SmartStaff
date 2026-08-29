@@ -82,18 +82,20 @@
                                     </div>
                                     <div class="jobs_right">
                                         <div class="apply_now">
-                                            
-                                            <a href="{% url 'mainapp:add_device' slug=item.slug %}" class="boxed-btn3">
-                                                {% if user in item.user_set.all%}
-                                                {% trans "i have" %}
-                                                {%else%}
-                                                {% trans "add" %}
-                                                {%endif%}
+
+                                            {% if user in item.user_set.all %}
+                                            <a href="{% url 'mainapp:delete_device' slug=item.slug %}" class="boxed-btn3 remove-from-list-btn">
+                                                {% trans "Remove from my list" %}
                                             </a>
+                                            {% else %}
+                                            <a href="{% url 'mainapp:add_device' slug=item.slug %}" class="boxed-btn3">
+                                                {% trans "Add to my list" %}
+                                            </a>
+                                            {% endif %}
                                         </div>
-                                        <div class="date">
+                                        <!-- <div class="date">
                                             <p> {{item.created_at|date:"Y-m-d"}}</p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
