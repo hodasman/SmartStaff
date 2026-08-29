@@ -18,9 +18,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path, re_path
-from django.views.static import serve
 from django.views.generic import RedirectView
 from django.views.i18n import set_language
+from django.views.static import serve
 
 urlpatterns = [
     path('admin/password_reset/', auth_views.PasswordResetView.as_view(), name='admin_password_reset'),
