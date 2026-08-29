@@ -1,22 +1,31 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Загружаем переменные окружения из файла .env (не хранится в git)
+load_dotenv(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', "django-insecure-@9txbhc45n*!dz$y#nd#x0nleysn&nja9l(-pn8elc!#-hk6yn")
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-@9txbhc45n*!dz$y#nd#x0nleysn&nja9l(-pn8elc!#-hk6yn",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+DEBUG = os.environ.get("DJANGO_DEBUG", "False").lower() in ("true", "1", "yes")
 
-ALLOWED_HOSTS = ["smarthouse-2c35141019ba.herokuapp.com", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = os.environ.get(
+    "DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,0.0.0.0"
+).split(",")
 
 
 # Application definition
@@ -173,19 +182,20 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
-# Настройки сервера исходящей почты
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'authapp.backends.email_backend.EmailBackend'
+# Настройки сервера исходящей почты (секреты берутся из .env / переменных окружения)
+EMAIL_BACKEND = os.environ.get(
+    "EMAIL_BACKEND", "authapp.backends.email_backend.EmailBackend"
+)
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'workhodas@gmail.com'
-EMAIL_HOST_PASSWORD = 'elox wglk btub rwky'
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True").lower() in ("true", "1", "yes")
+EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "False").lower() in ("true", "1", "yes")
 # SERVER_EMAIL = EMAIL_HOST_USER
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_ADMIN = 'hodas.work@gmail.com'
+EMAIL_ADMIN = os.environ.get("EMAIL_ADMIN", "")
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
