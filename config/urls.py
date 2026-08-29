@@ -36,4 +36,7 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Медиафайлы раздаёт Django (на деплое отдаются с примонтированного тома).
+# Для высоконагруженного проекта лучше перейти на S3-хранилище + CDN.
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

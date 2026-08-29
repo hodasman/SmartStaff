@@ -97,12 +97,24 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+import dj_database_url
+
+if os.environ.get("DATABASE_URL"):
+    # Продакшен (например, Postgres на Railway): DATABASE_URL задаёт платформа
+    DATABASES = {
+        "default": dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    # Локальная разработка: SQLite (путь можно переопределить через SQLITE_PATH)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": Path(os.environ.get("SQLITE_PATH", str(BASE_DIR / "db.sqlite3"))),
+        }
+    }
 # DATABASES = {     
 # 		'default': {
 #       	'ENGINE': 'django.db.backends.postgresql',
@@ -159,7 +171,8 @@ LOCALE_PATHS = [
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# На деплое указывается путь к примонтированному тому (например, /data/media)
+MEDIA_ROOT = Path(os.environ.get("MEDIA_ROOT", str(BASE_DIR / "media")))
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -200,11 +213,5 @@ EMAIL_ADMIN = os.environ.get("EMAIL_ADMIN", "")
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Heroku: Update database configuration from $DATABASE_URL.
-# import dj_database_url
-
-# db_from_env = dj_database_url.config(conn_max_age=500)
-# DATABASES['default'].update(db_from_env)
 
 TAGGIT_TAG_CLOUD_ORDER_BY = '-num_times' # Сортировка облака тегов по частате
