@@ -27,6 +27,17 @@ ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,0.0.0.0"
 ).split(",")
 
+# origins для CSRF за прокси (Railway/Render завершают TLS до Django)
+_csrf = [
+    o.strip()
+    for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if o.strip()
+]
+CSRF_TRUSTED_ORIGINS = _csrf
+
+# корректное определение https за обратным прокси
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 
 # Application definition
 
