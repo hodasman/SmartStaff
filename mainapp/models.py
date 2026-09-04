@@ -251,6 +251,11 @@ class Device(models.Model):
         null=True
     )
     package_contents = models.TextField(verbose_name=_("Package contents"))
+    is_legacy = models.BooleanField(
+        default=False,
+        verbose_name=_("Legacy"),
+        help_text=_("Mark vintage devices that are no longer sold"),
+    )
     deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(verbose_name=_("Created"), auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name=_("Updated"), auto_now=True)

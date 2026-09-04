@@ -71,10 +71,12 @@ class PurchaseLinkInline(admin.TabularInline):
 
 @admin.register(mainapp_models.Device)
 class DevicesAdmin(admin.ModelAdmin):
-    list_display = ["id", "title", "slug", "deleted"]
+    list_display = ["id", "title", "slug", "is_legacy", "deleted"]
     list_per_page = 10
     ordering = ["title"]
     search_fields = ("title", "model_name")
+    list_filter = ("is_legacy", "deleted")
+    list_editable = ("is_legacy", "deleted")
     filter_horizontal = ("protocols",)
     inlines = [DeviceImageInline, PurchaseLinkInline]
 
