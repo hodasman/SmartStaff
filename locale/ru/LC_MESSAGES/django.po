@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-28 21:15+0300\n"
+"POT-Creation-Date: 2026-09-04 20:58+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -245,15 +245,15 @@ msgstr ""
 msgid "Your data has been successfully changed!"
 msgstr "Ваши данные были успешно изменены!"
 
-#: config/settings.py:140
+#: config/settings.py:172
 msgid "English"
 msgstr "Английский"
 
-#: config/settings.py:141
+#: config/settings.py:173
 msgid "Russian"
 msgstr "Русский"
 
-#: config/settings.py:142
+#: config/settings.py:174
 msgid "Belarusian"
 msgstr "Белорусский"
 
@@ -330,18 +330,18 @@ msgstr "Введите тему"
 
 #: mainapp/models.py:28 mainapp/models.py:48 mainapp/models.py:61
 #: mainapp/models.py:79 mainapp/models.py:101 mainapp/models.py:166
-#: mainapp/models.py:296
+#: mainapp/models.py:301
 msgid "Name"
 msgstr ""
 
 #: mainapp/models.py:29 mainapp/models.py:49 mainapp/models.py:63
 #: mainapp/models.py:81 mainapp/models.py:107 mainapp/models.py:238
-#: mainapp/models.py:380 mainapp/models.py:499
-#: mainapp/templates/mainapp/device_detail.html:63
+#: mainapp/models.py:385 mainapp/models.py:504
+#: mainapp/templates/mainapp/device_detail.html:68
 msgid "Description"
 msgstr "Описание"
 
-#: mainapp/models.py:32 mainapp/models.py:496
+#: mainapp/models.py:32 mainapp/models.py:501
 #, fuzzy
 #| msgid "Platforms"
 msgid "Platform"
@@ -392,7 +392,7 @@ msgstr "Категория"
 msgid "Device type"
 msgstr "Тип устройства"
 
-#: mainapp/models.py:112 mainapp/models.py:382
+#: mainapp/models.py:112 mainapp/models.py:387
 #: mainapp/templates/mainapp/scenario_detail.html:61
 msgid "Device types"
 msgstr "Типы устройств"
@@ -403,8 +403,8 @@ msgstr "Типы устройств"
 msgid "Brief description"
 msgstr "Описание"
 
-#: mainapp/models.py:172 mainapp/models.py:379 mainapp/models.py:557
-#: mainapp/models.py:570
+#: mainapp/models.py:172 mainapp/models.py:384 mainapp/models.py:562
+#: mainapp/models.py:575
 msgid "Text"
 msgstr "Текст"
 
@@ -412,11 +412,11 @@ msgstr "Текст"
 msgid "Main picture"
 msgstr "Главная картинка"
 
-#: mainapp/models.py:174 mainapp/models.py:249 mainapp/models.py:383
+#: mainapp/models.py:174 mainapp/models.py:249 mainapp/models.py:388
 msgid "Author"
 msgstr "Автор"
 
-#: mainapp/models.py:188 mainapp/models.py:206 mainapp/models.py:555
+#: mainapp/models.py:188 mainapp/models.py:206 mainapp/models.py:560
 #, fuzzy
 #| msgid "Articles"
 msgid "Article"
@@ -427,27 +427,27 @@ msgstr "Статьи"
 msgid "Articles"
 msgstr "Статьи"
 
-#: mainapp/models.py:208 mainapp/models.py:280 mainapp/models.py:472
+#: mainapp/models.py:208 mainapp/models.py:285 mainapp/models.py:477
 #, fuzzy
 #| msgid "Image 1"
 msgid "Image"
 msgstr "Изображение 1"
 
-#: mainapp/models.py:209 mainapp/models.py:281 mainapp/models.py:473
+#: mainapp/models.py:209 mainapp/models.py:286 mainapp/models.py:478
 msgid "Alt text"
 msgstr ""
 
-#: mainapp/models.py:210 mainapp/models.py:282 mainapp/models.py:381
-#: mainapp/models.py:474
+#: mainapp/models.py:210 mainapp/models.py:287 mainapp/models.py:386
+#: mainapp/models.py:479
 msgid "Main image"
 msgstr "Главное фото"
 
-#: mainapp/models.py:211 mainapp/models.py:283 mainapp/models.py:475
+#: mainapp/models.py:211 mainapp/models.py:288 mainapp/models.py:480
 msgid "Order"
 msgstr ""
 
-#: mainapp/models.py:212 mainapp/models.py:284 mainapp/models.py:332
-#: mainapp/models.py:387 mainapp/models.py:476 mainapp/models.py:500
+#: mainapp/models.py:212 mainapp/models.py:289 mainapp/models.py:337
+#: mainapp/models.py:392 mainapp/models.py:481 mainapp/models.py:505
 msgid "Created at"
 msgstr "Создано"
 
@@ -463,11 +463,11 @@ msgstr "Модель"
 msgid "Article images"
 msgstr "Категории статей"
 
-#: mainapp/models.py:236 mainapp/models.py:377 mainapp/models.py:498
+#: mainapp/models.py:236 mainapp/models.py:382 mainapp/models.py:503
 msgid "Title"
 msgstr "Название"
 
-#: mainapp/models.py:237 mainapp/models.py:328 mainapp/models.py:378
+#: mainapp/models.py:237 mainapp/models.py:333 mainapp/models.py:383
 msgid "URL"
 msgstr "URL"
 
@@ -501,7 +501,7 @@ msgstr "Поддерживаемые протоколы"
 msgid "Operating temperature"
 msgstr "Рабочая температура"
 
-#: mainapp/models.py:245 mainapp/templates/mainapp/device_detail.html:95
+#: mainapp/models.py:245 mainapp/templates/mainapp/device_detail.html:100
 msgid "Ecosystem"
 msgstr "Экосистема"
 
@@ -509,157 +509,165 @@ msgstr "Экосистема"
 msgid "Package contents"
 msgstr "Комплектация"
 
-#: mainapp/models.py:255
+#: mainapp/models.py:256
+msgid "Legacy"
+msgstr "Рудимент"
+
+#: mainapp/models.py:257
+msgid "Mark vintage devices that are no longer sold"
+msgstr "Отметьте винтажные устройства, которые больше не продаются"
+
+#: mainapp/models.py:260
 msgid "Created"
 msgstr "Создано"
 
-#: mainapp/models.py:256
+#: mainapp/models.py:261
 msgid "Updated"
 msgstr "Отредактировано"
 
-#: mainapp/models.py:259 mainapp/models.py:278 mainapp/models.py:325
-#: mainapp/models.py:517
+#: mainapp/models.py:264 mainapp/models.py:283 mainapp/models.py:330
+#: mainapp/models.py:522
 #, fuzzy
 #| msgid "Devices"
 msgid "Device"
 msgstr "Устройство"
 
-#: mainapp/models.py:260
+#: mainapp/models.py:265
 msgid "Devices"
 msgstr "Устройства"
 
-#: mainapp/models.py:287
+#: mainapp/models.py:292
 #, fuzzy
 #| msgid "Devices"
 msgid "Device image"
 msgstr "Модель"
 
-#: mainapp/models.py:288
+#: mainapp/models.py:293
 #, fuzzy
 #| msgid "Article categories"
 msgid "Device images"
 msgstr "Категории устройств"
 
-#: mainapp/models.py:300
+#: mainapp/models.py:305
 #, fuzzy
 #| msgid "Protocols:"
 msgid "Protocol"
 msgstr "Протоколы:"
 
-#: mainapp/models.py:301
+#: mainapp/models.py:306
 #, fuzzy
 #| msgid "Protocols:"
 msgid "Protocols"
 msgstr "Протоколы:"
 
-#: mainapp/models.py:327
+#: mainapp/models.py:332
 msgid "Marketplace"
 msgstr ""
 
-#: mainapp/models.py:330
+#: mainapp/models.py:335
 msgid "Affiliate"
 msgstr ""
 
-#: mainapp/models.py:331 mainapp/models.py:520
+#: mainapp/models.py:336 mainapp/models.py:525
 msgid "Note"
 msgstr ""
 
-#: mainapp/models.py:335
+#: mainapp/models.py:340
 msgid "Purchase link"
 msgstr "Ссылка для покупки"
 
-#: mainapp/models.py:336 mainapp/templates/mainapp/device_detail.html:110
+#: mainapp/models.py:341 mainapp/templates/mainapp/device_detail.html:115
 msgid "Purchase links"
 msgstr "Ссылки для покупки"
 
-#: mainapp/models.py:388
+#: mainapp/models.py:393
 msgid "Updated at"
 msgstr "Отредактировано"
 
-#: mainapp/models.py:399 mainapp/models.py:470 mainapp/models.py:493
-#: mainapp/models.py:544 mainapp/models.py:568
+#: mainapp/models.py:404 mainapp/models.py:475 mainapp/models.py:498
+#: mainapp/models.py:549 mainapp/models.py:573
 msgid "Scenario"
 msgstr "Сценарий"
 
-#: mainapp/models.py:400
+#: mainapp/models.py:405
 #, fuzzy
 #| msgid "Popular scenarios"
 msgid "Scenarios"
 msgstr "Популярные сценарии"
 
-#: mainapp/models.py:479
+#: mainapp/models.py:484
 #, fuzzy
 #| msgid "Scenario"
 msgid "Scenario image"
 msgstr "Сценарий"
 
-#: mainapp/models.py:480
+#: mainapp/models.py:485
 #, fuzzy
 #| msgid "Popular scenarios"
 msgid "Scenario images"
 msgstr "Популярные сценарии"
 
-#: mainapp/models.py:503
+#: mainapp/models.py:508
 #, fuzzy
 #| msgid "Scenario"
 msgid "Scenario variant"
 msgstr "Сценарий"
 
-#: mainapp/models.py:504
+#: mainapp/models.py:509
 #, fuzzy
 #| msgid "Popular scenarios"
 msgid "Scenario variants"
 msgstr "Популярные сценарии"
 
-#: mainapp/models.py:514
+#: mainapp/models.py:519
 msgid "Variant"
 msgstr ""
 
-#: mainapp/models.py:519
+#: mainapp/models.py:524
 msgid "Quantity"
 msgstr ""
 
-#: mainapp/models.py:523
+#: mainapp/models.py:528
 msgid "Required device"
 msgstr ""
 
-#: mainapp/models.py:524
+#: mainapp/models.py:529
 #, fuzzy
 #| msgid "Browse more devices"
 msgid "Required devices"
 msgstr "Посмотреть больше устройств"
 
-#: mainapp/models.py:535
+#: mainapp/models.py:540
 msgid "Rating star"
 msgstr "Рейтинг"
 
-#: mainapp/models.py:536
+#: mainapp/models.py:541
 msgid "Rating stars"
 msgstr "Рейтинг"
 
-#: mainapp/models.py:543
+#: mainapp/models.py:548
 msgid "Star"
 msgstr "Звезда"
 
-#: mainapp/models.py:556 mainapp/models.py:569
+#: mainapp/models.py:561 mainapp/models.py:574
 #, fuzzy
 #| msgid "Comments"
 msgid "Comment author"
 msgstr "Автор комментария"
 
-#: mainapp/models.py:558 mainapp/models.py:571
+#: mainapp/models.py:563 mainapp/models.py:576
 #, fuzzy
 #| msgid "Comments"
 msgid "Comment date"
 msgstr "Дата комментария"
 
-#: mainapp/models.py:562 mainapp/models.py:575
+#: mainapp/models.py:567 mainapp/models.py:580
 #, fuzzy
 #| msgid "Comments"
 msgid "Comment"
 msgstr "Комментарии"
 
-#: mainapp/models.py:563 mainapp/models.py:576
+#: mainapp/models.py:568 mainapp/models.py:581
 #: mainapp/templates/mainapp/article_detail.html:23
 #: mainapp/templates/mainapp/article_detail.html:38
 #: mainapp/templates/mainapp/article_detail.html:115
@@ -667,51 +675,51 @@ msgstr "Комментарии"
 #: mainapp/templates/mainapp/list_tag.html:29
 #: mainapp/templates/mainapp/list_tag.html:40
 #: mainapp/templates/mainapp/scenario_detail.html:29
-#: mainapp/templates/mainapp/scenario_detail.html:109
-#: mainapp/templates/mainapp/scenario_detail.html:183
+#: mainapp/templates/mainapp/scenario_detail.html:110
+#: mainapp/templates/mainapp/scenario_detail.html:184
 #: mainapp/templates/mainapp/scenario_list.html:33
 msgid "Comments"
 msgstr "Комментарии"
 
-#: mainapp/models.py:583
+#: mainapp/models.py:588
 #, fuzzy
 #| msgid "Enter subject"
 msgid "Subject"
 msgstr "Введите тему"
 
-#: mainapp/models.py:584
+#: mainapp/models.py:589
 #, fuzzy
 #| msgid "Enter Email"
 msgid "Email"
 msgstr "Введите Email"
 
-#: mainapp/models.py:585
+#: mainapp/models.py:590
 #, fuzzy
 #| msgid "Your message"
 msgid "Message"
 msgstr "Ваше сообщение"
 
-#: mainapp/models.py:586
+#: mainapp/models.py:591
 msgid "Sent at"
 msgstr "Отправить"
 
-#: mainapp/models.py:587
+#: mainapp/models.py:592
 #, fuzzy
 #| msgid "Send"
 msgid "Sender IP"
 msgstr "Отправить"
 
-#: mainapp/models.py:588
+#: mainapp/models.py:593
 #, fuzzy
 #| msgid "Search by name"
 msgid "Sender name"
 msgstr "Имя отправителя"
 
-#: mainapp/models.py:591
+#: mainapp/models.py:596
 msgid "User"
 msgstr "Пользователь"
 
-#: mainapp/models.py:598 mainapp/models.py:599
+#: mainapp/models.py:603 mainapp/models.py:604
 msgid "Feedback"
 msgstr "Отзыв"
 
@@ -778,53 +786,53 @@ msgstr ""
 "же устройств, а также сценарии, для которых не хватает одного-двух устройств."
 
 #: mainapp/templates/mainapp/article_detail.html:62
-#: mainapp/templates/mainapp/scenario_detail.html:133
+#: mainapp/templates/mainapp/scenario_detail.html:134
 msgid "Previous"
 msgstr "Предыдущая"
 
 #: mainapp/templates/mainapp/article_detail.html:71
-#: mainapp/templates/mainapp/scenario_detail.html:142
+#: mainapp/templates/mainapp/scenario_detail.html:143
 msgid "Next"
 msgstr "Следующая"
 
 #: mainapp/templates/mainapp/article_detail.html:99
-#: mainapp/templates/mainapp/scenario_detail.html:169
+#: mainapp/templates/mainapp/scenario_detail.html:170
 msgid "Author information"
 msgstr "Информация об авторе"
 
 #: mainapp/templates/mainapp/article_detail.html:102
-#: mainapp/templates/mainapp/scenario_detail.html:170
+#: mainapp/templates/mainapp/scenario_detail.html:171
 msgid "This article was prepared for you by"
 msgstr "Эту статью подготовил для вас"
 
 #: mainapp/templates/mainapp/article_detail.html:104
-#: mainapp/templates/mainapp/scenario_detail.html:172
+#: mainapp/templates/mainapp/scenario_detail.html:173
 msgid "with the nickname"
 msgstr "с никнеймом"
 
 #: mainapp/templates/mainapp/article_detail.html:106
-#: mainapp/templates/mainapp/scenario_detail.html:174
+#: mainapp/templates/mainapp/scenario_detail.html:175
 msgid "from the country"
 msgstr "из страны"
 
 #: mainapp/templates/mainapp/article_detail.html:113
-#: mainapp/templates/mainapp/scenario_detail.html:181
+#: mainapp/templates/mainapp/scenario_detail.html:182
 msgid "There are no comments yet. Be the first!"
 msgstr "Комментариев пока нет. Будьте первым!"
 
 #: mainapp/templates/mainapp/article_detail.html:150
-#: mainapp/templates/mainapp/scenario_detail.html:218
+#: mainapp/templates/mainapp/scenario_detail.html:219
 msgid "Leave a comment"
 msgstr "Оставить комментарий"
 
 #: mainapp/templates/mainapp/article_detail.html:161
 #: mainapp/templates/mainapp/contact.html:40
-#: mainapp/templates/mainapp/scenario_detail.html:229
+#: mainapp/templates/mainapp/scenario_detail.html:230
 msgid "Send"
 msgstr "Отправить"
 
 #: mainapp/templates/mainapp/article_detail.html:167
-#: mainapp/templates/mainapp/scenario_detail.html:235
+#: mainapp/templates/mainapp/scenario_detail.html:236
 #, python-format
 msgid "In order to leave a review you need to %(link)s to the site!"
 msgstr "Чтобы оставить отзыв, вам нужно %(link)s на сайт!"
@@ -855,36 +863,41 @@ msgstr "Отправьте ваши вопросы"
 msgid "Smart Devices"
 msgstr "Умные устройства"
 
-#: mainapp/templates/mainapp/device_detail.html:56
-#: mainapp/templates/mainapp/devices_filter.html:90
+#: mainapp/templates/mainapp/device_detail.html:58
+#: mainapp/templates/mainapp/devices_filter.html:89
+msgid "Remove from my list"
+msgstr "Удалить из моего списка"
+
+#: mainapp/templates/mainapp/device_detail.html:60
+#: mainapp/templates/mainapp/devices_filter.html:93
 msgid "Add to my list"
 msgstr "Добавить в мой список"
 
-#: mainapp/templates/mainapp/device_detail.html:86
+#: mainapp/templates/mainapp/device_detail.html:91
 msgid "Characteristics"
 msgstr "Характеристики"
 
-#: mainapp/templates/mainapp/device_detail.html:90
+#: mainapp/templates/mainapp/device_detail.html:95
 msgid "Model:"
 msgstr "Модель:"
 
-#: mainapp/templates/mainapp/device_detail.html:91
+#: mainapp/templates/mainapp/device_detail.html:96
 msgid "Protocols:"
 msgstr "Протоколы:"
 
-#: mainapp/templates/mainapp/device_detail.html:92
+#: mainapp/templates/mainapp/device_detail.html:97
 msgid "Power:"
 msgstr "Питание:"
 
-#: mainapp/templates/mainapp/device_detail.html:93
+#: mainapp/templates/mainapp/device_detail.html:98
 msgid "Dimensions:"
 msgstr "Размеры:"
 
-#: mainapp/templates/mainapp/device_detail.html:94
+#: mainapp/templates/mainapp/device_detail.html:99
 msgid "Equipment:"
 msgstr "Комплектация:"
 
-#: mainapp/templates/mainapp/device_detail.html:117
+#: mainapp/templates/mainapp/device_detail.html:122
 msgid "No purchase links"
 msgstr "Нет ссылок на покупку"
 
@@ -900,14 +913,6 @@ msgstr "Фильтры"
 msgid "Result"
 msgstr "Результат"
 
-#: mainapp/templates/mainapp/devices_filter.html:88
-msgid "In my list"
-msgstr "В моем списке"
-
-#: mainapp/templates/mainapp/devices_filter.html:88
-msgid "Remove from my list"
-msgstr "Удалить из моего списка"
-
 #: mainapp/templates/mainapp/list_tag.html:6
 msgid "Search by tag"
 msgstr "Поиск по тегу"
@@ -920,7 +925,7 @@ msgstr "Каталог устройств"
 msgid "Browse more devices"
 msgstr "Посмотреть больше устройств"
 
-#: mainapp/templates/mainapp/parts_pages/device_listing.html:45
+#: mainapp/templates/mainapp/parts_pages/device_listing.html:46
 #: mainapp/templates/mainapp/parts_pages/slider_area.html:14
 msgid "More details"
 msgstr "Подробнее"
@@ -1008,15 +1013,15 @@ msgstr "Сценарии автоматизации"
 msgid "Variants by ecosystem"
 msgstr "Список устройств для разных экосистем"
 
-#: mainapp/templates/mainapp/scenario_detail.html:84
+#: mainapp/templates/mainapp/scenario_detail.html:85
 msgid "No specific required devices listed for this variant."
 msgstr ""
 
-#: mainapp/templates/mainapp/scenario_detail.html:90
+#: mainapp/templates/mainapp/scenario_detail.html:91
 msgid "Explanations"
 msgstr "Объяснения"
 
-#: mainapp/templates/mainapp/scenario_detail.html:97
+#: mainapp/templates/mainapp/scenario_detail.html:98
 msgid ""
 "Attention! Depending on the version of the application, the names of the "
 "options may differ slightly from those indicated in the diagram!"
@@ -1024,7 +1029,7 @@ msgstr ""
 "Внимание! В зависимости от версии приложения, названия опций могут немного "
 "отличаться от указанных на диаграмме!"
 
-#: mainapp/templates/mainapp/scenario_detail.html:248
+#: mainapp/templates/mainapp/scenario_detail.html:249
 msgid "Other scenarios from these devices"
 msgstr "Другие сценарии для этих устройств"
 
@@ -1138,6 +1143,10 @@ msgstr "Продажи и маркетинг"
 msgid "Finance"
 msgstr "Финансы"
 
+#: templates/includes/legacy_badge.html:2
+msgid "This device is no longer produced"
+msgstr "Это устройство больше не производится"
+
 #: templates/subscribe/tags/form.html:3
 msgid "Subscribe to the newsletter"
 msgstr "Подписаться на рассылку"
@@ -1154,6 +1163,9 @@ msgstr "получать информацию о новых статьях и с
 #: templates/subscribe/tags/form_right.html:2
 msgid "Subscribe to news"
 msgstr "Подписаться на новости"
+
+#~ msgid "In my list"
+#~ msgstr "В моем списке"
 
 #~ msgid "Picture 1"
 #~ msgstr "Картинка 1"

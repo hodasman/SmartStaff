@@ -74,6 +74,7 @@
                       <ol class="unordered-list">
                          {% for rd in variant.required_devices.all %}
                             <li>
+                               {% include 'includes/legacy_badge.html' with device=rd.device %}
                                <a href="{% url 'mainapp:devices_detail' slug=rd.device.slug %}">{{ rd.device.title }}</a>
                                {% if rd.quantity and rd.quantity > 1 %} — x{{ rd.quantity }}{% endif %}
                                {% if rd.note %} ({{ rd.note }}){% endif %}
