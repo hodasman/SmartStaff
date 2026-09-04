@@ -128,7 +128,7 @@ class DevicesAdmin(admin.ModelAdmin):
     inlines = [DeviceImageInline, PurchaseLinkInline]
 
     class Media:
-        js = ("js/admin_device_chaining.js",)
+        js = ("js/category_type_chaining.js",)
 
 @admin.register(mainapp_models.Article)
 class ArticlesAdmin(admin.ModelAdmin):
