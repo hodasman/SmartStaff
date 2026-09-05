@@ -1,4 +1,9 @@
+import json
+
+from django import forms
 from django.contrib import admin
+from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
+from django.core.exceptions import ValidationError
 from django.utils.html import format_html
 
 from authapp import models as authapp_models
@@ -69,8 +74,50 @@ class PurchaseLinkInline(admin.TabularInline):
     fields = ("marketplace", "url", "affiliate")
 
 
+class DeviceAdminForm(forms.ModelForm):
+    """Форма устройства: тип (device_type) должен относиться к выбранной категории."""
+
+    class Meta:
+        model = mainapp_models.Device
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Карта "id категории -> [id типов]" для JS-цепочки select'ов в админке
+        mapping = {}
+        for t in mainapp_models.DeviceType.objects.only("id", "category_id"):
+            mapping.setdefault(str(t.category_id), []).append(str(t.pk))
+        # В админке FK-виджет обёрнут в RelatedFieldWidgetWrapper (иконка "+"),
+        # который не пробрасывает свои attrs во внутренний select — вешаем на внутренний
+        widget = self.fields["device_type"].widget
+        if isinstance(widget, RelatedFieldWidgetWrapper):
+            widget = widget.widget
+        widget.attrs["data-category-map"] = json.dumps(mapping)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        category = cleaned_data.get("category")
+        device_type = cleaned_data.get("device_type")
+        if category and device_type and device_type.category_id != category.pk:
+            self.add_error(
+                "device_type",
+                ValidationError(
+                    "Тип «%(type)s» относится к категории «%(type_category)s». "
+                    "Выберите тип из категории «%(category)s» или измените категорию.",
+                    code="device_type_category_mismatch",
+                    params={
+                        "type": device_type,
+                        "type_category": device_type.category,
+                        "category": category,
+                    },
+                ),
+            )
+        return cleaned_data
+
+
 @admin.register(mainapp_models.Device)
 class DevicesAdmin(admin.ModelAdmin):
+    form = DeviceAdminForm
     list_display = ["id", "title", "slug", "is_legacy", "deleted"]
     list_per_page = 10
     ordering = ["title"]
@@ -79,6 +126,9 @@ class DevicesAdmin(admin.ModelAdmin):
     list_editable = ("is_legacy", "deleted")
     filter_horizontal = ("protocols",)
     inlines = [DeviceImageInline, PurchaseLinkInline]
+
+    class Media:
+        js = ("js/category_type_chaining.js",)
 
 @admin.register(mainapp_models.Article)
 class ArticlesAdmin(admin.ModelAdmin):
