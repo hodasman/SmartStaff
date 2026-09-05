@@ -4,11 +4,25 @@ import django_filters
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 
-from mainapp.models import Device, DeviceType
+from mainapp.models import Device, DeviceType, Platform, Protocol
 
 
 class DevicesFilter(django_filters.FilterSet):
     title = django_filters.CharFilter(label=_('Search by name'), field_name='title', lookup_expr='contains')
+
+    # Одиночный select вместо <select multiple>: у multiple нет пустого варианта,
+    # а nice-select на фронте превращает его в обычный список, из которого
+    # после выбора уже не «снять» фильтр. С "---------" фильтр можно очистить.
+    ecosystem = django_filters.ModelChoiceFilter(
+        label=_('Ecosystem'),
+        field_name='ecosystem',
+        queryset=Platform.objects.all(),
+    )
+    protocols = django_filters.ModelChoiceFilter(
+        label=_('Supported protocols'),
+        field_name='protocols',
+        queryset=Protocol.objects.all(),
+    )
 
     def __init__(self, *args, **kwargs):
         super(DevicesFilter, self).__init__(*args, **kwargs)
