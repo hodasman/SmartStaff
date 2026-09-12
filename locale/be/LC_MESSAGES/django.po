@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-12 20:21+0300\n"
+"POT-Creation-Date: 2026-09-12 20:50+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1006,13 +1006,8 @@ msgid "Scenarios for your devices"
 msgstr "Сцэнары для вашых прылад"
 
 #: mainapp/templates/mainapp/personal_page.html:149
-#: mainapp/templates/mainapp/personal_page.html:179
 msgid "See all"
 msgstr "Праглядзець усе"
-
-#: mainapp/templates/mainapp/personal_page.html:174
-msgid "One device is missing"
-msgstr "Адна прылада адсутнічае"
 
 #: mainapp/templates/mainapp/scenario_detail.html:7
 #: mainapp/templates/mainapp/scenario_list.html:6
@@ -1081,34 +1076,34 @@ msgstr ""
 "Не знойдзена публікацый па вашым запыце. Паспрабуйце паўтарыць запыт з іншай "
 "фармуляроўкай"
 
-#: mainapp/views.py:329
+#: mainapp/views.py:366
 msgid "To enter your personal account, you need to log in"
 msgstr "Трэба ўвайсці ў асабісты кабінет"
 
-#: mainapp/views.py:341
+#: mainapp/views.py:378
 #, python-format
 msgid "Device %(device_title)s added to your list"
 msgstr "Прылада %(device_title)s дададзена ў ваш спіс"
 
-#: mainapp/views.py:344
+#: mainapp/views.py:381
 msgid "The device is already on your list.!"
 msgstr "Прылада ўжо ёсць у вашым спісе!"
 
-#: mainapp/views.py:347
+#: mainapp/views.py:384
 msgid "To add a device to the list, you need to log in"
 msgstr "Каб дадаць прыладу ў спіс, трэба ўвайсці"
 
-#: mainapp/views.py:357
+#: mainapp/views.py:394
 #, python-format
 msgid "Device %(device_title)s removed from your list"
 msgstr "Прылада %(device_title)s выдаленая з вашага спіса"
 
-#: mainapp/views.py:360
+#: mainapp/views.py:397
 #, python-format
 msgid "Device %(device_title)s not on your list"
 msgstr "Прылада %(device_title)s няма ў вашым спісе"
 
-#: mainapp/views.py:391
+#: mainapp/views.py:428
 msgid "Your request has been successfully sent!"
 msgstr "Ваш запыт паспяхова адправлены!"
 
@@ -1176,6 +1171,9 @@ msgstr "атрымаць інфармацыю пра новыя артыкулы
 #: templates/subscribe/tags/form_right.html:2
 msgid "Subscribe to news"
 msgstr "Падпісацца на навіны"
+
+#~ msgid "One device is missing"
+#~ msgstr "Адна прылада адсутнічае"
 
 #~ msgid "In my list"
 #~ msgstr "У маім спісе"

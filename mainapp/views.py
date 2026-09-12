@@ -302,23 +302,68 @@ def view_personal_page(request, username):
     current_user = request.user
     if current_user.is_authenticated:
         context = {'user': current_user,  }
-        # Типы устройств, которые уже есть у пользователя
-        user_device_types = set(
-            current_user.devices.values_list('device_type_id', flat=True)
+
+        # --- Подбор сценариев под устройства пользователя -----------------
+        # Сценарий можно реализовать, если у пользователя есть устройства
+        # нужных типов (либо не хватает 1-2 типов, которые можно докупить).
+        # Совместимость по протоколам проверяется для устройств, участвующих
+        # в конкретном сценарии: они должны уметь общаться по одному общему
+        # протоколу (пересечение протоколов непустое). Устройства пользователя
+        # вне сценария не мешают его реализации.
+        user_devices = list(
+            current_user.devices.select_related('device_type').prefetch_related('protocols')
         )
-        all_scenarios = mainapp_models.Scenario.objects.all() # Все сценарии в базе
-        right_scenarios = [] #Список сценариев, для которых у юзера есть все типы устройств
-        almost_all = [] #Список сценариев, где не хватает одного типа устройства
-        for scenario in all_scenarios: # Сравниваем типы устройств юзера с типами устройств сценариев
-            scenario_types = set(scenario.device_types.values_list('id', flat=True))
-            common = user_device_types.intersection(scenario_types) # пересечение двух множеств(общие элементы)
-            
-            if len(common) == len(scenario_types):
-                right_scenarios.append(scenario)
-            elif len(scenario_types) - len(common) == 1:
-                almost_all.append(scenario)
-        context['right_scenarios'] = right_scenarios
-        context['almost_all'] = almost_all
+        user_device_types = {d.device_type_id for d in user_devices}
+
+        scenarios_for_user = []  # сценарии, для которых хватает устройств или не хватает 1-2 типов
+        if user_device_types:
+            for scenario in mainapp_models.Scenario.objects.all():
+                scenario_types = set(scenario.device_types.values_list('id', flat=True))
+                if not scenario_types:
+                    continue
+
+                # типы, которых нет у пользователя (нужно докупить устройства этих типов)
+                missing_types = scenario_types - user_device_types
+                if len(missing_types) > 2:
+                    continue
+
+                # Пересечение протоколов устройств, участвующих в сценарии.
+                # Устройства без указанных протоколов в проверке не участвуют.
+                # common_protocols = None — проверить совместимость нельзя.
+                common_protocols = None
+                for device in user_devices:
+                    if device.device_type_id not in scenario_types or not device.protocols.exists():
+                        continue
+                    device_protocols = set(device.protocols.values_list('id', flat=True))
+                    common_protocols = device_protocols if common_protocols is None else common_protocols & device_protocols
+
+                if common_protocols is not None and not common_protocols:
+                    # участвующие устройства не умеют общаться друг с другом
+                    continue
+
+                # Для недостающих типов проверяем, что в каталоге есть устройство
+                # этого типа с совместимым протоколом — иначе сценарий не
+                # реализовать даже после покупки
+                if missing_types and common_protocols:
+                    compatible_types = set(
+                        mainapp_models.Device.objects.filter(
+                            device_type_id__in=missing_types,
+                            protocols__in=common_protocols,
+                            deleted=False,
+                        ).values_list('device_type_id', flat=True)
+                    )
+                    if not missing_types.issubset(compatible_types):
+                        continue
+
+                # missing_count используется в get_missing_types_display
+                scenario.missing_count = len(missing_types)
+                scenarios_for_user.append(scenario)
+
+            scenarios_for_user.sort(key=lambda scenario: scenario.missing_count)
+
+        context['scenarios_for_user'] = scenarios_for_user
+        # -------------------------------------------------------------------
+
         #Пагинация
         paginator = Paginator(current_user.devices.all(), 4)  # Показывать по 4 устройств на странице
         page_number = request.GET.get("page")
