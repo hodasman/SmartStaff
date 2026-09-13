@@ -207,8 +207,17 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 # Настройки сервера исходящей почты (секреты берутся из .env / переменных окружения)
+# Railway блокирует исходящий SMTP (25/465/587) — на проде письма шлём через
+# HTTPS API Brevo. Если задан BREVO_API_KEY — используется API-бэкенд,
+# иначе (локальная разработка) — обычный SMTP.
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY", "")
 EMAIL_BACKEND = os.environ.get(
-    "EMAIL_BACKEND", "authapp.backends.email_backend.EmailBackend"
+    "EMAIL_BACKEND",
+    (
+        "mainapp.services.email_api.BrevoEmailBackend"
+        if BREVO_API_KEY
+        else "authapp.backends.email_backend.EmailBackend"
+    ),
 )
 
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
