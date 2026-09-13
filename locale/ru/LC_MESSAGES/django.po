@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-12 20:50+0300\n"
+"POT-Creation-Date: 2026-09-13 21:08+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1076,40 +1076,66 @@ msgid ""
 "formulation"
 msgstr ""
 
-#: mainapp/views.py:366
+#: mainapp/views.py:374
 msgid "To enter your personal account, you need to log in"
 msgstr "Для входа в личный кабинет необходимо авторизоваться"
 
-#: mainapp/views.py:378
+#: mainapp/views.py:386
 #, python-format
 msgid "Device %(device_title)s added to your list"
 msgstr "Устройство %(device_title)s добавлено в ваш список"
 
-#: mainapp/views.py:381
+#: mainapp/views.py:389
 msgid "The device is already on your list.!"
 msgstr "Это устройство уже в вашем списке!"
 
-#: mainapp/views.py:384
+#: mainapp/views.py:392
 msgid "To add a device to the list, you need to log in"
 msgstr "Для добавления устройства в список необходимо авторизоваться"
 
-#: mainapp/views.py:394
+#: mainapp/views.py:402
 #, python-format
 msgid "Device %(device_title)s removed from your list"
 msgstr "Устройство %(device_title)s удалено из вашего списка"
 
-#: mainapp/views.py:397
+#: mainapp/views.py:405
 #, python-format
 msgid "Device %(device_title)s not on your list"
 msgstr "Устройство %(device_title)s нет в вашем списке"
 
-#: mainapp/views.py:428
+#: mainapp/views.py:436
 msgid "Your request has been successfully sent!"
 msgstr "Ваш запрос успешно отправлен!"
 
-#: subscribeapp/views.py:18
+#: subscribeapp/services.py:12 subscribeapp/views.py:23
 msgid "You have subscribed to the newsletter!"
 msgstr "Вы подписались на рассылку!"
+
+#: subscribeapp/templates/subscribeapp/subscribe_confirm_email.html:3
+msgid "Hello"
+msgstr "Здравствуйте"
+
+#: subscribeapp/templates/subscribeapp/subscribe_confirm_email.html:3
+msgid "subscriber"
+msgstr "подписчик"
+
+#: subscribeapp/templates/subscribeapp/subscribe_confirm_email.html:5
+msgid "You have subscribed to the newsletter of the website «Smart Hata»!"
+msgstr "Вы подписались на рассылку сайта «Смарт Хата»!"
+
+#: subscribeapp/templates/subscribeapp/subscribe_confirm_email.html:7
+msgid ""
+"We will send you the most interesting materials about smart home devices and "
+"scenarios."
+msgstr "Будем присылать вам самые интересные материалы об устройствах и сценариях умного дома."
+
+#: subscribeapp/templates/subscribeapp/subscribe_confirm_email.html:9
+msgid "You subscribed with the address"
+msgstr "Подписка оформлена на адрес"
+
+#: subscribeapp/templates/subscribeapp/subscribe_confirm_email.html:11
+msgid "The Smart Hata team"
+msgstr "Команда «Смарт Хата»"
 
 #: templates/base.html:67
 msgid "Admin"
