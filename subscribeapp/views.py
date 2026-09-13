@@ -1,4 +1,5 @@
 import logging
+import threading
 
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -22,12 +23,13 @@ class SubscribeView(CreateView):
         ret = super().form_valid(form)
         message = _("You have subscribed to the newsletter!")
         messages.add_message(self.request, messages.INFO, mark_safe(message))
-        try:
-            # Письмо-подтверждение подписчику. Подписка сохраняется
-            # даже если отправка не удалась (например, SMTP не настроен)
-            send_subscribe_confirm_email(form.instance.email)
-        except Exception:
-            logger.exception("Не удалось отправить письмо о подписке на %s", form.instance.email)
+        # Письмо-подтверждение отправляем в фоновом потоке: недоступный или
+        # медленный SMTP не должен задерживать ответ пользователю
+        threading.Thread(
+            target=send_subscribe_confirm_email,
+            args=(form.instance.email,),
+            daemon=True,
+        ).start()
         return ret
     
 

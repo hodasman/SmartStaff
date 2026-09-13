@@ -217,6 +217,8 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True").lower() in ("true", "1", "yes")
 EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "False").lower() in ("true", "1", "yes")
+# Таймаут SMTP-соединения (сек): без него недоступный SMTP подвешивает воркер
+EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", "15"))
 # SERVER_EMAIL = EMAIL_HOST_USER
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = os.environ.get("EMAIL_ADMIN", "")
