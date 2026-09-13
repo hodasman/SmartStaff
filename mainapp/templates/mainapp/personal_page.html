@@ -151,44 +151,14 @@
             </div>
         </div>
         <div class="row">
-            {% for scenario in right_scenarios %}
+            {% for scenario in scenarios_for_user %}
             <div class="col-lg-4 col-xl-3 col-md-6">
                 <div class="single_company">
                     <div class="thumb">
                         <img src='{{ scenario.main_img.url }}' alt="">
                     </div>
                     <a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}"><h3>{{scenario.title}}</h3></a>
-                    <p>{{scenario.get_device_types_display}}</p>
-                </div>
-            </div>
-            {%endfor%}
-            
-        </div>
-    </div>
-</div>
-<div class="top_companies_area">
-    <div class="container">
-        <div class="row align-items-center mb-40">
-            <div class="col-lg-6 col-md-6">
-                <div class="section_title">
-                    <h3>{% trans "One device is missing" %}</h3>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <div class="brouse_job text-right">
-                    <a href="{% url 'mainapp:scenarios'%}" class="boxed-btn4">{% trans "See all" %}</a>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            {% for scenario in almost_all %}
-            <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{{ scenario.main_img.url }}' alt="">
-                    </div>
-                    <a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}"><h3>{{scenario.title}}</h3></a>
-                    <p>{{scenario.get_device_types_display}}</p>
+                    <p>{{scenario.get_missing_types_display}}</p>
                 </div>
             </div>
             {%endfor%}

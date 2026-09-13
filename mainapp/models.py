@@ -445,26 +445,52 @@ class Scenario(models.Model):
     
     def get_similar_scenarios(self, limit=5):
         '''
-        Функция ищет похожие сценарии на основе общих типов устройств.
-        Возвращает сценарии, которые можно реализовать на тех же типах устройств
-        либо докупив один-другой тип устройства.
+        Функция ищет похожие сценарии на основе типов устройств.
+        Для каждого сценария считает missing_count — сколько типов
+        устройств не хватает относительно типов текущего сценария
+        (то есть сколько придётся докупить).
+        Возвращает только те сценарии, для которых хватает всех типов
+        либо не хватает одного или двух типов устройств.
         '''
         
         # Получить ID типов устройств текущего сценария
-        type_ids = self.device_types.values_list('id', flat=True)
-        
+        type_ids = list(self.device_types.values_list('id', flat=True))
+
         if not type_ids:
             return Scenario.objects.none()
-        
-        # Найти сценарии с общими типами устройств, отсортировав по количеству общих
+
         return (
             Scenario.objects
             .exclude(id=self.id)
-            .filter(device_types__in=type_ids)
-            .annotate(common_count=Count('device_types', filter=Q(device_types__in=type_ids)))
-            .order_by('-common_count')
+            .annotate(
+                # общие типы устройств с текущим сценарием
+                common_count=Count('device_types', filter=Q(device_types__in=type_ids), distinct=True),
+                # типы устройств, которых нет у текущего сценария
+                missing_count=Count('device_types', filter=~Q(device_types__in=type_ids), distinct=True),
+                # всего типов у похожего сценария
+                total_count=Count('device_types', distinct=True),
+            )
+            # исключаем сценарии без типов устройств
+            .filter(total_count__gt=0)
+            # только те, где хватает всех типов или не хватает 1-2
+            .filter(missing_count__lte=2)
+            .order_by('missing_count', '-common_count')
             .distinct()[:limit]
         )
+
+    def get_missing_types_display(self):
+        """
+        Текст о нехватке типов устройств для информера похожих сценариев.
+        Используется вместе с get_similar_scenarios (нужна аннотация missing_count).
+        """
+        missing = getattr(self, 'missing_count', None)
+        if missing is None:
+            return ''
+        if missing == 0:
+            return _('All required devices are available')
+        if missing == 1:
+            return _('1 device type is missing')
+        return _('2 device types are missing')
 
 
 class ScenarioImage(models.Model):
