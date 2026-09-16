@@ -17,5 +17,8 @@ def send_contact_email_message(subject, email, content, ip, user_id, name):
         'user': user,
         'name': name,
     })
-    email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [settings.EMAIL_ADMIN])
+    # адрес отправителя — DEFAULT_FROM_EMAIL (почта на домене сайта),
+    # а не EMAIL_HOST_USER (это логин SMTP-провайдера)
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', '') or settings.EMAIL_HOST_USER
+    email = EmailMessage(subject, message, from_email, [settings.EMAIL_ADMIN])
     email.send(fail_silently=False)

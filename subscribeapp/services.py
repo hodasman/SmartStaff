@@ -21,7 +21,10 @@ def send_subscribe_confirm_email(email):
             'subscribeapp/subscribe_confirm_email.html',
             {'email': email},
         )
-        letter = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [email])
+        # адрес отправителя — DEFAULT_FROM_EMAIL (почта на домене сайта),
+        # а не EMAIL_HOST_USER (это логин SMTP-провайдера)
+        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', '') or settings.EMAIL_HOST_USER
+        letter = EmailMessage(subject, message, from_email, [email])
         letter.content_subtype = 'html'
         letter.send(fail_silently=False)
     except Exception:
