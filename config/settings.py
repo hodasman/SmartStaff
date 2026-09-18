@@ -211,14 +211,19 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 # HTTPS API Brevo. Если задан BREVO_API_KEY — используется API-бэкенд,
 # иначе (локальная разработка) — обычный SMTP.
 BREVO_API_KEY = os.environ.get("BREVO_API_KEY", "")
-EMAIL_BACKEND = os.environ.get(
-    "EMAIL_BACKEND",
-    (
-        "mainapp.services.email_api.BrevoEmailBackend"
-        if BREVO_API_KEY
-        else "authapp.backends.email_backend.EmailBackend"
-    ),
-)
+SENDPULSE_CLIENT_ID = os.environ.get("SENDPULSE_CLIENT_ID", "")
+SENDPULSE_CLIENT_SECRET = os.environ.get("SENDPULSE_CLIENT_SECRET", "")
+# Приоритет бэкендов (если EMAIL_BACKEND не задан явно): SendPulse API ->
+# Brevo API -> SMTP (локальная разработка). SMTP на Railway не работает.
+if not os.environ.get("EMAIL_BACKEND"):
+    if SENDPULSE_CLIENT_ID and SENDPULSE_CLIENT_SECRET:
+        EMAIL_BACKEND = "mainapp.services.email_api.SendPulseEmailBackend"
+    elif BREVO_API_KEY:
+        EMAIL_BACKEND = "mainapp.services.email_api.BrevoEmailBackend"
+    else:
+        EMAIL_BACKEND = "authapp.backends.email_backend.EmailBackend"
+else:
+    EMAIL_BACKEND = os.environ["EMAIL_BACKEND"]
 
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
 EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
