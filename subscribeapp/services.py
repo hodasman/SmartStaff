@@ -28,7 +28,8 @@ def send_subscribe_confirm_email(email):
         letter.content_subtype = 'html'
         letter.send(fail_silently=False)
     except Exception:
+        from_email_debug = getattr(settings, 'DEFAULT_FROM_EMAIL', '') or settings.EMAIL_HOST_USER
         logger.exception(
-            'Не удалось отправить письмо о подписке на %s (backend=%s, host=%s:%s)',
-            email, settings.EMAIL_BACKEND, settings.EMAIL_HOST, settings.EMAIL_PORT,
+            'Не удалось отправить письмо о подписке на %s (backend=%s, host=%s:%s, from=%r)',
+            email, settings.EMAIL_BACKEND, settings.EMAIL_HOST, settings.EMAIL_PORT, from_email_debug,
         )
