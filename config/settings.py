@@ -233,8 +233,10 @@ EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True").lower() in ("true", "1",
 EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "False").lower() in ("true", "1", "yes")
 # Таймаут SMTP-соединения (сек): без него недоступный SMTP подвешивает воркер
 EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", "15"))
-# SERVER_EMAIL = EMAIL_HOST_USER
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# Адрес отправителя писем (подписка, контактная форма).
+# Должен быть подтверждён у почтового провайдера (SendPulse/Brevo)
+SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "info@smarthata.by")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", SERVER_EMAIL)
 EMAIL_ADMIN = os.environ.get("EMAIL_ADMIN", "")
 
 # Simplified static file serving.
