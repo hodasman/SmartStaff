@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -9,8 +11,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.html import format_html
 from django.utils.http import urlsafe_base64_decode
-from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import CreateView, UpdateView
@@ -19,13 +21,16 @@ from authapp import forms
 from authapp.forms import CustomPasswordResetForm, CustomSetPasswordForm
 from authapp.tasks import activate_email_task
 
+logger = logging.getLogger(__name__)
+
 
 class CustomLoginView(LoginView):
     def form_valid(self, form):
         ret = super().form_valid(form)
         message = _("Login success!<br>Hi, {username}!")
-        final_message = message.format(username=self.request.user.username)
-        messages.add_message(self.request, messages.INFO, mark_safe(final_message))
+        # format_html экранирует аргументы, оставляя HTML только в самом шаблоне
+        final_message = format_html(message, username=self.request.user.username)
+        messages.add_message(self.request, messages.INFO, final_message)
         return ret
 
     def form_invalid(self, form):
@@ -33,7 +38,7 @@ class CustomLoginView(LoginView):
             messages.add_message(
                 self.request,
                 messages.WARNING,
-                mark_safe(f"Something goes worng:<br>{msg}"),
+                format_html(_("Something goes wrong:<br>{msg}"), msg=msg),
             )
         return self.render_to_response(self.get_context_data(form=form))
 
@@ -53,9 +58,22 @@ class RegisterView(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        activate_email_task(self.object)
-        message = _("A link to activate your account has been sent to your email.")
-        messages.add_message(self.request, messages.INFO, message)
+        # Письмо шлётся синхронно: если SMTP/API недоступен, нельзя падать 500-й —
+        # аккаунт уже создан. Логируем и сообщаем пользователю.
+        try:
+            activate_email_task(request=self.request, user=self.object)
+        except Exception:
+            logger.exception(
+                "Activation email sending failed for user %s", self.object.email
+            )
+            message = _(
+                "Your account has been created, but the activation email could "
+                "not be sent. Please contact the site administrator."
+            )
+            messages.add_message(self.request, messages.WARNING, message)
+        else:
+            message = _("A link to activate your account has been sent to your email.")
+            messages.add_message(self.request, messages.INFO, message)
         return HttpResponseRedirect(self.get_success_url())
 
 

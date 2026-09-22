@@ -2,7 +2,7 @@ from pathlib import Path
 from time import time
 
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin, UserManager
+from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.core.mail import send_mail
 from django.core.validators import EmailValidator
@@ -62,6 +62,9 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.is_staff = True
         user.is_author = True
+        # Без этого суперюзер создаётся с is_active=False (default=False)
+        # и не может пройти аутентификацию
+        user.is_active = True
         user.save(using=self._db)
         return user
 

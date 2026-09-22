@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-13 21:08+0300\n"
+"POT-Creation-Date: 2026-09-21 22:58+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,65 +55,66 @@ msgstr "Введите новый пароль"
 msgid "Confirm new password"
 msgstr "Подтвердите новый пароль"
 
-#: authapp/models.py:72
+#: authapp/models.py:75
 msgid "username"
 msgstr "имя пользователя"
 
-#: authapp/models.py:75
+#: authapp/models.py:78
 msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only"
 msgstr ""
 "Обязательно. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_"
 
-#: authapp/models.py:78
+#: authapp/models.py:81
 msgid "A user with that username already exists."
 msgstr "Пользователь с таким именем уже существует."
 
-#: authapp/models.py:81
+#: authapp/models.py:84
 msgid "first name"
 msgstr "имя"
 
-#: authapp/models.py:82
+#: authapp/models.py:85
 msgid "last name"
 msgstr "фамилия"
 
-#: authapp/models.py:83
+#: authapp/models.py:86
 msgid "age"
 msgstr "возраст"
 
-#: authapp/models.py:84
+#: authapp/models.py:87
 msgid "avatar"
 msgstr "аватар"
 
-#: authapp/models.py:92
+#: authapp/models.py:95
 msgid "A user with that email address already exists."
 msgstr "Пользователь с таким адресом электронной почты уже существует."
 
-#: authapp/models.py:95
+#: authapp/models.py:98
 msgid "Date of creation"
 msgstr "Дата создания"
 
-#: authapp/models.py:97
+#: authapp/models.py:100
 msgid "author status"
 msgstr "статус автора"
 
-#: authapp/models.py:99
+#: authapp/models.py:102
 msgid "The author can add articles to the site"
 msgstr "Автор может добавлять статьи на сайт"
 
-#: authapp/tasks.py:18
-msgid "Activating an account on the site XXX"
-msgstr "Активация аккаунта на сайте XXX"
+#: authapp/tasks.py:32
+#, python-format
+msgid "Activating an account on the site %s"
+msgstr "Активация аккаунта на сайте %s"
 
-#: authapp/tasks.py:19
-#, python-brace-format
+#: authapp/tasks.py:34
+#, python-format
 msgid ""
-"Thank you for registering on the site XXX.\n"
+"Thank you for registering on the site %(site_name)s.\n"
 "To activate your account, please follow the link:\n"
-"http://0.0.0.0:8000{reset_password_url}\n"
+"%(link)s\n"
 msgstr ""
-"Спасибо за регистрацию на сайте XXX.\n"
+"Спасибо за регистрацию на сайте %(site_name)s.\n"
 "Чтобы активировать ваш аккаунт, пожалуйста, перейдите по ссылке:\n"
-"http://0.0.0.0:8000{reset_password_url}\n"
+"%(link)s\n"
 
 #: authapp/templates/authapp/user_form.html:14
 msgid "New user registration"
@@ -138,7 +138,7 @@ msgstr "Вход пользователя"
 
 #: authapp/templates/registration/login.html:19
 #: authapp/templates/registration/password_reset_complete.html:7
-#: core/templates/templatetags/menu.html:11 templates/base.html:84
+#: core/templates/templatetags/menu.html:14 templates/base.html:87
 msgid "Login"
 msgstr "Войти"
 
@@ -215,25 +215,38 @@ msgstr "Спасибо за использование нашего сайта!"
 msgid " %(site_name)s team"
 msgstr "Команда %(site_name)s"
 
-#: authapp/views.py:26
+#: authapp/views.py:30
 #, python-brace-format
 msgid "Login success!<br>Hi, {username}!"
 msgstr "Вход выполнен успешно!<br>Привет, {username}!"
 
-#: authapp/views.py:43
+#: authapp/views.py:41
+#, python-brace-format
+msgid "Something goes wrong:<br>{msg}"
+msgstr "Что-то пошло не так:<br>{msg}"
+
+#: authapp/views.py:48
 msgid "See you later!"
 msgstr "До встречи!"
 
-#: authapp/views.py:57
+#: authapp/views.py:70
+msgid ""
+"Your account has been created, but the activation email could not be sent. "
+"Please contact the site administrator."
+msgstr ""
+"Ваш аккаунт создан, но письмо для активации не было отправлено. "
+"Пожалуйста, обратитесь к администратору сайта."
+
+#: authapp/views.py:75
 msgid "A link to activate your account has been sent to your email."
 msgstr ""
 "Ссылка для активации аккаунта была отправлена на вашу электронную почту."
 
-#: authapp/views.py:74
+#: authapp/views.py:92
 msgid "Congratulations! You now have your own personal account in Smart House!"
 msgstr "Поздравляем! Теперь у вас есть личный кабинет в Умном Доме!"
 
-#: authapp/views.py:78
+#: authapp/views.py:96
 msgid ""
 "Account activation error! Make sure you used the correct link from the email "
 "you were sent!"
@@ -241,19 +254,19 @@ msgstr ""
 "Ошибка активации аккаунта! Убедитесь, что вы использовали правильную ссылку "
 "из письма!"
 
-#: authapp/views.py:86
+#: authapp/views.py:104
 msgid "Your data has been successfully changed!"
 msgstr "Ваши данные были успешно изменены!"
 
-#: config/settings.py:172
+#: config/settings.py:192
 msgid "English"
 msgstr "Английский"
 
-#: config/settings.py:173
+#: config/settings.py:193
 msgid "Russian"
 msgstr "Русский"
 
-#: config/settings.py:174
+#: config/settings.py:194
 msgid "Belarusian"
 msgstr "Белорусский"
 
@@ -277,11 +290,11 @@ msgstr "Пункт меню"
 msgid "Menu items"
 msgstr "Пункты меню"
 
-#: core/templates/templatetags/menu.html:9 templates/base.html:82
+#: core/templates/templatetags/menu.html:11 templates/base.html:84
 msgid "Log out"
 msgstr "Выйти"
 
-#: core/templates/templatetags/menu.html:30
+#: core/templates/templatetags/menu.html:33
 #: mainapp/templates/mainapp/personal_page.html:7
 #: mainapp/templates/mainapp/personal_page.html:16
 msgid "Personal account"
@@ -351,10 +364,8 @@ msgid "Description"
 msgstr "Описание"
 
 #: mainapp/models.py:32 mainapp/models.py:527
-#, fuzzy
-#| msgid "Platforms"
 msgid "Platform"
-msgstr "Платформы"
+msgstr "Платформа"
 
 #: mainapp/models.py:33
 msgid "Platforms"
@@ -365,32 +376,24 @@ msgid "Idea"
 msgstr "Идея"
 
 #: mainapp/models.py:53
-#, fuzzy
-#| msgid "Idea"
 msgid "Ideas"
-msgstr "Идея"
+msgstr "Идеи"
 
 #: mainapp/models.py:66
-#, fuzzy
-#| msgid "Article categories"
 msgid "Article category"
-msgstr "Категории статей"
+msgstr "Категория статьи"
 
 #: mainapp/models.py:67 mainapp/templates/mainapp/article_list.html:49
 msgid "Article categories"
 msgstr "Категории статей"
 
 #: mainapp/models.py:84
-#, fuzzy
-#| msgid "Device catalog"
 msgid "Device category"
-msgstr "Категория устройств"
+msgstr "Категория устройства"
 
 #: mainapp/models.py:85
-#, fuzzy
-#| msgid "Article categories"
 msgid "Device categories"
-msgstr "Категории устройств"
+msgstr "Категории устройства"
 
 #: mainapp/models.py:97 mainapp/models.py:168 mainapp/models.py:226
 #: templates/includes/footer.html:62
@@ -407,10 +410,8 @@ msgid "Device types"
 msgstr "Типы устройств"
 
 #: mainapp/models.py:171
-#, fuzzy
-#| msgid "Description"
 msgid "Brief description"
-msgstr "Описание"
+msgstr "Короткое описание"
 
 #: mainapp/models.py:172 mainapp/models.py:384 mainapp/models.py:588
 #: mainapp/models.py:601
@@ -426,10 +427,8 @@ msgid "Author"
 msgstr "Автор"
 
 #: mainapp/models.py:188 mainapp/models.py:206 mainapp/models.py:586
-#, fuzzy
-#| msgid "Articles"
 msgid "Article"
-msgstr "Статьи"
+msgstr "Статья"
 
 #: mainapp/models.py:189 mainapp/templates/mainapp/article_list.html:9
 #: mainapp/templates/mainapp/parts_pages/popular_articles.html:8
@@ -437,10 +436,8 @@ msgid "Articles"
 msgstr "Статьи"
 
 #: mainapp/models.py:208 mainapp/models.py:285 mainapp/models.py:503
-#, fuzzy
-#| msgid "Image 1"
 msgid "Image"
-msgstr "Изображение 1"
+msgstr "Изображение"
 
 #: mainapp/models.py:209 mainapp/models.py:286 mainapp/models.py:504
 msgid "Alt text"
@@ -461,16 +458,12 @@ msgid "Created at"
 msgstr "Создано"
 
 #: mainapp/models.py:215
-#, fuzzy
-#| msgid "Devices"
 msgid "Article image"
-msgstr "Модель"
+msgstr "Изображение статьи"
 
 #: mainapp/models.py:216
-#, fuzzy
-#| msgid "Article categories"
 msgid "Article images"
-msgstr "Категории статей"
+msgstr "Изображения статьи"
 
 #: mainapp/models.py:236 mainapp/models.py:382 mainapp/models.py:529
 msgid "Title"
@@ -481,22 +474,16 @@ msgid "URL"
 msgstr "URL"
 
 #: mainapp/models.py:239
-#, fuzzy
-#| msgid "Device catalog"
 msgid "Device icon"
-msgstr "Иконка"
+msgstr "Иконка устройства"
 
 #: mainapp/models.py:240
-#, fuzzy
-#| msgid "Devices"
 msgid "Device model"
 msgstr "Модель"
 
 #: mainapp/models.py:241
-#, fuzzy
-#| msgid "Dimensions:"
 msgid "Dimensions"
-msgstr "Размеры:"
+msgstr "Размеры"
 
 #: mainapp/models.py:242
 msgid "Power supply"
@@ -528,8 +515,6 @@ msgstr "Отредактировано"
 
 #: mainapp/models.py:264 mainapp/models.py:283 mainapp/models.py:330
 #: mainapp/models.py:548
-#, fuzzy
-#| msgid "Devices"
 msgid "Device"
 msgstr "Устройство"
 
@@ -538,28 +523,20 @@ msgid "Devices"
 msgstr "Устройства"
 
 #: mainapp/models.py:292
-#, fuzzy
-#| msgid "Devices"
 msgid "Device image"
-msgstr "Модель"
+msgstr "Изображение устройства"
 
 #: mainapp/models.py:293
-#, fuzzy
-#| msgid "Article categories"
 msgid "Device images"
-msgstr "Категории устройств"
+msgstr "Изображения устройства"
 
 #: mainapp/models.py:305
-#, fuzzy
-#| msgid "Protocols:"
 msgid "Protocol"
-msgstr "Протоколы:"
+msgstr "Протокол"
 
 #: mainapp/models.py:306
-#, fuzzy
-#| msgid "Protocols:"
 msgid "Protocols"
-msgstr "Протоколы:"
+msgstr "Протоколы"
 
 #: mainapp/models.py:332
 msgid "Marketplace"
@@ -591,10 +568,8 @@ msgid "Scenario"
 msgstr "Сценарий"
 
 #: mainapp/models.py:405
-#, fuzzy
-#| msgid "Popular scenarios"
 msgid "Scenarios"
-msgstr "Популярные сценарии"
+msgstr "Сценарии"
 
 #: mainapp/models.py:490
 msgid "All required devices are available"
@@ -609,28 +584,20 @@ msgid "2 device types are missing"
 msgstr "Не хватает 2 типов устройств"
 
 #: mainapp/models.py:510
-#, fuzzy
-#| msgid "Scenario"
 msgid "Scenario image"
-msgstr "Сценарий"
+msgstr "Изображение сценария"
 
 #: mainapp/models.py:511
-#, fuzzy
-#| msgid "Popular scenarios"
 msgid "Scenario images"
-msgstr "Популярные сценарии"
+msgstr "Изображения сценария"
 
 #: mainapp/models.py:534
-#, fuzzy
-#| msgid "Scenario"
 msgid "Scenario variant"
-msgstr "Сценарий"
+msgstr "Вариант сценария"
 
 #: mainapp/models.py:535
-#, fuzzy
-#| msgid "Popular scenarios"
 msgid "Scenario variants"
-msgstr "Популярные сценарии"
+msgstr "Варианты сценария"
 
 #: mainapp/models.py:545
 msgid "Variant"
@@ -645,10 +612,8 @@ msgid "Required device"
 msgstr ""
 
 #: mainapp/models.py:555
-#, fuzzy
-#| msgid "Browse more devices"
 msgid "Required devices"
-msgstr "Посмотреть больше устройств"
+msgstr "Необходимые устройства"
 
 #: mainapp/models.py:566
 msgid "Rating star"
@@ -663,22 +628,16 @@ msgid "Star"
 msgstr "Звезда"
 
 #: mainapp/models.py:587 mainapp/models.py:600
-#, fuzzy
-#| msgid "Comments"
 msgid "Comment author"
 msgstr "Автор комментария"
 
 #: mainapp/models.py:589 mainapp/models.py:602
-#, fuzzy
-#| msgid "Comments"
 msgid "Comment date"
 msgstr "Дата комментария"
 
 #: mainapp/models.py:593 mainapp/models.py:606
-#, fuzzy
-#| msgid "Comments"
 msgid "Comment"
-msgstr "Комментарии"
+msgstr "Комментарий"
 
 #: mainapp/models.py:594 mainapp/models.py:607
 #: mainapp/templates/mainapp/article_detail.html:23
@@ -695,36 +654,26 @@ msgid "Comments"
 msgstr "Комментарии"
 
 #: mainapp/models.py:614
-#, fuzzy
-#| msgid "Enter subject"
 msgid "Subject"
-msgstr "Введите тему"
+msgstr "Тема"
 
 #: mainapp/models.py:615
-#, fuzzy
-#| msgid "Enter Email"
 msgid "Email"
-msgstr "Введите Email"
+msgstr ""
 
 #: mainapp/models.py:616
-#, fuzzy
-#| msgid "Your message"
 msgid "Message"
-msgstr "Ваше сообщение"
+msgstr "Сообщение"
 
 #: mainapp/models.py:617
 msgid "Sent at"
-msgstr "Отправить"
+msgstr "Отправлено"
 
 #: mainapp/models.py:618
-#, fuzzy
-#| msgid "Send"
 msgid "Sender IP"
-msgstr "Отправить"
+msgstr "IP отправителя"
 
 #: mainapp/models.py:619
-#, fuzzy
-#| msgid "Search by name"
 msgid "Sender name"
 msgstr "Имя отправителя"
 
@@ -1107,7 +1056,7 @@ msgstr "Устройство %(device_title)s нет в вашем списке"
 msgid "Your request has been successfully sent!"
 msgstr "Ваш запрос успешно отправлен!"
 
-#: subscribeapp/services.py:12 subscribeapp/views.py:23
+#: subscribeapp/services.py:19 subscribeapp/views.py:24
 msgid "You have subscribed to the newsletter!"
 msgstr "Вы подписались на рассылку!"
 
@@ -1127,7 +1076,9 @@ msgstr "Вы подписались на рассылку сайта «Смар�
 msgid ""
 "We will send you the most interesting materials about smart home devices and "
 "scenarios."
-msgstr "Будем присылать вам самые интересные материалы об устройствах и сценариях умного дома."
+msgstr ""
+"Будем присылать вам самые интересные материалы об устройствах и сценариях "
+"умного дома."
 
 #: subscribeapp/templates/subscribeapp/subscribe_confirm_email.html:9
 msgid "You subscribed with the address"
@@ -1359,26 +1310,6 @@ msgstr "Подписаться на новости"
 
 #~ msgid "Logics"
 #~ msgstr "Логика"
-
-#, fuzzy
-#~| msgid "Device catalog"
-#~ msgid "Device photo 1"
-#~ msgstr "Фото устройства 1"
-
-#, fuzzy
-#~| msgid "Device catalog"
-#~ msgid "Device photo 2"
-#~ msgstr "Фото устройства 2"
-
-#, fuzzy
-#~| msgid "Device catalog"
-#~ msgid "Device photo 3"
-#~ msgstr "Фото устройства 3"
-
-#, fuzzy
-#~| msgid "Device catalog"
-#~ msgid "Device photo 4"
-#~ msgstr "Фото устройства 4"
 
 #~ msgid ""
 #~ "Не найдено публикаций по вашему запросу Попробуйте повторить запрос с "

@@ -6,7 +6,10 @@
             <!-- Кнопка входа/выхода — только для мобильных -->
             <li class="d-lg-none px-3 mt-2">
                 {% if user.is_authenticated %}
-                    <a class="btn btn-outline-primary btn-sm w-100" href="{% url 'authapp:logout' %}">{% trans "Log out" %}</a>
+                    <form method="post" action="{% url 'authapp:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary btn-sm w-100">{% trans "Log out" %}</button>
+                    </form>
                 {% else %}
                     <a class="btn btn-primary btn-sm w-100" href="{% url 'authapp:login' %}">{% trans "Login" %}</a>
                 {% endif %}

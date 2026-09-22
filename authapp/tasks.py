@@ -1,34 +1,43 @@
-from django.contrib.auth.models import User
+import logging
+
+from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
-from django.urls import reverse_lazy
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _
+
+User = get_user_model()
+
+logger = logging.getLogger(__name__)
 
 
 class SendEmail:
-    def __init__(self, user: User):
+    def __init__(self, request, user: User):
+        self.request = request
         self.user = user
         self.token = default_token_generator.make_token(self.user)
         self.uid = urlsafe_base64_encode(str(self.user.pk).encode())
 
     def send_activate_email(self):
-        # reset_password_url = reverse_lazy(
-        #     "authapp:signup_confirm", kwargs={"uidb64": self.uid, "token": self.token}
-        # )
-        subject = _("Activating an account on the site XXX")
-        message = _("Thank you for registering on the site XXX.\n"
-            "To activate your account, please follow the link:\n"
-            "http://0.0.0.0:8000{reset_password_url}\n"
+        activate_url = reverse(
+            "authapp:signup_confirm",
+            kwargs={"uidb64": self.uid, "token": self.token},
         )
-        final_message = message.format(
-            reset_password_url=reverse_lazy(
-                "authapp:signup_confirm", kwargs={"uidb64": self.uid, "token": self.token}
-            )
-        )
+        # Абсолютная ссылка строится от текущего запроса:
+        # локально это http://127.0.0.1:8000/..., на проде — реальный домен
+        absolute_url = self.request.build_absolute_uri(activate_url)
+        site_name = get_current_site(self.request).name
 
-        self.user.email_user(subject=subject, message=final_message)
+        subject = _("Activating an account on the site %s") % site_name
+        message = _(
+            "Thank you for registering on the site %(site_name)s.\n"
+            "To activate your account, please follow the link:\n%(link)s\n"
+        ) % {"site_name": site_name, "link": absolute_url}
+
+        self.user.email_user(subject=subject, message=message)
 
 
-def activate_email_task(user: User):
-    send_email = SendEmail(user=user)
+def activate_email_task(request, user: User):
+    send_email = SendEmail(request=request, user=user)
     send_email.send_activate_email()
