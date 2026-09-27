@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-21 22:58+0300\n"
+"POT-Creation-Date: 2026-09-23 23:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: authapp/forms.py:14
+#: authapp/forms.py:14 mainapp/templates/mainapp/personal_page.html:62
 msgid "Password"
 msgstr "Пароль"
 
@@ -35,23 +35,23 @@ msgstr "Краіна"
 msgid "Write your age correctly."
 msgstr "Напішыце свой узрост правільна."
 
-#: authapp/forms.py:70
+#: authapp/forms.py:72 authapp/forms.py:94
 msgid "Enter Email"
 msgstr "Увядзіце Email"
 
-#: authapp/forms.py:78
+#: authapp/forms.py:102
 msgid "The passwords do not match"
 msgstr "Паролі не супадаюць"
 
-#: authapp/forms.py:81
+#: authapp/forms.py:105
 msgid "New password"
 msgstr "Новы пароль"
 
-#: authapp/forms.py:84
+#: authapp/forms.py:108
 msgid "Enter new password"
 msgstr "Увядзіце новы пароль"
 
-#: authapp/forms.py:91 authapp/forms.py:95
+#: authapp/forms.py:115 authapp/forms.py:119
 msgid "Confirm new password"
 msgstr "Пацвердзіце новы пароль"
 
@@ -149,15 +149,34 @@ msgstr "Рэгістрацыя"
 msgid "Forgot password?"
 msgstr "Забылі пароль?"
 
-#: authapp/templates/registration/login.html:32
+#: authapp/templates/registration/login.html:31
+#: authapp/templates/registration/resend_activation.html:4 authapp/views.py:48
+msgid "Resend activation email"
+msgstr "Паўторная адпраўка пісьма актывацыі"
+
+#: authapp/templates/registration/login.html:35
 msgid "Login via social networks"
 msgstr "Уваход праз сацыяльныя сеткі"
 
-#: authapp/templates/registration/login.html:44
+#: authapp/templates/registration/login.html:47
 #: authapp/templates/registration/password_reset_complete.html:10
 #: authapp/templates/registration/password_reset_done.html:7
 msgid "Home"
 msgstr "Галоўная"
+
+#: authapp/templates/registration/password_change_form.html:4
+msgid "Password change"
+msgstr "Змена пароля"
+
+#: authapp/templates/registration/password_change_form.html:8
+#: authapp/templates/registration/password_reset_confirm.html:8
+#: mainapp/templates/mainapp/personal_page.html:63
+msgid "Change password"
+msgstr "Змяніць пароль"
+
+#: authapp/templates/registration/password_change_form.html:12
+msgid "Back to personal account"
+msgstr "Вярнуцца ў асабісты кабінет"
 
 #: authapp/templates/registration/password_reset.html:4
 #: authapp/templates/registration/password_reset_confirm.html:4
@@ -175,10 +194,6 @@ msgstr "Вы паспяхова абнавілі свой пароль."
 #: authapp/templates/registration/password_reset_complete.html:5
 msgid "Your password has been changed to a new one!"
 msgstr "Ваш пароль быў зменены на новы!"
-
-#: authapp/templates/registration/password_reset_confirm.html:8
-msgid "Change password"
-msgstr "Змяніць пароль"
 
 #: authapp/templates/registration/password_reset_done.html:4
 msgid "Check your email"
@@ -214,37 +229,58 @@ msgstr "Дзякуй, што карыстаецеся нашым сайтам!"
 msgid " %(site_name)s team"
 msgstr " Каманда %(site_name)s"
 
-#: authapp/views.py:30
+#: authapp/templates/registration/resend_activation.html:7
+msgid ""
+"Enter the email you registered with and we will send you a new activation "
+"link."
+msgstr ""
+"Увядзіце email, указаны пры рэгістрацыі, і мы дашлем вам новую спасылку для "
+"актывацыі."
+
+#: authapp/templates/registration/resend_activation.html:13
+msgid "Send activation link"
+msgstr "Даслаць спасылку для актывацыі"
+
+#: authapp/templates/registration/resend_activation.html:16
+msgid "Back to login"
+msgstr "Вярнуцца да ўваходу"
+
+#: authapp/views.py:33
 #, python-brace-format
 msgid "Login success!<br>Hi, {username}!"
 msgstr "Уваход выкананы паспяхова!<br>Прывітанне, {username}!"
 
-#: authapp/views.py:41
+#: authapp/views.py:53
+#, python-brace-format
+msgid "Your account is not activated. {link}"
+msgstr "Ваш уліковы запіс не актываваны. {link}"
+
+#: authapp/views.py:63
 #, python-brace-format
 msgid "Something goes wrong:<br>{msg}"
 msgstr "Нешта пайшло не так:<br>{msg}"
 
-#: authapp/views.py:48
+#: authapp/views.py:70
 msgid "See you later!"
 msgstr "Да сустрэчы!"
 
-#: authapp/views.py:70
+#: authapp/views.py:92
 msgid ""
 "Your account has been created, but the activation email could not be sent. "
 "Please contact the site administrator."
 msgstr ""
-"Твой акаўнт быў створаны, але пісьмо для актывацыі не было адпраўлена. "
-"Калі ласка, звярніцеся да адміністратара."
+"Твой акаўнт быў створаны, але пісьмо для актывацыі не было адпраўлена. Калі "
+"ласка, звярніцеся да адміністратара."
 
-#: authapp/views.py:75
+#: authapp/views.py:97
 msgid "A link to activate your account has been sent to your email."
 msgstr "Спасылка для актывацыі вашага акаўнта была адпраўлена на вашу пошту."
 
-#: authapp/views.py:92
+#: authapp/views.py:120
 msgid "Congratulations! You now have your own personal account in Smart House!"
 msgstr "Віншуем! Цяпер у вас ёсць уласны акаўнт у Смарт Хаце!"
 
-#: authapp/views.py:96
+#: authapp/views.py:124
 msgid ""
 "Account activation error! Make sure you used the correct link from the email "
 "you were sent!"
@@ -252,9 +288,33 @@ msgstr ""
 "Памылка актывацыі акаўнта! Пераканайцеся, што вы скарысталіся правільнай "
 "спасылкай з ліста!"
 
-#: authapp/views.py:104
+#: authapp/views.py:132
 msgid "Your data has been successfully changed!"
 msgstr "Вашы дадзеныя паспяхова зменены!"
+
+#: authapp/views.py:179
+msgid ""
+"Could not send the email. Please try again later or contact the site "
+"administrator."
+msgstr ""
+"Не ўдалося даслаць пісьмо. Паспрабуйце пазней або звернецеся да "
+"адміністратара сайта."
+
+#: authapp/views.py:188
+msgid ""
+"If this email belongs to an unactivated account, a new activation link has "
+"been sent."
+msgstr ""
+"Калі гэты email належыць неактываванаму акаўнту, новая спасылка для "
+"актывацыі даслана."
+
+#: authapp/views.py:199
+msgid "Your password has been changed successfully!"
+msgstr "Ваш пароль паспяхова зменены!"
+
+#: authapp/views.py:209
+msgid "If you use other devices, log in on them again."
+msgstr "Калі вы карыстаецеся іншымі прыладамі, увайдзіце на іх зноў."
 
 #: config/settings.py:192
 msgid "English"
@@ -939,23 +999,23 @@ msgstr "Узрост:"
 msgid "Country:"
 msgstr "Краіна:"
 
-#: mainapp/templates/mainapp/personal_page.html:62
+#: mainapp/templates/mainapp/personal_page.html:66
 msgid "Change"
 msgstr "Змяніць"
 
-#: mainapp/templates/mainapp/personal_page.html:70
+#: mainapp/templates/mainapp/personal_page.html:74
 msgid "My devices"
 msgstr "Мае прылады"
 
-#: mainapp/templates/mainapp/personal_page.html:104
+#: mainapp/templates/mainapp/personal_page.html:108
 msgid "Delete"
 msgstr "Выдаліць"
 
-#: mainapp/templates/mainapp/personal_page.html:144
+#: mainapp/templates/mainapp/personal_page.html:148
 msgid "Scenarios for your devices"
 msgstr "Сцэнары для вашых прылад"
 
-#: mainapp/templates/mainapp/personal_page.html:149
+#: mainapp/templates/mainapp/personal_page.html:153
 msgid "See all"
 msgstr "Праглядзець усе"
 
@@ -1149,165 +1209,3 @@ msgstr "атрымаць інфармацыю пра новыя артыкулы
 #: templates/subscribe/tags/form_right.html:2
 msgid "Subscribe to news"
 msgstr "Падпісацца на навіны"
-
-#~ msgid "One device is missing"
-#~ msgstr "Адна прылада адсутнічае"
-
-#~ msgid "In my list"
-#~ msgstr "У маім спісе"
-
-#~ msgid "Picture 1"
-#~ msgstr "Выява 1"
-
-#~ msgid "Picture 2"
-#~ msgstr "Выява 2"
-
-#~ msgid "Picture 3"
-#~ msgstr "Выява 3"
-
-#~ msgid "Picture 4"
-#~ msgstr "Выява 4"
-
-#~ msgid "Picture 5"
-#~ msgstr "Выява 5"
-
-#~ msgid "Picture 6"
-#~ msgstr "Выява 6"
-
-#~ msgid "Picture 7"
-#~ msgstr "Выява 7"
-
-#~ msgid "Picture 8"
-#~ msgstr "Выява 8"
-
-#~ msgid "Picture 9"
-#~ msgstr "Выява 9"
-
-#~ msgid "Picture 10"
-#~ msgstr "Выява 10"
-
-#~ msgid "Picture 11"
-#~ msgstr "Выява 11"
-
-#~ msgid "Picture 12"
-#~ msgstr "Выява 12"
-
-#~ msgid "Picture 13"
-#~ msgstr "Выява 13"
-
-#~ msgid "Picture 14"
-#~ msgstr "Выява 14"
-
-#~ msgid "Picture 15"
-#~ msgstr "Выява 15"
-
-#~ msgid "Picture 16"
-#~ msgstr "Выява 16"
-
-#~ msgid "Picture 17"
-#~ msgstr "Выява 17"
-
-#~ msgid "Picture 18"
-#~ msgstr "Выява 18"
-
-#~ msgid "Picture 19"
-#~ msgstr "Выява 19"
-
-#~ msgid "Picture 20"
-#~ msgstr "Выява 20"
-
-#~ msgid "Picture 21"
-#~ msgstr "Выява 21"
-
-#~ msgid "Picture 22"
-#~ msgstr "Выява 22"
-
-#~ msgid "Picture 23"
-#~ msgstr "Выява 23"
-
-#~ msgid "Picture 24"
-#~ msgstr "Выява 24"
-
-#~ msgid "Picture 25"
-#~ msgstr "Выява 25"
-
-#~ msgid "Image 1"
-#~ msgstr "Відарыс 1"
-
-#~ msgid "Image 2"
-#~ msgstr "Відарыс 2"
-
-#~ msgid "Image 3"
-#~ msgstr "Відарыс 3"
-
-#~ msgid "Image 4"
-#~ msgstr "Відарыс 4"
-
-#~ msgid "Image 5"
-#~ msgstr "Відарыс 5"
-
-#~ msgid "Image 6"
-#~ msgstr "Відарыс 6"
-
-#~ msgid "Image 7"
-#~ msgstr "Відарыс 7"
-
-#~ msgid "Image 8"
-#~ msgstr "Відарыс 8"
-
-#~ msgid "Image 9"
-#~ msgstr "Відарыс 9"
-
-#~ msgid "Image 10"
-#~ msgstr "Відарыс 10"
-
-#~ msgid "Image 11"
-#~ msgstr "Відарыс 11"
-
-#~ msgid "Image 12"
-#~ msgstr "Відарыс 12"
-
-#~ msgid "Image 13"
-#~ msgstr "Відарыс 13"
-
-#~ msgid "Image 14"
-#~ msgstr "Відарыс 14"
-
-#~ msgid "Image 15"
-#~ msgstr "Відарыс 15"
-
-#~ msgid "Image 16"
-#~ msgstr "Відарыс 16"
-
-#~ msgid "Image 17"
-#~ msgstr "Відарыс 17"
-
-#~ msgid "Image 18"
-#~ msgstr "Відарыс 18"
-
-#~ msgid "Image 19"
-#~ msgstr "Відарыс 19"
-
-#~ msgid "Image 20"
-#~ msgstr "Відарыс 20"
-
-#~ msgid "Image 21"
-#~ msgstr "Відарыс 21"
-
-#~ msgid "Image 22"
-#~ msgstr "Відарыс 22"
-
-#~ msgid "Image 23"
-#~ msgstr "Відарыс 23"
-
-#~ msgid "Image 24"
-#~ msgstr "Відарыс 24"
-
-#~ msgid "Scheme"
-#~ msgstr "Схема"
-
-#~ msgid "Platforms:"
-#~ msgstr "Платформы:"
-
-#~ msgid "Logics"
-#~ msgstr "Логіка"

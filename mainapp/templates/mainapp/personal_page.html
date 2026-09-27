@@ -58,6 +58,10 @@
                             <p class="black-txt"><i class="fa fa-envelope-o" aria-hidden="true"></i></p>
                             <p class="break-word">{{user.email}}</p>
                         </div>
+                        <div class="personal-data d-flex justify-content-between">
+                            <p class="black-txt"><i class="fa fa-lock" aria-hidden="true"></i> {% trans "Password" %}</p>
+                            <p><a href="{% url 'authapp:password_change' %}"><small>{% trans "Change password" %}</small></a></p>
+                        </div>
                         <div class="reset_btn">
                             <a href="{% url 'authapp:profile_edit' pk=user.id%}"><button class="boxed-btn3 w-100">{% trans "Change" %}</button></a>
                         </div>

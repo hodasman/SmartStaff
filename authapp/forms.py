@@ -61,38 +61,62 @@ class UserChangeForm(forms.ModelForm):
         return data
 
 
-class CustomPasswordResetForm(PasswordResetForm):  
+class ResendActivationForm(forms.Form):
+    """Повторная отправка письма активации для неактивированного аккаунта."""
     email = forms.EmailField(  
         label="Email",  
         max_length=254,  
         widget=forms.EmailInput(  
-            attrs={'class': 'form-control',  
-                   'placeholder': _('Enter Email'),  
-                   "autocomplete": "email"}  
-        )  
+            attrs={
+                "class": "form-control",
+                "placeholder": _("Enter Email"),
+                "autocomplete": "email",
+            }
+        ),
     )  
 
+    def get_user(self):
+        User = get_user_model()
+        try:
+            return User.objects.get(
+                email__iexact=self.cleaned_data["email"], is_active=False
+            )
+        except User.DoesNotExist:
+            return None
 
-class CustomSetPasswordForm(SetPasswordForm):  
-    error_messages = {  
-        "password_mismatch": _("The passwords do not match")  
-    }  
-    new_password1 = forms.CharField(  
-        label=_('New password'),  
-        widget=forms.PasswordInput(  
+
+class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        label="Email",
+        max_length=254,
+        widget=forms.EmailInput(
             attrs={'class': 'form-control',  
-                   'placeholder': _('Enter new password'),  
-                   "autocomplete": "new-password"}  
-        ),  
-        strip=False,  
-        help_text=password_validation.password_validators_help_text_html(),  
-    )  
-    new_password2 = forms.CharField(  
-        label=_('Confirm new password'),  
-        strip=False,  
-        widget=forms.PasswordInput(  
-            attrs={'class': 'form-control',  
-                   'placeholder': _('Confirm new password'),  
-                   "autocomplete": "new-password"}  
-        ),  
+                   'placeholder': _('Enter Email'),
+                   "autocomplete": "email"}
+        )
+    )
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    error_messages = {
+        "password_mismatch": _("The passwords do not match")
+    }
+    new_password1 = forms.CharField(
+        label=_('New password'),
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control',
+                   'placeholder': _('Enter new password'),
+                   "autocomplete": "new-password"}
+        ),
+        strip=False,
+        help_text=password_validation.password_validators_help_text_html(),
+    )
+    new_password2 = forms.CharField(
+        label=_('Confirm new password'),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control',
+                   'placeholder': _('Confirm new password'),
+                   "autocomplete": "new-password"}
+        ),
     )

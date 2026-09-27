@@ -27,6 +27,9 @@
         <div class="col">
             <a href="{% url 'authapp:password-reset' %}"><small>{% trans "Forgot password?" %}</small></a>
         </div>
+        <div class="col">
+            <a href="{% url 'authapp:resend_activation' %}"><small>{% trans "Resend activation email" %}</small></a>
+        </div>
     </div>
     </p>
     <h4>{% trans "Login via social networks" %}</h4>

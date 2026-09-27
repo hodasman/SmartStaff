@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-21 22:58+0300\n"
+"POT-Creation-Date: 2026-09-23 23:06+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: authapp/forms.py:14
+#: authapp/forms.py:14 mainapp/templates/mainapp/personal_page.html:62
 msgid "Password"
 msgstr "Пароль"
 
@@ -35,23 +35,23 @@ msgstr "Страна"
 msgid "Write your age correctly."
 msgstr "Укажите ваш возраст корректно."
 
-#: authapp/forms.py:70
+#: authapp/forms.py:72 authapp/forms.py:94
 msgid "Enter Email"
 msgstr "Введите Email"
 
-#: authapp/forms.py:78
+#: authapp/forms.py:102
 msgid "The passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: authapp/forms.py:81
+#: authapp/forms.py:105
 msgid "New password"
 msgstr "Новый пароль"
 
-#: authapp/forms.py:84
+#: authapp/forms.py:108
 msgid "Enter new password"
 msgstr "Введите новый пароль"
 
-#: authapp/forms.py:91 authapp/forms.py:95
+#: authapp/forms.py:115 authapp/forms.py:119
 msgid "Confirm new password"
 msgstr "Подтвердите новый пароль"
 
@@ -150,15 +150,34 @@ msgstr "Регистрация"
 msgid "Forgot password?"
 msgstr "Забыли пароль?"
 
-#: authapp/templates/registration/login.html:32
+#: authapp/templates/registration/login.html:31
+#: authapp/templates/registration/resend_activation.html:4 authapp/views.py:48
+msgid "Resend activation email"
+msgstr "Повторная отправка письма активации"
+
+#: authapp/templates/registration/login.html:35
 msgid "Login via social networks"
 msgstr "Вход через социальные сети"
 
-#: authapp/templates/registration/login.html:44
+#: authapp/templates/registration/login.html:47
 #: authapp/templates/registration/password_reset_complete.html:10
 #: authapp/templates/registration/password_reset_done.html:7
 msgid "Home"
 msgstr "Главная"
+
+#: authapp/templates/registration/password_change_form.html:4
+msgid "Password change"
+msgstr "Смена пароля"
+
+#: authapp/templates/registration/password_change_form.html:8
+#: authapp/templates/registration/password_reset_confirm.html:8
+#: mainapp/templates/mainapp/personal_page.html:63
+msgid "Change password"
+msgstr "Изменить пароль"
+
+#: authapp/templates/registration/password_change_form.html:12
+msgid "Back to personal account"
+msgstr "Вернуться в личный кабинет"
 
 #: authapp/templates/registration/password_reset.html:4
 #: authapp/templates/registration/password_reset_confirm.html:4
@@ -176,10 +195,6 @@ msgstr "Вы успешно обновили пароль."
 #: authapp/templates/registration/password_reset_complete.html:5
 msgid "Your password has been changed to a new one!"
 msgstr "Ваш пароль был изменён на новый!"
-
-#: authapp/templates/registration/password_reset_confirm.html:8
-msgid "Change password"
-msgstr "Сменить пароль"
 
 #: authapp/templates/registration/password_reset_done.html:4
 msgid "Check your email"
@@ -215,38 +230,59 @@ msgstr "Спасибо за использование нашего сайта!"
 msgid " %(site_name)s team"
 msgstr "Команда %(site_name)s"
 
-#: authapp/views.py:30
+#: authapp/templates/registration/resend_activation.html:7
+msgid ""
+"Enter the email you registered with and we will send you a new activation "
+"link."
+msgstr ""
+"Введите email, указанный при регистрации, и мы отправим вам новую ссылку для "
+"активации."
+
+#: authapp/templates/registration/resend_activation.html:13
+msgid "Send activation link"
+msgstr "Отправить ссылку для активации"
+
+#: authapp/templates/registration/resend_activation.html:16
+msgid "Back to login"
+msgstr "Вернуться ко входу"
+
+#: authapp/views.py:33
 #, python-brace-format
 msgid "Login success!<br>Hi, {username}!"
 msgstr "Вход выполнен успешно!<br>Привет, {username}!"
 
-#: authapp/views.py:41
+#: authapp/views.py:53
+#, python-brace-format
+msgid "Your account is not activated. {link}"
+msgstr "Ваш аккаунт не активирован. {link}"
+
+#: authapp/views.py:63
 #, python-brace-format
 msgid "Something goes wrong:<br>{msg}"
 msgstr "Что-то пошло не так:<br>{msg}"
 
-#: authapp/views.py:48
+#: authapp/views.py:70
 msgid "See you later!"
 msgstr "До встречи!"
 
-#: authapp/views.py:70
+#: authapp/views.py:92
 msgid ""
 "Your account has been created, but the activation email could not be sent. "
 "Please contact the site administrator."
 msgstr ""
-"Ваш аккаунт создан, но письмо для активации не было отправлено. "
-"Пожалуйста, обратитесь к администратору сайта."
+"Ваш аккаунт создан, но письмо для активации не было отправлено. Пожалуйста, "
+"обратитесь к администратору сайта."
 
-#: authapp/views.py:75
+#: authapp/views.py:97
 msgid "A link to activate your account has been sent to your email."
 msgstr ""
 "Ссылка для активации аккаунта была отправлена на вашу электронную почту."
 
-#: authapp/views.py:92
+#: authapp/views.py:120
 msgid "Congratulations! You now have your own personal account in Smart House!"
 msgstr "Поздравляем! Теперь у вас есть личный кабинет в Умном Доме!"
 
-#: authapp/views.py:96
+#: authapp/views.py:124
 msgid ""
 "Account activation error! Make sure you used the correct link from the email "
 "you were sent!"
@@ -254,9 +290,33 @@ msgstr ""
 "Ошибка активации аккаунта! Убедитесь, что вы использовали правильную ссылку "
 "из письма!"
 
-#: authapp/views.py:104
+#: authapp/views.py:132
 msgid "Your data has been successfully changed!"
 msgstr "Ваши данные были успешно изменены!"
+
+#: authapp/views.py:179
+msgid ""
+"Could not send the email. Please try again later or contact the site "
+"administrator."
+msgstr ""
+"Не удалось отправить письмо. Попробуйте позже или обратитесь к "
+"администратору сайта."
+
+#: authapp/views.py:188
+msgid ""
+"If this email belongs to an unactivated account, a new activation link has "
+"been sent."
+msgstr ""
+"Если этот email принадлежит неактивированному аккаунту, новая ссылка для "
+"активации отправлена."
+
+#: authapp/views.py:199
+msgid "Your password has been changed successfully!"
+msgstr "Ваш пароль успешно изменён!"
+
+#: authapp/views.py:209
+msgid "If you use other devices, log in on them again."
+msgstr "Если вы используете другие устройства, войдите на них заново."
 
 #: config/settings.py:192
 msgid "English"
@@ -940,23 +1000,23 @@ msgstr "Возраст:"
 msgid "Country:"
 msgstr "Страна:"
 
-#: mainapp/templates/mainapp/personal_page.html:62
+#: mainapp/templates/mainapp/personal_page.html:66
 msgid "Change"
 msgstr "Изменить"
 
-#: mainapp/templates/mainapp/personal_page.html:70
+#: mainapp/templates/mainapp/personal_page.html:74
 msgid "My devices"
 msgstr "Мои устройства"
 
-#: mainapp/templates/mainapp/personal_page.html:104
+#: mainapp/templates/mainapp/personal_page.html:108
 msgid "Delete"
 msgstr "Удалить"
 
-#: mainapp/templates/mainapp/personal_page.html:144
+#: mainapp/templates/mainapp/personal_page.html:148
 msgid "Scenarios for your devices"
 msgstr "Сценарии для ваших устройств"
 
-#: mainapp/templates/mainapp/personal_page.html:149
+#: mainapp/templates/mainapp/personal_page.html:153
 msgid "See all"
 msgstr "Смотреть все"
 
@@ -1148,172 +1208,3 @@ msgstr "получать информацию о новых статьях и с
 #: templates/subscribe/tags/form_right.html:2
 msgid "Subscribe to news"
 msgstr "Подписаться на новости"
-
-#~ msgid "One device is missing"
-#~ msgstr "Одного устройства не хватает"
-
-#~ msgid "In my list"
-#~ msgstr "В моем списке"
-
-#~ msgid "Picture 1"
-#~ msgstr "Картинка 1"
-
-#~ msgid "Picture 2"
-#~ msgstr "Картинка 2"
-
-#~ msgid "Picture 3"
-#~ msgstr "Картинка 3"
-
-#~ msgid "Picture 4"
-#~ msgstr "Картинка 4"
-
-#~ msgid "Picture 5"
-#~ msgstr "Картинка 5"
-
-#~ msgid "Picture 6"
-#~ msgstr "Картинка 6"
-
-#~ msgid "Picture 7"
-#~ msgstr "Картинка 7"
-
-#~ msgid "Picture 8"
-#~ msgstr "Картинка 8"
-
-#~ msgid "Picture 9"
-#~ msgstr "Картинка 9"
-
-#~ msgid "Picture 10"
-#~ msgstr "Картинка 10"
-
-#~ msgid "Picture 11"
-#~ msgstr "Картинка 11"
-
-#~ msgid "Picture 12"
-#~ msgstr "Картинка 12"
-
-#~ msgid "Picture 13"
-#~ msgstr "Картинка 13"
-
-#~ msgid "Picture 14"
-#~ msgstr "Картинка 14"
-
-#~ msgid "Picture 15"
-#~ msgstr "Картинка 15"
-
-#~ msgid "Picture 16"
-#~ msgstr "Картинка 16"
-
-#~ msgid "Picture 17"
-#~ msgstr "Картинка 17"
-
-#~ msgid "Picture 18"
-#~ msgstr "Картинка 18"
-
-#~ msgid "Picture 19"
-#~ msgstr "Картинка 19"
-
-#~ msgid "Picture 20"
-#~ msgstr "Картинка 20"
-
-#~ msgid "Picture 21"
-#~ msgstr "Картинка 21"
-
-#~ msgid "Picture 22"
-#~ msgstr "Картинка 22"
-
-#~ msgid "Picture 23"
-#~ msgstr "Картинка 23"
-
-#~ msgid "Picture 24"
-#~ msgstr "Картинка 24"
-
-#~ msgid "Picture 25"
-#~ msgstr "Картинка 25"
-
-#~ msgid "Image 1"
-#~ msgstr "Изображение 1"
-
-#~ msgid "Image 2"
-#~ msgstr "Изображение 2"
-
-#~ msgid "Image 3"
-#~ msgstr "Изображение 3"
-
-#~ msgid "Image 4"
-#~ msgstr "Изображение 4"
-
-#~ msgid "Image 5"
-#~ msgstr "Изображение 5"
-
-#~ msgid "Image 6"
-#~ msgstr "Изображение 6"
-
-#~ msgid "Image 7"
-#~ msgstr "Изображение 7"
-
-#~ msgid "Image 8"
-#~ msgstr "Изображение 8"
-
-#~ msgid "Image 9"
-#~ msgstr "Изображение 9"
-
-#~ msgid "Image 10"
-#~ msgstr "Изображение 10"
-
-#~ msgid "Image 11"
-#~ msgstr "Изображение 11"
-
-#~ msgid "Image 12"
-#~ msgstr "Изображение 12"
-
-#~ msgid "Image 13"
-#~ msgstr "Изображение 13"
-
-#~ msgid "Image 14"
-#~ msgstr "Изображение 14"
-
-#~ msgid "Image 15"
-#~ msgstr "Изображение 15"
-
-#~ msgid "Image 16"
-#~ msgstr "Изображение 16"
-
-#~ msgid "Image 17"
-#~ msgstr "Изображение 17"
-
-#~ msgid "Image 18"
-#~ msgstr "Изображение 18"
-
-#~ msgid "Image 19"
-#~ msgstr "Изображение 19"
-
-#~ msgid "Image 20"
-#~ msgstr "Изображение 20"
-
-#~ msgid "Image 21"
-#~ msgstr "Изображение 21"
-
-#~ msgid "Image 22"
-#~ msgstr "Изображение 22"
-
-#~ msgid "Image 23"
-#~ msgstr "Изображение 23"
-
-#~ msgid "Image 24"
-#~ msgstr "Изображение 24"
-
-#~ msgid "Scheme"
-#~ msgstr "Схема"
-
-#~ msgid "Platforms:"
-#~ msgstr "Платформы:"
-
-#~ msgid "Logics"
-#~ msgstr "Логика"
-
-#~ msgid ""
-#~ "Не найдено публикаций по вашему запросу Попробуйте повторить запрос с "
-#~ "другой формулировкой"
-#~ msgstr ""
-#~ "Не найдено публикаций по вашему запросу. Попробуйте повторить запрос с "
-#~ "другой формулировкой."

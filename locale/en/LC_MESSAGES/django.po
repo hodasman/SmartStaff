@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-21 22:58+0300\n"
+"POT-Creation-Date: 2026-09-23 22:36+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: authapp/forms.py:14
+#: authapp/forms.py:14 mainapp/templates/mainapp/personal_page.html:62
 msgid "Password"
 msgstr ""
 
@@ -33,23 +33,23 @@ msgstr ""
 msgid "Write your age correctly."
 msgstr ""
 
-#: authapp/forms.py:70
+#: authapp/forms.py:72 authapp/forms.py:94
 msgid "Enter Email"
 msgstr ""
 
-#: authapp/forms.py:78
+#: authapp/forms.py:102
 msgid "The passwords do not match"
 msgstr ""
 
-#: authapp/forms.py:81
+#: authapp/forms.py:105
 msgid "New password"
 msgstr ""
 
-#: authapp/forms.py:84
+#: authapp/forms.py:108
 msgid "Enter new password"
 msgstr ""
 
-#: authapp/forms.py:91 authapp/forms.py:95
+#: authapp/forms.py:115 authapp/forms.py:119
 msgid "Confirm new password"
 msgstr ""
 
@@ -144,14 +144,33 @@ msgstr ""
 msgid "Forgot password?"
 msgstr ""
 
-#: authapp/templates/registration/login.html:32
+#: authapp/templates/registration/login.html:31
+#: authapp/templates/registration/resend_activation.html:4
+msgid "Resend activation email"
+msgstr ""
+
+#: authapp/templates/registration/login.html:35
 msgid "Login via social networks"
 msgstr ""
 
-#: authapp/templates/registration/login.html:44
+#: authapp/templates/registration/login.html:47
 #: authapp/templates/registration/password_reset_complete.html:10
 #: authapp/templates/registration/password_reset_done.html:7
 msgid "Home"
+msgstr ""
+
+#: authapp/templates/registration/password_change_form.html:4
+msgid "Password change"
+msgstr ""
+
+#: authapp/templates/registration/password_change_form.html:8
+#: authapp/templates/registration/password_reset_confirm.html:8
+#: mainapp/templates/mainapp/personal_page.html:63
+msgid "Change password"
+msgstr ""
+
+#: authapp/templates/registration/password_change_form.html:12
+msgid "Back to personal account"
 msgstr ""
 
 #: authapp/templates/registration/password_reset.html:4
@@ -169,10 +188,6 @@ msgstr ""
 
 #: authapp/templates/registration/password_reset_complete.html:5
 msgid "Your password has been changed to a new one!"
-msgstr ""
-
-#: authapp/templates/registration/password_reset_confirm.html:8
-msgid "Change password"
 msgstr ""
 
 #: authapp/templates/registration/password_reset_done.html:4
@@ -207,42 +222,76 @@ msgstr ""
 msgid " %(site_name)s team"
 msgstr ""
 
-#: authapp/views.py:30
+#: authapp/templates/registration/resend_activation.html:7
+msgid ""
+"Enter the email you registered with and we will send you a new activation "
+"link."
+msgstr ""
+
+#: authapp/templates/registration/resend_activation.html:13
+msgid "Send activation link"
+msgstr ""
+
+#: authapp/templates/registration/resend_activation.html:16
+msgid "Back to login"
+msgstr ""
+
+#: authapp/views.py:33
 #, python-brace-format
 msgid "Login success!<br>Hi, {username}!"
 msgstr ""
 
-#: authapp/views.py:41
+#: authapp/views.py:44
 #, python-brace-format
 msgid "Something goes wrong:<br>{msg}"
 msgstr ""
 
-#: authapp/views.py:48
+#: authapp/views.py:51
 msgid "See you later!"
 msgstr ""
 
-#: authapp/views.py:70
+#: authapp/views.py:73
 msgid ""
 "Your account has been created, but the activation email could not be sent. "
 "Please contact the site administrator."
 msgstr ""
 
-#: authapp/views.py:75
+#: authapp/views.py:78
 msgid "A link to activate your account has been sent to your email."
 msgstr ""
 
-#: authapp/views.py:92
+#: authapp/views.py:95
 msgid "Congratulations! You now have your own personal account in Smart House!"
 msgstr ""
 
-#: authapp/views.py:96
+#: authapp/views.py:99
 msgid ""
 "Account activation error! Make sure you used the correct link from the email "
 "you were sent!"
 msgstr ""
 
-#: authapp/views.py:104
+#: authapp/views.py:107
 msgid "Your data has been successfully changed!"
+msgstr ""
+
+#: authapp/views.py:154
+msgid ""
+"Could not send the email. Please try again later or contact the site "
+"administrator."
+msgstr ""
+
+#: authapp/views.py:163
+msgid ""
+"If this email belongs to an unactivated account, a new activation link has "
+"been sent."
+msgstr ""
+
+#: authapp/views.py:174
+msgid "Your password has been changed successfully!"
+msgstr ""
+
+#: authapp/views.py:184
+msgid "If you use other devices, log in on them again."
 msgstr ""
 
 #: config/settings.py:192
@@ -908,23 +957,23 @@ msgstr ""
 msgid "Country:"
 msgstr ""
 
-#: mainapp/templates/mainapp/personal_page.html:62
+#: mainapp/templates/mainapp/personal_page.html:66
 msgid "Change"
 msgstr ""
 
-#: mainapp/templates/mainapp/personal_page.html:70
+#: mainapp/templates/mainapp/personal_page.html:74
 msgid "My devices"
 msgstr ""
 
-#: mainapp/templates/mainapp/personal_page.html:104
+#: mainapp/templates/mainapp/personal_page.html:108
 msgid "Delete"
 msgstr ""
 
-#: mainapp/templates/mainapp/personal_page.html:144
+#: mainapp/templates/mainapp/personal_page.html:148
 msgid "Scenarios for your devices"
 msgstr ""
 
-#: mainapp/templates/mainapp/personal_page.html:149
+#: mainapp/templates/mainapp/personal_page.html:153
 msgid "See all"
 msgstr ""
 
