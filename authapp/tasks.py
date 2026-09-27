@@ -1,19 +1,22 @@
 import logging
+from typing import TYPE_CHECKING
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext as _
 
-User = get_user_model()
+if TYPE_CHECKING:
+    from authapp.models import User
 
 logger = logging.getLogger(__name__)
 
 
 class SendEmail:
-    def __init__(self, request, user: User):
+    def __init__(self, request, user: AbstractBaseUser):
         self.request = request
         self.user = user
         self.token = default_token_generator.make_token(self.user)
@@ -38,6 +41,6 @@ class SendEmail:
         self.user.email_user(subject=subject, message=message)
 
 
-def activate_email_task(request, user: User):
+def activate_email_task(request, user: AbstractBaseUser):
     send_email = SendEmail(request=request, user=user)
     send_email.send_activate_email()
