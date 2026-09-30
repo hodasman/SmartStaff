@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
     for authentication instead of usernames.
     """
 
-    def create_user(self, username, first_name, age, email, password=None):
+    def create_user(self, username, first_name, date_of_birth, email, password=None):
         """
         Creates and saves a User with the given first_name, email, phone_number and password.
         """
@@ -39,7 +39,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             username=username,
             first_name=first_name,
-            age=age,
+            date_of_birth=date_of_birth,
             email=self.normalize_email(email),
         )
         user.set_password(password)
@@ -47,14 +47,14 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, first_name, age, email, password=None):
+    def create_superuser(self, username, first_name, date_of_birth, email, password=None):
         """
         Creates and saves a SuperUser with the given first_name, email, phone_number and password.
         """
         user = self.create_user(
             username=username,
             first_name=first_name,
-            age=age,
+            date_of_birth=date_of_birth,
             email=self.normalize_email(email),
             password=password,
         )
@@ -83,7 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     first_name = models.CharField(_("first name"), max_length=20, blank=True)
     last_name = models.CharField(_("last name"), max_length=20, blank=True, null=True)
-    age = models.PositiveIntegerField(_("age"), blank=True, null=True)
+    date_of_birth = models.DateField(_("date of birth"), blank=True, null=True)
     avatar = models.ImageField(_("avatar"), upload_to=users_avatars_path, blank=True, null=True)
     country = CountryField(blank=True, null=True)
     email = models.EmailField(
@@ -95,6 +95,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             "unique": _("A user with that email address already exists."),
         },
     )
+    # Кандидат на новый email: в поле email попадает только после
+    # подтверждения по ссылке из письма. До подтверждения старый адрес
+    # остаётся рабочим (защита от опечатки и перехвата аккаунта).
+    new_email = models.EmailField(_("new email"), blank=True, null=True)
     date_joined = models.DateTimeField(_("Date of creation"), auto_now_add=True)
     is_author = models.BooleanField(
         _("author status"),
@@ -107,7 +111,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     devices = models.ManyToManyField(Device, verbose_name="devices", blank=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "first_name", "age",]
+    REQUIRED_FIELDS = ["username", "first_name", "date_of_birth",]
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
@@ -115,3 +119,5 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.username}"
+
+

@@ -27,7 +27,8 @@ def make_user(email="user@test.local", username="tester", password="Sup3r#Secret
               is_active=True):
     """Фабрика юзера. create_user() не активирует (is_active=False по умолчанию)."""
     user = User(
-        username=username, email=email, first_name="Test", age=30,
+        username=username, email=email, first_name="Test",
+        date_of_birth="1999-01-01",
         is_active=is_active,
     )
     user.set_password(password)
@@ -57,7 +58,7 @@ class RegistrationTests(TestCase):
                 "email": "newbie@test.local",
                 "first_name": "New",
                 "last_name": "User",
-                "age": 25,
+                "date_of_birth": "1999-01-01",
                 "country": "BY",
                 "password1": "Sup3r#Secret",
                 "password2": "Sup3r#Secret",
@@ -82,7 +83,7 @@ class RegistrationTests(TestCase):
             {
                 "username": "other",
                 "email": "taken@test.local",
-                "age": 25,
+                "date_of_birth": "1999-01-01",
                 "password1": "Sup3r#Secret",
                 "password2": "Sup3r#Secret",
             },
@@ -99,7 +100,7 @@ class RegistrationTests(TestCase):
             {
                 "username": "newbie",
                 "email": "newbie@test.local",
-                "age": 25,
+                "date_of_birth": "1999-01-01",
                 "password1": "Sup3r#Secret",
                 "password2": "Other#12345",
             },
@@ -117,7 +118,7 @@ class RegistrationTests(TestCase):
                 {
                     "username": "newbie",
                     "email": "newbie@test.local",
-                    "age": 25,
+                    "date_of_birth": "1999-01-01",
                     "password1": "Sup3r#Secret",
                     "password2": "Sup3r#Secret",
                 },
@@ -465,10 +466,140 @@ class SuperuserTests(TestCase):
     def test_create_superuser_is_active(self):
         # регрессия: суперюзер создавался неактивным и не мог войти
         User.objects.create_superuser(
-            username="admin", first_name="Admin", age=35,
+            username="admin", first_name="Admin", date_of_birth="1990-01-01",
             email="admin@test.local", password="Adm1n#Pass",
         )
         admin = User.objects.get(email="admin@test.local")
         self.assertTrue(admin.is_active)
         self.assertTrue(admin.is_staff)
         self.assertTrue(admin.is_superuser)
+
+
+class EmailChangeTests(TestCase):
+    """Смена email в личном кабинете с подтверждением по письму."""
+
+    OLD = "old@test.local"
+    NEW = "new@test.local"
+
+    def setUp(self):
+        from axes.models import AccessAttempt
+        AccessAttempt.objects.all().delete()
+        self.client = Client()
+        self.user = make_user(email=self.OLD, password="Old#12345")
+        self.client.force_login(self.user)
+
+    def submit_profile(self, email):
+        c = self.client.cookies.get("csrftoken")
+        data = {
+            "username": self.user.username,
+            "email": email,
+            "first_name": "Test",
+            "date_of_birth": "1999-01-01",
+        }
+        if c:
+            data["csrfmiddlewaretoken"] = c.value
+        return self.client.post(
+            reverse("authapp:profile_edit", args=[self.user.pk]), data
+        )
+
+    def test_email_change_requires_confirmation(self):
+        """Смена email: адрес НЕ меняется сразу, шлётся письмо-подтверждение,
+        старый адрес остаётся рабочим."""
+        response = self.submit_profile(self.NEW)
+        self.assertEqual(response.status_code, 302)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, self.OLD,
+                         "email не должен меняться без подтверждения")
+        self.assertEqual(self.user.new_email, self.NEW)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, [self.NEW],
+                         "письмо-подтверждение уходит на новый адрес")
+        self.assertIn("email_change_confirm", mail.outbox[0].body)
+
+    def test_email_change_same_email_no_letter(self):
+        """Без изменения email — письмо-подтверждение не отправляется."""
+        response = self.submit_profile(self.OLD)
+        self.assertEqual(response.status_code, 302)
+        self.user.refresh_from_db()
+        self.assertIsNone(self.user.new_email)
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_email_change_confirmed_by_link(self):
+        """Клик по ссылке подтверждения: email меняется, new_email чистится."""
+        self.submit_profile(self.NEW)
+        self.user.refresh_from_db()
+        from authapp.views import email_change_token_generator
+        from django.utils.http import urlsafe_base64_encode
+        uidb64 = urlsafe_base64_encode(str(self.user.pk).encode())
+        token = email_change_token_generator.make_token(self.user)
+        response = self.client.get(
+            reverse("authapp:email_change_confirm",
+                    kwargs={"uidb64": uidb64, "token": token})
+        )
+        self.assertEqual(response.status_code, 302)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, self.NEW)
+        self.assertIsNone(self.user.new_email)
+
+    def test_email_change_token_not_valid_after_change(self):
+        """Токен одноразовый: после подтверждения ссылка больше не работает."""
+        self.submit_profile(self.NEW)
+        self.user.refresh_from_db()
+        from authapp.views import email_change_token_generator
+        from django.utils.http import urlsafe_base64_encode
+        uidb64 = urlsafe_base64_encode(str(self.user.pk).encode())
+        token = email_change_token_generator.make_token(self.user)
+        self.client.get(reverse("authapp:email_change_confirm",
+                                kwargs={"uidb64": uidb64, "token": token}))
+        # повторный клик
+        response = self.client.get(reverse("authapp:email_change_confirm",
+                                           kwargs={"uidb64": uidb64, "token": token}))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("login", response.url)
+
+    def test_email_change_to_taken_email_rejected(self):
+        """Новый email уже занят другим юзером: форма отклоняет."""
+        make_user(email=self.NEW, username="other")
+        response = self.submit_profile(self.NEW)
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, self.OLD)
+        self.assertIsNone(self.user.new_email)
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_email_change_race_protection(self):
+        """Пока юзер не подтвердил, адрес мог занять другой аккаунт:
+        подтверждение отклоняется, email не меняется."""
+        self.submit_profile(self.NEW)
+        self.user.refresh_from_db()
+        from authapp.views import email_change_token_generator
+        from django.utils.http import urlsafe_base64_encode
+        uidb64 = urlsafe_base64_encode(str(self.user.pk).encode())
+        token = email_change_token_generator.make_token(self.user)
+        # "кто-то" занял адрес
+        other = make_user(email=self.NEW, username="racer")
+        response = self.client.get(reverse("authapp:email_change_confirm",
+                                           kwargs={"uidb64": uidb64, "token": token}))
+        self.assertEqual(response.status_code, 302)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, self.OLD,
+                         "email не должен смениться на занятый адрес")
+        other.delete()
+
+    def test_old_reset_token_invalid_after_change(self):
+        """Токен смены email валиден только для конкретной пары email+new_email:
+        после очистки new_email resend-ссылка не работает."""
+        self.submit_profile(self.NEW)
+        self.user.refresh_from_db()
+        from authapp.views import email_change_token_generator
+        from django.utils.http import urlsafe_base64_encode
+        uidb64 = urlsafe_base64_encode(str(self.user.pk).encode())
+        token = email_change_token_generator.make_token(self.user)
+        # юзер сам сбросил new_email (например, сохранил профиль без смены)
+        self.user.new_email = None
+        self.user.save(update_fields=["new_email"])
+        response = self.client.get(reverse("authapp:email_change_confirm",
+                                           kwargs={"uidb64": uidb64, "token": token}))
+        self.assertIn("login", response.url)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, self.OLD)

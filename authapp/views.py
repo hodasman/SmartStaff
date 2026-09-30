@@ -22,7 +22,7 @@ from django.views.generic import CreateView, FormView, UpdateView
 
 from authapp import forms
 from authapp.forms import CustomPasswordResetForm, CustomSetPasswordForm
-from authapp.tasks import activate_email_task
+from authapp.tasks import activate_email_task, email_change_task
 
 logger = logging.getLogger(__name__)
 
@@ -145,6 +145,47 @@ class ProfileEditView(UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy("authapp:profile_edit", args=[self.request.user.pk])
 
+    def form_valid(self, form):
+        # Смена email НЕ применяется сразу: новый адрес сохраняется в
+        # new_email и подтверждается по ссылке из письма. До подтверждения
+        # старый адрес остаётся рабочим (защита от опечатки и перехвата).
+        # Внимание: к моменту form_valid is_valid() уже применил данные к
+        # form.instance, поэтому текущий адрес берём из БД, а не из instance.
+        old_email = self.get_object().email
+        requested_email = form.cleaned_data.get("email")
+        email_changed = (
+            requested_email and requested_email.lower() != old_email.lower()
+        )
+        self.object = form.save(commit=False)
+        if email_changed:
+            self.object.email = old_email
+            self.object.new_email = requested_email
+        self.object.save()
+        if email_changed:
+            try:
+                email_change_task(request=self.request, user=self.object)
+            except Exception:
+                logger.exception(
+                    "Email change confirmation failed for user %s", old_email
+                )
+                messages.add_message(
+                    self.request,
+                    messages.WARNING,
+                    _(
+                        "Could not send the confirmation email. Please try "
+                        "again later or contact the site administrator."
+                    ),
+                )
+            else:
+                messages.add_message(
+                    self.request,
+                    messages.INFO,
+                    _("A confirmation link has been sent to %(new_email)s. "
+                      "Your email will change after you confirm it.")
+                    % {"new_email": requested_email},
+                )
+        return HttpResponseRedirect(self.get_success_url())
+
 
 class CustomPasswordResetView(PasswordResetView):  
     template_name = 'registration/password_reset.html'  
@@ -226,5 +267,96 @@ class PasswordChangeDoneCustomView(LoginRequiredMixin, View):
         return redirect(
             reverse(
                 "mainapp:personal_page", kwargs={"username": request.user.username}
+            )
+        )
+
+
+from authapp.tokens import email_change_token_generator  # noqa: E402
+
+
+class EmailChangeConfirmView(View):
+    """Подтверждение смены email по ссылке из письма."""
+
+    def get(self, request, uidb64, token):
+        User = get_user_model()
+        try:
+            uid = urlsafe_base64_decode(uidb64)
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if (
+            user is not None
+            and user.new_email
+            and email_change_token_generator.check_token(user, token)
+        ):
+            # повторная проверка уникальности: пока юзер думал, адрес
+            # мог занять другой аккаунт
+            if User.objects.filter(email__iexact=user.new_email).exclude(
+                pk=user.pk
+            ).exists():
+                messages.add_message(
+                    self.request,
+                    messages.WARNING,
+                    _("This email address is already taken by another account."),
+                )
+            else:
+                old_email = user.email
+                user.email = user.new_email
+                user.new_email = None
+                user.save(update_fields=["email", "new_email"])
+                logger.info(
+                    "User %s changed email from %s to %s",
+                    user.username, old_email, user.email,
+                )
+                messages.add_message(
+                    self.request,
+                    messages.SUCCESS,
+                    _("Your email address has been changed. Use the new "
+                      "address to log in."),
+                )
+            return redirect(
+                reverse(
+                    "mainapp:personal_page",
+                    kwargs={"username": user.username},
+                )
+            )
+        messages.add_message(
+            self.request,
+            messages.WARNING,
+            _("Email change confirmation error! The link is invalid or "
+              "already used."),
+        )
+        return redirect("authapp:login")
+
+
+class ResendEmailChangeView(LoginRequiredMixin, View):
+    """Повторная отправка письма с подтверждением смены email."""
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        if user.new_email:
+            try:
+                email_change_task(request=request, user=user)
+            except Exception:
+                logger.exception(
+                    "Email change re-sending failed for user %s", user.email
+                )
+                messages.add_message(
+                    self.request,
+                    messages.WARNING,
+                    _("Could not send the email. Please try again later or "
+                      "contact the site administrator."),
+                )
+            else:
+                messages.add_message(
+                    self.request,
+                    messages.INFO,
+                    _("A confirmation link has been sent to %(new_email)s.")
+                    % {"new_email": user.new_email},
+                )
+        return redirect(
+            reverse(
+                "mainapp:personal_page",
+                kwargs={"username": user.username},
             )
         )

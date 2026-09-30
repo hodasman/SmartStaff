@@ -14,6 +14,10 @@ class CreateUserForm(UserCreationForm):
         self.fields["password1"].label = _("Password")
         self.fields["password2"].label = _("Password verification")
         self.fields["country"].label = _("Country")
+        self.fields["date_of_birth"].widget = forms.DateInput(
+            attrs={"type": "date"}, format="%Y-%m-%d"
+        )
+        self.fields["date_of_birth"].label = _("Date of birth")
         
     
     field_order = [
@@ -24,12 +28,12 @@ class CreateUserForm(UserCreationForm):
         "password1",
         "password2",
         "avatar",
-        "age",
+        "date_of_birth",
     ]
     
     class Meta:
         model = get_user_model()
-        fields = ("username", "email", "first_name", "last_name", "age", "country", "avatar")
+        fields = ("username", "email", "first_name", "last_name", "date_of_birth", "country", "avatar")
         field_classes = {"username": UsernameField}
         
 
@@ -41,10 +45,11 @@ class UserChangeForm(forms.ModelForm):
             "username",
             "email",
             "first_name",
-            "age",
+            "date_of_birth",
             "avatar",
         )
         field_classes = {"username": UsernameField}
+        widgets = {"date_of_birth": forms.DateInput(attrs={"type": "date"})}
 
     def clean_avatar(self):
         arg_as_str = "avatar"
@@ -53,11 +58,15 @@ class UserChangeForm(forms.ModelForm):
                 os.remove(self.instance.avatar.path)
         return self.cleaned_data.get(arg_as_str)
 
-    def clean_age(self):
-        data = self.cleaned_data.get("age")
+    def clean_date_of_birth(self):
+        data = self.cleaned_data.get("date_of_birth")
         if data:
-            if data < 10 or data > 100:
-                raise ValidationError(_("Write your age correctly."))
+            from datetime import date
+            today = date.today()
+            if data > today:
+                raise ValidationError(_("Date of birth cannot be in the future."))
+            if data.year < 1900:
+                raise ValidationError(_("Write your date of birth correctly."))
         return data
 
 

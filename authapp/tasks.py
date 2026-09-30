@@ -41,6 +41,43 @@ class SendEmail:
         self.user.email_user(subject=subject, message=message)
 
 
+    def send_email_change_email(self):
+        """Письмо с подтверждением смены email на адрес user.new_email."""
+        # Токен ДЛЯ СМЕНЫ EMAIL строит EmailChangeTokenGenerator, а не
+        # default_token_generator: генераторы имеют разные key_salt, вьюха
+        # подтверждения проверяет именно этот.
+        from authapp.tokens import email_change_token_generator
+        from django.utils.http import urlsafe_base64_encode
+        uid = urlsafe_base64_encode(str(self.user.pk).encode())
+        token = email_change_token_generator.make_token(self.user)
+        change_url = reverse(
+            "authapp:email_change_confirm",
+            kwargs={"uidb64": uid, "token": token},
+        )
+        absolute_url = self.request.build_absolute_uri(change_url)
+
+        subject = _("Confirm your new email address")
+        message = _(
+            "You (or someone) requested changing the email address for your "
+            "account on %(site_name)s to %(new_email)s.\n"
+            "To confirm the new address, please follow the link:\n%(link)s\n"
+            "If you did not request this, just ignore this email — your "
+            "current address will remain unchanged.\n"
+        ) % {
+            "site_name": get_current_site(self.request).name,
+            "new_email": self.user.new_email,
+            "link": absolute_url,
+        }
+        # Письмо уходит на НОВЫЙ адрес (кандидат), а не на текущий
+        from django.core.mail import send_mail
+        send_mail(subject, message, None, [self.user.new_email])
+
+
 def activate_email_task(request, user: AbstractBaseUser):
     send_email = SendEmail(request=request, user=user)
     send_email.send_activate_email()
+
+
+def email_change_task(request, user: AbstractBaseUser):
+    send_email = SendEmail(request=request, user=user)
+    send_email.send_email_change_email()

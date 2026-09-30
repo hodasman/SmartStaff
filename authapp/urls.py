@@ -47,4 +47,14 @@ urlpatterns += [
         views.PasswordChangeDoneCustomView.as_view(),
         name="password_change_done",
     ),
+    path(
+        "email_change_confirm/<uidb64>/<token>/",
+        views.EmailChangeConfirmView.as_view(),
+        name="email_change_confirm",
+    ),
+    path(
+        "resend-email-change/",
+        views.ResendEmailChangeView.as_view(),
+        name="resend_email_change",
+    ),
 ]
