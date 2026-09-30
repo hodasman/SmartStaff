@@ -1056,7 +1056,7 @@ msgstr "Прозвішча:"
 #, fuzzy
 #| msgid "Date of creation"
 msgid "Date of birth:"
-msgstr "Дата стварэння"
+msgstr "Дата нараджэння"
 
 #: mainapp/templates/mainapp/personal_page.html:54
 msgid "Country:"

@@ -1054,10 +1054,8 @@ msgid "Last name:"
 msgstr "Фамилия:"
 
 #: mainapp/templates/mainapp/personal_page.html:50
-#, fuzzy
-#| msgid "Date of creation"
 msgid "Date of birth:"
-msgstr "Дата создания"
+msgstr "Дата рождения:"
 
 #: mainapp/templates/mainapp/personal_page.html:54
 msgid "Country:"
