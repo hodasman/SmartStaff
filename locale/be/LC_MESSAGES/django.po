@@ -83,11 +83,6 @@ msgstr "Імя"
 msgid "last name"
 msgstr "прозвішча"
 
-#: authapp/models.py:86
-#, fuzzy
-#| msgid "Date of creation"
-msgid "date of birth"
-msgstr "Дата стварэння"
 
 #: authapp/models.py:87
 msgid "avatar"
@@ -144,7 +139,7 @@ msgid ""
 "%(link)s\n"
 "If you did not request this, just ignore this email — your current address "
 "will remain unchanged.\n"
-msgstr ""
+msgstr "Вы (або хтосьці іншы) запатрабавалі змену email-адраса для вашага акаўнта на сайце %(site_name)s на %(new_email)s.\nКаб пацвердзіць новы адрас, перайдзіце па спасылцы:\n%(link)s\nКалі вы не запытвалі змену — проста праігнаруйце гэты ліст, бягучы адрас застанецца без змяненняў.\n"
 
 #: authapp/templates/authapp/user_form.html:14
 msgid "New user registration"
@@ -1053,10 +1048,8 @@ msgid "Last name:"
 msgstr "Прозвішча:"
 
 #: mainapp/templates/mainapp/personal_page.html:50
-#, fuzzy
-#| msgid "Date of creation"
 msgid "Date of birth:"
-msgstr "Дата нараджэння"
+msgstr "Дата нараджэння:"
 
 #: mainapp/templates/mainapp/personal_page.html:54
 msgid "Country:"

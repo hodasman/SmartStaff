@@ -145,7 +145,7 @@ msgid ""
 "%(link)s\n"
 "If you did not request this, just ignore this email — your current address "
 "will remain unchanged.\n"
-msgstr ""
+msgstr "Вы (или кто-то другой) запросили смену email-адреса для вашего аккаунта на сайте %(site_name)s на %(new_email)s.\nЧтобы подтвердить новый адрес, перейдите по ссылке:\n%(link)s\nЕсли вы не запрашивали смену — просто проигнорируйте это письмо, текущий адрес останется без изменений.\n"
 
 #: authapp/templates/authapp/user_form.html:14
 msgid "New user registration"
