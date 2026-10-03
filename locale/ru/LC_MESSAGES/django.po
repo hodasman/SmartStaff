@@ -85,10 +85,8 @@ msgid "last name"
 msgstr "фамилия"
 
 #: authapp/models.py:86
-#, fuzzy
-#| msgid "Date of creation"
 msgid "date of birth"
-msgstr "Дата создания"
+msgstr "Дата рождения"
 
 #: authapp/models.py:87
 msgid "avatar"

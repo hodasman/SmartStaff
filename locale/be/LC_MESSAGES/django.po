@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-30 22:08+0300\n"
+"POT-Creation-Date: 2026-10-03 22:25+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -83,6 +83,9 @@ msgstr "Імя"
 msgid "last name"
 msgstr "прозвішча"
 
+#: authapp/models.py:86
+msgid "date of birth"
+msgstr "Дата нараджэння"
 
 #: authapp/models.py:87
 msgid "avatar"
@@ -126,11 +129,11 @@ msgstr ""
 "Каб актываваць уліковы запіс, калі ласка, перайдзіце па спасылцы:\n"
 "%(link)s\n"
 
-#: authapp/tasks.py:52
+#: authapp/tasks.py:59
 msgid "Confirm your new email address"
 msgstr "Пацвердзіце ваш новы email"
 
-#: authapp/tasks.py:54
+#: authapp/tasks.py:61
 #, python-format
 msgid ""
 "You (or someone) requested changing the email address for your account on "
@@ -139,7 +142,13 @@ msgid ""
 "%(link)s\n"
 "If you did not request this, just ignore this email — your current address "
 "will remain unchanged.\n"
-msgstr "Вы (або хтосьці іншы) запатрабавалі змену email-адраса для вашага акаўнта на сайце %(site_name)s на %(new_email)s.\nКаб пацвердзіць новы адрас, перайдзіце па спасылцы:\n%(link)s\nКалі вы не запытвалі змену — проста праігнаруйце гэты ліст, бягучы адрас застанецца без змяненняў.\n"
+msgstr ""
+"Вы (або хтосьці іншы) запатрабавалі змену email-адраса для вашага акаўнта на "
+"сайце %(site_name)s на %(new_email)s.\n"
+"Каб пацвердзіць новы адрас, перайдзіце па спасылцы:\n"
+"%(link)s\n"
+"Калі вы не запытвалі змену — проста праігнаруйце гэты ліст, бягучы адрас "
+"застанецца без змяненняў.\n"
 
 #: authapp/templates/authapp/user_form.html:14
 msgid "New user registration"
@@ -176,7 +185,7 @@ msgid "Forgot password?"
 msgstr "Забылі пароль?"
 
 #: authapp/templates/registration/login.html:31
-#: authapp/templates/registration/resend_activation.html:4 authapp/views.py:57
+#: authapp/templates/registration/resend_activation.html:4 authapp/views.py:56
 msgid "Resend activation email"
 msgstr "Паўторная адпраўка пісьма актывацыі"
 
@@ -271,26 +280,26 @@ msgstr "Даслаць спасылку для актывацыі"
 msgid "Back to login"
 msgstr "Вярнуцца да ўваходу"
 
-#: authapp/views.py:34
+#: authapp/views.py:33
 #, python-brace-format
 msgid "Login success!<br>Hi, {username}!"
 msgstr "Уваход выкананы паспяхова!<br>Прывітанне, {username}!"
 
-#: authapp/views.py:62
+#: authapp/views.py:61
 #, python-brace-format
 msgid "Your account is not activated. {link}"
 msgstr "Ваш уліковы запіс не актываваны. {link}"
 
-#: authapp/views.py:72
+#: authapp/views.py:71
 #, python-brace-format
 msgid "Something goes wrong:<br>{msg}"
 msgstr "Нешта пайшло не так:<br>{msg}"
 
-#: authapp/views.py:79
+#: authapp/views.py:78
 msgid "See you later!"
 msgstr "Да сустрэчы!"
 
-#: authapp/views.py:101
+#: authapp/views.py:100
 msgid ""
 "Your account has been created, but the activation email could not be sent. "
 "Please contact the site administrator."
@@ -298,15 +307,15 @@ msgstr ""
 "Твой акаўнт быў створаны, але пісьмо для актывацыі не было адпраўлена. Калі "
 "ласка, звярніцеся да адміністратара."
 
-#: authapp/views.py:106
+#: authapp/views.py:105
 msgid "A link to activate your account has been sent to your email."
 msgstr "Спасылка для актывацыі вашага акаўнта была адпраўлена на вашу пошту."
 
-#: authapp/views.py:129
+#: authapp/views.py:128
 msgid "Congratulations! You now have your own personal account in Smart House!"
 msgstr "Віншуем! Цяпер у вас ёсць уласны акаўнт у Смарт Хаце!"
 
-#: authapp/views.py:133
+#: authapp/views.py:132
 msgid ""
 "Account activation error! Make sure you used the correct link from the email "
 "you were sent!"
@@ -314,24 +323,28 @@ msgstr ""
 "Памылка актывацыі акаўнта! Пераканайцеся, што вы скарысталіся правільнай "
 "спасылкай з ліста!"
 
-#: authapp/views.py:141
+#: authapp/views.py:140
 msgid "Your data has been successfully changed!"
 msgstr "Вашы дадзеныя паспяхова зменены!"
 
-#: authapp/views.py:176
+#: authapp/views.py:175
 msgid ""
 "Could not send the confirmation email. Please try again later or contact the "
 "site administrator."
-msgstr "Не удалось отправить письмо с подтверждением. Попробуйте позже или обратитесь к администратору."
+msgstr ""
+"Не удалось отправить письмо с подтверждением. Попробуйте позже или "
+"обратитесь к администратору."
 
-#: authapp/views.py:184
+#: authapp/views.py:183
 #, python-format
 msgid ""
 "A confirmation link has been sent to %(new_email)s. Your email will change "
 "after you confirm it."
-msgstr "Ссылка подтверждения отправлена на %(new_email)s. Ваш email изменится после подтверждения."
+msgstr ""
+"Ссылка подтверждения отправлена на %(new_email)s. Ваш email изменится после "
+"подтверждения."
 
-#: authapp/views.py:229 authapp/views.py:360
+#: authapp/views.py:228 authapp/views.py:347
 msgid ""
 "Could not send the email. Please try again later or contact the site "
 "administrator."
@@ -339,7 +352,7 @@ msgstr ""
 "Не ўдалося даслаць пісьмо. Паспрабуйце пазней або звернецеся да "
 "адміністратара сайта."
 
-#: authapp/views.py:238
+#: authapp/views.py:237
 msgid ""
 "If this email belongs to an unactivated account, a new activation link has "
 "been sent."
@@ -347,27 +360,29 @@ msgstr ""
 "Калі гэты email належыць неактываванаму акаўнту, новая спасылка для "
 "актывацыі даслана."
 
-#: authapp/views.py:249
+#: authapp/views.py:248
 msgid "Your password has been changed successfully!"
 msgstr "Ваш пароль паспяхова зменены!"
 
-#: authapp/views.py:259
+#: authapp/views.py:258
 msgid "If you use other devices, log in on them again."
 msgstr "Калі вы карыстаецеся іншымі прыладамі, увайдзіце на іх зноў."
 
-#: authapp/views.py:313
+#: authapp/views.py:300
 msgid "This email address is already taken by another account."
 msgstr "Этот email уже занят другим аккаунтом."
 
-#: authapp/views.py:327
+#: authapp/views.py:314
 msgid "Your email address has been changed. Use the new address to log in."
 msgstr "Ваш email изменён. Для входа используйте новый адрес."
 
-#: authapp/views.py:339
+#: authapp/views.py:326
 msgid "Email change confirmation error! The link is invalid or already used."
-msgstr "Ошибка подтверждения смены email! Ссылка недействительна или уже использована."
+msgstr ""
+"Ошибка подтверждения смены email! Ссылка недействительна или уже "
+"использована."
 
-#: authapp/views.py:367
+#: authapp/views.py:354
 #, python-format
 msgid "A confirmation link has been sent to %(new_email)s."
 msgstr "Ссылка подтверждения отправлена на %(new_email)s."
