@@ -1,4 +1,5 @@
 {% extends 'base_auth.html'%}
+{% load crispy_forms_tags %}
 {% load i18n %}
 {% block content %}
     <h2>{% trans "Resend activation email" %}</h2>
@@ -9,7 +10,7 @@
     </p>
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <button type="submit" class="btn boxed-btn3 btn-block mt-3">{% trans "Send activation link" %}</button>
     </form>
     <p>

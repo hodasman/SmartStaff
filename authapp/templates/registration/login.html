@@ -1,23 +1,13 @@
 {% extends 'base_auth.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% load i18n %}
 {% block content %}
     <h2>{% trans "User login" %}</h2>
     <form method="POST">
-
         {% csrf_token %}
-        <p>
-            <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username"
-                maxlength="150" class="textinput textInput form-control" required="" id="id_username"
-                placeholder="Email">
-        </p>
-        <p>
-            <input type="password" name="password" autocomplete="current-password"
-                class="textinput textInput form-control" required="" id="id_password" placeholder="Password">
-        </p>
-        <p>
-            <button type="submit" class="btn boxed-btn3 btn-block">{% trans "Login" %}</button>
-        </p>
+        {{ form|crispy }}
+        <button type="submit" class="btn boxed-btn3 btn-block">{% trans "Login" %}</button>
     </form>
     <p>
     <div class="row justify-content-between">

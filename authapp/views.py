@@ -28,6 +28,15 @@ logger = logging.getLogger(__name__)
 
 
 class CustomLoginView(LoginView):
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        # AuthenticationForm берёт label из capfirst(verbose_name), а
+        # verbose_name у email не обёрнут в gettext — задаём сами.
+        form.fields["username"].label = _("Email")
+        form.fields["username"].widget.attrs["placeholder"] = _("Enter Email")
+        form.fields["password"].widget.attrs["placeholder"] = _("Password")
+        return form
+
     def form_valid(self, form):
         ret = super().form_valid(form)
         message = _("Login success!<br>Hi, {username}!")

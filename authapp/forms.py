@@ -72,17 +72,16 @@ class UserChangeForm(forms.ModelForm):
 
 class ResendActivationForm(forms.Form):
     """Повторная отправка письма активации для неактивированного аккаунта."""
-    email = forms.EmailField(  
-        label="Email",  
-        max_length=254,  
-        widget=forms.EmailInput(  
+    email = forms.EmailField(
+        label="Email",
+        max_length=254,
+        widget=forms.EmailInput(
             attrs={
-                "class": "form-control",
                 "placeholder": _("Enter Email"),
                 "autocomplete": "email",
             }
         ),
-    )  
+    )
 
     def get_user(self):
         User = get_user_model()
@@ -99,9 +98,10 @@ class CustomPasswordResetForm(PasswordResetForm):
         label="Email",
         max_length=254,
         widget=forms.EmailInput(
-            attrs={'class': 'form-control',  
-                   'placeholder': _('Enter Email'),
-                   "autocomplete": "email"}
+            attrs={
+                'placeholder': _('Enter Email'),
+                "autocomplete": "email"
+            }
         )
     )
 
@@ -113,9 +113,10 @@ class CustomSetPasswordForm(SetPasswordForm):
     new_password1 = forms.CharField(
         label=_('New password'),
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control',
-                   'placeholder': _('Enter new password'),
-                   "autocomplete": "new-password"}
+            attrs={
+                'placeholder': _('Enter new password'),
+                "autocomplete": "new-password"
+            }
         ),
         strip=False,
         help_text=password_validation.password_validators_help_text_html(),
@@ -124,8 +125,9 @@ class CustomSetPasswordForm(SetPasswordForm):
         label=_('Confirm new password'),
         strip=False,
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control',
-                   'placeholder': _('Confirm new password'),
-                   "autocomplete": "new-password"}
+            attrs={
+                'placeholder': _('Confirm new password'),
+                "autocomplete": "new-password"
+            }
         ),
     )

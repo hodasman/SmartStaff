@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-03 22:25+0300\n"
+"POT-Creation-Date: 2026-10-03 22:52+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,8 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: authapp/forms.py:14 mainapp/templates/mainapp/personal_page.html:70
+#: authapp/forms.py:14 authapp/views.py:37
+#: mainapp/templates/mainapp/personal_page.html:70
 msgid "Password"
 msgstr "Пароль"
 
@@ -43,7 +44,7 @@ msgstr "Дата нараджэння не можа быць у будучыні
 msgid "Write your date of birth correctly."
 msgstr "Увядзіце карэктную дату нараджэння."
 
-#: authapp/forms.py:81 authapp/forms.py:103
+#: authapp/forms.py:80 authapp/forms.py:102 authapp/views.py:36
 msgid "Enter Email"
 msgstr "Увядзіце Email"
 
@@ -59,7 +60,7 @@ msgstr "Новы пароль"
 msgid "Enter new password"
 msgstr "Увядзіце новы пароль"
 
-#: authapp/forms.py:124 authapp/forms.py:128
+#: authapp/forms.py:125 authapp/forms.py:129
 msgid "Confirm new password"
 msgstr "Пацвердзіце новы пароль"
 
@@ -96,10 +97,8 @@ msgid "A user with that email address already exists."
 msgstr "Карыстальнік з такім адрасам электроннай пошты ўжо існуе."
 
 #: authapp/models.py:101
-#, fuzzy
-#| msgid "Enter Email"
 msgid "new email"
-msgstr "Увядзіце Email"
+msgstr "новы email"
 
 #: authapp/models.py:102
 msgid "Date of creation"
@@ -166,59 +165,59 @@ msgstr "Зарэгістравацца"
 msgid "Save"
 msgstr "Захаваць"
 
-#: authapp/templates/registration/login.html:5
+#: authapp/templates/registration/login.html:6
 msgid "User login"
 msgstr "Уваход карыстальніка"
 
-#: authapp/templates/registration/login.html:19
+#: authapp/templates/registration/login.html:10
 #: authapp/templates/registration/password_reset_complete.html:7
 #: core/templates/templatetags/menu.html:14 templates/base.html:87
 msgid "Login"
 msgstr "Увайсці"
 
-#: authapp/templates/registration/login.html:25
+#: authapp/templates/registration/login.html:15
 msgid "Registration"
 msgstr "Рэгістрацыя"
 
-#: authapp/templates/registration/login.html:28
+#: authapp/templates/registration/login.html:18
 msgid "Forgot password?"
 msgstr "Забылі пароль?"
 
-#: authapp/templates/registration/login.html:31
-#: authapp/templates/registration/resend_activation.html:4 authapp/views.py:56
+#: authapp/templates/registration/login.html:21
+#: authapp/templates/registration/resend_activation.html:5 authapp/views.py:65
 msgid "Resend activation email"
 msgstr "Паўторная адпраўка пісьма актывацыі"
 
-#: authapp/templates/registration/login.html:35
+#: authapp/templates/registration/login.html:25
 msgid "Login via social networks"
 msgstr "Уваход праз сацыяльныя сеткі"
 
-#: authapp/templates/registration/login.html:47
+#: authapp/templates/registration/login.html:37
 #: authapp/templates/registration/password_reset_complete.html:10
 #: authapp/templates/registration/password_reset_done.html:7
 msgid "Home"
 msgstr "Галоўная"
 
-#: authapp/templates/registration/password_change_form.html:4
+#: authapp/templates/registration/password_change_form.html:5
 msgid "Password change"
 msgstr "Змена пароля"
 
-#: authapp/templates/registration/password_change_form.html:8
-#: authapp/templates/registration/password_reset_confirm.html:8
+#: authapp/templates/registration/password_change_form.html:9
+#: authapp/templates/registration/password_reset_confirm.html:9
 #: mainapp/templates/mainapp/personal_page.html:71
 msgid "Change password"
 msgstr "Змяніць пароль"
 
-#: authapp/templates/registration/password_change_form.html:12
+#: authapp/templates/registration/password_change_form.html:13
 msgid "Back to personal account"
 msgstr "Вярнуцца ў асабісты кабінет"
 
-#: authapp/templates/registration/password_reset.html:4
-#: authapp/templates/registration/password_reset_confirm.html:4
+#: authapp/templates/registration/password_reset.html:5
+#: authapp/templates/registration/password_reset_confirm.html:5
 msgid "Password recovery"
 msgstr "Аднаўленне пароля"
 
-#: authapp/templates/registration/password_reset.html:8
+#: authapp/templates/registration/password_reset.html:9
 msgid "Request a new password"
 msgstr "Запытаць новы пароль"
 
@@ -264,7 +263,7 @@ msgstr "Дзякуй, што карыстаецеся нашым сайтам!"
 msgid " %(site_name)s team"
 msgstr " Каманда %(site_name)s"
 
-#: authapp/templates/registration/resend_activation.html:7
+#: authapp/templates/registration/resend_activation.html:8
 msgid ""
 "Enter the email you registered with and we will send you a new activation "
 "link."
@@ -272,34 +271,38 @@ msgstr ""
 "Увядзіце email, указаны пры рэгістрацыі, і мы дашлем вам новую спасылку для "
 "актывацыі."
 
-#: authapp/templates/registration/resend_activation.html:13
+#: authapp/templates/registration/resend_activation.html:14
 msgid "Send activation link"
 msgstr "Даслаць спасылку для актывацыі"
 
-#: authapp/templates/registration/resend_activation.html:16
+#: authapp/templates/registration/resend_activation.html:17
 msgid "Back to login"
 msgstr "Вярнуцца да ўваходу"
 
-#: authapp/views.py:33
+#: authapp/views.py:35 mainapp/models.py:615
+msgid "Email"
+msgstr "Email"
+
+#: authapp/views.py:42
 #, python-brace-format
 msgid "Login success!<br>Hi, {username}!"
 msgstr "Уваход выкананы паспяхова!<br>Прывітанне, {username}!"
 
-#: authapp/views.py:61
+#: authapp/views.py:70
 #, python-brace-format
 msgid "Your account is not activated. {link}"
 msgstr "Ваш уліковы запіс не актываваны. {link}"
 
-#: authapp/views.py:71
+#: authapp/views.py:80
 #, python-brace-format
 msgid "Something goes wrong:<br>{msg}"
 msgstr "Нешта пайшло не так:<br>{msg}"
 
-#: authapp/views.py:78
+#: authapp/views.py:87
 msgid "See you later!"
 msgstr "Да сустрэчы!"
 
-#: authapp/views.py:100
+#: authapp/views.py:109
 msgid ""
 "Your account has been created, but the activation email could not be sent. "
 "Please contact the site administrator."
@@ -307,15 +310,15 @@ msgstr ""
 "Твой акаўнт быў створаны, але пісьмо для актывацыі не было адпраўлена. Калі "
 "ласка, звярніцеся да адміністратара."
 
-#: authapp/views.py:105
+#: authapp/views.py:114
 msgid "A link to activate your account has been sent to your email."
 msgstr "Спасылка для актывацыі вашага акаўнта была адпраўлена на вашу пошту."
 
-#: authapp/views.py:128
+#: authapp/views.py:137
 msgid "Congratulations! You now have your own personal account in Smart House!"
 msgstr "Віншуем! Цяпер у вас ёсць уласны акаўнт у Смарт Хаце!"
 
-#: authapp/views.py:132
+#: authapp/views.py:141
 msgid ""
 "Account activation error! Make sure you used the correct link from the email "
 "you were sent!"
@@ -323,11 +326,11 @@ msgstr ""
 "Памылка актывацыі акаўнта! Пераканайцеся, што вы скарысталіся правільнай "
 "спасылкай з ліста!"
 
-#: authapp/views.py:140
+#: authapp/views.py:149
 msgid "Your data has been successfully changed!"
 msgstr "Вашы дадзеныя паспяхова зменены!"
 
-#: authapp/views.py:175
+#: authapp/views.py:184
 msgid ""
 "Could not send the confirmation email. Please try again later or contact the "
 "site administrator."
@@ -335,7 +338,7 @@ msgstr ""
 "Не удалось отправить письмо с подтверждением. Попробуйте позже или "
 "обратитесь к администратору."
 
-#: authapp/views.py:183
+#: authapp/views.py:192
 #, python-format
 msgid ""
 "A confirmation link has been sent to %(new_email)s. Your email will change "
@@ -344,7 +347,7 @@ msgstr ""
 "Ссылка подтверждения отправлена на %(new_email)s. Ваш email изменится после "
 "подтверждения."
 
-#: authapp/views.py:228 authapp/views.py:347
+#: authapp/views.py:237 authapp/views.py:356
 msgid ""
 "Could not send the email. Please try again later or contact the site "
 "administrator."
@@ -352,7 +355,7 @@ msgstr ""
 "Не ўдалося даслаць пісьмо. Паспрабуйце пазней або звернецеся да "
 "адміністратара сайта."
 
-#: authapp/views.py:237
+#: authapp/views.py:246
 msgid ""
 "If this email belongs to an unactivated account, a new activation link has "
 "been sent."
@@ -360,29 +363,29 @@ msgstr ""
 "Калі гэты email належыць неактываванаму акаўнту, новая спасылка для "
 "актывацыі даслана."
 
-#: authapp/views.py:248
+#: authapp/views.py:257
 msgid "Your password has been changed successfully!"
 msgstr "Ваш пароль паспяхова зменены!"
 
-#: authapp/views.py:258
+#: authapp/views.py:267
 msgid "If you use other devices, log in on them again."
 msgstr "Калі вы карыстаецеся іншымі прыладамі, увайдзіце на іх зноў."
 
-#: authapp/views.py:300
+#: authapp/views.py:309
 msgid "This email address is already taken by another account."
 msgstr "Этот email уже занят другим аккаунтом."
 
-#: authapp/views.py:314
+#: authapp/views.py:323
 msgid "Your email address has been changed. Use the new address to log in."
 msgstr "Ваш email изменён. Для входа используйте новый адрес."
 
-#: authapp/views.py:326
+#: authapp/views.py:335
 msgid "Email change confirmation error! The link is invalid or already used."
 msgstr ""
 "Ошибка подтверждения смены email! Ссылка недействительна или уже "
 "использована."
 
-#: authapp/views.py:354
+#: authapp/views.py:363
 #, python-format
 msgid "A confirmation link has been sent to %(new_email)s."
 msgstr "Ссылка подтверждения отправлена на %(new_email)s."
@@ -785,10 +788,6 @@ msgstr "Каментары"
 #: mainapp/models.py:614
 msgid "Subject"
 msgstr "Тэма"
-
-#: mainapp/models.py:615
-msgid "Email"
-msgstr "Email"
 
 #: mainapp/models.py:616
 msgid "Message"
