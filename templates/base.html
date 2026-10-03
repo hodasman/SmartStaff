@@ -79,7 +79,10 @@
                                     </div>
                                     <div class="d-none d-lg-block btn-sm">
                                         {% if user.is_authenticated %}
-                                        <a class="boxed-btn3" href="{% url 'authapp:logout'%}">{% trans "Log out" %}</a>
+                                        <form method="post" action="{% url 'authapp:logout'%}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="boxed-btn3">{% trans "Log out" %}</button>
+                                        </form>
                                         {% else %}
                                         <a class="boxed-btn3" href="{% url 'authapp:login'%}">{% trans "Login" %}</a>
                                         {% endif %}

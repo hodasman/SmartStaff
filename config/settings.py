@@ -38,6 +38,23 @@ CSRF_TRUSTED_ORIGINS = _csrf
 # корректное определение https за обратным прокси
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
+# --- Безопасность (активируются только в продакшене, DEBUG=False) ---
+if not DEBUG:
+    # Редирект http -> https (работает корректно благодаря SECURE_PROXY_SSL_HEADER)
+    SECURE_SSL_REDIRECT = True
+    # Cookie только по https
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    # HSTS: браузер будет ходить на сайт только по https в течение года
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+# Время жизни ссылки сброса пароля (по умолчанию в Django — 3 дня, слишком долго)
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24  # 24 часа
+# Время жизни сессии после входа (по умолчанию 2 недели — оставляем явно)
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
+
 
 # Application definition
 
@@ -61,6 +78,7 @@ INSTALLED_APPS = [
     "taggit",
     "taggit_templatetags2",
     "subscribeapp",
+    "axes",
 ]
 
 PYTHONINSTALLED_APPS = [
@@ -74,6 +92,8 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    # django-axes: блокировка после N неудачных попыток входа (brute force)
+    "axes.middleware.AxesMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -196,6 +216,21 @@ STATICFILES_DIRS = [
 ]
 
 AUTH_USER_MODEL = "authapp.User"
+
+# --- Защита от перебора паролей (django-axes) ---
+# AxesStandaloneBackend обязан идти первым: он прерывает аутентификацию
+# для заблокированных (слишком много неудачных попыток) пользователей
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesStandaloneBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = 1  # часов блокировки после превышения лимита
+# Блокируем связку username+IP, а не IP целиком,
+# чтобы не заблокировать офис/домашнюю сеть (NAT) из-за одного юзера
+AXES_LOCKOUT_PARAMETERS = [["username", "ip_address"]]
+# Успешный вход сбрасывает счётчик неудачных попыток
+AXES_RESET_ON_SUCCESS = True
 
 LOGIN_REDIRECT_URL = "mainapp:main_page"
 LOGOUT_REDIRECT_URL = "mainapp:main_page"

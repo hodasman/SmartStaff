@@ -31,3 +31,30 @@ urlpatterns = [
         auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'),  
         name='password_reset_done'),
 ]
+urlpatterns += [
+    path(
+        "resend-activation/",
+        views.ResendActivationView.as_view(),
+        name="resend_activation",
+    ),
+    path(
+        "password-change/",
+        views.PasswordChangeCustomView.as_view(),
+        name="password_change",
+    ),
+    path(
+        "password-change/done/",
+        views.PasswordChangeDoneCustomView.as_view(),
+        name="password_change_done",
+    ),
+    path(
+        "email_change_confirm/<uidb64>/<token>/",
+        views.EmailChangeConfirmView.as_view(),
+        name="email_change_confirm",
+    ),
+    path(
+        "resend-email-change/",
+        views.ResendEmailChangeView.as_view(),
+        name="resend_email_change",
+    ),
+]
