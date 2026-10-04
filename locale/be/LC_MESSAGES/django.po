@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 22:09+0300\n"
+"POT-Creation-Date: 2026-10-04 22:35+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,6 +190,7 @@ msgid "Resend activation email"
 msgstr "Паўторная адпраўка пісьма актывацыі"
 
 #: authapp/templates/registration/login.html:28
+#: templates/socialaccount/login.html:4
 #: templates/socialaccount/login_cancelled.html:4
 msgid "Login via social networks"
 msgstr "Уваход праз сацыяльныя сеткі"
@@ -1288,11 +1289,12 @@ msgstr ""
 msgid "This device is no longer produced"
 msgstr "Гэтая прылада больш не вырабляецца"
 
-#: templates/socialaccount/login.html:4
-msgid "Sign In"
-msgstr ""
+#: templates/socialaccount/login.html:5
+msgid ""
+"You are about to sign in via the social network. Click Continue to proceed."
+msgstr "Вы збіраецеся ўвайсці праз сацыяльную сетку. Націсніце «Працягнуць»."
 
-#: templates/socialaccount/login.html:8 templates/socialaccount/signup.html:11
+#: templates/socialaccount/login.html:9 templates/socialaccount/signup.html:11
 msgid "Continue"
 msgstr "Працягнуць"
 

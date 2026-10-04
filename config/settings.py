@@ -294,6 +294,9 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = True
 # Локальный адаптер: username генерируется в пределах max_length=15
 ACCOUNT_ADAPTER = "authapp.adapter.AccountAdapter"
+# Без промежуточной страницы "Продолжить": клик по кнопке соцсети
+# сразу ведёт на страницу согласования провайдера
+SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         # запрашиваем email-скоуп: он и есть логин в системе

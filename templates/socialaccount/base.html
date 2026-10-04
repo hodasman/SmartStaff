@@ -1,11 +1,11 @@
 {% extends 'base_auth.html' %}
 {% load i18n %}
+{% comment %}
+base_auth.html уже даёт центрированный контейнер (row/text-center):
+дополнительные row/col ломают сетку. Просто карточка white-bg.
+{% endcomment %}
 {% block content %}
-<div class="row justify-content-center my-4">
-    <div class="col-lg-5 col-md-6">
-        <div class="white-bg p-4">
-            {% block social_content %}{% endblock %}
-        </div>
-    </div>
+<div class="white-bg p-4 text-left" style="max-width: 480px; margin: 0 auto 1rem;">
+    {% block social_content %}{% endblock %}
 </div>
 {% endblock content %}
