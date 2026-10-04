@@ -1,6 +1,7 @@
 {% extends 'base_auth.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load socialaccount %}
 {% load i18n %}
 {% block content %}
     <h2>{% trans "User login" %}</h2>
@@ -22,17 +23,22 @@
         </div>
     </div>
     </p>
+    {% get_providers as socialaccount_providers %}
+    {% if socialaccount_providers %}
     <h4>{% trans "Login via social networks" %}</h4>
-    <p>
-        <div class="btn-group btn-block" role="group">
-            <a class="btn boxed-btn3" href="#" role="button"><i class="ti-facebook"></i></a>
-            <a class="btn boxed-btn3" href="#" role="button"><i class="fa fa-google-plus"></i></a>
-            <a class="btn boxed-btn3" href="#" role="button"><i class="fa fa-instagram"></i></a>
-            <a class="btn boxed-btn3" href="#" role="button"><i class="fa fa-linkedin"></i></a>
-            
-        </div>
-        
-    </p>
+    <div class="btn-group btn-block" role="group">
+        {% for provider in socialaccount_providers %}
+        <a class="btn boxed-btn3" href="{% provider_login_url provider.id %}" role="button">
+            {% if provider.id == 'google' %}<i class="fab fa-google"></i>
+            {% elif provider.id == 'facebook' %}<i class="ti-facebook"></i>
+            {% elif provider.id == 'vk' %}<i class="fab fa-vk"></i>
+            {% elif provider.id == 'github' %}<i class="fab fa-github"></i>
+            {% else %}<i class="fa fa-sign-in"></i>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
     <p>
         <div class="col"><a href="{% url 'mainapp:main_page' %}">{% trans "Home" %}</a></div>
     </p>

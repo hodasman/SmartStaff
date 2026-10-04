@@ -603,3 +603,38 @@ class EmailChangeTests(TestCase):
         self.assertIn("login", response.url)
         self.user.refresh_from_db()
         self.assertEqual(self.user.email, self.OLD)
+
+
+class SocialAuthTests(TestCase):
+    """Вход через соцсети (django-allauth)."""
+
+    def test_social_block_hidden_without_provider(self):
+        """SocialApp не настроен: блок соц-входа не рендерится."""
+        from allauth.socialaccount.models import SocialApp
+        SocialApp.objects.all().delete()
+        response = self.client.get(reverse("authapp:login"))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Login via social networks")
+
+    def test_allauth_login_page_reachable(self):
+        """Страница allauth (/accounts/login/) доступна."""
+        from allauth.socialaccount.models import SocialApp
+        SocialApp.objects.all().delete()
+        response = self.client.get("/accounts/login/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_adapter_username_clamped_and_unique(self):
+        """Адаптер генерирует username в пределах max_length=15 и уникальный."""
+        from authapp.adapter import AccountAdapter
+        from django.contrib.auth.validators import ASCIIUsernameValidator
+        adapter = AccountAdapter(None)
+        for _ in range(10):
+            username = adapter.generate_unique_username(
+                ["some-body.with+very@long", "email@example.com"]
+            )
+            self.assertLessEqual(len(username), 15, username)
+            ASCIIUsernameValidator()(username)  # ValidationError если невалидно
+        # генерирует разные кандидаты при повторе
+        a = adapter.generate_unique_username(["same", "same@x.io"])
+        b = adapter.generate_unique_username(["same", "same@x.io"])
+        self.assertNotEqual(a, b)
