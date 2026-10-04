@@ -42,3 +42,13 @@ python-dotenv==1.0.0
 django-taggit==6.1.0
 django-taggit-templatetags2==1.6.1
 django-modeltranslation==0.18.13
+# --- Вход через соцсети (django-allauth) ---
+# allauth 0.54.0 — последняя ветка, совместимая с Django 3.2 / Python 3.8
+django-allauth==0.54.0
+# 45+ требует Python >=3.9 и вызывает CryptographyDeprecationWarning на 3.8
+cryptography==44.0.3
+PyJWT==2.9.0
+oauthlib==3.3.1
+requests-oauthlib==2.0.0
+python3-openid==3.2.0
+defusedxml==0.7.1
