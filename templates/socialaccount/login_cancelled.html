@@ -1,0 +1,7 @@
+{% extends 'socialaccount/base.html' %}
+{% load i18n %}
+{% block social_content %}
+<h2>{% trans "Login via social networks" %}</h2>
+<p>{% trans "You declined the authorization from the social network." %}</p>
+<a href="{% url 'authapp:login' %}" class="boxed-btn3">{% trans "Back to login" %}</a>
+{% endblock social_content %}

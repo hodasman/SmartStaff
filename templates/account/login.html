@@ -1,0 +1,13 @@
+{% extends 'base_auth.html' %}
+{% load i18n crispy_forms_tags %}
+{% block content %}
+<h2>{% trans "User login" %}</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn boxed-btn3 btn-block">{% trans "Login" %}</button>
+</form>
+<p>
+    <div class="col"><a href="{% url 'authapp:login' %}">{% trans "Back to site login" %}</a></div>
+</p>
+{% endblock content %}

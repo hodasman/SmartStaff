@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-03 22:52+0300\n"
+"POT-Creation-Date: 2026-10-04 22:09+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -165,34 +165,36 @@ msgstr "Зарэгістравацца"
 msgid "Save"
 msgstr "Захаваць"
 
-#: authapp/templates/registration/login.html:6
+#: authapp/templates/registration/login.html:7 templates/account/login.html:4
 msgid "User login"
 msgstr "Уваход карыстальніка"
 
-#: authapp/templates/registration/login.html:10
+#: authapp/templates/registration/login.html:11
 #: authapp/templates/registration/password_reset_complete.html:7
-#: core/templates/templatetags/menu.html:14 templates/base.html:87
+#: core/templates/templatetags/menu.html:14 templates/account/login.html:8
+#: templates/base.html:87
 msgid "Login"
 msgstr "Увайсці"
 
-#: authapp/templates/registration/login.html:15
+#: authapp/templates/registration/login.html:16
 msgid "Registration"
 msgstr "Рэгістрацыя"
 
-#: authapp/templates/registration/login.html:18
+#: authapp/templates/registration/login.html:19
 msgid "Forgot password?"
 msgstr "Забылі пароль?"
 
-#: authapp/templates/registration/login.html:21
+#: authapp/templates/registration/login.html:22
 #: authapp/templates/registration/resend_activation.html:5 authapp/views.py:65
 msgid "Resend activation email"
 msgstr "Паўторная адпраўка пісьма актывацыі"
 
-#: authapp/templates/registration/login.html:25
+#: authapp/templates/registration/login.html:28
+#: templates/socialaccount/login_cancelled.html:4
 msgid "Login via social networks"
 msgstr "Уваход праз сацыяльныя сеткі"
 
-#: authapp/templates/registration/login.html:37
+#: authapp/templates/registration/login.html:43
 #: authapp/templates/registration/password_reset_complete.html:10
 #: authapp/templates/registration/password_reset_done.html:7
 msgid "Home"
@@ -276,6 +278,8 @@ msgid "Send activation link"
 msgstr "Даслаць спасылку для актывацыі"
 
 #: authapp/templates/registration/resend_activation.html:17
+#: templates/account/logout.html:13
+#: templates/socialaccount/login_cancelled.html:6
 msgid "Back to login"
 msgstr "Вярнуцца да ўваходу"
 
@@ -390,15 +394,15 @@ msgstr ""
 msgid "A confirmation link has been sent to %(new_email)s."
 msgstr "Ссылка подтверждения отправлена на %(new_email)s."
 
-#: config/settings.py:192
+#: config/settings.py:194
 msgid "English"
 msgstr "Англійская"
 
-#: config/settings.py:193
+#: config/settings.py:195
 msgid "Russian"
 msgstr "Руская"
 
-#: config/settings.py:194
+#: config/settings.py:196
 msgid "Belarusian"
 msgstr "Беларуская"
 
@@ -422,7 +426,8 @@ msgstr "Пункт меню"
 msgid "Menu items"
 msgstr "Пункты меню"
 
-#: core/templates/templatetags/menu.html:11 templates/base.html:84
+#: core/templates/templatetags/menu.html:11 templates/account/logout.html:11
+#: templates/base.html:84
 msgid "Log out"
 msgstr "Выйсці"
 
@@ -1227,6 +1232,18 @@ msgstr "Падпіска аформлена на адрас"
 msgid "The Smart Hata team"
 msgstr "Каманда «Смарт Хата»"
 
+#: templates/account/login.html:11
+msgid "Back to site login"
+msgstr "Вярнуцца да ўваходу на сайт"
+
+#: templates/account/logout.html:4
+msgid "Logout"
+msgstr "Выхад"
+
+#: templates/account/logout.html:5
+msgid "Are you sure you want to log out?"
+msgstr "Вы ўпэўнены, што хочаце выйсці?"
+
 #: templates/base.html:67
 msgid "Admin"
 msgstr "Адміністратар"
@@ -1270,6 +1287,28 @@ msgstr ""
 #: templates/includes/legacy_badge.html:2
 msgid "This device is no longer produced"
 msgstr "Гэтая прылада больш не вырабляецца"
+
+#: templates/socialaccount/login.html:4
+msgid "Sign In"
+msgstr ""
+
+#: templates/socialaccount/login.html:8 templates/socialaccount/signup.html:11
+msgid "Continue"
+msgstr "Працягнуць"
+
+#: templates/socialaccount/login_cancelled.html:5
+msgid "You declined the authorization from the social network."
+msgstr "Вы адмянілі аўтарызацыю праз сацыяльную сетку."
+
+#: templates/socialaccount/signup.html:4
+msgid "Complete your registration"
+msgstr "Завяршыце рэгістрацыю"
+
+#: templates/socialaccount/signup.html:6
+msgid ""
+"Your email address is confirmed by the social network. Please confirm your "
+"username to finish registration."
+msgstr ""
 
 #: templates/subscribe/tags/form.html:3
 msgid "Subscribe to the newsletter"

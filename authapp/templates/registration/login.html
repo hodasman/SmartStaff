@@ -29,10 +29,10 @@
     <div class="btn-group btn-block" role="group">
         {% for provider in socialaccount_providers %}
         <a class="btn boxed-btn3" href="{% provider_login_url provider.id %}" role="button">
-            {% if provider.id == 'google' %}<i class="fab fa-google"></i>
-            {% elif provider.id == 'facebook' %}<i class="ti-facebook"></i>
-            {% elif provider.id == 'vk' %}<i class="fab fa-vk"></i>
-            {% elif provider.id == 'github' %}<i class="fab fa-github"></i>
+            {% if provider.id == 'google' %}<i class="fa fa-google"></i>
+            {% elif provider.id == 'facebook' %}<i class="fa fa-facebook"></i>
+            {% elif provider.id == 'vk' %}<i class="fa fa-vk"></i>
+            {% elif provider.id == 'github' %}<i class="fa fa-github"></i>
             {% else %}<i class="fa fa-sign-in"></i>
             {% endif %}
         </a>

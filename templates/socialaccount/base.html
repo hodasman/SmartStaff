@@ -1,0 +1,11 @@
+{% extends 'base_auth.html' %}
+{% load i18n %}
+{% block content %}
+<div class="row justify-content-center my-4">
+    <div class="col-lg-5 col-md-6">
+        <div class="white-bg p-4">
+            {% block social_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
