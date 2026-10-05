@@ -638,3 +638,50 @@ class SocialAuthTests(TestCase):
         a = adapter.generate_unique_username(["same", "same@x.io"])
         b = adapter.generate_unique_username(["same", "same@x.io"])
         self.assertNotEqual(a, b)
+
+
+class MoreSocialProvidersTests(TestCase):
+    """Яндекс (SocialApp в БД) и Apple (APP-конфиг из env)."""
+
+    def test_yandex_redirect(self):
+        """SocialApp yandex: /accounts/yandex/login/ -> oauth.yandex.ru."""
+        from allauth.socialaccount.models import SocialApp
+        from django.contrib.sites.models import Site
+        app = SocialApp.objects.create(
+            provider="yandex", name="Yandex",
+            client_id="test-yx-id", secret="test-yx-secret",
+        )
+        app.sites.add(Site.objects.get_current())
+        response = self.client.get("/accounts/yandex/login/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("oauth.yandex.com", response.url)  # allauth 0.54 использует .com
+
+    @override_settings(
+        SOCIALACCOUNT_PROVIDERS={
+            "apple": {
+                "APP": {
+                    "client_id": "com.smarthata.web",
+                    "key": "TEAMID1234",
+                    "secret": "KEYID1234",
+                    "certificate_key": "-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----",
+                },
+            },
+        }
+    )
+    def test_apple_redirect(self):
+        """Apple через APP-конфиг (без SocialApp в БД) -> appleid.apple.com."""
+        response = self.client.get("/accounts/apple/login/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("appleid.apple.com", response.url)
+
+    def test_login_page_shows_yandex_and_apple(self):
+        """Кнопки рендерятся для настроенных провайдеров."""
+        from allauth.socialaccount.models import SocialApp
+        from django.contrib.sites.models import Site
+        app = SocialApp.objects.create(
+            provider="yandex", name="Yandex",
+            client_id="test-yx-id", secret="test-yx-secret",
+        )
+        app.sites.add(Site.objects.get_current())
+        body = self.client.get(reverse("authapp:login")).content.decode()
+        self.assertIn("/accounts/yandex/login/", body)
