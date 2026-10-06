@@ -656,25 +656,7 @@ class MoreSocialProvidersTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn("oauth.yandex.com", response.url)  # allauth 0.54 использует .com
 
-    @override_settings(
-        SOCIALACCOUNT_PROVIDERS={
-            "apple": {
-                "APP": {
-                    "client_id": "com.smarthata.web",
-                    "key": "TEAMID1234",
-                    "secret": "KEYID1234",
-                    "certificate_key": "-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----",
-                },
-            },
-        }
-    )
-    def test_apple_redirect(self):
-        """Apple через APP-конфиг (без SocialApp в БД) -> appleid.apple.com."""
-        response = self.client.get("/accounts/apple/login/")
-        self.assertEqual(response.status_code, 302)
-        self.assertIn("appleid.apple.com", response.url)
-
-    def test_login_page_shows_yandex_and_apple(self):
+    def test_login_page_shows_yandex(self):
         """Кнопки рендерятся для настроенных провайдеров."""
         from allauth.socialaccount.models import SocialApp
         from django.contrib.sites.models import Site
@@ -685,3 +667,49 @@ class MoreSocialProvidersTests(TestCase):
         app.sites.add(Site.objects.get_current())
         body = self.client.get(reverse("authapp:login")).content.decode()
         self.assertIn("/accounts/yandex/login/", body)
+
+
+class FacebookProviderTests(TestCase):
+    def test_facebook_redirect(self):
+        """SocialApp facebook: /accounts/facebook/login/ -> facebook.com."""
+        from allauth.socialaccount.models import SocialApp
+        from django.contrib.sites.models import Site
+        app = SocialApp.objects.create(
+            provider="facebook", name="Facebook",
+            client_id="test-fb-id", secret="test-fb-secret",
+        )
+        app.sites.add(Site.objects.get_current())
+        response = self.client.get("/accounts/facebook/login/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("facebook.com", response.url)
+
+
+class SocialSignupActiveUserTests(TestCase):
+    """e2e: соц-регистрация создаёт АКТИВНОГО юзера (регрессия is_active)."""
+
+    def _stash_sociallogin(self, email, username="guser1234"):
+        from allauth.socialaccount.models import SocialLogin, SocialAccount, EmailAddress
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        u = User(username=username, email=email, first_name="G", date_of_birth="1990-01-01")
+        sl = SocialLogin()
+        sl.provider = "yandex"
+        sl.account = SocialAccount(provider="yandex", uid="54321", user=u)
+        sl.email_addresses = [EmailAddress(email=email, verified=True, primary=True)]
+        sl.user = u
+        session = self.client.session
+        session["socialaccount_sociallogin"] = SocialLogin.serialize(sl)
+        session.save()
+
+    def test_social_signup_creates_active_user(self):
+        self._stash_sociallogin("newsocial@yandex.by")
+        response = self.client.get("/accounts/social/signup/")
+        self.assertEqual(response.status_code, 200)
+        data = {"username": "newsocial", "email": "newsocial@yandex.by"}
+        response = self.client.post("/accounts/social/signup/", data)
+        self.assertEqual(response.status_code, 302)
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        user = User.objects.get(username="newsocial")
+        self.assertTrue(user.is_active, "соц-юзер должен быть активен сразу")
+        self.assertTrue(self.client.session.get("_auth_user_id"))

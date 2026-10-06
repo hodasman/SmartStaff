@@ -10,6 +10,7 @@ import re
 import string
 
 from allauth.account.adapter import DefaultAccountAdapter
+from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.contrib.auth import get_user_model
 
 
@@ -35,3 +36,20 @@ class AccountAdapter(DefaultAccountAdapter):
         # 30 уникальных вариантов не нашли (почти невероятно):
         # отдаём дефолтному адаптеру право добить
         return super().generate_unique_username(txts, regex)
+
+
+class SocialAccountAdapter(DefaultSocialAccountAdapter):
+    """Соц-вход: юзер создаётся сразу активным.
+
+    Наша модель намеренно имеет is_active default=False (своя активация
+    по письму). Дефолтный allauth-адаптер создаёт юзера через модель,
+    минуя UserManager.create_user, — и соц-юзер оставался неактивным
+    ("Аккаунт неактивен" сразу после входа). Email соц-аккаунта уже
+    проверен провайдером, поэтому активируем сразу. Собственная
+    почтовая активация (RegisterView) не затрагивается.
+    """
+
+    def save_user(self, request, sociallogin, form=None):
+        # сигнатура соц-адаптера принимает sociallogin (не user)
+        sociallogin.user.is_active = True
+        return super().save_user(request, sociallogin, form)

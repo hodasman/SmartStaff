@@ -87,7 +87,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.yandex",
-    "allauth.socialaccount.providers.apple",
+    "allauth.socialaccount.providers.facebook",
 ]
 
 MIDDLEWARE = [
@@ -296,6 +296,8 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = True
 # Локальный адаптер: username генерируется в пределах max_length=15
 ACCOUNT_ADAPTER = "authapp.adapter.AccountAdapter"
+# Адаптер соц-входа: активирует юзера сразу (см. authapp/adapter.py)
+SOCIALACCOUNT_ADAPTER = "authapp.adapter.SocialAccountAdapter"
 # Без промежуточной страницы "Продолжить": клик по кнопке соцсети
 # сразу ведёт на страницу согласования провайдера
 SOCIALACCOUNT_LOGIN_ON_GET = True
@@ -304,15 +306,5 @@ SOCIALACCOUNT_PROVIDERS = {
         # запрашиваем email-скоуп: он и есть логин в системе
         "SCOPE": ["profile", "email"],
         "AUTH_PARAMS": {"access_type": "online"},
-    },
-    # Apple: приватный ключ (.p8) НЕ хранится в БД (SocialApp.certificate_key
-    # в allauth = None по дизайну), только через APP-конфиг из переменных окружения
-    "apple": {
-        "APP": {
-            "client_id": os.getenv("APPLE_CLIENT_ID", ""),      # Services ID (com.smarthata.web)
-            "key": os.getenv("APPLE_TEAM_ID", ""),              # Team ID (10 символов)
-            "secret": os.getenv("APPLE_KEY_ID", ""),            # Key ID из сертификата .p8
-            "certificate_key": os.getenv("APPLE_PRIVATE_KEY", "").replace("\\n", "\n"),
-        },
     },
 }
