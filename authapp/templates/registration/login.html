@@ -1,23 +1,14 @@
 {% extends 'base_auth.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}
 {% load i18n %}
 {% block content %}
     <h2>{% trans "User login" %}</h2>
     <form method="POST">
-
         {% csrf_token %}
-        <p>
-            <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username"
-                maxlength="150" class="textinput textInput form-control" required="" id="id_username"
-                placeholder="Email">
-        </p>
-        <p>
-            <input type="password" name="password" autocomplete="current-password"
-                class="textinput textInput form-control" required="" id="id_password" placeholder="Password">
-        </p>
-        <p>
-            <button type="submit" class="btn boxed-btn3 btn-block">{% trans "Login" %}</button>
-        </p>
+        {{ form|crispy }}
+        <button type="submit" class="btn boxed-btn3 btn-block">{% trans "Login" %}</button>
     </form>
     <p>
     <div class="row justify-content-between">
@@ -32,17 +23,23 @@
         </div>
     </div>
     </p>
+    {% get_providers as socialaccount_providers %}
+    {% if socialaccount_providers %}
     <h4>{% trans "Login via social networks" %}</h4>
-    <p>
-        <div class="btn-group btn-block" role="group">
-            <a class="btn boxed-btn3" href="#" role="button"><i class="ti-facebook"></i></a>
-            <a class="btn boxed-btn3" href="#" role="button"><i class="fa fa-google-plus"></i></a>
-            <a class="btn boxed-btn3" href="#" role="button"><i class="fa fa-instagram"></i></a>
-            <a class="btn boxed-btn3" href="#" role="button"><i class="fa fa-linkedin"></i></a>
-            
-        </div>
-        
-    </p>
+    <div class="btn-group btn-block" role="group">
+        {% for provider in socialaccount_providers %}
+        <a class="btn boxed-btn3" href="{% provider_login_url provider.id %}" role="button">
+            {% if provider.id == 'google' %}<i class="fa fa-google"></i>
+            {% elif provider.id == 'yandex' %}<span style="font-weight: 700; font-size: 15px; line-height: 1; display: inline-block;">Я</span>
+            {% elif provider.id == 'facebook' %}<i class="fa fa-facebook"></i>
+            {% elif provider.id == 'vk' %}<i class="fa fa-vk"></i>
+            {% elif provider.id == 'github' %}<i class="fa fa-github"></i>
+            {% else %}<i class="fa fa-sign-in"></i>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
     <p>
         <div class="col"><a href="{% url 'mainapp:main_page' %}">{% trans "Home" %}</a></div>
     </p>

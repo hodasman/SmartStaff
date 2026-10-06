@@ -12,12 +12,17 @@
 
 Запуск: python manage.py test authapp
 """
+from datetime import date
+import shutil
+import tempfile
 from unittest import mock
+from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.core import mail
 from django.test import Client, TestCase, override_settings
+import requests
 from django.urls import reverse, reverse_lazy
 
 User = get_user_model()
@@ -603,3 +608,164 @@ class EmailChangeTests(TestCase):
         self.assertIn("login", response.url)
         self.user.refresh_from_db()
         self.assertEqual(self.user.email, self.OLD)
+
+
+class SocialAuthTests(TestCase):
+    """Вход через соцсети (django-allauth)."""
+
+    def test_social_block_hidden_without_provider(self):
+        """SocialApp не настроен: блок соц-входа не рендерится."""
+        from allauth.socialaccount.models import SocialApp
+        SocialApp.objects.all().delete()
+        response = self.client.get(reverse("authapp:login"))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Login via social networks")
+
+    def test_allauth_login_page_reachable(self):
+        """Страница allauth (/accounts/login/) доступна."""
+        from allauth.socialaccount.models import SocialApp
+        SocialApp.objects.all().delete()
+        response = self.client.get("/accounts/login/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_adapter_username_clamped_and_unique(self):
+        """Адаптер генерирует username в пределах max_length=15 и уникальный."""
+        from authapp.adapter import AccountAdapter
+        from django.contrib.auth.validators import ASCIIUsernameValidator
+        adapter = AccountAdapter(None)
+        for _ in range(10):
+            username = adapter.generate_unique_username(
+                ["some-body.with+very@long", "email@example.com"]
+            )
+            self.assertLessEqual(len(username), 15, username)
+            ASCIIUsernameValidator()(username)  # ValidationError если невалидно
+        # генерирует разные кандидаты при повторе
+        a = adapter.generate_unique_username(["same", "same@x.io"])
+        b = adapter.generate_unique_username(["same", "same@x.io"])
+        self.assertNotEqual(a, b)
+
+
+class MoreSocialProvidersTests(TestCase):
+    """Яндекс (SocialApp в БД) и Apple (APP-конфиг из env)."""
+
+    def test_yandex_redirect(self):
+        """SocialApp yandex: /accounts/yandex/login/ -> oauth.yandex.ru."""
+        from allauth.socialaccount.models import SocialApp
+        from django.contrib.sites.models import Site
+        app = SocialApp.objects.create(
+            provider="yandex", name="Yandex",
+            client_id="test-yx-id", secret="test-yx-secret",
+        )
+        app.sites.add(Site.objects.get_current())
+        response = self.client.get("/accounts/yandex/login/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("oauth.yandex.com", response.url)  # allauth 0.54 использует .com
+
+    def test_login_page_shows_yandex(self):
+        """Кнопки рендерятся для настроенных провайдеров."""
+        from allauth.socialaccount.models import SocialApp
+        from django.contrib.sites.models import Site
+        app = SocialApp.objects.create(
+            provider="yandex", name="Yandex",
+            client_id="test-yx-id", secret="test-yx-secret",
+        )
+        app.sites.add(Site.objects.get_current())
+        body = self.client.get(reverse("authapp:login")).content.decode()
+        self.assertIn("/accounts/yandex/login/", body)
+
+
+class FacebookProviderTests(TestCase):
+    def test_facebook_redirect(self):
+        """SocialApp facebook: /accounts/facebook/login/ -> facebook.com."""
+        from allauth.socialaccount.models import SocialApp
+        from django.contrib.sites.models import Site
+        app = SocialApp.objects.create(
+            provider="facebook", name="Facebook",
+            client_id="test-fb-id", secret="test-fb-secret",
+        )
+        app.sites.add(Site.objects.get_current())
+        response = self.client.get("/accounts/facebook/login/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("facebook.com", response.url)
+
+
+class SocialSignupActiveUserTests(TestCase):
+    """e2e: соц-регистрация создаёт АКТИВНОГО юзера (регрессия is_active)."""
+
+    def _stash_sociallogin(self, email, username="guser1234"):
+        from allauth.socialaccount.models import SocialLogin, SocialAccount, EmailAddress
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        u = User(username=username, email=email, first_name="G", date_of_birth="1990-01-01")
+        sl = SocialLogin()
+        sl.provider = "yandex"
+        sl.account = SocialAccount(provider="yandex", uid="54321", user=u)
+        sl.email_addresses = [EmailAddress(email=email, verified=True, primary=True)]
+        sl.user = u
+        session = self.client.session
+        session["socialaccount_sociallogin"] = SocialLogin.serialize(sl)
+        session.save()
+
+    def test_social_signup_creates_active_user(self):
+        self._stash_sociallogin("newsocial@yandex.by")
+        response = self.client.get("/accounts/social/signup/")
+        self.assertEqual(response.status_code, 200)
+        data = {"username": "newsocial", "email": "newsocial@yandex.by"}
+        response = self.client.post("/accounts/social/signup/", data)
+        self.assertEqual(response.status_code, 302)
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        user = User.objects.get(username="newsocial")
+        self.assertTrue(user.is_active, "соц-юзер должен быть активен сразу")
+        self.assertTrue(self.client.session.get("_auth_user_id"))
+
+
+class YandexEnrichTests(TestCase):
+    """Подтягивание даты рождения и аватара из ответа Яндекса."""
+
+    def _signup(self, extra):
+        import json as jsonlib
+        from allauth.socialaccount.models import SocialLogin, SocialAccount, EmailAddress
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        u = User(username="yxdta", email="yxdta@yandex.by", first_name="Ян", date_of_birth=None)
+        sl = SocialLogin()
+        sl.provider = "yandex"
+        sl.account = SocialAccount(provider="yandex", uid="99999", user=u, extra_data=extra)
+        sl.email_addresses = [EmailAddress(email="yxdta@yandex.by", verified=True, primary=True)]
+        sl.user = u
+        session = self.client.session
+        session["socialaccount_sociallogin"] = SocialLogin.serialize(sl)
+        session.save()
+        response = self.client.post("/accounts/social/signup/", {
+            "username": "yxdta", "email": "yxdta@yandex.by",
+        })
+        return response, User.objects.get(username="yxdta")
+
+    @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+    @patch("requests.get")
+    def test_birthday_and_avatar_pulled(self, mock_get):
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.headers = {"Content-Type": "image/jpeg"}
+        # минимальный валидный JPEG-подпись
+        mock_get.return_value.content = b"\xff\xd8\xff\xe0" + b"0" * 100
+        mock_get.return_value.raise_for_status = lambda: None
+        response, user = self._signup({
+            "birthday": "1995-05-05",
+            "avatar": "123456/testhost",
+            "default_email": "yxdta@yandex.by",
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(user.date_of_birth, date(1995, 5, 5))
+        self.assertTrue(user.avatar, "аватар должен сохраниться")
+
+    def test_network_failure_silently_skipped(self):
+        with patch("requests.get", side_effect=requests.RequestException("offline")):
+            response, user = self._signup({"birthday": "1995-05-05", "avatar": "x/y"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(user.date_of_birth, date(1995, 5, 5))
+        self.assertFalse(user.avatar)
+
+    def test_existing_values_not_overwritten(self):
+        _, user = self._signup({"birthday": "2000-01-01"})
+        self.assertEqual(user.date_of_birth, date(2000, 1, 1))

@@ -79,11 +79,15 @@ INSTALLED_APPS = [
     "taggit_templatetags2",
     "subscribeapp",
     "axes",
-]
-
-PYTHONINSTALLED_APPS = [
-    # ...
-    "sorl.thumbnail",
+    # django.contrib.sites обязателен для allauth
+    "django.contrib.sites",
+    # Вход через соцсети (django-allauth)
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.yandex",
+    "allauth.socialaccount.providers.facebook",
 ]
 
 MIDDLEWARE = [
@@ -223,6 +227,8 @@ AUTH_USER_MODEL = "authapp.User"
 AUTHENTICATION_BACKENDS = [
     "axes.backends.AxesStandaloneBackend",
     "django.contrib.auth.backends.ModelBackend",
+    # allauth: аутентификация соц-аккаунтов (у них нет пароля)
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 AXES_FAILURE_LIMIT = 5
 AXES_COOLOFF_TIME = 1  # часов блокировки после превышения лимита
@@ -279,3 +285,26 @@ EMAIL_ADMIN = os.environ.get("EMAIL_ADMIN", "")
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 TAGGIT_TAG_CLOUD_ORDER_BY = '-num_times' # Сортировка облака тегов по частате
+
+
+# --- Вход через соцсети (django-allauth) ---
+SITE_ID = 1
+
+# Активация email для соц-входов НЕ наша (у провайдера адрес уже проверен);
+# наша собственная активация аккаунтов остаётся в authapp без изменений
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
+# Локальный адаптер: username генерируется в пределах max_length=15
+ACCOUNT_ADAPTER = "authapp.adapter.AccountAdapter"
+# Адаптер соц-входа: активирует юзера сразу (см. authapp/adapter.py)
+SOCIALACCOUNT_ADAPTER = "authapp.adapter.SocialAccountAdapter"
+# Без промежуточной страницы "Продолжить": клик по кнопке соцсети
+# сразу ведёт на страницу согласования провайдера
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        # запрашиваем email-скоуп: он и есть логин в системе
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+    },
+}

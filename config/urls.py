@@ -29,6 +29,8 @@ urlpatterns = [
     path('admin/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path("admin/", admin.site.urls),
     path("i18n/setlang/", set_language, name="set_language"),
+    # Вход через соцсети (django-allauth): /accounts/login/google/ и т.п.
+    path("accounts/", include("allauth.urls")),
     path("", RedirectView.as_view(url="mainapp/")),
     path("mainapp/", include("mainapp.urls", namespace="mainapp")),
     path("authapp/", include("authapp.urls", namespace="authapp")),
