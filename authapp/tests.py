@@ -12,18 +12,17 @@
 
 Запуск: python manage.py test authapp
 """
-from datetime import date
-import shutil
 import tempfile
+from datetime import date
 from unittest import mock
 from unittest.mock import patch
 
+import requests
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.core import mail
 from django.test import Client, TestCase, override_settings
-import requests
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -533,8 +532,9 @@ class EmailChangeTests(TestCase):
         """Клик по ссылке подтверждения: email меняется, new_email чистится."""
         self.submit_profile(self.NEW)
         self.user.refresh_from_db()
-        from authapp.views import email_change_token_generator
         from django.utils.http import urlsafe_base64_encode
+
+        from authapp.views import email_change_token_generator
         uidb64 = urlsafe_base64_encode(str(self.user.pk).encode())
         token = email_change_token_generator.make_token(self.user)
         response = self.client.get(
@@ -550,8 +550,9 @@ class EmailChangeTests(TestCase):
         """Токен одноразовый: после подтверждения ссылка больше не работает."""
         self.submit_profile(self.NEW)
         self.user.refresh_from_db()
-        from authapp.views import email_change_token_generator
         from django.utils.http import urlsafe_base64_encode
+
+        from authapp.views import email_change_token_generator
         uidb64 = urlsafe_base64_encode(str(self.user.pk).encode())
         token = email_change_token_generator.make_token(self.user)
         self.client.get(reverse("authapp:email_change_confirm",
@@ -577,8 +578,9 @@ class EmailChangeTests(TestCase):
         подтверждение отклоняется, email не меняется."""
         self.submit_profile(self.NEW)
         self.user.refresh_from_db()
-        from authapp.views import email_change_token_generator
         from django.utils.http import urlsafe_base64_encode
+
+        from authapp.views import email_change_token_generator
         uidb64 = urlsafe_base64_encode(str(self.user.pk).encode())
         token = email_change_token_generator.make_token(self.user)
         # "кто-то" занял адрес
@@ -596,8 +598,9 @@ class EmailChangeTests(TestCase):
         после очистки new_email resend-ссылка не работает."""
         self.submit_profile(self.NEW)
         self.user.refresh_from_db()
-        from authapp.views import email_change_token_generator
         from django.utils.http import urlsafe_base64_encode
+
+        from authapp.views import email_change_token_generator
         uidb64 = urlsafe_base64_encode(str(self.user.pk).encode())
         token = email_change_token_generator.make_token(self.user)
         # юзер сам сбросил new_email (например, сохранил профиль без смены)
@@ -630,8 +633,9 @@ class SocialAuthTests(TestCase):
 
     def test_adapter_username_clamped_and_unique(self):
         """Адаптер генерирует username в пределах max_length=15 и уникальный."""
-        from authapp.adapter import AccountAdapter
         from django.contrib.auth.validators import ASCIIUsernameValidator
+
+        from authapp.adapter import AccountAdapter
         adapter = AccountAdapter(None)
         for _ in range(10):
             username = adapter.generate_unique_username(
@@ -674,26 +678,12 @@ class MoreSocialProvidersTests(TestCase):
         self.assertIn("/accounts/yandex/login/", body)
 
 
-class FacebookProviderTests(TestCase):
-    def test_facebook_redirect(self):
-        """SocialApp facebook: /accounts/facebook/login/ -> facebook.com."""
-        from allauth.socialaccount.models import SocialApp
-        from django.contrib.sites.models import Site
-        app = SocialApp.objects.create(
-            provider="facebook", name="Facebook",
-            client_id="test-fb-id", secret="test-fb-secret",
-        )
-        app.sites.add(Site.objects.get_current())
-        response = self.client.get("/accounts/facebook/login/")
-        self.assertEqual(response.status_code, 302)
-        self.assertIn("facebook.com", response.url)
-
-
 class SocialSignupActiveUserTests(TestCase):
     """e2e: соц-регистрация создаёт АКТИВНОГО юзера (регрессия is_active)."""
 
     def _stash_sociallogin(self, email, username="guser1234"):
-        from allauth.socialaccount.models import SocialLogin, SocialAccount, EmailAddress
+        from allauth.socialaccount.models import (EmailAddress, SocialAccount,
+                                                  SocialLogin)
         from django.contrib.auth import get_user_model
         User = get_user_model()
         u = User(username=username, email=email, first_name="G", date_of_birth="1990-01-01")
@@ -724,8 +714,8 @@ class YandexEnrichTests(TestCase):
     """Подтягивание даты рождения и аватара из ответа Яндекса."""
 
     def _signup(self, extra):
-        import json as jsonlib
-        from allauth.socialaccount.models import SocialLogin, SocialAccount, EmailAddress
+        from allauth.socialaccount.models import (EmailAddress, SocialAccount,
+                                                  SocialLogin)
         from django.contrib.auth import get_user_model
         User = get_user_model()
         u = User(username="yxdta", email="yxdta@yandex.by", first_name="Ян", date_of_birth=None)

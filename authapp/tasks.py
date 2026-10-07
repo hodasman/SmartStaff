@@ -1,7 +1,6 @@
 import logging
 from typing import TYPE_CHECKING
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
@@ -10,7 +9,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext as _
 
 if TYPE_CHECKING:
-    from authapp.models import User
+    pass
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +45,9 @@ class SendEmail:
         # Токен ДЛЯ СМЕНЫ EMAIL строит EmailChangeTokenGenerator, а не
         # default_token_generator: генераторы имеют разные key_salt, вьюха
         # подтверждения проверяет именно этот.
-        from authapp.tokens import email_change_token_generator
         from django.utils.http import urlsafe_base64_encode
+
+        from authapp.tokens import email_change_token_generator
         uid = urlsafe_base64_encode(str(self.user.pk).encode())
         token = email_change_token_generator.make_token(self.user)
         change_url = reverse(

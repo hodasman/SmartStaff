@@ -13,7 +13,6 @@ from allauth.account.adapter import DefaultAccountAdapter
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.contrib.auth import get_user_model
 
-
 USERNAME_MAX_LENGTH = 15
 
 
