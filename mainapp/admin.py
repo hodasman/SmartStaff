@@ -3,11 +3,51 @@ import json
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
+from django.http import Http404, HttpResponseNotAllowed, JsonResponse
+from django.urls import path, reverse
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 
 from authapp import models as authapp_models
 from mainapp import models as mainapp_models
+
+MAX_ARTICLE_IMAGE_SIZE = 10 * 1024 * 1024
+
+
+def validate_article_image_size(image):
+    if image and image.size > MAX_ARTICLE_IMAGE_SIZE:
+        raise ValidationError(
+            _("Image file size must not exceed 10 MiB."),
+            code="article_image_too_large",
+        )
+
+
+class ArticleAdminForm(forms.ModelForm):
+    class Meta:
+        model = mainapp_models.Article
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        upload_url = ""
+        if self.instance.pk:
+            upload_url = reverse(
+                "admin:mainapp_article_upload_image",
+                args=(self.instance.pk,),
+            )
+        self.fields["text"].widget.attrs["data-image-upload-url"] = upload_url
+
+
+class ArticleImageAdminForm(forms.ModelForm):
+    class Meta:
+        model = mainapp_models.ArticleImage
+        fields = "__all__"
+
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        validate_article_image_size(image)
+        return image
 
 
 class ScenarioImageInline(admin.TabularInline):
@@ -63,6 +103,7 @@ class DeviceImageInline(admin.TabularInline):
 
 class ArticleImageInline(admin.TabularInline):
     model = mainapp_models.ArticleImage
+    form = ArticleImageAdminForm
     extra = 1
     readonly_fields = ("created_at",)
     fields = ("image", "alt", "is_main", "order")
@@ -132,6 +173,7 @@ class DevicesAdmin(admin.ModelAdmin):
 
 @admin.register(mainapp_models.Article)
 class ArticlesAdmin(admin.ModelAdmin):
+    form = ArticleAdminForm
     list_per_page = 20
     list_display = ("id", "title", "slug", "category", "author", "created_at", "deleted")
     list_filter = ("category", "author", "deleted", "created_at")
@@ -139,6 +181,53 @@ class ArticlesAdmin(admin.ModelAdmin):
     raw_id_fields = ("author",)
     inlines = [ArticleImageInline]
     ordering = ("-created_at",)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "<path:object_id>/upload-image/",
+                self.admin_site.admin_view(self.upload_image),
+                name="mainapp_article_upload_image",
+            ),
+        ]
+        return custom_urls + urls
+
+    def upload_image(self, request, object_id):
+        if request.method != "POST":
+            return HttpResponseNotAllowed(["POST"])
+
+        article = self.get_object(request, object_id)
+        if article is None:
+            raise Http404
+        if not self.has_change_permission(request, article):
+            raise PermissionDenied
+
+        try:
+            image = forms.ImageField().clean(request.FILES.get("image"))
+            validate_article_image_size(image)
+            alt = forms.CharField(max_length=255, required=False).clean(
+                request.POST.get("alt", "")
+            )
+        except ValidationError as error:
+            return JsonResponse({"error": error.messages[0]}, status=400)
+
+        article_image = mainapp_models.ArticleImage.objects.create(
+            article=article,
+            image=image,
+            alt=alt,
+        )
+        return JsonResponse(
+            {
+                "id": article_image.pk,
+                "alt": article_image.alt or "",
+                "url": article_image.image.url,
+            }
+        )
+
+    class Media:
+        js = ("js/article_image_upload_v3.js",)
+
 
 @admin.register(mainapp_models.Platform)
 class PlatformsAdmin(admin.ModelAdmin):

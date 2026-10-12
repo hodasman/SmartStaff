@@ -2,6 +2,7 @@
 {% load static %}
 {% load i18n %}
 {% load icon_tags %}
+{% load my_tags %}
 {% load crispy_forms_tags %}  
 
 {% block title %}
@@ -27,7 +28,7 @@
                {%endfor%}
             </li>
          </ul>
-         {{object.text|safe|escape}}
+         <div class="article-content">{{ object.text|render_article_text:object }}</div>
       </div>
    </div>
    <div class="navigation-top">

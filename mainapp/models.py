@@ -16,7 +16,8 @@ def device_foto_path(instance, filename):
 def article_img_path(instance, filename):
     # file will be uploaded to
     #   MEDIA_ROOT / articles_img / <slug> / <filename>
-    return "articles_img/{0}/{1}".format(instance.slug, filename)
+    article = getattr(instance, "article", instance)
+    return "articles_img/{0}/{1}".format(article.slug, filename)
 
 def scenarios_img_path(instance, filename):
     # file will be uploaded to
