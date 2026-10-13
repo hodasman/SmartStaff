@@ -713,6 +713,12 @@ msgstr "Сцэнары"
 msgid "All required devices are available"
 msgstr "Усе патрэбныя прылады ёсць"
 
+msgid "All rights reserved"
+msgstr "Усе правы абаронены"
+
+msgid "Made with love by"
+msgstr "Створана з любоўю камандай"
+
 #: mainapp/models.py:492
 msgid "1 device type is missing"
 msgstr "Не хапае 1 тыпу прылад"
