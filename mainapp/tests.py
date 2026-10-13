@@ -74,6 +74,28 @@ class ArticleImageRenderingTests(SimpleTestCase):
             rendered,
         )
 
+    def test_converts_local_development_media_urls_to_relative_urls(self):
+        article = SimpleNamespace(
+            images=SimpleNamespace(filter=Mock(return_value=[])),
+        )
+
+        rendered = render_article_text(
+            '<img src="http://0.0.0.0:8000/media/articles_img/photo.jpg" alt="Photo">'
+            "<img src='https://localhost:8000/media/articles_img/other.jpg'>",
+            article,
+        )
+
+        self.assertIn(
+            '<img src="/media/articles_img/photo.jpg" alt="Photo">',
+            rendered,
+        )
+        self.assertIn(
+            '<img src="/media/articles_img/other.jpg">',
+            rendered,
+        )
+        self.assertNotIn("0.0.0.0", rendered)
+        self.assertNotIn("localhost:8000", rendered)
+
     def test_removes_untrusted_iframe_sources(self):
         article = SimpleNamespace(
             images=SimpleNamespace(filter=Mock(return_value=[])),

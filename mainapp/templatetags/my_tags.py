@@ -11,6 +11,11 @@ from mainapp import models as mainapp_models
 register = template.Library()
 
 ARTICLE_IMAGE_TOKEN = re.compile(r"\[\[article-image:(\d+)\]\]")
+LOCAL_MEDIA_URL = re.compile(
+    r"""(?P<prefix>\bsrc\s*=\s*["'])https?://(?:0\.0\.0\.0|127\.0\.0\.1|localhost)"""
+    r"""(?::\d+)?(?P<path>/media/[^"']*)(?P<quote>["'])""",
+    re.IGNORECASE,
+)
 ARTICLE_ALLOWED_TAGS = {
     "a",
     "blockquote",
@@ -125,6 +130,10 @@ def render_article_text(text, article):
 
 
 def _sanitize_article_html(text):
+    text = LOCAL_MEDIA_URL.sub(
+        lambda match: f"{match.group('prefix')}{match.group('path')}{match.group('quote')}",
+        text,
+    )
     sanitized = bleach.clean(
         text,
         tags=ARTICLE_ALLOWED_TAGS,
