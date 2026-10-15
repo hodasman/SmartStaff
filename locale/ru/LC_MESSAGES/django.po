@@ -419,6 +419,12 @@ msgstr ""
 msgid "Ecosystem"
 msgstr ""
 
+msgid "My ecosystem"
+msgstr "Моя экосистема"
+
+msgid "Onboarding completed"
+msgstr "Персонализация завершена"
+
 #: mainapp/filters.py:22 mainapp/models.py:243
 msgid "Supported protocols"
 msgstr ""

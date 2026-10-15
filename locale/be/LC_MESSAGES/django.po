@@ -447,6 +447,12 @@ msgstr "Пошук па назве"
 msgid "Ecosystem"
 msgstr "Экасістэма"
 
+msgid "My ecosystem"
+msgstr "Мая экасістэма"
+
+msgid "Onboarding completed"
+msgstr "Персаналізацыя завершана"
+
 #: mainapp/filters.py:22 mainapp/models.py:243
 msgid "Supported protocols"
 msgstr "Падтрымка пратаколаў"
