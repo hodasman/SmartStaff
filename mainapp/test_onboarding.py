@@ -29,6 +29,58 @@ class OnboardingFlowTests(TestCase):
         )
         self.category = DeviceCategory.objects.create(title="Sensors")
 
+    def test_homepage_guest_button_opens_registration(self):
+        self.client.logout()
+
+        with self.settings(LANGUAGE_CODE="en"):
+            response = self.client.get(reverse("mainapp:main_page"))
+
+        self.assertContains(response, "Registration")
+        self.assertContains(response, reverse("authapp:register"))
+        self.assertNotContains(response, "Onboarding personalisation")
+
+    def test_homepage_incomplete_user_button_opens_onboarding(self):
+        with self.settings(LANGUAGE_CODE="en"):
+            response = self.client.get(reverse("mainapp:main_page"))
+
+        self.assertContains(response, "Onboarding personalisation")
+        self.assertContains(response, reverse("mainapp:onboarding_start"))
+        self.assertNotContains(response, "Go to personal account")
+
+    def test_homepage_completed_user_button_opens_personal_account(self):
+        self.user.onboarding_completed = True
+        self.user.save(update_fields=["onboarding_completed"])
+
+        with self.settings(LANGUAGE_CODE="en"):
+            response = self.client.get(reverse("mainapp:main_page"))
+
+        self.assertContains(response, "Go to personal account")
+        self.assertContains(
+            response,
+            reverse(
+                "mainapp:personal_page",
+                kwargs={"username": self.user.username},
+            ),
+        )
+        self.assertNotContains(response, "Onboarding personalisation")
+
+    def test_personal_account_offers_onboarding_only_until_completed(self):
+        account_url = reverse(
+            "mainapp:personal_page",
+            kwargs={"username": self.user.username},
+        )
+        with self.settings(LANGUAGE_CODE="en"):
+            incomplete_response = self.client.get(account_url)
+
+        self.assertContains(incomplete_response, "Onboarding personalisation")
+        self.user.onboarding_completed = True
+        self.user.save(update_fields=["onboarding_completed"])
+
+        with self.settings(LANGUAGE_CODE="en"):
+            completed_response = self.client.get(account_url)
+
+        self.assertNotContains(completed_response, "Onboarding personalisation")
+
     def create_device(self, title, platforms):
         device_type = DeviceType.objects.create(
             title=f"{title} type",

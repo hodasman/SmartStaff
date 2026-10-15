@@ -456,6 +456,12 @@ msgstr "Персаналізацыя завершана"
 msgid "Choose ecosystem"
 msgstr "Выбраць экасістэму"
 
+msgid "Onboarding personalisation"
+msgstr "Наладзіць разумны дом"
+
+msgid "Go to personal account"
+msgstr "Увайсці ў асабісты кабінет"
+
 msgid "Smart home personalisation"
 msgstr "Персаналізацыя разумнага дома"
 

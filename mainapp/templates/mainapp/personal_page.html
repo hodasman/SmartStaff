@@ -89,6 +89,13 @@
                         <div class="reset_btn">
                             <a href="{% url 'authapp:profile_edit' pk=user.id%}"><button class="boxed-btn3 w-100">{% trans "Change" %}</button></a>
                         </div>
+                        {% if not user.onboarding_completed %}
+                        <div class="reset_btn mt-2">
+                            <a href="{% url 'mainapp:onboarding_start' %}" class="boxed-btn3 w-100 text-center">
+                                {% trans "Onboarding personalisation" %}
+                            </a>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-8">
