@@ -4,7 +4,8 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import Prefetch
+from django.db import transaction
+from django.db.models import Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -16,7 +17,14 @@ from taggit.models import Tag
 
 from mainapp import models as mainapp_models
 from mainapp.filters import DevicesFilter
-from mainapp.forms import CommentForm, FeedbackCreateForm, RaitingForm
+from mainapp.forms import (
+    CommentForm,
+    FeedbackCreateForm,
+    OnboardingAnswerForm,
+    OnboardingDeviceSelectionForm,
+    OnboardingEcosystemSelectionForm,
+    RaitingForm,
+)
 from mainapp.services.email import send_contact_email_message
 from mainapp.services.utils import get_client_ip
 
@@ -46,6 +54,178 @@ class MainPageView(TemplateView):
             )
         )[:4]
         return context
+
+
+@login_required
+def onboarding_start(request):
+    form = OnboardingAnswerForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        request.session.pop("onboarding_device_ids", None)
+        has_devices = form.cleaned_data["has_devices"]
+        request.session["onboarding_has_devices"] = has_devices
+        if has_devices == "yes":
+            return redirect("mainapp:onboarding_devices")
+        return redirect("mainapp:onboarding_ecosystems")
+
+    return render(
+        request,
+        "mainapp/onboarding_start.html",
+        {"form": form},
+    )
+
+
+@login_required
+def onboarding_devices(request):
+    if request.session.get("onboarding_has_devices") != "yes":
+        return redirect("mainapp:onboarding_start")
+
+    search_query = request.GET.get("q", "").strip()
+    devices = (
+        mainapp_models.Device.objects.filter(deleted=False)
+        .select_related("category", "device_type")
+        .order_by("title")
+    )
+    if search_query:
+        devices = devices.filter(
+            Q(title__icontains=search_query)
+            | Q(model_name__icontains=search_query)
+            | Q(description__icontains=search_query)
+        )
+
+    if request.method == "POST":
+        form = OnboardingDeviceSelectionForm(request.POST)
+        if form.is_valid():
+            request.session["onboarding_device_ids"] = list(
+                form.cleaned_data["devices"].values_list("pk", flat=True)
+            )
+            return redirect("mainapp:onboarding_ecosystems")
+        selected_device_ids = set(request.POST.getlist("devices"))
+        search_query = request.POST.get("q", "").strip()
+        if search_query:
+            devices = devices.filter(
+                Q(title__icontains=search_query)
+                | Q(model_name__icontains=search_query)
+                | Q(description__icontains=search_query)
+            )
+    else:
+        form = OnboardingDeviceSelectionForm()
+        if "onboarding_device_ids" in request.session:
+            selected_device_ids = {
+                str(device_id)
+                for device_id in request.session["onboarding_device_ids"]
+            }
+        else:
+            selected_device_ids = {
+                str(device_id)
+                for device_id in request.user.devices.filter(
+                    deleted=False
+                ).values_list("pk", flat=True)
+            }
+
+    visible_device_ids = {
+        str(device_id) for device_id in devices.values_list("pk", flat=True)
+    }
+    hidden_selected_device_ids = selected_device_ids - visible_device_ids
+
+    return render(
+        request,
+        "mainapp/onboarding_devices.html",
+        {
+            "form": form,
+            "devices": devices,
+            "search_query": search_query,
+            "selected_device_ids": selected_device_ids,
+            "hidden_selected_device_ids": hidden_selected_device_ids,
+        },
+    )
+
+
+def _compatible_onboarding_ecosystems(device_ids):
+    selected_devices = list(
+        mainapp_models.Device.objects.filter(
+            pk__in=device_ids,
+            deleted=False,
+        ).prefetch_related("ecosystem")
+    )
+    if len(selected_devices) != len(set(device_ids)):
+        return None
+
+    compatible_ids = None
+    for device in selected_devices:
+        device_ecosystem_ids = {
+            ecosystem.pk for ecosystem in device.ecosystem.all()
+        }
+        compatible_ids = (
+            device_ecosystem_ids
+            if compatible_ids is None
+            else compatible_ids & device_ecosystem_ids
+        )
+
+    if not compatible_ids:
+        return mainapp_models.Platform.objects.none()
+    return mainapp_models.Platform.objects.filter(
+        pk__in=compatible_ids
+    ).order_by("title")
+
+
+@login_required
+def onboarding_ecosystems(request):
+    has_devices = request.session.get("onboarding_has_devices")
+    if has_devices not in {"yes", "no"}:
+        return redirect("mainapp:onboarding_start")
+
+    device_ids = request.session.get("onboarding_device_ids", [])
+    if has_devices == "yes" and not device_ids:
+        return redirect("mainapp:onboarding_devices")
+    if device_ids:
+        ecosystems = _compatible_onboarding_ecosystems(device_ids)
+        if ecosystems is None:
+            request.session.pop("onboarding_device_ids", None)
+            request.session.pop("onboarding_has_devices", None)
+            messages.error(
+                request,
+                _("The selected device list is no longer available. Please select your devices again."),
+            )
+            return redirect("mainapp:onboarding_devices")
+    else:
+        ecosystems = mainapp_models.Platform.objects.all()
+
+    form = OnboardingEcosystemSelectionForm(
+        request.POST or None,
+        ecosystems=ecosystems,
+    )
+    if request.method == "POST" and form.is_valid():
+        ecosystem = form.cleaned_data["ecosystem"]
+        selected_devices = mainapp_models.Device.objects.filter(
+            pk__in=device_ids,
+            deleted=False,
+        )
+        with transaction.atomic():
+            request.user.devices.add(*selected_devices)
+            request.user.ecosystem = ecosystem
+            request.user.onboarding_completed = True
+            request.user.save(
+                update_fields=[
+                    "ecosystem",
+                    "onboarding_completed",
+                ]
+            )
+        request.session.pop("onboarding_device_ids", None)
+        request.session.pop("onboarding_has_devices", None)
+        return redirect(
+            "mainapp:personal_page",
+            username=request.user.username,
+        )
+
+    return render(
+        request,
+        "mainapp/onboarding_ecosystems.html",
+        {
+            "form": form,
+            "ecosystems": ecosystems,
+            "has_selected_devices": bool(device_ids),
+        },
+    )
 
 
 class DevicesListView(ListView):

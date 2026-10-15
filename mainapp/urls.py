@@ -8,6 +8,9 @@ app_name = MainappConfig.name
 urlpatterns = [
     path("", views.MainPageView.as_view(), name="main_page"),
     path("personal-page/<str:username>", views.view_personal_page, name="personal_page"),
+    path("onboarding/", views.onboarding_start, name="onboarding_start"),
+    path("onboarding/devices/", views.onboarding_devices, name="onboarding_devices"),
+    path("onboarding/ecosystems/", views.onboarding_ecosystems, name="onboarding_ecosystems"),
     path("devices/", views.filtered_devices, name="devices-list"),
     path(
         "devices/<slug:slug>",

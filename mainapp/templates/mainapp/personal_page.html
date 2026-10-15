@@ -55,6 +55,22 @@
                             <p class="break-word">{{user.country.name}}</p>
                         </div>
                         <div class="personal-data d-flex justify-content-between">
+                            <p class="black-txt">{% trans "My ecosystem" %}:</p>
+                            <p class="break-word">
+                                {{ user.ecosystem.title|default:"—" }}
+                                <br>
+                                <a href="{% url 'mainapp:onboarding_start' %}">
+                                    <small>
+                                        {% if user.ecosystem %}
+                                        {% trans "Change" %}
+                                        {% else %}
+                                        {% trans "Choose ecosystem" %}
+                                        {% endif %}
+                                    </small>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="personal-data d-flex justify-content-between">
                             <p class="black-txt"><i class="fa fa-envelope-o" aria-hidden="true"></i></p>
                             <p class="break-word">
                                 {{user.email}}

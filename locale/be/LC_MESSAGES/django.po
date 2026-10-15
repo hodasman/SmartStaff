@@ -453,6 +453,81 @@ msgstr "Мая экасістэма"
 msgid "Onboarding completed"
 msgstr "Персаналізацыя завершана"
 
+msgid "Choose ecosystem"
+msgstr "Выбраць экасістэму"
+
+msgid "Smart home personalisation"
+msgstr "Персаналізацыя разумнага дома"
+
+msgid "Step 1 of 3"
+msgstr "Крок 1 з 3"
+
+msgid "Step 2 of 3"
+msgstr "Крок 2 з 3"
+
+msgid "Step 3 of 3"
+msgstr "Крок 3 з 3"
+
+msgid "Do you already have smart home devices?"
+msgstr "У вас ужо ёсць прылады для разумнага дома?"
+
+msgid "We will use your answer to suggest a suitable smart home ecosystem."
+msgstr "Мы выкарыстаем ваш адказ, каб прапанаваць прыдатную экасістэму разумнага дома."
+
+msgid "Yes, I have devices"
+msgstr "Так, у мяне ёсць прылады"
+
+msgid "No, not yet"
+msgstr "Не, пакуль няма"
+
+msgid "Choose your smart home devices"
+msgstr "Выберыце прылады для разумнага дома"
+
+msgid "Choose the devices you already have"
+msgstr "Выберыце прылады, якія ў вас ужо ёсць"
+
+msgid "Select all the devices you use at home. You can change your list later."
+msgstr "Выберыце ўсе прылады, якімі карыстаецеся дома. Пазней спіс можна змяніць."
+
+msgid "Search devices"
+msgstr "Пошук прылад"
+
+msgid "Enter a device name or model"
+msgstr "Увядзіце назву прылады або мадэлі"
+
+msgid "No devices match your search."
+msgstr "Па вашым запыце прылады не знойдзены."
+
+msgid "Select at least one device."
+msgstr "Выберыце хаця б адну прыладу."
+
+msgid "Choose a smart home ecosystem"
+msgstr "Выберыце экасістэму разумнага дома"
+
+msgid "Choose the ecosystem you would like to use. You can change it later."
+msgstr "Выберыце экасістэму, якой хочаце карыстацца. Пазней выбар можна змяніць."
+
+msgid "There is no ecosystem compatible with all the selected devices. Go back and review your selection."
+msgstr "Няма экасістэмы, сумяшчальнай з усімі выбранымі прыладамі. Вярніцеся і праверце свой выбар."
+
+msgid "Change device selection"
+msgstr "Змяніць выбар прылад"
+
+msgid "Ecosystem description is not available yet."
+msgstr "Апісанне экасістэмы пакуль не дададзена."
+
+msgid "No ecosystems are available yet."
+msgstr "Экасістэмы пакуль не дададзены."
+
+msgid "Back to devices"
+msgstr "Вярнуцца да прылад"
+
+msgid "Finish"
+msgstr "Гатова"
+
+msgid "The selected device list is no longer available. Please select your devices again."
+msgstr "Спіс выбраных прылад больш недаступны. Калі ласка, выберыце прылады зноў."
+
 #: mainapp/filters.py:22 mainapp/models.py:243
 msgid "Supported protocols"
 msgstr "Падтрымка пратаколаў"

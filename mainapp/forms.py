@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from mainapp.models import Feedback, Rating, RatingStar
+from mainapp.models import Device, Feedback, Platform, Rating, RatingStar
 
 
 class RaitingForm(forms.ModelForm):
@@ -59,3 +59,39 @@ class FeedbackCreateForm(forms.ModelForm):
                                               'autocomplete': 'off', 'onfocus': "this.placeholder = ''", 
                                               'onblur':"this.placeholder = 'Enter subject'"}),
         }
+
+
+class OnboardingAnswerForm(forms.Form):
+    has_devices = forms.ChoiceField(
+        choices=(
+            ("yes", _("Yes")),
+            ("no", _("No")),
+        ),
+        widget=forms.RadioSelect,
+    )
+
+
+class OnboardingDeviceSelectionForm(forms.Form):
+    devices = forms.ModelMultipleChoiceField(
+        queryset=Device.objects.none(),
+        required=True,
+        error_messages={"required": _("Select at least one device.")},
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["devices"].queryset = Device.objects.filter(
+            deleted=False
+        ).select_related("category", "device_type").order_by("title")
+
+
+class OnboardingEcosystemSelectionForm(forms.Form):
+    ecosystem = forms.ModelChoiceField(
+        queryset=Platform.objects.none(),
+        required=True,
+        widget=forms.RadioSelect,
+    )
+
+    def __init__(self, *args, ecosystems, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["ecosystem"].queryset = ecosystems
