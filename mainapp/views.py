@@ -4,6 +4,7 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Prefetch
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -25,9 +26,25 @@ class MainPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
-        context["devices"] = mainapp_models.Device.objects.all()[:4]  # Устройства 4 шт
-        context["scenarios"] = mainapp_models.Scenario.objects.all()[:4]  # Сценарии 4 шт
-        context["articles"] = mainapp_models.Article.objects.all()[:4]  # Статьи 4 шт
+        context["devices"] = (
+            mainapp_models.Device.objects.select_related("category").all()[:4]
+        )
+        context["scenarios"] = mainapp_models.Scenario.objects.prefetch_related(
+            Prefetch(
+                "images",
+                queryset=mainapp_models.ScenarioImage.objects.order_by(
+                    "-is_main", "order", "id"
+                ),
+            )
+        )[:4]
+        context["articles"] = mainapp_models.Article.objects.prefetch_related(
+            Prefetch(
+                "images",
+                queryset=mainapp_models.ArticleImage.objects.order_by(
+                    "-is_main", "order", "id"
+                ),
+            )
+        )[:4]
         return context
 
 

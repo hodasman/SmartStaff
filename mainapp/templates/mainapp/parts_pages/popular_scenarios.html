@@ -1,6 +1,6 @@
 {% load i18n %}
 <!-- popular_scenario  -->
-<div class="popular_catagory_area">
+<div class="popular_catagory_area home-scenarios">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-6">
@@ -17,10 +17,27 @@
         <div class="row">
             {% for scenario in scenarios%}
             <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_catagory">
-                <div class="scenario_devices"><a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}"><h4>{{scenario.title}}</h4></a></div>
-                    <p>{{scenario.get_device_types_display}}</p>
-                </div>
+                <article class="home-info-card home-scenario-card">
+                    <a class="home-card-image" href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}" aria-label="{{ scenario.title }}">
+                        {% if scenario.main_img %}
+                            <img src="{{ scenario.main_img.url }}" alt="{{ scenario.title }}" loading="lazy">
+                        {% elif scenario.images.all %}
+                            {% with scenario_image=scenario.images.all.0 %}
+                                <img src="{{ scenario_image.image.url }}" alt="{{ scenario_image.alt|default:scenario.title }}" loading="lazy">
+                            {% endwith %}
+                        {% else %}
+                            <span class="home-image-placeholder home-scenario-placeholder" aria-hidden="true">
+                                <i class="fa fa-lightbulb-o"></i>
+                            </span>
+                        {% endif %}
+                    </a>
+                    <div class="home-card-content">
+                        <a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}" class="home-card-title">
+                            <h4>{{ scenario.title }}</h4>
+                        </a>
+                        <span class="home-card-meta">{{ scenario.get_device_types_display }}</span>
+                    </div>
+                </article>
             </div>
             {% endfor %}
             
