@@ -13,7 +13,7 @@
                         <div class="sldier_btn wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".5s">
                             {% if user.is_authenticated %}
                                 {% if user.onboarding_completed %}
-                                    <a href="{% url 'mainapp:personal_page' username=user.username %}" class="boxed-btn3">{% trans "Go to personal account" %}</a>
+                                    <a href="{% url 'mainapp:personal_page' username=user.username %}" class="boxed-btn3">{% trans "Personal account" %}</a>
                                 {% else %}
                                     <a href="{% url 'mainapp:onboarding_start' %}" class="boxed-btn3">{% trans "Onboarding personalisation" %}</a>
                                 {% endif %}

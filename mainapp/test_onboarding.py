@@ -54,7 +54,7 @@ class OnboardingFlowTests(TestCase):
         with self.settings(LANGUAGE_CODE="en"):
             response = self.client.get(reverse("mainapp:main_page"))
 
-        self.assertContains(response, "Go to personal account")
+        self.assertContains(response, "Personal account")
         self.assertContains(
             response,
             reverse(
@@ -114,6 +114,58 @@ class OnboardingFlowTests(TestCase):
         )
         self.assertContains(ecosystem_response, "Platform A")
         self.assertContains(ecosystem_response, "Platform B")
+        self.assertContains(ecosystem_response, "First ecosystem")
+
+    def test_onboarding_hides_hub_variants_and_maps_device_compatibility(self):
+        base_ecosystem = Platform.objects.create(
+            title="Apple Home (HomeKit)",
+            description="Умный дом от Apple",
+        )
+        hub_ecosystem = Platform.objects.create(
+            title="Apple Home (with Hub)",
+            description="Requires a hub",
+        )
+
+        response = self.client.post(
+            reverse("mainapp:onboarding_start"),
+            {"has_devices": "no"},
+            follow=True,
+        )
+        self.assertContains(response, "Apple Home (HomeKit)")
+        self.assertNotContains(response, "Apple Home (with Hub)")
+
+        device = self.create_device("Hub-connected sensor", [hub_ecosystem])
+        self.client.post(
+            reverse("mainapp:onboarding_start"),
+            {"has_devices": "yes"},
+        )
+        selection_response = self.client.post(
+            reverse("mainapp:onboarding_devices"),
+            {"devices": [str(device.pk)]},
+        )
+        self.assertRedirects(
+            selection_response,
+            reverse("mainapp:onboarding_ecosystems"),
+        )
+        compatible_response = self.client.get(
+            reverse("mainapp:onboarding_ecosystems")
+        )
+        self.assertContains(compatible_response, "Apple Home (HomeKit)")
+        self.assertNotContains(compatible_response, "Apple Home (with Hub)")
+
+        completion_response = self.client.post(
+            reverse("mainapp:onboarding_ecosystems"),
+            {"ecosystem": str(base_ecosystem.pk)},
+        )
+        self.assertRedirects(
+            completion_response,
+            reverse(
+                "mainapp:personal_page",
+                kwargs={"username": self.user.username},
+            ),
+        )
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.ecosystem, base_ecosystem)
 
     def test_personal_account_shows_unselected_ecosystem_and_setup_link(self):
         with self.settings(LANGUAGE_CODE="en"):

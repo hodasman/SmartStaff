@@ -408,7 +408,7 @@ msgstr ""
 #: mainapp/templates/mainapp/personal_page.html:7
 #: mainapp/templates/mainapp/personal_page.html:16
 msgid "Personal account"
-msgstr ""
+msgstr "Личный кабинет"
 
 #: mainapp/filters.py:11
 msgid "Search by name"

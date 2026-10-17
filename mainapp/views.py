@@ -152,6 +152,18 @@ def onboarding_devices(request):
     )
 
 
+_ONBOARDING_HUB_ECOSYSTEM_ALIASES = {
+    "Apple Home (with Hub)": "Apple Home (HomeKit)",
+    "Yandex Alice (with Hub)": "Yandex Alice",
+}
+
+
+def _onboarding_ecosystems():
+    return mainapp_models.Platform.objects.exclude(
+        title__icontains="(with hub)"
+    )
+
+
 def _compatible_onboarding_ecosystems(device_ids):
     selected_devices = list(
         mainapp_models.Device.objects.filter(
@@ -162,11 +174,22 @@ def _compatible_onboarding_ecosystems(device_ids):
     if len(selected_devices) != len(set(device_ids)):
         return None
 
+    platform_ids_by_title = dict(
+        mainapp_models.Platform.objects.values_list("title", "pk")
+    )
     compatible_ids = None
     for device in selected_devices:
-        device_ecosystem_ids = {
-            ecosystem.pk for ecosystem in device.ecosystem.all()
-        }
+        device_ecosystem_ids = set()
+        for ecosystem in device.ecosystem.all():
+            base_title = _ONBOARDING_HUB_ECOSYSTEM_ALIASES.get(
+                ecosystem.title
+            )
+            if base_title is None:
+                device_ecosystem_ids.add(ecosystem.pk)
+            elif base_title in platform_ids_by_title:
+                device_ecosystem_ids.add(
+                    platform_ids_by_title[base_title]
+                )
         compatible_ids = (
             device_ecosystem_ids
             if compatible_ids is None
@@ -175,9 +198,9 @@ def _compatible_onboarding_ecosystems(device_ids):
 
     if not compatible_ids:
         return mainapp_models.Platform.objects.none()
-    return mainapp_models.Platform.objects.filter(
-        pk__in=compatible_ids
-    ).order_by("title")
+    return _onboarding_ecosystems().filter(pk__in=compatible_ids).order_by(
+        "title"
+    )
 
 
 @login_required
@@ -200,7 +223,7 @@ def onboarding_ecosystems(request):
             )
             return redirect("mainapp:onboarding_devices")
     else:
-        ecosystems = mainapp_models.Platform.objects.all()
+        ecosystems = _onboarding_ecosystems()
 
     form = OnboardingEcosystemSelectionForm(
         request.POST or None,
