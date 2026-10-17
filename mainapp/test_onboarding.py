@@ -182,25 +182,87 @@ class OnboardingFlowTests(TestCase):
 
     def test_search_keeps_selected_devices_outside_current_results(self):
         first_device = self.create_device("Motion sensor", [self.platform_a])
-        self.create_device("Door sensor", [self.platform_a])
-        self.user.devices.add(first_device)
+        second_device = self.create_device("Door sensor", [self.platform_a])
+        third_device = self.create_device("Smart switch", [self.platform_a])
         self.client.post(
             reverse("mainapp:onboarding_start"),
             {"has_devices": "yes"},
         )
 
-        search_response = self.client.get(
+        first_search = self.client.post(
             reverse("mainapp:onboarding_devices"),
-            {"q": "Door"},
+            {
+                "action": "search",
+                "q": "Smart",
+                "devices": [str(first_device.pk), str(second_device.pk)],
+            },
         )
-
+        self.assertRedirects(
+            first_search,
+            f"{reverse('mainapp:onboarding_devices')}?q=Smart",
+        )
+        first_search_results = self.client.get(first_search.url)
+        self.assertContains(first_search_results, "Smart switch")
         self.assertContains(
-            search_response,
+            first_search_results,
             f'<input type="hidden" name="devices" value="{first_device.pk}">',
             html=True,
         )
-        self.assertContains(search_response, "Door sensor")
-        self.assertNotContains(search_response, "Motion sensor")
+        self.assertContains(
+            first_search_results,
+            f'<input type="hidden" name="devices" value="{second_device.pk}">',
+            html=True,
+        )
+
+        second_search = self.client.post(
+            reverse("mainapp:onboarding_devices"),
+            {
+                "action": "search",
+                "q": "Motion",
+                "devices": [
+                    str(first_device.pk),
+                    str(second_device.pk),
+                    str(third_device.pk),
+                ],
+            },
+        )
+        self.assertRedirects(
+            second_search,
+            f"{reverse('mainapp:onboarding_devices')}?q=Motion",
+        )
+        second_search_results = self.client.get(second_search.url)
+        self.assertContains(second_search_results, "Motion sensor")
+        self.assertContains(
+            second_search_results,
+            f'<input type="hidden" name="devices" value="{second_device.pk}">',
+            html=True,
+        )
+        self.assertContains(
+            second_search_results,
+            f'<input type="hidden" name="devices" value="{third_device.pk}">',
+            html=True,
+        )
+
+        next_response = self.client.post(
+            reverse("mainapp:onboarding_devices"),
+            {
+                "action": "next",
+                "q": "Motion",
+                "devices": [
+                    str(first_device.pk),
+                    str(second_device.pk),
+                    str(third_device.pk),
+                ],
+            },
+        )
+        self.assertRedirects(
+            next_response,
+            reverse("mainapp:onboarding_ecosystems"),
+        )
+        self.assertSetEqual(
+            set(self.client.session["onboarding_device_ids"]),
+            {first_device.pk, second_device.pk, third_device.pk},
+        )
 
     def test_selected_devices_limit_ecosystems_and_finish_onboarding(self):
         existing_device = self.create_device(

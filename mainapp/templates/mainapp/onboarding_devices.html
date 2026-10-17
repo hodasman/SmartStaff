@@ -13,17 +13,13 @@
             <h1>{% trans "Choose the devices you already have" %}</h1>
             <p class="onboarding-intro">{% trans "Select all the devices you use at home. You can change your list later." %}</p>
 
-            <form method="get" class="onboarding-search">
+            <form method="post">
+                {% csrf_token %}
                 <label for="onboarding-device-search">{% trans "Search devices" %}</label>
                 <div class="onboarding-search-row">
                     <input id="onboarding-device-search" type="search" name="q" value="{{ search_query }}" placeholder="{% trans 'Enter a device name or model' %}">
-                    <button class="boxed-btn3" type="submit">{% trans "Search" %}</button>
+                    <button class="boxed-btn3" type="submit" name="action" value="search">{% trans "Search" %}</button>
                 </div>
-            </form>
-
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="q" value="{{ search_query }}">
                 {% for device_id in hidden_selected_device_ids %}
                 <input type="hidden" name="devices" value="{{ device_id }}">
                 {% endfor %}
@@ -53,7 +49,7 @@
                 </div>
                 <div class="onboarding-actions">
                     <a class="onboarding-back" href="{% url 'mainapp:onboarding_start' %}">{% trans "Back" %}</a>
-                    <button class="boxed-btn3" type="submit">{% trans "Next" %}</button>
+                    <button class="boxed-btn3" type="submit" name="action" value="next">{% trans "Next" %}</button>
                 </div>
             </form>
         </div>

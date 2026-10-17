@@ -74,7 +74,7 @@ class OnboardingAnswerForm(forms.Form):
 class OnboardingDeviceSelectionForm(forms.Form):
     devices = forms.ModelMultipleChoiceField(
         queryset=Device.objects.none(),
-        required=True,
+        required=False,
         error_messages={"required": _("Select at least one device.")},
     )
 

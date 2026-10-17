@@ -8,7 +8,8 @@ from django.db import transaction
 from django.db.models import Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
+from django.utils.http import urlencode
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.decorators.http import require_http_methods
@@ -95,10 +96,21 @@ def onboarding_devices(request):
     if request.method == "POST":
         form = OnboardingDeviceSelectionForm(request.POST)
         if form.is_valid():
-            request.session["onboarding_device_ids"] = list(
+            selected_device_ids = list(
                 form.cleaned_data["devices"].values_list("pk", flat=True)
             )
-            return redirect("mainapp:onboarding_ecosystems")
+            request.session["onboarding_device_ids"] = selected_device_ids
+            search_query = request.POST.get("q", "").strip()
+            if request.POST.get("action") == "search":
+                search_url = reverse("mainapp:onboarding_devices")
+                if search_query:
+                    search_url = f"{search_url}?{urlencode({'q': search_query})}"
+                return redirect(search_url)
+            if not selected_device_ids:
+                form.add_error("devices", _("Select at least one device."))
+            else:
+                return redirect("mainapp:onboarding_ecosystems")
+
         selected_device_ids = set(request.POST.getlist("devices"))
         search_query = request.POST.get("q", "").strip()
         if search_query:
