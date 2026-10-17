@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "Choose your smart home devices" %}{% endblock title %}
+{% block extra_css %}
+<link rel="stylesheet" href='{% static "css/onboarding.css" %}'>
+{% endblock extra_css %}
+{% block content %}
+<section class="onboarding-page">
+    <div class="container">
+        <div class="onboarding-card">
+            <span class="onboarding-step">{% trans "Step 2 of 3" %}</span>
+            <h1>{% trans "Choose the devices you already have" %}</h1>
+            <p class="onboarding-intro">{% trans "Select all the devices you use at home. You can change your list later." %}</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <label for="onboarding-device-search">{% trans "Search devices" %}</label>
+                <div class="onboarding-search-row">
+                    <input id="onboarding-device-search" type="search" name="q" value="{{ search_query }}" placeholder="{% trans 'Enter a device name or model' %}">
+                    <button class="boxed-btn3" type="submit" name="action" value="search">{% trans "Search" %}</button>
+                </div>
+                {% for device_id in hidden_selected_device_ids %}
+                <input type="hidden" name="devices" value="{{ device_id }}">
+                {% endfor %}
+                {% if form.devices.errors %}
+                <div class="onboarding-errors" role="alert">{{ form.devices.errors }}</div>
+                {% endif %}
+                <div class="onboarding-device-grid">
+                    {% for device in devices %}
+                    <label class="onboarding-device">
+                        <input type="checkbox" name="devices" value="{{ device.pk }}" {% if device.pk|stringformat:"s" in selected_device_ids %}checked{% endif %}>
+                        <span class="onboarding-device-image">
+                            {% if device.icon %}
+                            <img src="{{ device.icon.url }}" alt="">
+                            {% else %}
+                            <img src='{% static "img/svg_icon/4.svg" %}' alt="">
+                            {% endif %}
+                        </span>
+                        <span class="onboarding-device-copy">
+                            <strong>{{ device.title }}</strong>
+                            <small>{{ device.device_type }}</small>
+                        </span>
+                        <i class="fa fa-check onboarding-device-check" aria-hidden="true"></i>
+                    </label>
+                    {% empty %}
+                    <p class="onboarding-empty">{% trans "No devices match your search." %}</p>
+                    {% endfor %}
+                </div>
+                <div class="onboarding-actions">
+                    <a class="onboarding-back" href="{% url 'mainapp:onboarding_start' %}">{% trans "Back" %}</a>
+                    <button class="boxed-btn3" type="submit" name="action" value="next">{% trans "Next" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock content %}

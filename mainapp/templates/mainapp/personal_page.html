@@ -55,6 +55,22 @@
                             <p class="break-word">{{user.country.name}}</p>
                         </div>
                         <div class="personal-data d-flex justify-content-between">
+                            <p class="black-txt">{% trans "My ecosystem" %}:</p>
+                            <p class="break-word">
+                                {{ user.ecosystem.title|default:"—" }}
+                                <br>
+                                <a href="{% url 'mainapp:onboarding_start' %}">
+                                    <small>
+                                        {% if user.ecosystem %}
+                                        {% trans "Change" %}
+                                        {% else %}
+                                        {% trans "Choose ecosystem" %}
+                                        {% endif %}
+                                    </small>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="personal-data d-flex justify-content-between">
                             <p class="black-txt"><i class="fa fa-envelope-o" aria-hidden="true"></i></p>
                             <p class="break-word">
                                 {{user.email}}
@@ -73,6 +89,13 @@
                         <div class="reset_btn">
                             <a href="{% url 'authapp:profile_edit' pk=user.id%}"><button class="boxed-btn3 w-100">{% trans "Change" %}</button></a>
                         </div>
+                        {% if not user.onboarding_completed %}
+                        <div class="reset_btn mt-2">
+                            <a href="{% url 'mainapp:onboarding_start' %}" class="boxed-btn3 w-100 text-center">
+                                {% trans "Onboarding personalisation" %}
+                            </a>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-8">

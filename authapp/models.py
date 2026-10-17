@@ -109,6 +109,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     objects = UserManager()
     devices = models.ManyToManyField(Device, verbose_name="devices", blank=True)
+    ecosystem = models.ForeignKey(
+        "mainapp.Platform",
+        on_delete=models.SET_NULL,
+        related_name="users",
+        verbose_name=_("My ecosystem"),
+        blank=True,
+        null=True,
+    )
+    onboarding_completed = models.BooleanField(
+        _("Onboarding completed"),
+        default=False,
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "first_name", "date_of_birth",]
@@ -119,5 +131,4 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.username}"
-
 

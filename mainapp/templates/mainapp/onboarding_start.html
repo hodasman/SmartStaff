@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "Smart home personalisation" %}{% endblock title %}
+{% block extra_css %}
+<link rel="stylesheet" href='{% static "css/onboarding.css" %}'>
+{% endblock extra_css %}
+{% block content %}
+<section class="onboarding-page">
+    <div class="container">
+        <div class="onboarding-card onboarding-question">
+            <span class="onboarding-step">{% trans "Step 1 of 3" %}</span>
+            <h1>{% trans "Do you already have smart home devices?" %}</h1>
+            <p class="onboarding-intro">{% trans "We will use your answer to suggest a suitable smart home ecosystem." %}</p>
+            {% if form.has_devices.errors %}
+            <div class="onboarding-errors" role="alert">{{ form.has_devices.errors }}</div>
+            {% endif %}
+            <form method="post" class="onboarding-answer-form">
+                {% csrf_token %}
+                <button class="onboarding-choice" type="submit" name="has_devices" value="yes">
+                    <span class="onboarding-choice-icon" aria-hidden="true"><i class="fa fa-check"></i></span>
+                    <span>{% trans "Yes, I have devices" %}</span>
+                    <i class="fa fa-angle-right onboarding-choice-arrow" aria-hidden="true"></i>
+                </button>
+                <button class="onboarding-choice" type="submit" name="has_devices" value="no">
+                    <span class="onboarding-choice-icon" aria-hidden="true"><i class="fa fa-plus"></i></span>
+                    <span>{% trans "No, not yet" %}</span>
+                    <i class="fa fa-angle-right onboarding-choice-arrow" aria-hidden="true"></i>
+                </button>
+            </form>
+            <a class="onboarding-back" href="{% url 'mainapp:personal_page' username=request.user.username %}">
+                {% trans "Back to personal account" %}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock content %}

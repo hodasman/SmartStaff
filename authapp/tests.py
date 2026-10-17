@@ -52,6 +52,26 @@ def csrf_post(client, url, data):
 class RegistrationTests(TestCase):
     """Регистрация: создание аккаунта + письмо активации."""
 
+    def test_user_onboarding_defaults_to_not_completed_without_ecosystem(self):
+        user = make_user()
+
+        self.assertFalse(user.onboarding_completed)
+        self.assertIsNone(user.ecosystem)
+
+    def test_deleting_ecosystem_does_not_delete_users(self):
+        from mainapp.models import Platform
+
+        user = make_user()
+        ecosystem = Platform.objects.create(title="Test ecosystem")
+        user.ecosystem = ecosystem
+        user.save(update_fields=["ecosystem"])
+
+        ecosystem.delete()
+        user.refresh_from_db()
+
+        self.assertIsNone(user.ecosystem)
+        self.assertTrue(User.objects.filter(pk=user.pk).exists())
+
     def test_register_creates_inactive_user_and_sends_email(self):
         """Успешная регистрация: юзер неактивен, письмо активации отправлено."""
         response = csrf_post(

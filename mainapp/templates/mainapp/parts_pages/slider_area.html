@@ -11,7 +11,15 @@
                         <h3 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".3s">{% trans "Make your life more comfortable" %}</h3>
                         <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s">{% trans "A site for smart people about smart things for a smart home" %}</p>
                         <div class="sldier_btn wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".5s">
-                            <a href="#" class="boxed-btn3">{% trans "More details" %}</a>
+                            {% if user.is_authenticated %}
+                                {% if user.onboarding_completed %}
+                                    <a href="{% url 'mainapp:personal_page' username=user.username %}" class="boxed-btn3">{% trans "Personal account" %}</a>
+                                {% else %}
+                                    <a href="{% url 'mainapp:onboarding_start' %}" class="boxed-btn3">{% trans "Onboarding personalisation" %}</a>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'authapp:register' %}" class="boxed-btn3">{% trans "Registration" %}</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

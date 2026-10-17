@@ -408,7 +408,7 @@ msgstr ""
 #: mainapp/templates/mainapp/personal_page.html:7
 #: mainapp/templates/mainapp/personal_page.html:16
 msgid "Personal account"
-msgstr ""
+msgstr "Личный кабинет"
 
 #: mainapp/filters.py:11
 msgid "Search by name"
@@ -418,6 +418,93 @@ msgstr ""
 #: mainapp/templates/mainapp/device_detail.html:100
 msgid "Ecosystem"
 msgstr ""
+
+msgid "My ecosystem"
+msgstr "Моя экосистема"
+
+msgid "Onboarding completed"
+msgstr "Персонализация завершена"
+
+msgid "Choose ecosystem"
+msgstr "Выбрать экосистему"
+
+msgid "Onboarding personalisation"
+msgstr "Настроить умный дом"
+
+msgid "Go to personal account"
+msgstr "Войти"
+
+msgid "Smart home personalisation"
+msgstr "Персонализация умного дома"
+
+msgid "Step 1 of 3"
+msgstr "Шаг 1 из 3"
+
+msgid "Step 2 of 3"
+msgstr "Шаг 2 из 3"
+
+msgid "Step 3 of 3"
+msgstr "Шаг 3 из 3"
+
+msgid "Do you already have smart home devices?"
+msgstr "У вас уже есть устройства для умного дома?"
+
+msgid "We will use your answer to suggest a suitable smart home ecosystem."
+msgstr "Мы используем ваш ответ, чтобы предложить подходящую экосистему умного дома."
+
+msgid "Yes, I have devices"
+msgstr "Да, у меня есть устройства"
+
+msgid "No, not yet"
+msgstr "Нет, пока нет"
+
+msgid "Choose your smart home devices"
+msgstr "Выберите устройства для умного дома"
+
+msgid "Choose the devices you already have"
+msgstr "Выберите устройства, которые у вас уже есть"
+
+msgid "Select all the devices you use at home. You can change your list later."
+msgstr "Выберите все устройства, которыми пользуетесь дома. Позже список можно изменить."
+
+msgid "Search devices"
+msgstr "Поиск устройств"
+
+msgid "Enter a device name or model"
+msgstr "Введите название устройства или модели"
+
+msgid "No devices match your search."
+msgstr "По вашему запросу устройства не найдены."
+
+msgid "Select at least one device."
+msgstr "Выберите хотя бы одно устройство."
+
+msgid "Choose a smart home ecosystem"
+msgstr "Выберите экосистему умного дома"
+
+msgid "Choose the ecosystem you would like to use. You can change it later."
+msgstr "Выберите экосистему, которой хотите пользоваться. Позже выбор можно изменить."
+
+msgid "There is no ecosystem compatible with all the selected devices. Go back and review your selection."
+msgstr "Нет экосистемы, совместимой со всеми выбранными устройствами. Вернитесь и проверьте свой выбор."
+
+msgid "Change device selection"
+msgstr "Изменить выбор устройств"
+
+msgid "Ecosystem description is not available yet."
+msgstr "Описание экосистемы пока не добавлено."
+
+msgid "No ecosystems are available yet."
+msgstr "Экосистемы пока не добавлены."
+
+msgid "Back to devices"
+msgstr "Вернуться к устройствам"
+
+msgid "Finish"
+msgstr "Готово"
+
+msgid "The selected device list is no longer available. Please select your devices again."
+msgstr "Список выбранных устройств больше недоступен. Пожалуйста, выберите устройства заново."
 
 #: mainapp/filters.py:22 mainapp/models.py:243
 msgid "Supported protocols"
@@ -1043,7 +1130,7 @@ msgstr ""
 
 #: mainapp/templates/mainapp/personal_page.html:74
 msgid "Change"
-msgstr ""
+msgstr "Изменить"
 
 #: mainapp/templates/mainapp/personal_page.html:82
 msgid "My devices"
