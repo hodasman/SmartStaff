@@ -133,6 +133,8 @@
                                         <a href="{% url 'mainapp:devices_detail' slug=device.slug %}" class="home-card-title">
                                             <h4>{{ device.title }}</h4>
                                         </a>
+                                        {% include 'includes/legacy_badge.html' with device=device %}
+                                        {% include 'includes/ecosystem_compatibility_badge.html' with device=device %}
                                         <a href="{% url 'mainapp:delete_device' slug=device.slug %}" class="account-remove-device">
                                             {% trans "Delete" %}
                                         </a>

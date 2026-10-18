@@ -1,0 +1,6 @@
+{% load i18n %}
+{% if device.is_unsupported_for_user_ecosystem %}
+<span class="ecosystem-compatibility-badge">
+    {% blocktrans with ecosystem=device.user_ecosystem_title %}Does not work with {{ ecosystem }}{% endblocktrans %}
+</span>
+{% endif %}

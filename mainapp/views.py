@@ -35,9 +35,16 @@ class MainPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MainPageView, self).get_context_data(**kwargs)
-        context["devices"] = (
-            mainapp_models.Device.objects.select_related("category").all()[:4]
+        devices = list(
+            mainapp_models.Device.objects.select_related("category")
+            .prefetch_related("ecosystem")[:4]
         )
+        if self.request.user.is_authenticated:
+            _annotate_device_ecosystem_support(
+                devices,
+                self.request.user.ecosystem,
+            )
+        context["devices"] = devices
         context["scenarios"] = mainapp_models.Scenario.objects.prefetch_related(
             Prefetch(
                 "images",
@@ -162,6 +169,28 @@ _ONBOARDING_HUB_ECOSYSTEM_ALIASES = {
     "Apple Home (with Hub)": "Apple Home (HomeKit)",
     "Yandex Alice (with Hub)": "Yandex Alice",
 }
+
+
+def _annotate_device_ecosystem_support(devices, ecosystem):
+    if ecosystem is None:
+        return
+
+    selected_title = _ONBOARDING_HUB_ECOSYSTEM_ALIASES.get(
+        ecosystem.title,
+        ecosystem.title,
+    )
+    for device in devices:
+        device_ecosystem_titles = {
+            _ONBOARDING_HUB_ECOSYSTEM_ALIASES.get(
+                supported_ecosystem.title,
+                supported_ecosystem.title,
+            )
+            for supported_ecosystem in device.ecosystem.all()
+        }
+        device.user_ecosystem_title = ecosystem.title
+        device.is_unsupported_for_user_ecosystem = bool(
+            device_ecosystem_titles
+        ) and selected_title not in device_ecosystem_titles
 
 
 def _onboarding_ecosystems():
@@ -469,7 +498,8 @@ def filtered_devices(request):
     и передает его в ссылки на кнопках пагинатора. В шаблоне - param_replace
     '''
     f = DevicesFilter(request.GET, queryset=mainapp_models.Device.objects.all())
-    paginator = Paginator(f.qs, 10)
+    filtered_devices = f.qs.prefetch_related("ecosystem")
+    paginator = Paginator(filtered_devices, 10)
     page = request.GET.get('page', 1)
     try:
         response = paginator.page(page)
@@ -477,6 +507,11 @@ def filtered_devices(request):
         response = paginator.page(1)
     except EmptyPage:
         response = paginator.page(paginator.num_pages)
+    if request.user.is_authenticated:
+        _annotate_device_ecosystem_support(
+            response.object_list,
+            request.user.ecosystem,
+        )
     context = {'filter': response,'filter_form':f, 'qty': len(f.qs)}
     return render(request, 'mainapp/devices_filter.html', context)
     
@@ -606,9 +641,16 @@ def view_personal_page(request, username):
         # -------------------------------------------------------------------
 
         #Пагинация
-        paginator = Paginator(current_user.devices.all(), 4)  # Показывать по 4 устройств на странице
+        paginator = Paginator(
+            current_user.devices.prefetch_related("ecosystem"),
+            4,
+        )
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
+        _annotate_device_ecosystem_support(
+            page_obj.object_list,
+            current_user.ecosystem,
+        )
         context['page_obj'] = page_obj
         return render(request, 'mainapp/personal_page.html', context)
     else:
