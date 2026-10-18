@@ -14,6 +14,10 @@ class CreateUserForm(UserCreationForm):
         self.fields["password1"].label = _("Password")
         self.fields["password2"].label = _("Password verification")
         self.fields["country"].label = _("Country")
+        self.fields["username"].help_text = _(
+            "Required. 15 characters or fewer. Use English letters, digits, "
+            "and only @/./+/-/_"
+        )
         self.fields["date_of_birth"].widget = forms.DateInput(
             attrs={"type": "date"}, format="%Y-%m-%d"
         )

@@ -71,6 +71,10 @@ msgstr ""
 msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only"
 msgstr ""
 
+#: authapp/forms.py
+msgid "Required. 15 characters or fewer. Use English letters, digits, and only @/./+/-/_"
+msgstr "Обязательное поле. Не более 15 символов. Используйте только английские буквы, цифры и символы @/./+/-/_"
+
 #: authapp/models.py:81
 msgid "A user with that username already exists."
 msgstr ""

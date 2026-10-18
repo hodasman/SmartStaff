@@ -72,6 +72,10 @@ msgstr "мянушка"
 msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only"
 msgstr "Абавязкова. 150 сімвалаў або менш. Толькі літары, лічбы і @/./+/-/_"
 
+#: authapp/forms.py
+msgid "Required. 15 characters or fewer. Use English letters, digits, and only @/./+/-/_"
+msgstr "Абавязковае поле. Не больш за 15 сімвалаў. Выкарыстоўвайце толькі англійскія літары, лічбы і сімвалы @/./+/-/_"
+
 #: authapp/models.py:81
 msgid "A user with that username already exists."
 msgstr "Карыстальнік з такім імем карыстальніка ўжо існуе."

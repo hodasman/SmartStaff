@@ -52,6 +52,16 @@ def csrf_post(client, url, data):
 class RegistrationTests(TestCase):
     """Регистрация: создание аккаунта + письмо активации."""
 
+    def test_register_displays_username_format_requirements(self):
+        with self.settings(LANGUAGE_CODE="en"):
+            response = Client().get(reverse("authapp:register"))
+
+        self.assertContains(
+            response,
+            "Required. 15 characters or fewer. Use English letters, digits, "
+            "and only @/./+/-/_",
+        )
+
     def test_user_onboarding_defaults_to_not_completed_without_ecosystem(self):
         user = make_user()
 
