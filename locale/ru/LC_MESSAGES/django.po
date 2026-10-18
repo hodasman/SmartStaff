@@ -151,7 +151,13 @@ msgstr ""
 msgid "Edit profile"
 msgstr ""
 
-#: authapp/templates/authapp/user_form.html:44
+msgid "Update your personal information and profile photo."
+msgstr "Обновите личные данные и фотографию профиля."
+
+msgid "Cancel"
+msgstr "Отмена"
+
+#: authapp/templates/authapp/user_form.html
 msgid "Register"
 msgstr ""
 

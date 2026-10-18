@@ -161,7 +161,13 @@ msgstr "Рэгістрацыя новага карыстальніка"
 msgid "Edit profile"
 msgstr "Рэдагаваць профіль"
 
-#: authapp/templates/authapp/user_form.html:44
+msgid "Update your personal information and profile photo."
+msgstr "Абнавіце асабістыя дадзеныя і фота профілю."
+
+msgid "Cancel"
+msgstr "Скасаваць"
+
+#: authapp/templates/authapp/user_form.html
 msgid "Register"
 msgstr "Зарэгістравацца"
 

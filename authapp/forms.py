@@ -43,6 +43,13 @@ class CreateUserForm(UserCreationForm):
 
 
 class UserChangeForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].help_text = _(
+            "Required. 15 characters or fewer. Use English letters, digits, "
+            "and only @/./+/-/_"
+        )
+
     class Meta:
         model = get_user_model()
         fields = (
