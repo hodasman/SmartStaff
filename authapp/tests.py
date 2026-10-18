@@ -61,6 +61,9 @@ class RegistrationTests(TestCase):
             "Required. 15 characters or fewer. Use English letters, digits, "
             "and only @/./+/-/_",
         )
+        self.assertContains(response, "css/profile_edit.css")
+        self.assertContains(response, "profile-edit-card")
+        self.assertContains(response, "img/default-avatar.svg")
 
     def test_user_onboarding_defaults_to_not_completed_without_ecosystem(self):
         user = make_user()

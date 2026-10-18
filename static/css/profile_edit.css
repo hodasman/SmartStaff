@@ -100,6 +100,10 @@
     border-top: 1px solid #edf0f3;
 }
 
+.profile-registration-form .profile-edit-actions {
+    justify-content: flex-end;
+}
+
 .profile-edit-cancel {
     color: #63758a;
     font-size: 14px;

@@ -4,9 +4,7 @@
 {% load i18n %}
 
 {% block extra_css %}
-{% if not user.is_anonymous %}
 <link rel="stylesheet" href='{% static "css/profile_edit.css" %}'>
-{% endif %}
 {% endblock extra_css %}
 
 {% block content %}
@@ -27,16 +25,25 @@
 </div>
 
 {% if user.is_anonymous %}
-<div class="row justify-content-center my-2">
-    <div class="col-lg-6">
-        <form method="post" class="mt-2" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <br><br>
-            <button class="boxed-btn3 w-100" type="submit">{% trans "Register" %}</button>
-        </form>
+<main class="profile-edit-page">
+    <div class="container">
+        <section class="profile-edit-card">
+            <div class="profile-edit-heading">
+                <img class="profile-edit-avatar" src='{% static "img/default-avatar.svg" %}' alt="{% trans 'Default profile photo' %}">
+                <div>
+                    <h2>{% trans "New user registration" %}</h2>
+                </div>
+            </div>
+            <form method="post" class="profile-edit-form profile-registration-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="profile-edit-actions">
+                    <button class="boxed-btn3" type="submit">{% trans "Register" %}</button>
+                </div>
+            </form>
+        </section>
     </div>
-</div>
+</main>
 {% else %}
 <main class="profile-edit-page">
     <div class="container">
