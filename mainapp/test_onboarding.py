@@ -206,6 +206,84 @@ class OnboardingFlowTests(TestCase):
             'class="boxed-btn3">Add devices</a>',
         )
 
+    def test_unsupported_ecosystem_badge_appears_in_catalog_and_account(self):
+        unsupported_device = self.create_device(
+            "Platform B sensor",
+            [self.platform_b],
+        )
+        compatible_device = self.create_device(
+            "Platform A sensor",
+            [self.platform_a],
+        )
+        unknown_compatibility_device = self.create_device(
+            "Unspecified sensor",
+            [],
+        )
+        self.user.ecosystem = self.platform_a
+        self.user.onboarding_completed = True
+        self.user.save(update_fields=["ecosystem", "onboarding_completed"])
+        self.user.devices.add(
+            unsupported_device,
+            compatible_device,
+            unknown_compatibility_device,
+        )
+
+        with self.settings(LANGUAGE_CODE="en"):
+            catalog_response = self.client.get(
+                reverse("mainapp:devices-list")
+            )
+            homepage_response = self.client.get(
+                reverse("mainapp:main_page")
+            )
+            account_response = self.client.get(
+                reverse(
+                    "mainapp:personal_page",
+                    kwargs={"username": self.user.username},
+                )
+            )
+
+        self.assertContains(
+            catalog_response,
+            "Does not work with Platform A",
+            count=1,
+        )
+        self.assertContains(
+            homepage_response,
+            "Does not work with Platform A",
+            count=1,
+        )
+        self.assertContains(
+            account_response,
+            "Does not work with Platform A",
+            count=1,
+        )
+        self.assertContains(catalog_response, unsupported_device.title)
+
+    def test_hub_variant_is_compatible_with_its_base_ecosystem(self):
+        base_ecosystem = Platform.objects.create(
+            title="Apple Home (HomeKit)",
+            description="Apple smart home",
+        )
+        hub_variant = Platform.objects.create(
+            title="Apple Home (with Hub)",
+            description="Apple smart home with hub",
+        )
+        device = self.create_device("Hub sensor", [hub_variant])
+        self.user.ecosystem = base_ecosystem
+        self.user.save(update_fields=["ecosystem"])
+        self.user.devices.add(device)
+
+        with self.settings(LANGUAGE_CODE="en"):
+            catalog_response = self.client.get(
+                reverse("mainapp:devices-list")
+            )
+
+        self.assertContains(catalog_response, device.title)
+        self.assertNotContains(
+            catalog_response,
+            "Does not work with Apple Home (HomeKit)",
+        )
+
     def test_personal_account_shows_selected_ecosystem_and_change_link(self):
         self.user.ecosystem = self.platform_a
         self.user.save(update_fields=["ecosystem"])

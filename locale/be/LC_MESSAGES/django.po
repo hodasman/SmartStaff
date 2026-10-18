@@ -736,6 +736,9 @@ msgstr "Камплект"
 msgid "Legacy"
 msgstr "Рэлікт"
 
+msgid "Does not work with %(ecosystem)s"
+msgstr "Не працуе з %(ecosystem)s"
+
 #: mainapp/models.py:257
 msgid "Mark vintage devices that are no longer sold"
 msgstr "Пазначце вінтажныя прылады, якія больш не прадаюцца"

@@ -708,6 +708,9 @@ msgstr ""
 msgid "Legacy"
 msgstr ""
 
+msgid "Does not work with %(ecosystem)s"
+msgstr "Не работает с %(ecosystem)s"
+
 #: mainapp/models.py:257
 msgid "Mark vintage devices that are no longer sold"
 msgstr ""

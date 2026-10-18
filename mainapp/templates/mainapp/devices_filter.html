@@ -70,6 +70,7 @@
                                         </div>
                                         <div class="jobs_conetent">
                                             {% include 'includes/legacy_badge.html' with device=item %}
+                                            {% include 'includes/ecosystem_compatibility_badge.html' with device=item %}
                                             <a href="{% url 'mainapp:devices_detail' slug=item.slug %}"><h4>{{ item.title }}</h4></a>
                                             <div class="links_locat d-flex align-items-center">
                                                 <div class="location">
