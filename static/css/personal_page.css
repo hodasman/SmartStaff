@@ -1,0 +1,227 @@
+.personal-account-area {
+    padding: 56px 0 72px;
+}
+
+.personal-account-layout {
+    row-gap: 28px;
+}
+
+.account-profile-card {
+    height: 100%;
+    padding: 28px;
+    border: 1px solid #e9eef4;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(25, 49, 78, 0.06);
+}
+
+.account-profile-card > h3,
+.account-settings h4 {
+    margin: 0 0 20px;
+    color: #18304c;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.account-avatar {
+    display: block;
+    width: 112px;
+    height: 112px;
+    margin: 0 auto 24px;
+    border: 4px solid #f1f6f8;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.account-profile-list {
+    margin: 0;
+}
+
+.account-profile-row {
+    display: grid;
+    grid-template-columns: minmax(95px, 0.8fr) minmax(0, 1.2fr);
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf0f3;
+}
+
+.account-profile-row dt,
+.account-profile-row dd {
+    min-width: 0;
+    margin: 0;
+    color: #18304c;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.account-profile-row dt {
+    color: #718198;
+    font-weight: 500;
+}
+
+.account-pending-email {
+    display: block;
+    margin-top: 5px;
+    color: #9b6d16;
+}
+
+.account-settings {
+    margin-top: 26px;
+}
+
+.account-settings h4 {
+    margin-bottom: 12px;
+    font-size: 17px;
+}
+
+.account-setting-link {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr) 16px;
+    align-items: center;
+    gap: 11px;
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid #e9eef4;
+    border-radius: 8px;
+    color: #18304c;
+    font-size: 14px;
+    line-height: 1.4;
+    text-decoration: none;
+}
+
+.account-setting-link + .account-setting-link {
+    margin-top: 8px;
+}
+
+.account-setting-link > i:first-child {
+    color: #13885d;
+    text-align: center;
+}
+
+.account-setting-link > i:last-child {
+    color: #8a9aab;
+    text-align: right;
+}
+
+.account-setting-link small {
+    display: block;
+    margin-top: 3px;
+    color: #718198;
+    font-size: 12px;
+}
+
+.account-setting-link:hover,
+.account-setting-link:focus-visible {
+    border-color: #54c895;
+    background: #f5fbf8;
+    color: #0c6847;
+    text-decoration: none;
+}
+
+.account-devices-header {
+    display: flex;
+    min-height: 54px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.account-devices-header h2 {
+    margin: 0;
+    color: #18304c;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.account-empty-state {
+    display: flex;
+    min-height: 320px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    border: 1px dashed #cdd9e2;
+    border-radius: 14px;
+    background: #fff;
+    text-align: center;
+}
+
+.account-empty-icon {
+    display: grid;
+    width: 64px;
+    height: 64px;
+    place-items: center;
+    margin-bottom: 18px;
+    border-radius: 18px;
+    background: #eaf8f1;
+    color: #13885d;
+    font-size: 28px;
+}
+
+.account-empty-state h3 {
+    margin-bottom: 8px;
+    color: #18304c;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.account-empty-state p {
+    max-width: 390px;
+    margin-bottom: 20px;
+    color: #718198;
+    line-height: 1.6;
+}
+
+.account-device-grid {
+    row-gap: 20px;
+}
+
+.account-device-card {
+    min-height: 270px;
+}
+
+.account-remove-device {
+    margin-top: auto;
+    padding-top: 16px;
+    color: #a34a4a;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.account-remove-device:hover,
+.account-remove-device:focus-visible {
+    color: #7d2525;
+}
+
+.account-scenarios {
+    padding-top: 64px;
+}
+
+.account-no-scenarios {
+    margin: 0;
+    color: #718198;
+}
+
+@media (max-width: 767.98px) {
+    .personal-account-area {
+        padding: 36px 0 52px;
+    }
+
+    .account-profile-card {
+        padding: 22px 18px;
+    }
+
+    .account-profile-row {
+        grid-template-columns: minmax(88px, 0.8fr) minmax(0, 1.2fr);
+        gap: 8px;
+    }
+
+    .account-devices-header h2 {
+        font-size: 21px;
+    }
+
+    .account-empty-state {
+        min-height: 280px;
+        padding: 24px 18px;
+    }
+}

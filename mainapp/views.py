@@ -206,7 +206,10 @@ def _compatible_onboarding_ecosystems(device_ids):
 @login_required
 def onboarding_ecosystems(request):
     has_devices = request.session.get("onboarding_has_devices")
-    if has_devices not in {"yes", "no"}:
+    if has_devices is None:
+        has_devices = "no"
+        request.session["onboarding_has_devices"] = has_devices
+    elif has_devices not in {"yes", "no"}:
         return redirect("mainapp:onboarding_start")
 
     device_ids = request.session.get("onboarding_device_ids", [])

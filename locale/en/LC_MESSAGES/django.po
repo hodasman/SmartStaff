@@ -965,7 +965,40 @@ msgstr ""
 msgid "My devices"
 msgstr ""
 
-#: mainapp/templates/mainapp/personal_page.html:108
+msgid "Profile photo"
+msgstr ""
+
+msgid "Default profile photo"
+msgstr ""
+
+msgid "Account settings"
+msgstr ""
+
+msgid "Edit personal details"
+msgstr ""
+
+msgid "Change ecosystem"
+msgstr ""
+
+msgid "Your device list is empty."
+msgstr ""
+
+msgid "Add your smart home devices to get recommendations tailored to your setup."
+msgstr ""
+
+msgid "Add devices"
+msgstr ""
+
+msgid "No scenario recommendations yet. Add devices to your account to get personalized suggestions."
+msgstr ""
+
+msgid "Previous page"
+msgstr ""
+
+msgid "Next page"
+msgstr ""
+
+#: mainapp/templates/mainapp/personal_page.html
 msgid "Delete"
 msgstr ""
 

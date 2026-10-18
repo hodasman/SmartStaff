@@ -182,6 +182,29 @@ class OnboardingFlowTests(TestCase):
             response,
             reverse("mainapp:onboarding_start"),
         )
+        self.assertContains(response, "img/default-avatar.svg")
+        self.assertContains(response, "Account settings")
+        self.assertContains(response, "Add devices")
+        self.assertContains(response, reverse("mainapp:devices-list"))
+
+    def test_personal_account_device_list_uses_homepage_cards(self):
+        device = self.create_device("Account sensor", [self.platform_a])
+        self.user.devices.add(device)
+
+        with self.settings(LANGUAGE_CODE="en"):
+            response = self.client.get(
+                reverse(
+                    "mainapp:personal_page",
+                    kwargs={"username": self.user.username},
+                )
+            )
+
+        self.assertContains(response, "home-info-card home-device-card")
+        self.assertContains(response, device.title)
+        self.assertNotContains(
+            response,
+            'class="boxed-btn3">Add devices</a>',
+        )
 
     def test_personal_account_shows_selected_ecosystem_and_change_link(self):
         self.user.ecosystem = self.platform_a
@@ -200,8 +223,30 @@ class OnboardingFlowTests(TestCase):
         self.assertContains(response, "Change")
         self.assertContains(
             response,
-            reverse("mainapp:onboarding_start"),
+            reverse("mainapp:onboarding_ecosystems"),
         )
+
+    def test_ecosystem_selection_can_be_opened_directly_from_account(self):
+        response = self.client.get(
+            reverse("mainapp:onboarding_ecosystems")
+        )
+        self.assertContains(response, "Platform A")
+        self.assertContains(response, "Platform B")
+
+        completion_response = self.client.post(
+            reverse("mainapp:onboarding_ecosystems"),
+            {"ecosystem": str(self.platform_b.pk)},
+        )
+        self.assertRedirects(
+            completion_response,
+            reverse(
+                "mainapp:personal_page",
+                kwargs={"username": self.user.username},
+            ),
+        )
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.ecosystem, self.platform_b)
+        self.assertTrue(self.user.onboarding_completed)
 
     def test_onboarding_pages_require_authentication(self):
         self.client.logout()
