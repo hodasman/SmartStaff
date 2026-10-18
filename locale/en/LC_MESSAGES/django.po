@@ -61,6 +61,10 @@ msgstr ""
 msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only"
 msgstr ""
 
+#: authapp/forms.py
+msgid "Required. 15 characters or fewer. Use English letters, digits, and only @/./+/-/_"
+msgstr ""
+
 #: authapp/models.py:81
 msgid "A user with that username already exists."
 msgstr ""
@@ -118,7 +122,13 @@ msgstr ""
 msgid "Edit profile"
 msgstr ""
 
-#: authapp/templates/authapp/user_form.html:44
+msgid "Update your personal information and profile photo."
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+#: authapp/templates/authapp/user_form.html
 msgid "Register"
 msgstr ""
 
@@ -965,7 +975,40 @@ msgstr ""
 msgid "My devices"
 msgstr ""
 
-#: mainapp/templates/mainapp/personal_page.html:108
+msgid "Profile photo"
+msgstr ""
+
+msgid "Default profile photo"
+msgstr ""
+
+msgid "Account settings"
+msgstr ""
+
+msgid "Edit personal details"
+msgstr ""
+
+msgid "Change ecosystem"
+msgstr ""
+
+msgid "Your device list is empty."
+msgstr ""
+
+msgid "Add your smart home devices to get recommendations tailored to your setup."
+msgstr ""
+
+msgid "Add devices"
+msgstr ""
+
+msgid "No scenario recommendations yet. Add devices to your account to get personalized suggestions."
+msgstr ""
+
+msgid "Previous page"
+msgstr ""
+
+msgid "Next page"
+msgstr ""
+
+#: mainapp/templates/mainapp/personal_page.html
 msgid "Delete"
 msgstr ""
 

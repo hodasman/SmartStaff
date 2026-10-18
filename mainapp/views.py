@@ -92,6 +92,7 @@ def onboarding_devices(request):
             | Q(model_name__icontains=search_query)
             | Q(description__icontains=search_query)
         )
+    devices_page = Paginator(devices, 30).get_page(request.GET.get("page"))
 
     if request.method == "POST":
         form = OnboardingDeviceSelectionForm(request.POST)
@@ -106,6 +107,12 @@ def onboarding_devices(request):
                 if search_query:
                     search_url = f"{search_url}?{urlencode({'q': search_query})}"
                 return redirect(search_url)
+            if request.POST.get("action") == "page":
+                page_url = reverse("mainapp:onboarding_devices")
+                page_params = {"page": request.POST.get("page", "1")}
+                if search_query:
+                    page_params["q"] = search_query
+                return redirect(f"{page_url}?{urlencode(page_params)}")
             if not selected_device_ids:
                 form.add_error("devices", _("Select at least one device."))
             else:
@@ -134,9 +141,7 @@ def onboarding_devices(request):
                 ).values_list("pk", flat=True)
             }
 
-    visible_device_ids = {
-        str(device_id) for device_id in devices.values_list("pk", flat=True)
-    }
+    visible_device_ids = {str(device.pk) for device in devices_page}
     hidden_selected_device_ids = selected_device_ids - visible_device_ids
 
     return render(
@@ -144,7 +149,8 @@ def onboarding_devices(request):
         "mainapp/onboarding_devices.html",
         {
             "form": form,
-            "devices": devices,
+            "devices": devices_page,
+            "devices_page": devices_page,
             "search_query": search_query,
             "selected_device_ids": selected_device_ids,
             "hidden_selected_device_ids": hidden_selected_device_ids,
@@ -206,7 +212,10 @@ def _compatible_onboarding_ecosystems(device_ids):
 @login_required
 def onboarding_ecosystems(request):
     has_devices = request.session.get("onboarding_has_devices")
-    if has_devices not in {"yes", "no"}:
+    if has_devices is None:
+        has_devices = "no"
+        request.session["onboarding_has_devices"] = has_devices
+    elif has_devices not in {"yes", "no"}:
         return redirect("mainapp:onboarding_start")
 
     device_ids = request.session.get("onboarding_device_ids", [])

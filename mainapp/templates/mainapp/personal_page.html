@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
 {% load static %}
 {% load icon_tags %}
 {% load i18n %}
+{% block extra_css %}
+<link rel="stylesheet" href='{% static "css/homepage.css" %}'>
+<link rel="stylesheet" href='{% static "css/personal_page.css" %}'>
+{% endblock extra_css %}
 {% block title %}
 {% trans "Personal account" %} {{user.username}}
 {% endblock title %}
@@ -20,158 +23,147 @@
     </div>
 </div>
 <!--/ bradcam_area  -->
-<div class="job_listing_area ">
+<div class="job_listing_area personal-account-area">
     <div class="container">
-        <div class="section-top-border">
-            <div class="row">
-                <div class="col-lg-3 col-md-4 mt-sm-30">
-                    <div class="job_filter white-bg">
+        <div class="row personal-account-layout">
+                <div class="col-xl-4 col-lg-5">
+                    <section class="account-profile-card">
                         <h3>{% trans "Personal data" %}</h3>
                         {% if user.avatar %}
-                        <img src="{{ user.avatar.url }}" alt="" width="100%">
+                        <img class="account-avatar" src="{{ user.avatar.url }}" alt="{% trans 'Profile photo' %}">
                         {% else %}
-                        <!-- <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">  -->
-                        <img class="card-img" src='{% static "img/blog/blog_1.png" %}' alt="">
+                        <img class="account-avatar" src='{% static "img/default-avatar.svg" %}' alt="{% trans 'Default profile photo' %}">
                         {% endif %}
 
-                        <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">{% trans "Nickname:" %}</p>
-                            <p class="break-word">{{user.username}}</p>
-                        </div>
-                        <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">{% trans "First name:" %}</p>
-                            <p class="break-word">{{user.first_name}}</p>
-                        </div>
-                        <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">{% trans "Last name:" %}</p>
-                            <p class="break-word">{{user.last_name}}</p>
-                        </div>
-                        <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">{% trans "Date of birth:" %}</p>
-                            <p>{{user.date_of_birth|date:"d.m.Y"|default:"—"}}</p>
-                        </div>
-                        <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">{% trans "Country:" %}</p>
-                            <p class="break-word">{{user.country.name}}</p>
-                        </div>
-                        <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt">{% trans "My ecosystem" %}:</p>
-                            <p class="break-word">
-                                {{ user.ecosystem.title|default:"—" }}
-                                <br>
-                                <a href="{% url 'mainapp:onboarding_start' %}">
-                                    <small>
-                                        {% if user.ecosystem %}
-                                        {% trans "Change" %}
-                                        {% else %}
-                                        {% trans "Choose ecosystem" %}
-                                        {% endif %}
-                                    </small>
-                                </a>
-                            </p>
-                        </div>
-                        <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt"><i class="fa fa-envelope-o" aria-hidden="true"></i></p>
-                            <p class="break-word">
-                                {{user.email}}
+                        <dl class="account-profile-list">
+                            <div class="account-profile-row">
+                                <dt>{% trans "Nickname:" %}</dt>
+                                <dd>{{ user.username }}</dd>
+                            </div>
+                            <div class="account-profile-row">
+                                <dt>{% trans "First name:" %}</dt>
+                                <dd>{{ user.first_name|default:"—" }}</dd>
+                            </div>
+                            <div class="account-profile-row">
+                                <dt>{% trans "Last name:" %}</dt>
+                                <dd>{{ user.last_name|default:"—" }}</dd>
+                            </div>
+                            <div class="account-profile-row">
+                                <dt>{% trans "Date of birth:" %}</dt>
+                                <dd>{{ user.date_of_birth|date:"d.m.Y"|default:"—" }}</dd>
+                            </div>
+                            <div class="account-profile-row">
+                                <dt>{% trans "Country:" %}</dt>
+                                <dd>{{ user.country.name|default:"—" }}</dd>
+                            </div>
+                            <div class="account-profile-row">
+                                <dt>{% trans "My ecosystem" %}</dt>
+                                <dd>{{ user.ecosystem.title|default:"—" }}</dd>
+                            </div>
+                            <div class="account-profile-row">
+                                <dt><i class="fa fa-envelope-o" aria-hidden="true"></i> {% trans "Email" %}</dt>
+                                <dd>
+                                    {{ user.email }}
                                 {% if user.new_email %}
-                                <br><small class="text-warning">
-                                    {% trans "Pending confirmation:" %} {{user.new_email}}
-                                    — <a href="{% url 'authapp:resend_email_change' %}">{% trans "resend link" %}</a>
-                                </small>
+                                    <small class="account-pending-email">
+                                        {% trans "Pending confirmation:" %} {{ user.new_email }}
+                                        — <a href="{% url 'authapp:resend_email_change' %}">{% trans "resend link" %}</a>
+                                    </small>
                                 {% endif %}
-                            </p>
-                        </div>
-                        <div class="personal-data d-flex justify-content-between">
-                            <p class="black-txt"><i class="fa fa-lock" aria-hidden="true"></i> {% trans "Password" %}</p>
-                            <p><a href="{% url 'authapp:password_change' %}"><small>{% trans "Change password" %}</small></a></p>
-                        </div>
-                        <div class="reset_btn">
-                            <a href="{% url 'authapp:profile_edit' pk=user.id%}"><button class="boxed-btn3 w-100">{% trans "Change" %}</button></a>
-                        </div>
-                        {% if not user.onboarding_completed %}
-                        <div class="reset_btn mt-2">
-                            <a href="{% url 'mainapp:onboarding_start' %}" class="boxed-btn3 w-100 text-center">
-                                {% trans "Onboarding personalisation" %}
+                                </dd>
+                            </div>
+                        </dl>
+                        <div class="account-settings">
+                            <h4>{% trans "Account settings" %}</h4>
+                            <a class="account-setting-link" href="{% url 'authapp:profile_edit' pk=user.id %}">
+                                <i class="fa fa-user-o" aria-hidden="true"></i>
+                                <span>{% trans "Edit personal details" %}</span>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            </a>
+                            <a class="account-setting-link" href="{% url 'authapp:password_change' %}">
+                                <i class="fa fa-lock" aria-hidden="true"></i>
+                                <span>{% trans "Change password" %}</span>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            </a>
+                            <a class="account-setting-link" href="{% if user.ecosystem %}{% url 'mainapp:onboarding_ecosystems' %}{% else %}{% url 'mainapp:onboarding_start' %}{% endif %}">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <span>
+                                    {% if user.ecosystem %}
+                                    {% trans "Change ecosystem" %}
+                                    {% else %}
+                                    {% trans "Choose ecosystem" %}
+                                    {% endif %}
+                                    {% if not user.onboarding_completed %}
+                                    <small>{% trans "Onboarding personalisation" %}</small>
+                                    {% endif %}
+                                </span>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
                             </a>
                         </div>
-                        {% endif %}
-                    </div>
+                    </section>
                 </div>
-                <div class="col-lg-8 col-md-8">
-                    <div class="recent_joblist white-bg ">
-                        <div class="row align-items-center">
-                            <div class="col-md-6">
-                                <h4>{% trans "My devices" %}</h4>
-                            </div>
-                            
-                        </div>
+                <div class="col-xl-8 col-lg-7">
+                    <div class="account-devices-header">
+                        <h2>{% trans "My devices" %}</h2>
                     </div>
-                    <div class="job_lists m-0">
-                        <div class="row">
+                    {% if not page_obj.paginator.count %}
+                    <div class="account-empty-state">
+                        <span class="account-empty-icon" aria-hidden="true"><i class="fa fa-lightbulb-o"></i></span>
+                        <h3>{% trans "Your device list is empty." %}</h3>
+                        <p>{% trans "Add your smart home devices to get recommendations tailored to your setup." %}</p>
+                        <a href="{% url 'mainapp:devices-list' %}" class="boxed-btn3">{% trans "Add devices" %}</a>
+                    </div>
+                    {% else %}
+                    <div class="row account-device-grid">
                             {% for device in page_obj %}
-                            <div class="col-lg-12 col-md-12">
-                                <div class="single_jobs white-bg d-flex justify-content-between">
-                                    <div class="jobs_left d-flex align-items-center">
-                                        <div class="thumb">
-                                            {% if device.icon %}
-                                            <img src='{{device.icon.url}}' width="50" height="50"  alt="">
-                                            {% else %}
-                                            <img src='{% static "img/svg_icon/4.svg" %}' width="50" height="50" alt="">
-                                            {% endif %}
-                                        </div>
-                                        <div class="jobs_conetent">
-                                            <a href="{% url 'mainapp:devices_detail' slug=device.slug %}"><h4>{{ device.title }}</h4></a>
-                                            <div class="links_locat d-flex align-items-center">
-                                                <div class="location">
-                                                    <p> <i class="fa {{ device.category|get_icon }}"></i> {{device.category}}</p>
-                                                </div>
-                                                <div class="location">
-                                                    <p> <i class="fa fa-user"></i> {{device.author}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <div class="col-xl-6 col-md-6">
+                                <article class="home-info-card home-device-card account-device-card">
+                                    <a href="{% url 'mainapp:devices_detail' slug=device.slug %}" class="home-device-icon" aria-label="{{ device.title }}">
+                                        {% if device.icon %}
+                                        <img src="{{ device.icon.url }}" alt="" loading="lazy">
+                                        {% else %}
+                                        <img src='{% static "img/svg_icon/4.svg" %}' alt="" loading="lazy">
+                                        {% endif %}
+                                    </a>
+                                    <div class="home-card-content">
+                                        <span class="home-card-meta">
+                                            <i class="fa {{ device.category|get_icon }}" aria-hidden="true"></i>
+                                            {{ device.category }}
+                                        </span>
+                                        <a href="{% url 'mainapp:devices_detail' slug=device.slug %}" class="home-card-title">
+                                            <h4>{{ device.title }}</h4>
+                                        </a>
+                                        <a href="{% url 'mainapp:delete_device' slug=device.slug %}" class="account-remove-device">
+                                            {% trans "Delete" %}
+                                        </a>
                                     </div>
-                                    <div class="jobs_right">
-                                        <div class="apply_now">
-                                            
-                                            <a href="{% url 'mainapp:delete_device' slug=device.slug %}" class="boxed-btn3 remove-from-list-btn">
-                                                {% trans "Delete" %}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                                </article>
                             </div>
-                            {%endfor%}
-                            
-                            
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="pagination_wrap">
-                                    <ul>
-                                        {% if page_obj.has_previous %}
-                                        <li><a href="?page={{ page_obj.previous_page_number }}"> <i class="ti-angle-left"></i> </a></li>
-                                        {% endif %}
-                                        {% for item in page_obj.paginator.page_range %}
-                                        <li class="{% if item == page_obj.number %}active{% endif %}"><a href="?page={{ item }}"><span>{{item}}</span></a></li>
-                                        {% endfor %}
-                                        {% if page_obj.has_next %}
-                                        <li><a href="?page={{ page_obj.next_page_number }}"> <i class="ti-angle-right"></i> </a></li>
-                                        {% endif %}
-                                    </ul>
-                                </div>
+                            {% endfor %}
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="pagination_wrap">
+                                <ul>
+                                    {% if page_obj.has_previous %}
+                                    <li><a href="?page={{ page_obj.previous_page_number }}" aria-label="{% trans 'Previous page' %}"><i class="ti-angle-left"></i></a></li>
+                                    {% endif %}
+                                    {% for item in page_obj.paginator.page_range %}
+                                    <li class="{% if item == page_obj.number %}active{% endif %}"><a href="?page={{ item }}"><span>{{ item }}</span></a></li>
+                                    {% endfor %}
+                                    {% if page_obj.has_next %}
+                                    <li><a href="?page={{ page_obj.next_page_number }}" aria-label="{% trans 'Next page' %}"><i class="ti-angle-right"></i></a></li>
+                                    {% endif %}
+                                </ul>
                             </div>
                         </div>
                     </div>
-
+                    {% endif %}
                 </div>
-
-            </div>
         </div>
     </div>
 </div>
-<div class="top_companies_area">
+<section class="popular_catagory_area home-scenarios account-scenarios">
     <div class="container">
         <div class="row align-items-center mb-40">
             <div class="col-lg-6 col-md-6">
@@ -188,17 +180,34 @@
         <div class="row">
             {% for scenario in scenarios_for_user %}
             <div class="col-lg-4 col-xl-3 col-md-6">
-                <div class="single_company">
-                    <div class="thumb">
-                        <img src='{{ scenario.main_img.url }}' alt="">
+                <article class="home-info-card home-scenario-card">
+                    <a class="home-card-image" href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}" aria-label="{{ scenario.title }}">
+                        {% if scenario.main_img %}
+                        <img src="{{ scenario.main_img.url }}" alt="{{ scenario.title }}" loading="lazy">
+                        {% elif scenario.images.all %}
+                        {% with scenario_image=scenario.images.all.0 %}
+                        <img src="{{ scenario_image.image.url }}" alt="{{ scenario_image.alt|default:scenario.title }}" loading="lazy">
+                        {% endwith %}
+                        {% else %}
+                        <span class="home-image-placeholder home-scenario-placeholder" aria-hidden="true">
+                            <i class="fa fa-lightbulb-o"></i>
+                        </span>
+                        {% endif %}
+                    </a>
+                    <div class="home-card-content">
+                        <a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}" class="home-card-title">
+                            <h4>{{ scenario.title }}</h4>
+                        </a>
+                        <span class="home-card-meta">{{ scenario.get_missing_types_display }}</span>
                     </div>
-                    <a href="{% url 'mainapp:scenario_detail' slug=scenario.slug %}"><h3>{{scenario.title}}</h3></a>
-                    <p>{{scenario.get_missing_types_display}}</p>
-                </div>
+                </article>
             </div>
-            {%endfor%}
-            
+            {% empty %}
+            <div class="col-12">
+                <p class="account-no-scenarios">{% trans "No scenario recommendations yet. Add devices to your account to get personalized suggestions." %}</p>
+            </div>
+            {% endfor %}
         </div>
     </div>
-</div>
+</section>
 {% endblock content %}

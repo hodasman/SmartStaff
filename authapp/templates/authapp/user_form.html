@@ -1,15 +1,18 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% load i18n %}
 
+{% block extra_css %}
+<link rel="stylesheet" href='{% static "css/profile_edit.css" %}'>
+{% endblock extra_css %}
+
 {% block content %}
-<!-- bradcam_area  -->
 <div class="bradcam_area bradcam_bg_1">
     <div class="container">
         <div class="row">
             <div class="col-xl-12">
                 <div class="bradcam_text">
-                    
                     {% if user.is_anonymous %}
                     <h3>{% trans "New user registration" %}</h3>
                     {% else %}
@@ -20,36 +23,52 @@
         </div>
     </div>
 </div>
-<!--/ bradcam_area  -->
-<div class="row justify-content-center my-2">
-    <div class="col-lg-6">
-        <div class="row justify-content-center">
-            <div class="col-sm-7 col-md-5 col-lg-4">
-                {% if user.avatar %}
-                <img src="{{ user.avatar.url }}" alt="" width="100%">
-                {% else %}
-                <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%"> 
-                {% endif %}
-            </div>
-        </div>
-        {% if not user.is_anonymous %}
-    
-        {% endif %}
-        <form method="post" class="mt-2" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <br><br>
-            <button class="boxed-btn3 w-100" type="submit">
-            {% if user.is_anonymous %}
-            {% trans "Register" %}
-            {% else %}
-            {% trans "Save" %}
-            {% endif %}
-            </button>
-        </form>
-    </div>
-</div>
 
-                    
-                
+{% if user.is_anonymous %}
+<main class="profile-edit-page">
+    <div class="container">
+        <section class="profile-edit-card">
+            <div class="profile-edit-heading">
+                <img class="profile-edit-avatar" src='{% static "img/default-avatar.svg" %}' alt="{% trans 'Default profile photo' %}">
+                <div>
+                    <h2>{% trans "New user registration" %}</h2>
+                </div>
+            </div>
+            <form method="post" class="profile-edit-form profile-registration-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="profile-edit-actions">
+                    <button class="boxed-btn3" type="submit">{% trans "Register" %}</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</main>
+{% else %}
+<main class="profile-edit-page">
+    <div class="container">
+        <section class="profile-edit-card">
+            <div class="profile-edit-heading">
+                {% if user.avatar %}
+                <img class="profile-edit-avatar" src="{{ user.avatar.url }}" alt="{% trans 'Profile photo' %}">
+                {% else %}
+                <img class="profile-edit-avatar" src='{% static "img/default-avatar.svg" %}' alt="{% trans 'Default profile photo' %}">
+                {% endif %}
+                <div>
+                    <h2>{% trans "Edit profile" %}</h2>
+                    <p>{% trans "Update your personal information and profile photo." %}</p>
+                </div>
+            </div>
+            <form method="post" class="profile-edit-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="profile-edit-actions">
+                    <a href="{% url 'mainapp:personal_page' username=user.username %}" class="profile-edit-cancel">{% trans "Cancel" %}</a>
+                    <button class="boxed-btn3" type="submit">{% trans "Save" %}</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</main>
+{% endif %}
 {% endblock content %}

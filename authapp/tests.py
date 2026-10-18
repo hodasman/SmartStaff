@@ -52,6 +52,19 @@ def csrf_post(client, url, data):
 class RegistrationTests(TestCase):
     """Регистрация: создание аккаунта + письмо активации."""
 
+    def test_register_displays_username_format_requirements(self):
+        with self.settings(LANGUAGE_CODE="en"):
+            response = Client().get(reverse("authapp:register"))
+
+        self.assertContains(
+            response,
+            "Required. 15 characters or fewer. Use English letters, digits, "
+            "and only @/./+/-/_",
+        )
+        self.assertContains(response, "css/profile_edit.css")
+        self.assertContains(response, "profile-edit-card")
+        self.assertContains(response, "img/default-avatar.svg")
+
     def test_user_onboarding_defaults_to_not_completed_without_ecosystem(self):
         user = make_user()
 
@@ -525,6 +538,20 @@ class EmailChangeTests(TestCase):
         return self.client.post(
             reverse("authapp:profile_edit", args=[self.user.pk]), data
         )
+
+    def test_profile_edit_displays_username_requirements_and_account_style(self):
+        with self.settings(LANGUAGE_CODE="en"):
+            response = self.client.get(
+                reverse("authapp:profile_edit", args=[self.user.pk])
+            )
+
+        self.assertContains(
+            response,
+            "Required. 15 characters or fewer. Use English letters, digits, "
+            "and only @/./+/-/_",
+        )
+        self.assertContains(response, "css/profile_edit.css")
+        self.assertContains(response, "Update your personal information and profile photo.")
 
     def test_email_change_requires_confirmation(self):
         """Смена email: адрес НЕ меняется сразу, шлётся письмо-подтверждение,

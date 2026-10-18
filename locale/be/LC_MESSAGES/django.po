@@ -72,6 +72,10 @@ msgstr "мянушка"
 msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only"
 msgstr "Абавязкова. 150 сімвалаў або менш. Толькі літары, лічбы і @/./+/-/_"
 
+#: authapp/forms.py
+msgid "Required. 15 characters or fewer. Use English letters, digits, and only @/./+/-/_"
+msgstr "Абавязковае поле. Не больш за 15 сімвалаў. Выкарыстоўвайце толькі англійскія літары, лічбы і сімвалы @/./+/-/_"
+
 #: authapp/models.py:81
 msgid "A user with that username already exists."
 msgstr "Карыстальнік з такім імем карыстальніка ўжо існуе."
@@ -157,7 +161,13 @@ msgstr "Рэгістрацыя новага карыстальніка"
 msgid "Edit profile"
 msgstr "Рэдагаваць профіль"
 
-#: authapp/templates/authapp/user_form.html:44
+msgid "Update your personal information and profile photo."
+msgstr "Абнавіце асабістыя дадзеныя і фота профілю."
+
+msgid "Cancel"
+msgstr "Скасаваць"
+
+#: authapp/templates/authapp/user_form.html
 msgid "Register"
 msgstr "Зарэгістравацца"
 
@@ -1184,7 +1194,40 @@ msgstr "Змяніць"
 msgid "My devices"
 msgstr "Мае прылады"
 
-#: mainapp/templates/mainapp/personal_page.html:116
+msgid "Profile photo"
+msgstr "Фота профілю"
+
+msgid "Default profile photo"
+msgstr "Фота профілю па змаўчанні"
+
+msgid "Account settings"
+msgstr "Налады ўліковага запісу"
+
+msgid "Edit personal details"
+msgstr "Змяніць асабістыя дадзеныя"
+
+msgid "Change ecosystem"
+msgstr "Змяніць экасістэму"
+
+msgid "Your device list is empty."
+msgstr "У вашым спісе пакуль няма прылад."
+
+msgid "Add your smart home devices to get recommendations tailored to your setup."
+msgstr "Дадайце прылады разумнага дома, каб атрымліваць адпаведныя рэкамендацыі."
+
+msgid "Add devices"
+msgstr "Дадаць прылады"
+
+msgid "No scenario recommendations yet. Add devices to your account to get personalized suggestions."
+msgstr "Пакуль няма рэкамендацый сцэнарыяў. Дадайце прылады ва ўліковы запіс, каб атрымліваць персанальныя прапановы."
+
+msgid "Previous page"
+msgstr "Папярэдняя старонка"
+
+msgid "Next page"
+msgstr "Наступная старонка"
+
+#: mainapp/templates/mainapp/personal_page.html
 msgid "Delete"
 msgstr "Выдаліць"
 

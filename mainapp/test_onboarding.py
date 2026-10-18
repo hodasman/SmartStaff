@@ -182,6 +182,29 @@ class OnboardingFlowTests(TestCase):
             response,
             reverse("mainapp:onboarding_start"),
         )
+        self.assertContains(response, "img/default-avatar.svg")
+        self.assertContains(response, "Account settings")
+        self.assertContains(response, "Add devices")
+        self.assertContains(response, reverse("mainapp:devices-list"))
+
+    def test_personal_account_device_list_uses_homepage_cards(self):
+        device = self.create_device("Account sensor", [self.platform_a])
+        self.user.devices.add(device)
+
+        with self.settings(LANGUAGE_CODE="en"):
+            response = self.client.get(
+                reverse(
+                    "mainapp:personal_page",
+                    kwargs={"username": self.user.username},
+                )
+            )
+
+        self.assertContains(response, "home-info-card home-device-card")
+        self.assertContains(response, device.title)
+        self.assertNotContains(
+            response,
+            'class="boxed-btn3">Add devices</a>',
+        )
 
     def test_personal_account_shows_selected_ecosystem_and_change_link(self):
         self.user.ecosystem = self.platform_a
@@ -200,8 +223,30 @@ class OnboardingFlowTests(TestCase):
         self.assertContains(response, "Change")
         self.assertContains(
             response,
-            reverse("mainapp:onboarding_start"),
+            reverse("mainapp:onboarding_ecosystems"),
         )
+
+    def test_ecosystem_selection_can_be_opened_directly_from_account(self):
+        response = self.client.get(
+            reverse("mainapp:onboarding_ecosystems")
+        )
+        self.assertContains(response, "Platform A")
+        self.assertContains(response, "Platform B")
+
+        completion_response = self.client.post(
+            reverse("mainapp:onboarding_ecosystems"),
+            {"ecosystem": str(self.platform_b.pk)},
+        )
+        self.assertRedirects(
+            completion_response,
+            reverse(
+                "mainapp:personal_page",
+                kwargs={"username": self.user.username},
+            ),
+        )
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.ecosystem, self.platform_b)
+        self.assertTrue(self.user.onboarding_completed)
 
     def test_onboarding_pages_require_authentication(self):
         self.client.logout()
@@ -215,7 +260,6 @@ class OnboardingFlowTests(TestCase):
 
     def test_answer_yes_routes_to_searchable_device_selection(self):
         self.create_device("Motion sensor", [self.platform_a])
-
         response = self.client.post(
             reverse("mainapp:onboarding_start"),
             {"has_devices": "yes"},
@@ -231,6 +275,61 @@ class OnboardingFlowTests(TestCase):
         )
         self.assertContains(search_response, "Motion sensor")
         self.assertNotContains(search_response, "No devices match your search.")
+
+    def test_device_selection_paginates_30_and_preserves_selection(self):
+        devices = [
+            self.create_device(
+                f"Pagination sensor {index:02d}",
+                [self.platform_a],
+            )
+            for index in range(31)
+        ]
+        self.client.post(
+            reverse("mainapp:onboarding_start"),
+            {"has_devices": "yes"},
+        )
+        devices_url = reverse("mainapp:onboarding_devices")
+
+        first_page = self.client.get(devices_url)
+        self.assertEqual(first_page.context["devices_page"].paginator.per_page, 30)
+        self.assertEqual(len(first_page.context["devices_page"].object_list), 30)
+        self.assertContains(first_page, "Pagination sensor 00")
+        self.assertNotContains(first_page, "Pagination sensor 30")
+
+        page_two_response = self.client.post(
+            devices_url,
+            {
+                "action": "page",
+                "page": "2",
+                "devices": [str(devices[0].pk)],
+            },
+        )
+        self.assertRedirects(page_two_response, f"{devices_url}?page=2")
+        second_page = self.client.get(page_two_response.url)
+        self.assertContains(second_page, "Pagination sensor 30")
+        self.assertNotContains(second_page, "Pagination sensor 00")
+        self.assertContains(
+            second_page,
+            f'<input type="hidden" name="devices" value="{devices[0].pk}">',
+            html=True,
+        )
+
+        next_response = self.client.post(
+            devices_url,
+            {
+                "action": "next",
+                "page": "2",
+                "devices": [str(devices[0].pk), str(devices[30].pk)],
+            },
+        )
+        self.assertRedirects(
+            next_response,
+            reverse("mainapp:onboarding_ecosystems"),
+        )
+        self.assertSetEqual(
+            set(self.client.session["onboarding_device_ids"]),
+            {devices[0].pk, devices[30].pk},
+        )
 
     def test_search_keeps_selected_devices_outside_current_results(self):
         first_device = self.create_device("Motion sensor", [self.platform_a])

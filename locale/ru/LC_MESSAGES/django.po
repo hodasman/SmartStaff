@@ -71,6 +71,10 @@ msgstr ""
 msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only"
 msgstr ""
 
+#: authapp/forms.py
+msgid "Required. 15 characters or fewer. Use English letters, digits, and only @/./+/-/_"
+msgstr "Обязательное поле. Не более 15 символов. Используйте только английские буквы, цифры и символы @/./+/-/_"
+
 #: authapp/models.py:81
 msgid "A user with that username already exists."
 msgstr ""
@@ -147,7 +151,13 @@ msgstr ""
 msgid "Edit profile"
 msgstr ""
 
-#: authapp/templates/authapp/user_form.html:44
+msgid "Update your personal information and profile photo."
+msgstr "Обновите личные данные и фотографию профиля."
+
+msgid "Cancel"
+msgstr "Отмена"
+
+#: authapp/templates/authapp/user_form.html
 msgid "Register"
 msgstr ""
 
@@ -1136,7 +1146,40 @@ msgstr "Изменить"
 msgid "My devices"
 msgstr ""
 
-#: mainapp/templates/mainapp/personal_page.html:116
+msgid "Profile photo"
+msgstr "Фото профиля"
+
+msgid "Default profile photo"
+msgstr "Фото профиля по умолчанию"
+
+msgid "Account settings"
+msgstr "Настройки аккаунта"
+
+msgid "Edit personal details"
+msgstr "Изменить личные данные"
+
+msgid "Change ecosystem"
+msgstr "Изменить экосистему"
+
+msgid "Your device list is empty."
+msgstr "В вашем списке пока нет устройств."
+
+msgid "Add your smart home devices to get recommendations tailored to your setup."
+msgstr "Добавьте устройства умного дома, чтобы получать подходящие рекомендации."
+
+msgid "Add devices"
+msgstr "Добавить устройства"
+
+msgid "No scenario recommendations yet. Add devices to your account to get personalized suggestions."
+msgstr "Пока нет рекомендаций сценариев. Добавьте устройства в аккаунт, чтобы получать персональные предложения."
+
+msgid "Previous page"
+msgstr "Предыдущая страница"
+
+msgid "Next page"
+msgstr "Следующая страница"
+
+#: mainapp/templates/mainapp/personal_page.html
 msgid "Delete"
 msgstr ""
 
