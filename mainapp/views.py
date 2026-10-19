@@ -18,14 +18,9 @@ from taggit.models import Tag
 
 from mainapp import models as mainapp_models
 from mainapp.filters import DevicesFilter
-from mainapp.forms import (
-    CommentForm,
-    FeedbackCreateForm,
-    OnboardingAnswerForm,
-    OnboardingDeviceSelectionForm,
-    OnboardingEcosystemSelectionForm,
-    RaitingForm,
-)
+from mainapp.forms import (CommentForm, FeedbackCreateForm,
+                           OnboardingAnswerForm, OnboardingDeviceSelectionForm,
+                           OnboardingEcosystemSelectionForm, RaitingForm)
 from mainapp.services.email import send_contact_email_message
 from mainapp.services.utils import get_client_ip
 

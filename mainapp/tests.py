@@ -7,12 +7,7 @@ from django.urls import reverse
 from django.utils.translation import override
 
 from mainapp.admin import MAX_ARTICLE_IMAGE_SIZE, validate_article_image_size
-from mainapp.models import (
-    Article,
-    ArticleCategory,
-    Scenario,
-    article_img_path,
-)
+from mainapp.models import Article, ArticleCategory, Scenario, article_img_path
 from mainapp.templatetags.my_tags import render_article_text
 
 
