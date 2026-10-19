@@ -1,55 +1,95 @@
 {% extends 'base_blog.html' %}
-{% load static %}
-{% load icon_tags %}
 {% load i18n %}
-{% block title %}
-{% trans "Search by tag" %} "{{ tag.name }}"
-{% endblock %}
+{% block title %}{% trans "Search by tag" %} “{{ tag.name }}”{% endblock %}
+
 {% block left_sidebar %}
 <div class="col-lg-8 mb-5 mb-lg-0">
-    <div class="blog_left_sidebar">
-        {% for item in page_obj %}
-        <article class="blog_item">
-            <div class="blog_item_img">
-                <img class="card-img" src='{{item.main_img.url}}' alt="{{item.title}}">
-                <a href="#" class="blog_item_date">
-                    <h3>{{item.created_at|date:"d"}}</h3>
-                    <p>{{item.created_at|date:"M"}}</p>
-                </a>
+    <section class="tag-results-page">
+        <div class="tag-results-heading">
+            <div class="tag-results-title">
+                <span class="tag-results-icon" aria-hidden="true">
+                    <i class="fa fa-tag"></i>
+                </span>
+                <div>
+                    <p>{% trans "Search by tag" %}</p>
+                    <h1>{{ tag.name }}</h1>
+                </div>
             </div>
-            {%if item.preambule%} <!-- Проверяем является ли объект статьей -->
-            <div class="blog_details">
-                <a class="d-inline-block" href="{% url 'mainapp:article_detail' slug=item.slug %}">
-                    <h2>{{item.title}}</h2>
+            <span class="search-results-count">
+                {% blocktrans with total=total_results %}Found {{ total }} results{% endblocktrans %}
+            </span>
+        </div>
+
+        {% if page_obj.object_list %}
+        <div class="search-results-list">
+            {% for item in page_obj %}
+            <article class="search-result-card">
+                <a class="search-result-image" href="{{ item.get_absolute_url }}" tabindex="-1" aria-hidden="true">
+                    {% if item.main_img %}
+                    <img src="{{ item.main_img.url }}" alt="">
+                    {% else %}
+                    <span class="search-result-placeholder">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    </span>
+                    {% endif %}
                 </a>
-                <p>{{item.preambule}}</p>
-                <ul class="blog-info-link">
-                    <li><a href="{% url 'mainapp:articles_category' cat_slug=item.category.slug %}"><i  class="fa {{ item.category|get_icon }}"></i> {{item.category}}</a></li>
-                    <li><i class="fa fa-user"></i> {{item.author.username}}</li>
-                    <li><i class="fa fa-comments"></i> {% trans "Comments" %} - {{item.get_all_comments|length}}</li>
-                </ul>
-            </div>
-            {%else%}
-            <div class="blog_details">
-                <a class="d-inline-block" href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
-                    <h2>{{item.title}}</h2>
-                </a>
-                <p>{{item.description|safe|escape}}</p>
-                <ul class="blog-info-link">
-                    <li><i class="fa fa-user"></i> {{item.author}}</li>
-                    <li><i class="fa fa-comments"></i> {% trans "Comments" %} - {{item.get_all_comments|length}}</li>
-                </ul>
-            </div>
-            {%endif%}
-        </article>
-        {% endfor %}
-        
-        {% include "includes/pagination.html" %}
-        
-    </div>
+                <div class="search-result-content">
+                    <div class="search-result-meta">
+                        <span class="search-result-type">{{ item.search_type }}</span>
+                        <time datetime="{{ item.created_at|date:'Y-m-d' }}">
+                            {{ item.created_at|date:"j E Y" }}
+                        </time>
+                    </div>
+                    <h2 class="tag-result-title">
+                        <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                    </h2>
+                    {% if item.search_excerpt %}
+                    <p>{{ item.search_excerpt|striptags|truncatewords:32 }}</p>
+                    {% endif %}
+                    <a class="search-result-link" href="{{ item.get_absolute_url }}">
+                        {% trans "Read more" %}
+                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.paginator.num_pages > 1 %}
+        <nav class="search-pagination" aria-label="{% trans 'Pagination' %}">
+            {% if page_obj.has_previous %}
+            <a class="search-pagination-link"
+                href="?page={{ page_obj.previous_page_number }}"
+                aria-label="{% trans 'Previous' %}">
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+            </a>
+            {% endif %}
+            {% for page_number in page_obj.paginator.page_range %}
+            <a class="search-pagination-link{% if page_number == page_obj.number %} is-current{% endif %}"
+                href="?page={{ page_number }}"
+                {% if page_number == page_obj.number %}aria-current="page"{% endif %}>
+                {{ page_number }}
+            </a>
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <a class="search-pagination-link"
+                href="?page={{ page_obj.next_page_number }}"
+                aria-label="{% trans 'Next' %}">
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </a>
+            {% endif %}
+        </nav>
+        {% endif %}
+        {% else %}
+        <div class="search-empty-state">
+            <span class="search-empty-icon" aria-hidden="true">
+                <i class="fa fa-folder-open-o"></i>
+            </span>
+            <h2>{% trans "No results found" %}</h2>
+        </div>
+        {% endif %}
+    </section>
 </div>
-{%endblock left_sidebar%}
+{% endblock left_sidebar %}
 
-{% block right_sidebar %}
-
-{%endblock right_sidebar%}
+{% block right_sidebar %}{% endblock right_sidebar %}

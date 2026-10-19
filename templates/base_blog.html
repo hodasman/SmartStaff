@@ -63,7 +63,13 @@
                         {% for post in posts %}
                         <div class="media post_item">
                             <div class="box">
+                                {% if post.main_img %}
                                 <img src='{{post.main_img.url}}' alt="{{post.title}}">
+                                {% else %}
+                                <span class="article-image-placeholder" aria-hidden="true">
+                                    <i class="fa fa-file-text-o"></i>
+                                </span>
+                                {% endif %}
                             </div>
                             <div class="media-body">
                                 <a href="{% url 'mainapp:article_detail' slug=post.slug %}">

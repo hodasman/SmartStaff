@@ -1060,6 +1060,26 @@ msgid "Search"
 msgstr ""
 
 #: mainapp/templates/mainapp/search.html:30
+msgid "Search results"
+msgstr ""
+
+#, python-format
+msgid "Found %(total)s results"
+msgstr ""
+
+msgid "Read more"
+msgstr ""
+
+msgid "No results found"
+msgstr ""
+
+msgid "Enter a search term to find articles and scenarios."
+msgstr ""
+
+msgid "Pagination"
+msgstr ""
+
+#: mainapp/templates/mainapp/search.html:30
 msgid "Search results for"
 msgstr ""
 

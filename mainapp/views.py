@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
-from django.db.models import Prefetch, Q
+from django.db.models import Count, Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -360,6 +360,13 @@ class ArticlesListView(ListView):
     model = mainapp_models.Article
     paginate_by = 5
 
+    def get_queryset(self):
+        return (
+            mainapp_models.Article.objects.select_related("category", "author")
+            .annotate(comments_count=Count("articlecomment"))
+            .order_by("-created_at", "-pk")
+        )
+
     def get_context_data(self, **kwargs):
         context = super(ArticlesListView, self).get_context_data(**kwargs)
         context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
@@ -391,13 +398,18 @@ class ArticlesDetailView(DetailView):
 
 class ArticlesCategory(ListView):
     model = mainapp_models.Article
-    template_name = "mainapp/articles_list.html"
+    template_name = "mainapp/article_list.html"
     paginate_by = 5
 
     def get_queryset(self):
         """cat__slug – это способ обращения к слагу таблицы ArticleCategory через объект category модели Articles
         функция выдает объект QuerySet с выборкой по категории"""
-        return mainapp_models.Article.objects.filter(category__slug=self.kwargs["cat_slug"])
+        return (
+            mainapp_models.Article.objects.filter(category__slug=self.kwargs["cat_slug"])
+            .select_related("category", "author")
+            .annotate(comments_count=Count("articlecomment"))
+            .order_by("-created_at", "-pk")
+        )
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesCategory, self).get_context_data(**kwargs)
@@ -522,30 +534,32 @@ class ESearchView(View):
     def get(self, request, *args, **kwargs):
         context = {}
  
-        q = request.GET.get('q')
+        q = request.GET.get('q', '').strip()
+        context["search_query"] = q
         if q:
-            query_sets = []  # Total QuerySet
- 
-            # Searching for all models
-            query_sets.append(mainapp_models.Article.objects.search(query=q))
-            query_sets.append(mainapp_models.Scenario.objects.search(query=q))
- 
-            # and combine results
-            final_set = list(chain(*query_sets))
-            final_set.sort(key=lambda x: x.created_at, reverse=True)  # Sorting
- 
-            context['last_question'] = '?q=%s' % q
-            context['total_results'] = len(final_set)
- 
-            current_page = Paginator(final_set, 10)
- 
-            page = request.GET.get('page')
-            try:
-                context['object_list'] = current_page.page(page)
-            except PageNotAnInteger:
-                context['object_list'] = current_page.page(1)
-            except EmptyPage:
-                context['object_list'] = current_page.page(current_page.num_pages)
+            articles = list(mainapp_models.Article.objects.search(query=q))
+            scenarios = list(mainapp_models.Scenario.objects.search(query=q))
+            for article in articles:
+                article.search_type = article._meta.verbose_name
+                article.search_excerpt = article.preambule or article.text
+            for scenario in scenarios:
+                scenario.search_type = scenario._meta.verbose_name
+                scenario.search_excerpt = scenario.description or scenario.text
+
+            results = sorted(
+                chain(articles, scenarios),
+                key=lambda item: item.created_at,
+                reverse=True,
+            )
+            paginator = Paginator(results, 10)
+            page_obj = paginator.get_page(request.GET.get("page"))
+            context.update(
+                {
+                    "page_obj": page_obj,
+                    "object_list": page_obj.object_list,
+                    "total_results": paginator.count,
+                }
+            )
  
         return render(request=request, template_name=self.template_name, context=context)
     
@@ -691,25 +705,31 @@ def delete_device_user(request, slug):
 
 def tag_list(request, tag_slug=None):
     '''Вьюха для страницы тегов. Выводит на страницу и статьи и сценарии по тегу'''
-    query_sets = []
     tag = get_object_or_404(Tag, slug=tag_slug)
-    query_sets.append(mainapp_models.Article.objects.filter(tags__in=[tag]))
-    query_sets.append(mainapp_models.Scenario.objects.filter(tags__in=[tag]))
-    final_set = list(chain(*query_sets))
+    articles = list(mainapp_models.Article.objects.filter(tags__in=[tag]))
+    scenarios = list(mainapp_models.Scenario.objects.filter(tags__in=[tag]))
+    for article in articles:
+        article.search_type = article._meta.verbose_name
+        article.search_excerpt = article.preambule or article.text
+    for scenario in scenarios:
+        scenario.search_type = scenario._meta.verbose_name
+        scenario.search_excerpt = scenario.description or scenario.text
 
-    paginator = Paginator(final_set, 3) # 3 posts in each page
-    page = request.GET.get('page')
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer deliver the first page
-        posts = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range deliver last page of results
-        posts = paginator.page(paginator.num_pages)
-    return render(request, 'mainapp/list_tag.html', {'page': page,
-                                                   'page_obj': posts,
-                                                   'tag': tag,})
+    posts = sorted(
+        chain(articles, scenarios),
+        key=lambda item: item.created_at,
+        reverse=True,
+    )
+    page_obj = Paginator(posts, 10).get_page(request.GET.get("page"))
+    return render(
+        request,
+        "mainapp/list_tag.html",
+        {
+            "page_obj": page_obj,
+            "tag": tag,
+            "total_results": page_obj.paginator.count,
+        },
+    )
 
 
 class FeedbackCreateView(SuccessMessageMixin, CreateView):

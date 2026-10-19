@@ -2,11 +2,181 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 from django.core.exceptions import ValidationError
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase
+from django.urls import reverse
+from django.utils.translation import override
 
 from mainapp.admin import MAX_ARTICLE_IMAGE_SIZE, validate_article_image_size
-from mainapp.models import article_img_path
+from mainapp.models import (
+    Article,
+    ArticleCategory,
+    Scenario,
+    article_img_path,
+)
 from mainapp.templatetags.my_tags import render_article_text
+
+
+class ArticleListPageTests(TestCase):
+    def test_article_list_renders_featured_article_without_image(self):
+        category = ArticleCategory.objects.create(title="Guides")
+        article = Article.objects.create(
+            title="A practical smart home guide",
+            category=category,
+            preambule="A short introduction to the guide.",
+            text="Article body.",
+        )
+
+        response = self.client.get(reverse("mainapp:articles"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "article-featured-card")
+        self.assertContains(response, article.title)
+        self.assertContains(response, "article-image-placeholder")
+        self.assertContains(
+            response,
+            reverse("mainapp:article_detail", kwargs={"slug": article.slug}),
+        )
+
+        category_response = self.client.get(
+            reverse(
+                "mainapp:articles_category",
+                kwargs={"cat_slug": category.slug},
+            )
+        )
+
+        self.assertEqual(category_response.status_code, 200)
+        self.assertContains(category_response, "article-featured-card")
+
+
+class SearchFunctionalityTests(TestCase):
+    def setUp(self):
+        category = ArticleCategory.objects.create(title="Guides")
+        self.article = Article.objects.create(
+            title="Яркая статья",
+            category=category,
+            text="Текст статьи.",
+        )
+        self.scenario = Scenario.objects.create(
+            title="Яркий сценарий",
+            text="Текст сценария.",
+        )
+
+    def test_search_is_case_insensitive_for_cyrillic(self):
+        self.assertTrue(
+            Article.objects.search("ЯРКАЯ")
+            .filter(pk=self.article.pk)
+            .exists()
+        )
+        self.assertTrue(
+            Article.objects.search("ТЕКСТ СТАТЬИ")
+            .filter(pk=self.article.pk)
+            .exists()
+        )
+        self.assertTrue(
+            Scenario.objects.search("ЯРКИЙ").filter(pk=self.scenario.pk).exists()
+        )
+
+    def test_short_search_returns_results_without_error(self):
+        for query in ("я", "яр"):
+            with self.subTest(query=query):
+                response = self.client.get(
+                    reverse("mainapp:search"),
+                    {"q": query},
+                )
+
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, self.article.title)
+                self.assertContains(response, self.scenario.title)
+                self.assertContains(
+                    response,
+                    self.scenario.get_absolute_url(),
+                )
+
+    def test_search_treats_regex_metacharacters_as_plain_text(self):
+        self.article.title = "Температура + датчик"
+        self.article.save(update_fields=["title"])
+
+        self.assertTrue(
+            Article.objects.search("+").filter(pk=self.article.pk).exists()
+        )
+
+    def test_search_results_use_styled_cards_and_escape_article_html(self):
+        self.article.text = '<p>Содержимое</p><script>alert("unsafe")</script>'
+        self.article.save(update_fields=["text"])
+
+        response = self.client.get(
+            reverse("mainapp:search"),
+            {"q": "ЯРКАЯ"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "search-result-card")
+        self.assertContains(response, "search-results-count")
+        self.assertContains(response, "Содержимое")
+        self.assertNotContains(
+            response,
+            '<script>alert("unsafe")</script>',
+        )
+
+    def test_search_page_shows_empty_states_for_empty_and_unmatched_queries(self):
+        empty_response = self.client.get(reverse("mainapp:search"))
+        no_results_response = self.client.get(
+            reverse("mainapp:search"),
+            {"q": "несуществующий запрос"},
+        )
+
+        self.assertEqual(empty_response.status_code, 200)
+        self.assertContains(empty_response, "search-empty-state--welcome")
+        self.assertEqual(no_results_response.status_code, 200)
+        self.assertContains(no_results_response, "search-empty-state")
+
+
+class TagResultsPageTests(TestCase):
+    def setUp(self):
+        category = ArticleCategory.objects.create(title="Guides")
+        self.article = Article.objects.create(
+            title="Tagged article",
+            category=category,
+            preambule="Article summary",
+            text="Article body",
+        )
+        self.scenario = Scenario.objects.create(
+            title="Tagged scenario",
+            description="Scenario summary",
+            text="Scenario body",
+        )
+        self.article.tags.add("smart-home")
+        self.scenario.tags.add("smart-home")
+
+    def test_tag_page_renders_tagged_articles_and_scenarios_as_cards(self):
+        with override("ru"):
+            response = self.client.get(
+                reverse(
+                    "mainapp:list_by_tag",
+                    kwargs={"tag_slug": "smart-home"},
+                )
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Поиск по тегу")
+        self.assertContains(response, "tag-results-heading")
+        self.assertContains(response, "search-result-card")
+        self.assertContains(response, self.article.title)
+        self.assertContains(response, self.scenario.title)
+        self.assertContains(
+            response,
+            reverse("mainapp:article_detail", kwargs={"slug": self.article.slug}),
+        )
+        self.assertContains(response, self.scenario.get_absolute_url())
+
+    def test_tag_page_handles_invalid_page_numbers(self):
+        response = self.client.get(
+            reverse("mainapp:list_by_tag", kwargs={"tag_slug": "smart-home"}),
+            {"page": "invalid"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.article.title)
 
 
 class ArticleImageRenderingTests(SimpleTestCase):

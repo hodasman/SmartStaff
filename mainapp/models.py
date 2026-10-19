@@ -1,6 +1,8 @@
+import re
+
 from autoslug import AutoSlugField
 from django.conf import settings
-from django.db import models
+from django.db import connections, models
 from django.db.models import Avg, Count, Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -23,6 +25,16 @@ def scenarios_img_path(instance, filename):
     # file will be uploaded to
     #   MEDIA_ROOT / scenarios_img / <slug> / <filename>
     return "scenarios_img/{0}/{1}".format(instance.slug, filename)
+
+
+def _search_content(query, database):
+    if connections[database].vendor == "sqlite":
+        lookup = "iregex"
+        query = re.escape(query)
+    else:
+        lookup = "icontains"
+
+    return Q(**{f"title__{lookup}": query}) | Q(**{f"text__{lookup}": query})
 
 
 class Platform(models.Model):
@@ -123,8 +135,7 @@ class ObjectManager(models.Manager):
     def search(self, query=None):
         qs = self.get_queryset()
         if query:
-            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
-            qs = qs.filter(or_lookup)
+            qs = qs.filter(_search_content(query, qs.db))
  
         return qs
 
@@ -143,8 +154,7 @@ class ArticleQuerySet(models.QuerySet):
     def search(self, query=None):
         qs = self
         if query:
-            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
-            qs = qs.filter(or_lookup)
+            qs = qs.filter(_search_content(query, qs.db))
         return qs
 
 
@@ -359,8 +369,7 @@ class ScenarioQuerySet(models.QuerySet):
     def search(self, query=None):
         qs = self
         if query:
-            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
-            qs = qs.filter(or_lookup)
+            qs = qs.filter(_search_content(query, qs.db))
         return qs
 
 
@@ -419,7 +428,7 @@ class Scenario(models.Model):
         return self.get_previous_by_created_at()
     
     def get_absolute_url(self):
-        return reverse('mainapp:scenario-detail', kwargs={'slug': self.slug})
+        return reverse("mainapp:scenario_detail", kwargs={"slug": self.slug})
     
     def get_rating(self) -> int:
         """Средняя оценка сценария (0, если оценок нет)."""

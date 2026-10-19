@@ -1281,6 +1281,26 @@ msgid "Search"
 msgstr "Пошук"
 
 #: mainapp/templates/mainapp/search.html:30
+msgid "Search results"
+msgstr "Вынікі пошуку"
+
+#, python-format
+msgid "Found %(total)s results"
+msgstr "Знойдзена вынікаў: %(total)s"
+
+msgid "Read more"
+msgstr "Чытаць далей"
+
+msgid "No results found"
+msgstr "Нічога не знойдзена"
+
+msgid "Enter a search term to find articles and scenarios."
+msgstr "Увядзіце запыт, каб знайсці артыкулы і сцэнары."
+
+msgid "Pagination"
+msgstr "Старонкі вынікаў"
+
+#: mainapp/templates/mainapp/search.html:30
 msgid "Search results for"
 msgstr "Рэштвы пошуку для"
 
