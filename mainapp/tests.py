@@ -43,6 +43,30 @@ class ArticleListPageTests(TestCase):
         self.assertContains(category_response, "article-featured-card")
 
 
+class ArticleDetailPageTests(TestCase):
+    def test_article_detail_uses_focused_layout_without_sidebar_or_fake_actions(self):
+        category = ArticleCategory.objects.create(title="Guides")
+        article = Article.objects.create(
+            title="A practical smart home guide",
+            category=category,
+            preambule="A concise article introduction.",
+            text="<p>Article body.</p>",
+        )
+
+        response = self.client.get(
+            reverse("mainapp:article_detail", kwargs={"slug": article.slug})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "article-detail-page")
+        self.assertContains(response, "article-detail-content")
+        self.assertContains(response, article.title)
+        self.assertContains(response, "Article body.")
+        self.assertNotContains(response, "blog_right_sidebar")
+        self.assertNotContains(response, "Lily and 4")
+        self.assertNotContains(response, "facebook-f")
+
+
 class SearchFunctionalityTests(TestCase):
     def setUp(self):
         category = ArticleCategory.objects.create(title="Guides")

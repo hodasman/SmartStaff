@@ -372,21 +372,25 @@ class ArticlesDetailView(DetailView):
     model = mainapp_models.Article
     comment_form = CommentForm
 
+    def get_queryset(self):
+        return super().get_queryset().select_related("category", "author")
+
     def get_context_data(self, **kwargs):
         context = super(ArticlesDetailView, self).get_context_data(**kwargs)
-        context["all_categories"] = mainapp_models.ArticleCategory.objects.all()
-        context['comments'] = mainapp_models.ArticleComment.objects.filter(article_id = context["object"].id)
-        user = auth.get_user(self.request)
-        if user.is_authenticated:
-            context['form'] = self.comment_form # передаем форму комментария
+        article = context["object"]
+        context["comments"] = mainapp_models.ArticleComment.objects.filter(
+            article=article
+        ).select_related("author")
+        if self.request.user.is_authenticated:
+            context["form"] = self.comment_form()
         try:
-            context["next"] = self.get_object().next() # находим следующий объект
-        except Exception:
-            context["next"] = self.model.objects.first() # если его нет берем первый
+            context["next"] = article.get_next_by_created_at()
+        except mainapp_models.Article.DoesNotExist:
+            context["next"] = None
         try:
-            context["prev"] = self.get_object().pre()
-        except Exception:
-            context["prev"] = self.model.objects.last()
+            context["prev"] = article.get_previous_by_created_at()
+        except mainapp_models.Article.DoesNotExist:
+            context["prev"] = None
 
         return context
 
