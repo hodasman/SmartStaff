@@ -7,7 +7,14 @@ from django.urls import reverse
 from django.utils.translation import override
 
 from mainapp.admin import MAX_ARTICLE_IMAGE_SIZE, validate_article_image_size
-from mainapp.models import Article, ArticleCategory, Scenario, article_img_path
+from mainapp.models import (
+    Article,
+    ArticleCategory,
+    Platform,
+    Scenario,
+    ScenarioVariant,
+    article_img_path,
+)
 from mainapp.templatetags.my_tags import render_article_text
 
 
@@ -65,6 +72,57 @@ class ArticleDetailPageTests(TestCase):
         self.assertNotContains(response, "blog_right_sidebar")
         self.assertNotContains(response, "Lily and 4")
         self.assertNotContains(response, "facebook-f")
+
+
+class ScenarioListPageTests(TestCase):
+    def test_scenario_list_renders_cards_without_blog_sidebar(self):
+        Platform.objects.create(title="SmartThings")
+        scenario = Scenario.objects.create(
+            title="Turn on the lights at sunset",
+            description="A practical lighting automation.",
+        )
+
+        response = self.client.get(reverse("mainapp:scenarios"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "scenario-listing-page")
+        self.assertContains(response, "scenario-card-grid")
+        self.assertContains(response, "scenario-list-image-placeholder")
+        self.assertContains(response, scenario.title)
+        self.assertContains(response, scenario.get_absolute_url())
+        self.assertNotContains(response, "scenario-platform-filters")
+        self.assertNotContains(response, "blog_right_sidebar")
+
+    def test_scenario_list_shows_empty_state(self):
+        response = self.client.get(reverse("mainapp:scenarios"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "scenario-list-empty-state")
+
+    def test_scenario_platform_filter_uses_scenario_variants(self):
+        platform = Platform.objects.create(title="Aqara Home")
+        other_platform = Platform.objects.create(title="SmartThings")
+        matching_scenario = Scenario.objects.create(title="Aqara automation")
+        other_scenario = Scenario.objects.create(title="SmartThings automation")
+        ScenarioVariant.objects.create(
+            scenario=matching_scenario,
+            platform=platform,
+        )
+        ScenarioVariant.objects.create(
+            scenario=other_scenario,
+            platform=other_platform,
+        )
+
+        response = self.client.get(
+            reverse(
+                "mainapp:scenarios_category",
+                kwargs={"platform_id": platform.id},
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, matching_scenario.title)
+        self.assertNotContains(response, other_scenario.title)
 
 
 class SearchFunctionalityTests(TestCase):

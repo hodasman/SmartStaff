@@ -1434,3 +1434,7 @@ msgstr "получать информацию о новых статьях и с
 #: templates/subscribe/tags/form_right.html:2
 msgid "Subscribe to news"
 msgstr "Подписка на новости"
+
+#: mainapp/templates/mainapp/scenario_list.html
+msgid "No scenarios are available right now."
+msgstr "Сценарии пока не добавлены."

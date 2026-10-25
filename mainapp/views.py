@@ -454,11 +454,6 @@ class ScenariosListView(ListView):
     model = mainapp_models.Scenario
     paginate_by = 5
 
-    def get_context_data(self, **kwargs):
-        context = super(ScenariosListView, self).get_context_data(**kwargs)
-        context["all_categories"] = mainapp_models.Platform.objects.all()
-        return context
-
 
 class ScenariosDetailView(DetailView):
     model = mainapp_models.Scenario
@@ -492,7 +487,9 @@ class ScenariosCategory(ListView):
 
     def get_queryset(self):
         """Получаем объект QuerySet выборку сценариев по категории (платформе)"""
-        return mainapp_models.Scenario.objects.filter(platform__id=self.kwargs["platform_id"])
+        return mainapp_models.Scenario.objects.filter(
+            variants__platform_id=self.kwargs["platform_id"]
+        ).distinct()
 
     def get_context_data(self, **kwargs):
         context = super(ScenariosCategory, self).get_context_data(**kwargs)

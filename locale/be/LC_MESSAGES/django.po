@@ -1488,6 +1488,10 @@ msgstr "атрымаць інфармацыю пра новыя артыкулы
 msgid "Subscribe to news"
 msgstr "Падпісацца на навіны"
 
+#: mainapp/templates/mainapp/scenario_list.html
+msgid "No scenarios are available right now."
+msgstr "Сцэнары пакуль не дададзены."
+
 #~ msgid "age"
 #~ msgstr "узрост"
 

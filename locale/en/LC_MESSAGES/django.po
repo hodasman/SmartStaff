@@ -1227,3 +1227,7 @@ msgstr ""
 #: templates/subscribe/tags/form_right.html:2
 msgid "Subscribe to news"
 msgstr ""
+
+#: mainapp/templates/mainapp/scenario_list.html
+msgid "No scenarios are available right now."
+msgstr "No scenarios are available right now."

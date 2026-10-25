@@ -1,47 +1,86 @@
-{% extends 'base_blog.html' %}
-{% load static %}
+{% extends 'base.html' %}
 {% load i18n %}
+{% load static %}
+
 {% block title %}
-    {% if view.kwargs %}
-    {% trans "Automation scenarios" %} {{ platform }}
-    {% else %}
-    {% trans "Automation scenarios" %}
-    {% endif %}
-    ({{ object_list|length }})
+    {% trans "Automation scenarios" %}{% if platform %} — {{ platform }}{% endif %}
+    ({{ page_obj.paginator.count }})
 {% endblock title %}
 
-{% block left_sidebar %}
-<div class="col-lg-8 mb-5 mb-lg-0">
-    <div class="blog_left_sidebar">
-        {% for item in object_list %}
-        <article class="blog_item">
-            <div class="blog_item_img">
-                <img class="card-img" src ='{{item.main_img.url}}' alt="{{item.title}}">
-                <a href="#" class="blog_item_date">
-                    <h3>{{item.created_at|date:"d"}}</h3>
-                    <p>{{item.created_at|date:"M"}}</p>
-                </a>
-            </div>
-
-            <div class="blog_details">
-                <a class="d-inline-block" href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
-                    <h2>{{item.title}}</h2>
-                </a>
-                <p>{{item.description|safe|escape}}</p>
-                <ul class="blog-info-link">
-                    <li><i class="fa fa-user"></i> {{item.author}}</li>
-                    <li><i class="fa fa-comments"></i> {% trans "Comments" %} - {{item.get_all_comments|length}}</li>
-                </ul>
-            </div>
-        </article>
-        {% endfor %}
-        
-        {% include "includes/pagination.html" %}
-        
+{% block content %}
+<section class="bradcam_area bradcam_bg_1 scenario-list-banner">
+    <div class="container">
+        <div class="scenario-list-banner-content">
+            <h1>{% if platform %}{{ platform }}{% else %}{% trans "Automation scenarios" %}{% endif %}</h1>
+            <span class="scenario-list-count">{{ page_obj.paginator.count }}</span>
+        </div>
     </div>
-</div>
-{% endblock left_sidebar %}
-{% block right_sidebar %}
-{%endblock right_sidebar%}
+</section>
 
-  
+<main class="scenario-listing-page">
+    <div class="container scenario-listing-container">
+        {% if object_list %}
+        <section class="scenario-card-grid" aria-label="{% trans 'Automation scenarios' %}">
+            {% for item in object_list %}
+            <article class="scenario-list-card">
+                <a class="scenario-list-card-media" href="{% url 'mainapp:scenario_detail' slug=item.slug %}"
+                    aria-label="{{ item.title }}">
+                    {% if item.main_img %}
+                    <img src="{{ item.main_img.url }}" alt="{{ item.title }}" loading="lazy">
+                    {% elif item.images.all %}
+                        {% with scenario_image=item.images.all.0 %}
+                        <img src="{{ scenario_image.image.url }}"
+                            alt="{{ scenario_image.alt|default:item.title }}" loading="lazy">
+                        {% endwith %}
+                    {% else %}
+                    <span class="scenario-list-image-placeholder" aria-hidden="true">
+                        <i class="fa fa-lightbulb-o"></i>
+                    </span>
+                    {% endif %}
+                </a>
+
+                <div class="scenario-list-card-content">
+                    <div class="scenario-list-card-meta">
+                        <span class="scenario-device-count">
+                            <i class="fa fa-th-large" aria-hidden="true"></i>
+                            {{ item.get_device_types_display }}
+                        </span>
+                        <time datetime="{{ item.created_at|date:'Y-m-d' }}">
+                            {{ item.created_at|date:"j E Y" }}
+                        </time>
+                    </div>
+                    <h2>
+                        <a href="{% url 'mainapp:scenario_detail' slug=item.slug %}">{{ item.title }}</a>
+                    </h2>
+                    {% if item.description %}
+                    <p class="scenario-list-card-summary">{{ item.description|truncatewords:28 }}</p>
+                    {% endif %}
+                    <div class="scenario-list-card-footer">
+                        {% if item.author %}
+                        <span><i class="fa fa-user" aria-hidden="true"></i> {{ item.author.username }}</span>
+                        {% endif %}
+                        <span>
+                            <i class="fa fa-comments" aria-hidden="true"></i>
+                            {% trans "Comments" %}: {{ item.get_all_comments|length }}
+                        </span>
+                        <a class="scenario-list-read-link"
+                            href="{% url 'mainapp:scenario_detail' slug=item.slug %}"
+                            aria-label="{{ item.title }}">
+                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </section>
+        {% else %}
+        <div class="scenario-list-empty-state">
+            <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+            <h2>{% trans "No scenarios are available right now." %}</h2>
+        </div>
+        {% endif %}
+
+        {% include "includes/pagination.html" %}
+    </div>
+</main>
+{% endblock content %}
