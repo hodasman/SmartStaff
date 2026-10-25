@@ -2,7 +2,9 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 from django.core.exceptions import ValidationError
-from django.test import SimpleTestCase, TestCase
+from django.db import connection
+from django.db.migrations.executor import MigrationExecutor
+from django.test import SimpleTestCase, TestCase, TransactionTestCase
 from django.urls import reverse
 from django.utils.translation import override
 
@@ -10,7 +12,10 @@ from mainapp.admin import MAX_ARTICLE_IMAGE_SIZE, validate_article_image_size
 from mainapp.models import (
     Article,
     ArticleCategory,
+    DeviceCategory,
+    DeviceType,
     Platform,
+    RatingStar,
     Scenario,
     ScenarioVariant,
     article_img_path,
@@ -89,6 +94,7 @@ class ScenarioListPageTests(TestCase):
         self.assertContains(response, "scenario-card-grid")
         self.assertContains(response, "scenario-list-image-placeholder")
         self.assertContains(response, scenario.title)
+        self.assertContains(response, "A practical lighting automation.")
         self.assertContains(response, scenario.get_absolute_url())
         self.assertNotContains(response, "scenario-platform-filters")
         self.assertNotContains(response, "blog_right_sidebar")
@@ -123,6 +129,105 @@ class ScenarioListPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, matching_scenario.title)
         self.assertNotContains(response, other_scenario.title)
+
+
+class ScenarioDetailContentTests(TestCase):
+    def test_scenario_page_renders_idea_short_description_and_implementation(self):
+        scenario = Scenario.objects.create(
+            title="A practical smart home scenario",
+            idea="<p>Why this automation is useful.</p><script>alert('unsafe')</script>",
+            description="<p>Catalog-only summary.</p>",
+            text="<p>How to configure the automation.</p>",
+        )
+        platform = Platform.objects.create(title="Aqara Home")
+        device_category = DeviceCategory.objects.create(title="Sensors")
+        device_type = DeviceType.objects.create(
+            category=device_category,
+            title="Leak sensor",
+        )
+        scenario.device_types.add(device_type)
+        RatingStar.objects.bulk_create(
+            [RatingStar(value=value) for value in range(1, 6)]
+        )
+        ScenarioVariant.objects.create(
+            scenario=scenario,
+            platform=platform,
+            title="Variant title should stay hidden",
+            description="Variant description should stay hidden",
+        )
+
+        with override("ru"):
+            response = self.client.get(
+                reverse("mainapp:scenario_detail", kwargs={"slug": scenario.slug})
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Идея")
+        self.assertContains(response, "Реализация")
+        self.assertContains(response, "Типы используемых устройств")
+        self.assertContains(response, "Why this automation is useful.")
+        self.assertContains(response, "How to configure the automation.")
+        self.assertContains(response, platform.title)
+        self.assertContains(response, device_type.title)
+        self.assertContains(response, "scenario-rating-stars")
+        self.assertEqual(response.content.count(b'class="scenario-rating-input"'), 5)
+        self.assertNotContains(response, "Catalog-only summary.")
+        self.assertNotContains(response, "Variant title should stay hidden")
+        self.assertNotContains(response, "Variant description should stay hidden")
+        self.assertNotContains(response, "<script>alert('unsafe')</script>")
+        self.assertNotContains(response, "Attention! Depending on the version")
+        self.assertNotContains(response, "blog_right_sidebar")
+        self.assertNotContains(response, "facebook-f")
+
+
+class ScenarioIdeaMigrationTests(TransactionTestCase):
+    migrate_from = [("mainapp", "0038_update_platform_descriptions")]
+    migrate_to = [("mainapp", "0039_scenario_idea_text")]
+
+    def setUp(self):
+        super().setUp()
+        executor = MigrationExecutor(connection)
+        executor.migrate(self.migrate_from)
+        old_apps = executor.loader.project_state(self.migrate_from).apps
+        Idea = old_apps.get_model("mainapp", "Idea")
+        Scenario = old_apps.get_model("mainapp", "Scenario")
+
+        populated_idea = Idea.objects.create(
+            title="A useful idea",
+            description="<p>Copied idea text.</p>",
+        )
+        empty_idea = Idea.objects.create(title="Idea title fallback", description="")
+        self.populated_scenario_id = Scenario.objects.create(
+            title="Scenario with idea description",
+            slug="scenario-with-idea-description",
+            idea=populated_idea,
+        ).pk
+        self.fallback_scenario_id = Scenario.objects.create(
+            title="Scenario with idea title",
+            slug="scenario-with-idea-title",
+            idea=empty_idea,
+        ).pk
+
+        executor = MigrationExecutor(connection)
+        executor.migrate(self.migrate_to)
+        self.new_apps = executor.loader.project_state(self.migrate_to).apps
+
+    def tearDown(self):
+        executor = MigrationExecutor(connection)
+        executor.migrate(executor.loader.graph.leaf_nodes())
+        super().tearDown()
+
+    def test_migration_copies_idea_description_and_falls_back_to_title(self):
+        Scenario = self.new_apps.get_model("mainapp", "Scenario")
+
+        self.assertEqual(
+            Scenario.objects.get(pk=self.populated_scenario_id).idea,
+            "<p>Copied idea text.</p>",
+        )
+        self.assertEqual(
+            Scenario.objects.get(pk=self.fallback_scenario_id).idea,
+            "Idea title fallback",
+        )
 
 
 class SearchFunctionalityTests(TestCase):

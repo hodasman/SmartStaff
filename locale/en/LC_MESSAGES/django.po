@@ -455,6 +455,14 @@ msgstr ""
 msgid "Device types"
 msgstr ""
 
+#: mainapp/templates/mainapp/scenario_detail.html
+msgid "Types of devices used"
+msgstr "Types of devices used"
+
+#: mainapp/templates/mainapp/scenario_detail.html
+msgid "Rating"
+msgstr "Rating"
+
 #: mainapp/models.py:171
 msgid "Brief description"
 msgstr ""
@@ -1040,6 +1048,10 @@ msgstr ""
 #: mainapp/templates/mainapp/scenario_detail.html:91
 msgid "Explanations"
 msgstr ""
+
+#: mainapp/models.py
+msgid "Implementation"
+msgstr "Implementation"
 
 #: mainapp/templates/mainapp/scenario_detail.html:98
 msgid ""

@@ -57,19 +57,6 @@ class Platform(models.Model):
         return qty
 
 
-class Idea(models.Model):
-    title = models.CharField(max_length=256, verbose_name=_("Name"))
-    description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
-
-    class Meta:
-        verbose_name = _("Idea")
-        verbose_name_plural = _("Ideas")
-        ordering = ["title"]
-
-    def __str__(self) -> str:
-        return f"{self.title}"
-
-
 class ArticleCategory(models.Model):
     title = models.CharField(max_length=256, verbose_name=_("Name"))
     slug = AutoSlugField(populate_from="title", unique=True, db_index=True)
@@ -391,13 +378,13 @@ class Scenario(models.Model):
     objects = ScenarioManager()
     title = models.CharField(max_length=256, verbose_name=_("Title"))
     slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
-    text = models.TextField(verbose_name=_("Text"), blank=True)
-    description = models.TextField(verbose_name=_("Description"), blank=True)
+    idea = models.TextField(verbose_name=_("Idea"), blank=True)
+    text = models.TextField(verbose_name=_("Implementation"), blank=True)
+    description = models.TextField(verbose_name=_("Brief description"), blank=True)
     main_img = models.ImageField(verbose_name=_("Main image"), blank=True, null=True, upload_to=scenarios_img_path)
     device_types = models.ManyToManyField(DeviceType, related_name="scenarios", verbose_name=_("Device types"))
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
     # `platform` removed: scenario may have multiple variants per ecosystem
-    idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
     tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), editable=False, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"), editable=False, db_index=True)

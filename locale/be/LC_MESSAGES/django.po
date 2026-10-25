@@ -644,6 +644,14 @@ msgstr "Тып прылады"
 msgid "Device types"
 msgstr "Тыпы прылад"
 
+#: mainapp/templates/mainapp/scenario_detail.html
+msgid "Types of devices used"
+msgstr "Тыпы выкарыстоўваных прылад"
+
+#: mainapp/templates/mainapp/scenario_detail.html
+msgid "Rating"
+msgstr "Рэйтынг"
+
 #: mainapp/models.py:171
 msgid "Brief description"
 msgstr "Кароткае апісанне"
@@ -1259,6 +1267,10 @@ msgstr ""
 #: mainapp/templates/mainapp/scenario_detail.html:91
 msgid "Explanations"
 msgstr "Тлумачэнні"
+
+#: mainapp/models.py
+msgid "Implementation"
+msgstr "Рэалізацыя"
 
 #: mainapp/templates/mainapp/scenario_detail.html:98
 msgid ""

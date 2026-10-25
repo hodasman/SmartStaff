@@ -616,6 +616,14 @@ msgstr "Тип устройства"
 msgid "Device types"
 msgstr "Типы устройств"
 
+#: mainapp/templates/mainapp/scenario_detail.html
+msgid "Types of devices used"
+msgstr "Типы используемых устройств"
+
+#: mainapp/templates/mainapp/scenario_detail.html
+msgid "Rating"
+msgstr "Рейтинг"
+
 #: mainapp/models.py:171
 msgid "Brief description"
 msgstr "Краткое описание"
@@ -1211,6 +1219,10 @@ msgstr "Для этого варианта не указаны конкретн�
 #: mainapp/templates/mainapp/scenario_detail.html:91
 msgid "Explanations"
 msgstr "Пояснения"
+
+#: mainapp/models.py
+msgid "Implementation"
+msgstr "Реализация"
 
 #: mainapp/templates/mainapp/scenario_detail.html:98
 msgid ""
