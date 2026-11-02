@@ -1,131 +1,140 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load thumbnail %}
 {% load crispy_forms_tags %}
 {% load my_tags %}
 {% load icon_tags %}
 {% load i18n %}
-{% block title %}
-{% trans "Selecting devices from the catalog" %}
-{% endblock title %}
+
+{% block title %}{% trans "Selecting devices from the catalog" %} ({{ qty }}){% endblock title %}
+
 {% block content %}
-    <!-- bradcam_area  -->
-    <div class="bradcam_area bradcam_bg_1">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="bradcam_text">
-                        <h3>
-                            {% trans "Smart Devices" %}
-                            ({{qty}})
-                        </h3>
-                    </div>
-                </div>
+<section class="bradcam_area bradcam_bg_1 device-list-banner">
+    <div class="container">
+        <div class="device-list-banner-content">
+            <div>
+                <span class="device-list-eyebrow">{% trans "Device catalog" %}</span>
+                <h1>{% trans "Smart Devices" %}</h1>
             </div>
         </div>
     </div>
-    <!--/ bradcam_area  -->
+</section>
 
-    <!-- job_listing_area_start  -->
-    <div class="job_listing_area plus_padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="job_filter white-bg">
-                        <div class="form_inner white-bg">
-                            <h3>{% trans "Filters" %}</h3>
-                            <form action="#" method="get">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="single_field">
-                                            {{ filter_form.form|crispy }}
-                                        </div>
-                                    </div>
-                                    
-                                    <button class="boxed-btn3 w-100" type="submit">{% trans "Result" %}</button>
-                                    
-                                </div>
-                            </form>
-                        </div>
-                        
-                    </div>
+<main class="device-listing-page">
+    <div class="container device-listing-container">
+        <div class="device-listing-layout">
+            <aside class="device-filter-panel">
+                <div class="device-filter-heading">
+                    <span class="device-filter-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
+                    <h2>{% trans "Filters" %}</h2>
                 </div>
-                <div class="col-lg-9">
-                    
+                <form action="{% url 'mainapp:devices-list' %}" method="get" class="device-filter-form">
+                    {{ filter_form.form|crispy }}
+                    <button class="boxed-btn3 device-filter-submit" type="submit">
+                        {% trans "Result" %}
+                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </aside>
 
-                    <div class="job_lists m-0">
-                        <div class="row">
-                            {% for item in filter %}
-                            <div class="col-lg-12 col-md-12">
-                                <div class="single_jobs white-bg d-flex justify-content-between">
-                                    <div class="jobs_left d-flex align-items-center">
-                                        <div class="thumb">
-                                            
-                                            {% if item.icon %}
-                                            <img src='{{item.icon.url}}' width="50" height="50"  alt="">
-                                            {% else %}
-                                            <img src='{% static "img/svg_icon/4.svg" %}' width="50" height="50" alt="">
-                                            {% endif %}
-                                            
-                                        </div>
-                                        <div class="jobs_conetent">
-                                            {% include 'includes/legacy_badge.html' with device=item %}
-                                            {% include 'includes/ecosystem_compatibility_badge.html' with device=item %}
-                                            <a href="{% url 'mainapp:devices_detail' slug=item.slug %}"><h4>{{ item.title }}</h4></a>
-                                            <div class="links_locat d-flex align-items-center">
-                                                <div class="location">
-                                                    <p> <i class="fa {{ item.category|get_icon }}"></i> {{item.category}}</p>
-                                                </div>
-                                                <div class="location">
-                                                    <p> <i class="fa fa-user"></i> {{item.author}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="jobs_right">
-                                        <div class="apply_now">
+            <section class="device-results" aria-label="{% trans 'Device catalog' %}">
+                <div class="device-results-heading">
+                    <p>{% trans "Smart Devices" %} <strong>{{ qty }}</strong></p>
+                </div>
 
-                                            {% if user in item.user_set.all %}
-                                            <a href="{% url 'mainapp:delete_device' slug=item.slug %}" class="boxed-btn3 remove-from-list-btn">
-                                                {% trans "Remove from my list" %}
-                                            </a>
-                                            {% else %}
-                                            <a href="{% url 'mainapp:add_device' slug=item.slug %}" class="boxed-btn3">
-                                                {% trans "Add to my list" %}
-                                            </a>
-                                            {% endif %}
-                                        </div>
-                                        <!-- <div class="date">
-                                            <p> {{item.created_at|date:"Y-m-d"}}</p>
-                                        </div> -->
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-
+                {% if filter %}
+                <div class="device-card-grid">
+                    {% for item in filter %}
+                    <article class="device-catalog-card">
+                        <div class="device-card-topline">
+                            <span class="device-card-category">
+                                <i class="fa {{ item.category|get_icon }}" aria-hidden="true"></i>
+                                {{ item.category }}
+                            </span>
+                            {% include 'includes/legacy_badge.html' with device=item %}
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="pagination_wrap">
-                                    <ul>
-                                        {% if filter.has_previous %}
-                                        <li><a href="?{% param_replace page=filter.previous_page_number %}"> <i class="ti-angle-left"></i> </a></li>
-                                        {% endif %}
-                                        {% for item in filter.paginator.page_range %}
-                                        <li class="{% if item == filter.number %}active{% endif %}"><a href="?{% param_replace page=item %}"><span>{{item}}</span></a></li>
-                                        {% endfor %}
-                                        {% if filter.has_next %}
-                                        <li><a href="?{% param_replace page=filter.next_page_number %}"> <i class="ti-angle-right"></i> </a></li>
-                                        {% endif %}
-                                    </ul>
-                                </div>
+                        <a class="device-card-icon" href="{% url 'mainapp:devices_detail' slug=item.slug %}"
+                            aria-label="{{ item.title }}">
+                            {% if item.icon %}
+                            <img src="{{ item.icon.url }}" alt="" loading="lazy">
+                            {% else %}
+                            <img src="{% static 'img/svg_icon/4.svg' %}" alt="" loading="lazy">
+                            {% endif %}
+                        </a>
+                        <div class="device-card-content">
+                            <h2>
+                                <a href="{% url 'mainapp:devices_detail' slug=item.slug %}">{{ item.title }}</a>
+                            </h2>
+                            {% if item.description %}
+                            <p class="device-card-description">{{ item.description|striptags|truncatewords:22 }}</p>
+                            {% endif %}
+                            <div class="device-card-badges">
+                                {% include 'includes/ecosystem_compatibility_badge.html' with device=item %}
+                            </div>
+                            <div class="device-card-footer">
+                                <a class="device-card-details" href="{% url 'mainapp:devices_detail' slug=item.slug %}">
+                                    {% trans "More details" %}
+                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                </a>
+                                {% if user in item.user_set.all %}
+                                <a href="{% url 'mainapp:delete_device' slug=item.slug %}"
+                                    class="device-card-action device-card-action--remove remove-from-list-btn"
+                                    aria-label="{% trans 'Remove from my list' %}"
+                                    title="{% trans 'Remove from my list' %}">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'mainapp:add_device' slug=item.slug %}"
+                                    class="device-card-action"
+                                    aria-label="{% trans 'Add to my list' %}"
+                                    title="{% trans 'Add to my list' %}">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </a>
+                                {% endif %}
                             </div>
                         </div>
-                    </div>
+                    </article>
+                    {% endfor %}
                 </div>
-            </div>
+                {% else %}
+                <div class="device-list-empty-state">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <h2>{% trans "No devices match your search." %}</h2>
+                </div>
+                {% endif %}
+
+                {% if filter.paginator.num_pages > 1 %}
+                <nav class="device-pagination" aria-label="{% trans 'Pagination' %}">
+                    <ul>
+                        {% if filter.has_previous %}
+                        <li>
+                            <a href="?{% param_replace page=filter.previous_page_number %}"
+                                aria-label="{% trans 'Previous' %}">
+                                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% for page_number in filter.paginator.page_range %}
+                        <li class="{% if page_number == filter.number %}active{% endif %}">
+                            <a href="?{% param_replace page=page_number %}"
+                                {% if page_number == filter.number %}aria-current="page"{% endif %}>
+                                {{ page_number }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                        {% if filter.has_next %}
+                        <li>
+                            <a href="?{% param_replace page=filter.next_page_number %}"
+                                aria-label="{% trans 'Next' %}">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </section>
         </div>
     </div>
-    <!-- job_listing_area_end  -->
-    <script src='{% static "js/category_type_chaining.js" %}'></script>
+</main>
+<script src="{% static 'js/category_type_chaining.js' %}"></script>
 {% endblock content %}

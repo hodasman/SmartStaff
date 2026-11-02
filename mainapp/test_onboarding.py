@@ -99,6 +99,33 @@ class OnboardingFlowTests(TestCase):
         device.ecosystem.set(platforms)
         return device
 
+    def test_device_catalog_uses_cards_and_keeps_add_remove_actions(self):
+        device = self.create_device("Catalog sensor", [self.platform_a])
+        catalog_url = reverse("mainapp:devices-list")
+
+        with self.settings(LANGUAGE_CODE="en"):
+            response = self.client.get(catalog_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "device-listing-layout")
+        self.assertContains(response, "device-filter-panel")
+        self.assertContains(response, "device-card-grid")
+        self.assertContains(response, device.title)
+        self.assertContains(
+            response,
+            reverse("mainapp:add_device", kwargs={"slug": device.slug}),
+        )
+        self.assertNotContains(response, "single_jobs")
+
+        self.user.devices.add(device)
+        with self.settings(LANGUAGE_CODE="en"):
+            response = self.client.get(catalog_url)
+
+        self.assertContains(
+            response,
+            reverse("mainapp:delete_device", kwargs={"slug": device.slug}),
+        )
+
     def test_answer_no_routes_directly_to_all_ecosystems(self):
         response = self.client.post(
             reverse("mainapp:onboarding_start"),
