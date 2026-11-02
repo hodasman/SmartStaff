@@ -1,48 +1,125 @@
 {% extends 'base_blog.html' %}
-{% load static %}
 {% load icon_tags %}
 {% load i18n %}
+
 {% block title %}
     {% if view.kwargs %}
     {{ cat_name }}
     {% else %}
     {% trans "Articles" %}
     {% endif %}
-    ({{ object_list|length }})
+    ({{ page_obj.paginator.count }})
 {% endblock title %}
 
 {% block left_sidebar %}
 <div class="col-lg-8 mb-5 mb-lg-0">
-    <div class="blog_left_sidebar">
-        {% for item in object_list %}
-        <article class="blog_item">
-            <div class="blog_item_img">
-                <img class="card-img" src='{{item.main_img.url}}' alt="{{item.title}}">
-                <a href="#" class="blog_item_date">
-                    <h3>{{item.created_at|date:"d"}}</h3>
-                    <p>{{item.created_at|date:"M"}}</p>
-                </a>
+    <div class="articles-listing-page">
+        {% if object_list %}
+            {% if page_obj.number == 1 %}
+                {% with featured=object_list.0 %}
+                <article class="article-featured-card">
+                    <a class="article-featured-media" href="{% url 'mainapp:article_detail' slug=featured.slug %}"
+                        aria-label="{{ featured.title }}">
+                        {% if featured.main_img %}
+                        <img src="{{ featured.main_img.url }}" alt="{{ featured.title }}">
+                        {% else %}
+                        <span class="article-image-placeholder" aria-hidden="true">
+                            <i class="fa fa-file-text-o"></i>
+                        </span>
+                        {% endif %}
+                    </a>
+                    <div class="article-featured-content">
+                        <div class="article-card-meta">
+                            <a class="article-category-pill"
+                                href="{% url 'mainapp:articles_category' cat_slug=featured.category.slug %}">
+                                <i class="fa {{ featured.category|get_icon }}" aria-hidden="true"></i>
+                                {{ featured.category }}
+                            </a>
+                            <time datetime="{{ featured.created_at|date:'Y-m-d' }}">
+                                {{ featured.created_at|date:"j E Y" }}
+                            </time>
+                        </div>
+                        <h2>
+                            <a href="{% url 'mainapp:article_detail' slug=featured.slug %}">
+                                {{ featured.title }}
+                            </a>
+                        </h2>
+                        {% if featured.preambule %}
+                        <p class="article-featured-summary">{{ featured.preambule }}</p>
+                        {% endif %}
+                        <div class="article-card-footer">
+                            {% if featured.author %}
+                            <span><i class="fa fa-user" aria-hidden="true"></i> {{ featured.author.username }}</span>
+                            {% endif %}
+                            <span>
+                                <i class="fa fa-comments" aria-hidden="true"></i>
+                                {% trans "Comments" %}: {{ featured.comments_count }}
+                            </span>
+                            <a class="article-read-link" href="{% url 'mainapp:article_detail' slug=featured.slug %}"
+                                aria-label="{{ featured.title }}">
+                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                {% endwith %}
+            {% endif %}
+
+            <div class="article-card-grid">
+                {% for item in object_list %}
+                    {% if page_obj.number != 1 or not forloop.first %}
+                    <article class="article-list-card">
+                        <a class="article-list-card-media" href="{% url 'mainapp:article_detail' slug=item.slug %}"
+                            aria-label="{{ item.title }}">
+                            {% if item.main_img %}
+                            <img src="{{ item.main_img.url }}" alt="{{ item.title }}">
+                            {% else %}
+                            <span class="article-image-placeholder" aria-hidden="true">
+                                <i class="fa fa-file-text-o"></i>
+                            </span>
+                            {% endif %}
+                        </a>
+                        <div class="article-list-card-content">
+                            <div class="article-card-meta">
+                                <a class="article-category-pill"
+                                    href="{% url 'mainapp:articles_category' cat_slug=item.category.slug %}">
+                                    <i class="fa {{ item.category|get_icon }}" aria-hidden="true"></i>
+                                    {{ item.category }}
+                                </a>
+                                <time datetime="{{ item.created_at|date:'Y-m-d' }}">
+                                    {{ item.created_at|date:"j E Y" }}
+                                </time>
+                            </div>
+                            <h2>
+                                <a href="{% url 'mainapp:article_detail' slug=item.slug %}">{{ item.title }}</a>
+                            </h2>
+                            {% if item.preambule %}
+                            <p class="article-list-card-summary">{{ item.preambule }}</p>
+                            {% endif %}
+                            <div class="article-card-footer">
+                                {% if item.author %}
+                                <span><i class="fa fa-user" aria-hidden="true"></i> {{ item.author.username }}</span>
+                                {% endif %}
+                                <span>
+                                    <i class="fa fa-comments" aria-hidden="true"></i>
+                                    {% trans "Comments" %}: {{ item.comments_count }}
+                                </span>
+                                <a class="article-read-link" href="{% url 'mainapp:article_detail' slug=item.slug %}"
+                                    aria-label="{{ item.title }}">
+                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                    {% endif %}
+                {% endfor %}
             </div>
 
-            <div class="blog_details">
-                <a class="d-inline-block" href="{% url 'mainapp:article_detail' slug=item.slug %}">
-                    <h2>{{item.title}}</h2>
-                </a>
-                <p>{{item.preambule}}</p>
-                <ul class="blog-info-link">
-                    <li><a href="{% url 'mainapp:articles_category' cat_slug=item.category.slug %}"><i  class="fa {{ item.category|get_icon }}"></i> {{item.category}}</a></li>
-                    <li><i class="fa fa-user"></i> {{item.author.username}}</li>
-                    <li><i class="fa fa-comments"></i> {% trans "Comments" %} - {{item.get_all_comments|length}}</li>
-                </ul>
-            </div>
-        </article>
-        {% endfor %}
-        
-        {% include "includes/pagination.html" %}
-        
+            {% include "includes/pagination.html" %}
+        {% endif %}
     </div>
 </div>
-{%endblock left_sidebar%}
+{% endblock left_sidebar %}
 
 {% block right_sidebar %}
 <aside class="single_sidebar_widget post_category_widget">
@@ -51,12 +128,11 @@
         {% for item in all_categories %}
         <li>
             <a href="{% url 'mainapp:articles_category' cat_slug=item.slug %}" class="d-flex">
-                <p>{{item.title}}</p>
-                <p>({{item.qty_articles_in_category}})</p>
+                <p>{{ item.title }}</p>
+                <p>({{ item.qty_articles_in_category }})</p>
             </a>
         </li>
         {% endfor %}
-        
     </ul>
 </aside>
-{%endblock right_sidebar %}
+{% endblock right_sidebar %}

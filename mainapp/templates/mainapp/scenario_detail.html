@@ -1,264 +1,248 @@
-{% extends 'base_blog.html' %}
-{% load static %}
+{% extends 'base.html' %}
 {% load i18n %}
 {% load icon_tags %}
-{% load crispy_forms_tags %}  
-{% block title %}
-{% trans "Automation scenarios" %}
-{% endblock title %}
+{% load my_tags %}
+{% load crispy_forms_tags %}
 
+{% block title %}{{ object.title }}{% endblock title %}
 
-{% block left_sidebar %}
-<div class="col-lg-8 posts-list">
-   <div class="single-post">
-      <div class="feature-img">
-         <img class="img-fluid" src='{{object.main_img.url}}' alt="">
-      </div>
-      <div class="blog_details">
-         <h2>{{object.title}}
-         </h2>
-         <ul class="blog-info-link mt-3 mb-4">
-            {% if object.variants.all %}
-            <li><i class="fa {{ object.variants.first.platform|get_icon }}"></i>
-               {% for v in object.variants.all %}
-                  <a href="{% url 'mainapp:scenarios_category' platform_id=v.platform.id %}">{{ v.platform.title }}</a>{% if not forloop.last %}, {% endif %}
-               {% endfor %}
-            </li>
-            {% endif %}
-            <li><i class="fa fa-user"></i> {{object.author}}</li>
-            <li><a href="#comments"><i class="fa fa-comments"></i> {% trans "Comments" %} - {{object.get_all_comments|length}}</a></li>
-            <li><i class="fa fa-tags"></i>
-               {% for tag in object.tags.all %}
-               <a href="{% url 'mainapp:list_by_tag' tag.slug %}">{{tag.name}}</a>; 
-               {%endfor%}
-            </li>
-            <li>
-               <form action="{% url 'mainapp:add_rating' %}" method="post" name="rating">
-                  {% csrf_token %}
-                  <input type="hidden" value="{{ object.id }}" name="scenario">
-                  <div class="form__item">
-                     <div class="simple-rating">
-                        <div class="simple-rating__items">
-                           {% for k, v in star_form.fields.star.choices %}
-                           <input id="simple-rating__{{v}}" type="radio" class="simple-rating__item"
-                              value="{{k}}" {% if k == object.get_rating %} checked {% endif %} name="star">
-                           <label for="simple-rating__{{v}}" class="simple-rating__label"></label>
-                           {% endfor %}
-                        </div>
-                     </div>
-                  </div>
+{% block content %}
+<section class="bradcam_area bradcam_bg_1 scenario-detail-banner">
+    <div class="container">
+        <div class="scenario-detail-banner-content">
+            <a class="scenario-detail-back" href="{% url 'mainapp:scenarios' %}">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                {% trans "Automation scenarios" %}
+            </a>
+            <h1>{{ object.title }}</h1>
+        </div>
+    </div>
+</section>
 
-               </form>
-            </li>
-            
-         </ul>
-
-         {% if object.idea %}
-         <h3 class="mb-20"> {% trans "Idea" %}</h3>
-         {{object.idea.description|safe|escape}}
-         {%endif%}
-
-         <h3 class="mb-20">{% trans "Device types" %}</h3>
-         <ol class="unordered-list">
-             {% for item in object.device_types.all %}
-            <li>{{item.title}}</li>
-             {%endfor%}
-         </ol>
-
-             {% if object.variants.all %}
-             <h3 class="mb-20">{% trans "Variants by ecosystem" %}</h3>
-             {% for variant in object.variants.all %}
-                <div class="variant-block">
-                   <h4>{{ variant.platform.title }}</h4>
-                   {% if variant.required_devices.all %}
-                      <ol class="unordered-list">
-                         {% for rd in variant.required_devices.all %}
-                            <li>
-                               {% include 'includes/legacy_badge.html' with device=rd.device %}
-                               <a href="{% url 'mainapp:devices_detail' slug=rd.device.slug %}">{{ rd.device.title }}</a>
-                               {% if rd.quantity and rd.quantity > 1 %} — x{{ rd.quantity }}{% endif %}
-                               {% if rd.note %} ({{ rd.note }}){% endif %}
-                            </li>
-                         {% endfor %}
-                      </ol>
-                   {% else %}
-                      <p>{% trans "No specific required devices listed for this variant." %}</p>
-                   {% endif %}
+<main class="scenario-detail-page">
+    <div class="scenario-detail-container">
+        <article class="scenario-detail-card">
+            <header class="scenario-detail-header">
+                <div class="scenario-detail-meta">
+                    <time datetime="{{ object.created_at|date:'Y-m-d' }}">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        {{ object.created_at|date:"j E Y" }}
+                    </time>
+                    {% if object.author %}
+                    <span>
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        {{ object.author.username }}
+                    </span>
+                    {% endif %}
+                    <a href="#comments">
+                        <i class="fa fa-comments-o" aria-hidden="true"></i>
+                        {{ comments|length }}
+                    </a>
                 </div>
-             {% endfor %}
-             {% endif %}
 
-         <h3 class="mb-20">{% trans "Explanations" %}</h3>
-         {{object.text|safe|escape}}
+                {% if object.variants.all %}
+                <nav class="scenario-detail-ecosystems" aria-label="{% trans 'Variants by ecosystem' %}">
+                    {% for variant in object.variants.all %}
+                    <a href="#variant-{{ variant.pk }}">
+                        <i class="fa {{ variant.platform|get_icon }}" aria-hidden="true"></i>
+                        {{ variant.platform.title }}
+                    </a>
+                    {% endfor %}
+                </nav>
+                {% endif %}
 
-         {# scheme moved to ScenarioImage/ScenarioImageInline; no direct scheme field on Scenario #}
-         
-         <div class="quote-wrapper">
-            <div class="quotes">
-               {% blocktrans trimmed %}
-               Attention! Depending on the version of the application, the names of the options may
-               differ slightly from those indicated in the diagram!
-               {% endblocktrans %}
-           </div>           
-         </div>
-      </div>
-   </div>
-   <div class="navigation-top">
-      <div class="d-sm-flex justify-content-between text-center">
-         <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> </p>
-         <div class="col-sm-4 text-center my-2 my-sm-0">
-            <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> {% trans "Comments" %} - {{object.get_all_comments|length}}</p>
-         </div>
-         <ul class="social-icons">
-            <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-            <li><a href="#"><i class="fa fa-behance"></i></a></li>
-         </ul>
-      </div>
-      <div class="navigation-area">
-         <div class="row">
-            <div
-               class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
-               <div class="thumb">
-                  <a href="{% url 'mainapp:scenario_detail' slug=prev.slug %}">
-                     <img class="img-fluid" src='{{prev.main_img.url}}' alt="">
-                  </a>
-               </div>
-               <div class="arrow">
-                  <a href="{% url 'mainapp:scenario_detail' slug=prev.slug %}">
-                     <span class="lnr text-white ti-arrow-left"></span>
-                  </a>
-               </div>
-               <div class="detials">
-                  <p>{% trans "Previous" %} </p>
-                  <a href="{% url 'mainapp:scenario_detail' slug=prev.slug %}">
-                     <h4>{{prev.title|truncatewords:5|safe}}</h4>
-                  </a>
-               </div>
+                <form class="scenario-detail-rating" action="{% url 'mainapp:add_rating' %}" method="post" name="rating">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ object.id }}" name="scenario">
+                    <span class="scenario-detail-rating-label">{% trans "Rating" %}</span>
+                    <div class="scenario-rating-stars">
+                        {% for star in star_form.fields.star.queryset %}
+                        <input id="scenario-rating-{{ star.pk }}" type="radio" class="scenario-rating-input"
+                            value="{{ star.pk }}" {% if star.value == object.get_rating %}checked{% endif %} name="star">
+                        <label for="scenario-rating-{{ star.pk }}" class="scenario-rating-star"
+                            title="{{ star.value }}" aria-label="{{ star.value }}"></label>
+                        {% endfor %}
+                    </div>
+                </form>
+            </header>
+
+            {% if object.main_img %}
+            <figure class="scenario-detail-cover">
+                <img src="{{ object.main_img.url }}" alt="{{ object.title }}">
+            </figure>
+            {% elif object.images.all %}
+                {% with scenario_image=object.images.all.0 %}
+                <figure class="scenario-detail-cover">
+                    <img src="{{ scenario_image.image.url }}"
+                        alt="{{ scenario_image.alt|default:object.title }}">
+                </figure>
+                {% endwith %}
+            {% endif %}
+
+            <div class="scenario-detail-body">
+                {% if object.idea %}
+                <section class="scenario-detail-section scenario-detail-idea">
+                    <h2>{% trans "Idea" %}</h2>
+                    <div class="scenario-detail-prose">
+                        {{ object.idea|render_article_text:object }}
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if object.device_types.all %}
+                <section class="scenario-detail-section">
+                    <h2>{% trans "Types of devices used" %}</h2>
+                    <ul class="scenario-detail-device-types">
+                        {% for device_type in object.device_types.all %}
+                        <li><i class="fa fa-check" aria-hidden="true"></i>{{ device_type.title }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+                {% endif %}
+
+                {% if object.variants.all %}
+                <section class="scenario-detail-section">
+                    <h2>{% trans "Variants by ecosystem" %}</h2>
+                    <div class="scenario-detail-variants">
+                        {% for variant in object.variants.all %}
+                        <section class="scenario-detail-variant" id="variant-{{ variant.pk }}">
+                            <h3>
+                                <i class="fa {{ variant.platform|get_icon }}" aria-hidden="true"></i>
+                                {{ variant.platform.title }}
+                            </h3>
+                            {% if variant.required_devices.all %}
+                            <ul class="scenario-detail-required-devices">
+                                {% for required in variant.required_devices.all %}
+                                <li>
+                                    {% include 'includes/legacy_badge.html' with device=required.device %}
+                                    {% if required.device %}
+                                    <a href="{% url 'mainapp:devices_detail' slug=required.device.slug %}">
+                                        {{ required.device.title }}
+                                    </a>
+                                    {% endif %}
+                                    {% if required.quantity > 1 %}<span>×{{ required.quantity }}</span>{% endif %}
+                                    {% if required.note %}<small>{{ required.note }}</small>{% endif %}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </section>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if object.text %}
+                <section class="scenario-detail-section scenario-detail-implementation">
+                    <h2>{% trans "Implementation" %}</h2>
+                    <div class="scenario-detail-prose">
+                        {{ object.text|render_article_text:object }}
+                    </div>
+                </section>
+                {% endif %}
+
+                {% with tags=object.tags.all %}
+                    {% if tags %}
+                    <footer class="scenario-detail-tags">
+                        <i class="fa fa-tags" aria-hidden="true"></i>
+                        {% for tag in tags %}
+                        <a href="{% url 'mainapp:list_by_tag' tag.slug %}">{{ tag.name }}</a>
+                        {% endfor %}
+                    </footer>
+                    {% endif %}
+                {% endwith %}
             </div>
-            <div
-               class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
-               <div class="detials">
-                  <p>{% trans "Next" %}</p>
-                  <a href="{% url 'mainapp:scenario_detail' slug=next.slug %}">
-                     <h4>{{next.title|truncatewords:5|safe}}</h4>
-                  </a>
-               </div>
-               <div class="arrow">
-                  <a href="{% url 'mainapp:scenario_detail' slug=next.slug %}">
-                     <span class="lnr text-white ti-arrow-right"></span>
-                  </a>
-               </div>
-               <div class="thumb">
-                  <a href="{% url 'mainapp:scenario_detail' slug=next.slug %}">
-                     <img class="img-fluid" src='{{next.main_img.url}}' alt="">
-                  </a>
-               </div>
+        </article>
+
+        {% if prev and prev.pk != object.pk or next and next.pk != object.pk %}
+        <nav class="scenario-detail-navigation" aria-label="{% trans 'Automation scenarios' %}">
+            {% if prev and prev.pk != object.pk %}
+            <a href="{{ prev.get_absolute_url }}">
+                <span><i class="fa fa-arrow-left" aria-hidden="true"></i> {% trans "Previous" %}</span>
+                <strong>{{ prev.title }}</strong>
+            </a>
+            {% endif %}
+            {% if next and next.pk != object.pk %}
+            <a href="{{ next.get_absolute_url }}">
+                <span>{% trans "Next" %} <i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+                <strong>{{ next.title }}</strong>
+            </a>
+            {% endif %}
+        </nav>
+        {% endif %}
+
+        {% if similar_scenarios %}
+        <section class="scenario-detail-similar">
+            <h2>{% trans "Other scenarios from these devices" %}</h2>
+            <div class="scenario-detail-similar-grid">
+                {% for item in similar_scenarios %}
+                <a class="scenario-detail-similar-card" href="{{ item.get_absolute_url }}">
+                    {% if item.main_img %}
+                    <img src="{{ item.main_img.url }}" alt="{{ item.title }}" loading="lazy">
+                    {% endif %}
+                    <span>
+                        <strong>{{ item.title }}</strong>
+                        <small>{{ item.get_missing_types_display }}</small>
+                    </span>
+                </a>
+                {% endfor %}
             </div>
-         </div>
-      </div>
-   </div>
-   <div class="blog-author">
-      <div class="media align-items-center">
-         {% if object.author.avatar %}
-         <img src='{{object.author.avatar.url}}' alt="">
-         {%else%}
-         <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
-         {%endif%}
-         <div class="media-body">
-            <h4>{% trans "Author information" %}</h4>
-            <p>{% trans "This article was prepared for you by" %} {%if object.author.first_name%}{{object.author.first_name}}{%endif%}
-            {%if object.author.last_name%}{{object.author.last_name}}{%endif%} 
-            {%if not object.author.first_name and not object.author.last_name%}{%else%}{% trans "with the nickname" %}{%endif%}
-            {{object.author.username}}
-            {%if object.author.first_name%}{% trans "from the country" %} {{object.author.country.name}}{%endif%}
+        </section>
+        {% endif %}
+
+        <section class="scenario-detail-comments" id="comments">
+            <div class="scenario-detail-section-heading">
+                <h2>{% trans "Comments" %}</h2>
+                <span>{{ comments|length }}</span>
+            </div>
+
+            {% if comments %}
+            <div class="scenario-detail-comment-list">
+                {% for comment in comments %}
+                <article class="scenario-detail-comment">
+                    <div class="scenario-detail-comment-avatar" aria-hidden="true">
+                        {% if comment.author.avatar %}
+                        <img src="{{ comment.author.avatar.url }}" alt="">
+                        {% else %}
+                        {{ comment.author.username|first|upper }}
+                        {% endif %}
+                    </div>
+                    <div class="scenario-detail-comment-content">
+                        <div>
+                            <strong>{{ comment.author.username }}</strong>
+                            <time datetime="{{ comment.created_at|date:'c' }}">
+                                {{ comment.created_at|date:"j E Y, H:i" }}
+                            </time>
+                        </div>
+                        <p>{{ comment.content }}</p>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="scenario-detail-empty-comments">
+                {% trans "There are no comments yet. Be the first!" %}
             </p>
-         </div>
-      </div>
-   </div>
-   <div class="comments-area" id="comments">
-      {% if not comments %}
-      <p>{% trans "There are no comments yet. Be the first!" %}</p>
-      {%else%}
-      <h4>{% trans "Comments" %} ({{object.get_all_comments|length}})</h4>
-      {% for comment in comments %}
-      <div class="comment-list">
-         <div class="single-comment justify-content-between d-flex">
-            <div class="user justify-content-between d-flex">
-               <div class="thumb">
-                  {% if comment.author.avatar %}
-                  <img src='{{comment.author.avatar.url}}' alt="">
-                  {%else%}
-                  <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
-                  {%endif%}
-               </div>
-               <div class="desc">
-                  <p class="comment">
-                     {{comment.content}}
-                  </p>
-                  <div class="d-flex justify-content-between">
-                     <div class="d-flex align-items-center">
-                        <h5>
-                           <a href="#">{{comment.author.username}}</a>
-                        </h5>
-                        <p class="date">{{comment.created_at|date:"j F Y | H:i" }} </p>
-                     </div>
-                     
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      {%endfor%}
-      {%endif%}
-      
-   </div>
-   <div class="comment-form">
-      {% if user.is_authenticated %}
-      <h4>{% trans "Leave a comment" %}</h4>
-      <form class="form-contact comment_form" action="{% url 'mainapp:comment_scenario' object.id %}" id="commentForm" method="post">
-         <div class="row">
-            <div class="col-12">
-               <div class="form-group">
-                  {% csrf_token %}
-                  {{form|crispy}}
-               </div>
-            </div>
-         </div>
-         <div class="form-group">
-            <button type="submit" class="button button-contactForm btn_1 boxed-btn">{% trans "Send" %}</button>
-         </div>
-      </form>
-      {%else%}
-      {% url 'authapp:login' as login_url%}
-      <p> 
-         {% blocktrans trimmed with link='<a href="'|add:login_url|add:'"><u>log in</u></a>'|safe %}
-         In order to leave a review you need to {{ link }} to the site!
-         {% endblocktrans %}
-      </p>
-      {%endif%}
-   </div>
+            {% endif %}
 
-</div>
-{% endblock left_sidebar %}
-         
-{% block right_sidebar %}
-<aside class="single_sidebar_widget popular_post_widget">
-   {%if similar_scenarios%}
-   <h3 class="widget_title">{% trans "Other scenarios from these devices" %}</h3>
-   {% for item in similar_scenarios %}
-      <div class="media post_item">
-      <img class="box" src='{{item.main_img.url}}' alt="{{item.title}}">
-      <div class="media-body">
-         <a href="{% url 'mainapp:scenario_detail' slug=item.slug %}">
-            <h3>{{item.title}}</h3>
-         </a>
-         <p>{{item.get_missing_types_display}}</p>
-      </div>
-   </div>
-   {%endfor%}
-   {%endif%}
-   
-</aside>
-{% endblock right_sidebar %}
+            <div class="scenario-detail-comment-form">
+                {% if user.is_authenticated %}
+                <h3>{% trans "Leave a comment" %}</h3>
+                <form action="{% url 'mainapp:comment_scenario' object.id %}" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="boxed-btn3">{% trans "Send" %}</button>
+                </form>
+                {% else %}
+                {% url 'authapp:login' as login_url %}
+                <p>
+                    {% blocktrans trimmed with link='<a href="'|add:login_url|add:'"><u>log in</u></a>'|safe %}
+                    In order to leave a review you need to {{ link }} to the site!
+                    {% endblocktrans %}
+                </p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock content %}

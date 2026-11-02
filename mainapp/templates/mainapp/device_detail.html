@@ -1,131 +1,163 @@
-
 {% extends 'base.html' %}
 {% load static %}
 {% load icon_tags %}
 {% load i18n %}
-{% block title %}
-{{ object.title}}
-{% endblock title %}
+
+{% block title %}{{ object.title }}{% endblock title %}
 
 {% block content %}
-    <!-- bradcam_area  -->
-    <div class="bradcam_area bradcam_bg_1">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="bradcam_text">
-                        <h3>{{ qty }}+ {% trans "Smart Devices" %}</h3>
-                    </div>
-                </div>
+<section class="bradcam_area bradcam_bg_1 device-detail-banner">
+    <div class="container">
+        <a class="device-detail-back" href="{% url 'mainapp:devices-list' %}">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            {% trans "Back to devices" %}
+        </a>
+        <div class="device-detail-banner-content">
+            <div class="device-detail-banner-meta">
+                <a href="{% url 'mainapp:devices-list' %}?category={{ object.category.pk }}">
+                    <i class="fa {{ object.category|get_icon }}" aria-hidden="true"></i>{{ object.category }}
+                </a>
+                <a href="{% url 'mainapp:devices-list' %}?category={{ object.category.pk }}&device_type={{ object.device_type.pk }}">
+                    <i class="fa {{ object.device_type|get_icon }}" aria-hidden="true"></i>{{ object.device_type }}
+                </a>
+                {% include 'includes/legacy_badge.html' with device=object %}
             </div>
+            <h1>{{ object.title }}</h1>
         </div>
     </div>
-    <!--/ bradcam_area  -->
+</section>
 
-    <div class="job_details_area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="job_details_header">
-                        <div class="single_jobs white-bg d-flex justify-content-between">
-                            <div class="jobs_left d-flex align-items-center">
-                                <div class="thumb">
-                                    {% if object.icon %}
-                                    <img src='{{object.icon.url}}' width="50" height="50"  alt="">
-                                    {% else %}
-                                    <img src='{% static "img/svg_icon/4.svg" %}' width="50" height="50" alt="">
-                                    {% endif %}
-                                </div>
-                                <div class="jobs_conetent">
-                                    {% include 'includes/legacy_badge.html' with device=object %}
-                                    <h4>{{ object.title }}</h4>
-                                    <div class="links_locat d-flex align-items-center">
-                                        <div class="location">
-                                            <p> <i class="fa {{ object.category|get_icon }}"></i> {{object.category}}</p>
-                                        </div>
-                                        <div class="location">
-                                            <p> <i class="fa {{ object.device_type|get_icon }}"></i> {{object.device_type}}</p>
-                                        </div>
-                                        <div class="location">
-                                            <p> <i class="fa fa-user"></i> {{object.author}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="jobs_right">
-                                <div class="apply_now">
-                                    {% if user in object.user_set.all %}
-                                    <a class="heart_mark remove-from-list-btn" title="{% trans "Remove from my list" %}" href="{% url 'mainapp:delete_device' slug=object.slug %}"> <i class="ti-minus"></i> </a>
-                                    {% else %}
-                                    <a class="heart_mark" title="{% trans "Add to my list" %}" href="{% url 'mainapp:add_device' slug=object.slug %}"> <i class="ti-plus"></i> </a>
-                                    {% endif %}
-                                </div>
-                            </div>
+<main class="device-detail-page">
+    <div class="container device-detail-container">
+        <div class="device-detail-layout">
+            <div class="device-detail-main">
+                <article class="device-detail-card">
+                    <header class="device-detail-intro">
+                        <div class="device-detail-icon">
+                            {% if object.icon %}
+                            <img src="{{ object.icon.url }}" alt="" fetchpriority="high">
+                            {% else %}
+                            <img src="{% static 'img/svg_icon/4.svg' %}" alt="" fetchpriority="high">
+                            {% endif %}
                         </div>
-                    </div>
-                    <div class="descript_wrap white-bg">
-                        <div class="single_wrap">
-                            <h4>{% trans "Description" %}</h4>
-                            {{ object.description|linebreaks }}
-                            
+                        <div class="device-detail-intro-copy">
+                            <span class="device-detail-kicker">{% trans "Smart Devices" %}</span>
+                            <h2>{{ object.title }}</h2>
+                            {% if object.author %}
+                            <span class="device-detail-author">
+                                <i class="fa fa-user" aria-hidden="true"></i>{{ object.author }}
+                            </span>
+                            {% endif %}
                         </div>
-                        
-                    </div>
+                    </header>
 
-            
-    				<div class="row gallery-item">
-                            {% for img in object.images.all %}
-                            <div class="col-md-6">
-                                <a href="{{ img.image.url }}" class="img-pop-up">
-                                    <div class="single-gallery-image" style="background: url('{{ img.image.url }}');"></div>
-                                </a>
-                            </div>
-                            {% endfor %}
-                        </div>
+                    {% if object.description %}
+                    <section class="device-detail-section">
+                        <h2>{% trans "Description" %}</h2>
+                        <div class="device-detail-description">{{ object.description|linebreaks }}</div>
+                    </section>
+                    {% endif %}
+                </article>
 
-                    
-                </div>
-                <div class="col-lg-4">
-                    <div class="job_sumary">
-                        <div class="summery_header">
-                            <h3>{% trans "Characteristics" %}</h3>
-                        </div>
-                        <div class="job_content">
-                            <ul>
-                                <li>{% trans "Model:" %} <span>{{object.model_name}}</span></li>
-                                <li>{% trans "Protocols:" %} <span>{% for p in object.protocols.all %}{{p.title}}{% if not forloop.last %}, {% endif %}{% empty %}-{% endfor %}</span></li>
-                                <li>{% trans "Power:" %} <span>{{object.power}}</span></li>
-                                <li>{% trans "Dimensions:" %} <span>{{object.size}}</span></li>
-                                <li>{% trans "Equipment:" %} <span>{{object.package_contents}}</span></li>
-                                <li>{% trans "Ecosystem" %}: <span> {% for item in object.ecosystem.all %} {{item.title}}; {% endfor %}</span></li>
-                            
-                            </ul>
-                        </div>
+                {% if object.images.all %}
+                <section class="device-detail-gallery" aria-label="{% trans 'Image' %}">
+                    <div class="device-detail-section-heading">
+                        <h2>{% trans "Image" %}</h2>
+                        <span>{{ object.images.all|length }}</span>
                     </div>
-                    <div class="share_wrap d-flex">
-                        <span>Share at:</span>
-                        <ul>
-                            <li><a href="#"> <i class="fa fa-facebook"></i></a> </li>
-                            <li><a href="#"> <i class="fa fa-google-plus"></i></a> </li>
-                            <li><a href="#"> <i class="fa fa-twitter"></i></a> </li>
-                            <li><a href="#"> <i class="fa fa-envelope"></i></a> </li>
-                        </ul>
+                    <div class="device-detail-gallery-grid">
+                        {% for image in object.images.all %}
+                        <a href="{{ image.image.url }}" class="device-detail-gallery-item img-pop-up">
+                            <img src="{{ image.image.url }}" alt="{{ image.alt|default:object.title }}" loading="lazy">
+                        </a>
+                        {% endfor %}
                     </div>
-                    <div class="buy_links mt-3 share_wrap white-bg">
-                        <span>{% trans "Purchase links" %}:</span>
-                        <div class="d-flex flex-wrap">
-                            {% for pl in object.purchase_links.all %}
-                                <a href="{{ pl.url }}" target="_blank" class="btn btn-outline-primary mr-2 mb-2">
-                                    {{ pl.get_marketplace_display }}
-                                </a>
+                </section>
+                {% endif %}
+            </div>
+
+            <aside class="device-detail-sidebar">
+                <section class="device-detail-specs">
+                    <header>
+                        <span class="device-detail-sidebar-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
+                        <h2>{% trans "Characteristics" %}</h2>
+                    </header>
+                    <dl>
+                        <div>
+                            <dt>{% trans "Model:" %}</dt>
+                            <dd>{{ object.model_name|default:"—" }}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans "Protocols:" %}</dt>
+                            <dd>{% for protocol in object.protocols.all %}{{ protocol.title }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans "Power:" %}</dt>
+                            <dd>{{ object.power|default:"—" }}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans "Dimensions:" %}</dt>
+                            <dd>{{ object.size|default:"—" }}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans "Operating temperature" %}</dt>
+                            <dd>{{ object.temperature|default:"—" }}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans "Equipment:" %}</dt>
+                            <dd>{{ object.package_contents|default:"—"|linebreaksbr }}</dd>
+                        </div>
+                    </dl>
+                    <div class="device-detail-ecosystems">
+                        <h3>{% trans "Ecosystem" %}</h3>
+                        <div>
+                            {% for ecosystem in object.ecosystem.all %}
+                            <span>{{ ecosystem.title }}</span>
                             {% empty %}
-                                <p class="text-muted">{% trans "No purchase links" %}</p>
+                            <span class="device-detail-no-ecosystem">—</span>
                             {% endfor %}
                         </div>
                     </div>
-                </div>
-            </div>
+                </section>
+
+                <section class="device-detail-list-panel">
+                    <div class="device-detail-purchase-heading">
+                        <span class="device-detail-sidebar-icon" aria-hidden="true"><i class="fa fa-list-alt"></i></span>
+                        <h2>{% trans "My devices" %}</h2>
+                    </div>
+                    {% if user in object.user_set.all %}
+                    <a class="device-detail-list-action device-detail-list-action--added remove-from-list-btn"
+                        href="{% url 'mainapp:delete_device' slug=object.slug %}">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        {% trans "Remove from my list" %}
+                    </a>
+                    {% else %}
+                    <a class="device-detail-list-action"
+                        href="{% url 'mainapp:add_device' slug=object.slug %}">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        {% trans "Add to my list" %}
+                    </a>
+                    {% endif %}
+                </section>
+
+                <section class="device-detail-purchase">
+                    <div class="device-detail-purchase-heading">
+                        <span class="device-detail-sidebar-icon" aria-hidden="true"><i class="fa fa-shopping-bag"></i></span>
+                        <h2>{% trans "Purchase links" %}</h2>
+                    </div>
+                    <div class="device-detail-purchase-links">
+                        {% for link in object.purchase_links.all %}
+                        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">
+                            <span>{{ link.get_marketplace_display }}</span>
+                            <i class="fa fa-external-link" aria-hidden="true"></i>
+                        </a>
+                        {% empty %}
+                        <p>{% trans "No purchase links" %}</p>
+                        {% endfor %}
+                    </div>
+                </section>
+            </aside>
         </div>
     </div>
-
-    {% endblock content %}
+</main>
+{% endblock content %}

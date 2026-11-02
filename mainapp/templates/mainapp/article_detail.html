@@ -1,191 +1,134 @@
-{% extends 'base_blog.html' %}
-{% load static %}
+{% extends 'base.html' %}
 {% load i18n %}
 {% load icon_tags %}
 {% load my_tags %}
-{% load crispy_forms_tags %}  
+{% load crispy_forms_tags %}
 
-{% block title %}
-   {{object.category}}
-{%endblock title %}
+{% block title %}{{ object.title }}{% endblock title %}
 
-{% block left_sidebar%}
-<div class="col-lg-8 posts-list">
-   <div class="single-post">
-      <div class="feature-img">
-         <img class="img-fluid" src='{{object.main_img.url}}' alt="">
-      </div>
-      <div class="blog_details">
-         <h2>{{object.title}}
-         </h2>
-         <ul class="blog-info-link mt-3 mb-4">
-            <li><a href="{% url 'mainapp:articles_category' cat_slug=object.category.slug %}"><i  class="fa {{ object.category|get_icon }}"></i> {{object.category}}</a></li>
-            <li><i class="fa fa-user"></i> {{object.author.username}}</li>
-            <li><a href="#comments"><i class="fa fa-comments"></i> {% trans "Comments" %} - {{object.get_all_comments|length}}</a></li>
-            <li><i class="fa fa-tags"></i>
-               {% for tag in object.tags.all %}
-               <a href="{% url 'mainapp:list_by_tag' tag.slug %}">{{tag.name}}</a>; 
-               {%endfor%}
-            </li>
-         </ul>
-         <div class="article-content">{{ object.text|render_article_text:object }}</div>
-      </div>
-   </div>
-   <div class="navigation-top">
-      <div class="d-sm-flex justify-content-between text-center">
-         <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Lily and 4
-            people like this</p>
-         <div class="col-sm-4 text-center my-2 my-sm-0">
-            <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> {% trans "Comments" %} - {{object.get_all_comments|length}}</p>
-         </div>
-         <ul class="social-icons">
-            <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-            <li><a href="#"><i class="fa fa-behance"></i></a></li>
-         </ul>
-      </div>
-      <div class="navigation-area">
-         <div class="row">
-            <div
-               class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
-               <div class="thumb">
-                  <a href="{{prev.get_absolute_url}}">
-                     <img class="img-fluid" src='{{prev.main_img.url}}' alt="">
-                  </a>
-               </div>
-               <div class="arrow">
-                  <a href="{{prev.get_absolute_url}}">
-                     <span class="lnr text-white ti-arrow-left"></span>
-                  </a>
-               </div>
-               <div class="detials">
-                  <p>{% trans "Previous" %} </p>
-                  <a href="{{prev.get_absolute_url}}">
-                     <h4>{{prev.title|truncatewords:5|safe}}</h4>
-                  </a>
-               </div>
+{% block content %}
+<section class="bradcam_area bradcam_bg_1 article-detail-banner" aria-hidden="true"></section>
+
+<main class="article-detail-page">
+    <div class="article-detail-container">
+        <a class="article-back-link" href="{% url 'mainapp:articles' %}">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            {% trans "Articles" %}
+        </a>
+
+        <article class="article-detail-card">
+            <header class="article-detail-header">
+                <h1>{{ object.title }}</h1>
+                <div class="article-detail-meta">
+                    <a class="article-detail-category"
+                        href="{% url 'mainapp:articles_category' cat_slug=object.category.slug %}">
+                        <i class="fa {{ object.category|get_icon }}" aria-hidden="true"></i>
+                        {{ object.category }}
+                    </a>
+                    <time datetime="{{ object.created_at|date:'Y-m-d' }}">
+                        {{ object.created_at|date:"j E Y" }}
+                    </time>
+                    {% if object.author %}
+                    <span>
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        {{ object.author.username }}
+                    </span>
+                    {% endif %}
+                    <a href="#comments">
+                        <i class="fa fa-comments-o" aria-hidden="true"></i>
+                        {{ comments|length }}
+                    </a>
+                </div>
+            </header>
+
+            {% if object.main_img %}
+            <figure class="article-detail-cover">
+                <img src="{{ object.main_img.url }}" alt="{{ object.title }}">
+            </figure>
+            {% endif %}
+
+            <div class="article-detail-content article-content">
+                {{ object.text|render_article_text:object }}
             </div>
-            <div
-               class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
-               <div class="detials">
-                  <p>{% trans "Next" %}</p>
-                  <a href="{{next.get_absolute_url}}">
-                     <h4>{{next.title|truncatewords:5|safe}}</h4>
-                  </a>
-               </div>
-               <div class="arrow">
-                  <a href="{{next.get_absolute_url}}">
-                     <span class="lnr text-white ti-arrow-right"></span>
-                  </a>
-               </div>
-               <div class="thumb">
-                  <a href="{{next.get_absolute_url}}">
-                     <img class="img-fluid" src='{{next.main_img.url}}' alt="">
-                  </a>
-               </div>
-            </div>
-         </div>
-      </div>
-   </div>
-   <div class="blog-author">
-      <div class="media align-items-center">
-         {% if comment.author.avatar %}
-         <img src='{{object.author.avatar.url}}' alt="">
-         {%else%}
-         <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
-         {%endif%}
-         <div class="media-body">
-            
-               <h4>{% trans "Author information" %}</h4>
-            
-            <p>
-               {% trans "This article was prepared for you by" %} {%if object.author.first_name%}{{object.author.first_name}}{%endif%}
-               {%if object.author.last_name%}{{object.author.last_name}}{%endif%} 
-               {%if not object.author.first_name and not object.author.last_name%}{%else%}{% trans "with the nickname" %}{%endif%}
-               {{object.author.username}}
-               {%if object.author.first_name%}{% trans "from the country" %} {{object.author.country.name}}{%endif%}
-            </p>
-         </div>
-      </div>
-   </div>
-   <div class="comments-area" id="comments">
-      {% if not comments %}
-      <p>{% trans "There are no comments yet. Be the first!" %}</p>
-      {%else%}
-      <h4>{% trans "Comments" %} ({{object.get_all_comments|length}})</h4>
-      {% for comment in comments %}
-      <div class="comment-list">
-         <div class="single-comment justify-content-between d-flex">
-            <div class="user justify-content-between d-flex">
-               <div class="thumb">
-                  {% if comment.author.avatar %}
-                  <img src='{{comment.author.avatar.url}}' alt="">
-                  {%else%}
-                  <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
-                  {%endif%}
-               </div>
-               <div class="desc">
-                  <p class="comment">
-                     {{comment.content}}
-                  </p>
-                  <div class="d-flex justify-content-between">
-                     <div class="d-flex align-items-center">
-                        <h5>
-                           <a href="#">{{comment.author.username}}</a>
-                        </h5>
-                        <p class="date">{{comment.created_at|date:"j F Y | H:i" }} </p>
-                     </div>
-                     
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      {%endfor%}
-      {%endif%}
-      
-   </div>
-   <div class="comment-form">
-      {% if user.is_authenticated %}
-      <h4>{% trans "Leave a comment" %}</h4>
-      <form class="form-contact comment_form" action="{% url 'mainapp:comment_article' object.id %}" id="commentForm" method="post">
-         <div class="row">
-            <div class="col-12">
-               <div class="form-group">
-                  {% csrf_token %}
-                  {{form|crispy}}
-               </div>
-            </div>
-         </div>
-         <div class="form-group">
-            <button type="submit" class="button button-contactForm btn_1 boxed-btn">{% trans "Send" %}</button>
-         </div>
-      </form>
-      {%else%}
-         {% url 'authapp:login' as login_url%}
-         <p> 
-            {% blocktrans trimmed with link='<a href="'|add:login_url|add:'"><u>log in</u></a>'|safe %}
-            In order to leave a review you need to {{ link }} to the site!
-            {% endblocktrans %}
-         </p>
-      {%endif%}
-   </div>
-</div>
-{%endblock left_sidebar%}
-  
-{% block right_sidebar %}
-<aside class="single_sidebar_widget post_category_widget">
-   <h4 class="widget_title">{% trans "Article Categories" %}</h4>
-   <ul class="list cat-list">
-      {% for item in all_categories %}
-         <li>
-            <a href="{% url 'mainapp:articles_category' cat_slug=item.slug %}" class="d-flex">
-                  <p>{{item.title}}</p>
-                  <p>({{item.qty_articles_in_category}})</p>
+
+            {% with tags=object.tags.all %}
+                {% if tags %}
+                <footer class="article-detail-tags">
+                    <i class="fa fa-tags" aria-hidden="true"></i>
+                    {% for tag in tags %}
+                    <a href="{% url 'mainapp:list_by_tag' tag.slug %}">{{ tag.name }}</a>
+                    {% endfor %}
+                </footer>
+                {% endif %}
+            {% endwith %}
+        </article>
+
+        {% if prev or next %}
+        <nav class="article-detail-navigation" aria-label="{% trans 'Articles' %}">
+            {% if prev %}
+            <a class="article-detail-nav-link article-detail-nav-previous"
+                href="{{ prev.get_absolute_url }}">
+                <span><i class="fa fa-arrow-left" aria-hidden="true"></i> {% trans "Previous" %}</span>
+                <strong>{{ prev.title }}</strong>
             </a>
-         </li>
-      {% endfor %}
-   </ul>
-</aside>
-{%endblock right_sidebar%}
+            {% endif %}
+            {% if next %}
+            <a class="article-detail-nav-link article-detail-nav-next"
+                href="{{ next.get_absolute_url }}">
+                <span>{% trans "Next" %} <i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+                <strong>{{ next.title }}</strong>
+            </a>
+            {% endif %}
+        </nav>
+        {% endif %}
+
+        <section class="article-detail-comments" id="comments">
+            <div class="article-detail-section-heading">
+                <h2>{% trans "Comments" %}</h2>
+                <span>{{ comments|length }}</span>
+            </div>
+
+            {% for comment in comments %}
+            <article class="article-comment">
+                <div class="article-comment-avatar">
+                    {% if comment.author.avatar %}
+                    <img src="{{ comment.author.avatar.url }}" alt="">
+                    {% else %}
+                    <span aria-hidden="true">{{ comment.author.username|slice:":1"|upper }}</span>
+                    {% endif %}
+                </div>
+                <div class="article-comment-body">
+                    <div class="article-comment-meta">
+                        <strong>{{ comment.author.username }}</strong>
+                        <time datetime="{{ comment.created_at|date:'c' }}">
+                            {{ comment.created_at|date:"j F Y, H:i" }}
+                        </time>
+                    </div>
+                    <p>{{ comment.content }}</p>
+                </div>
+            </article>
+            {% empty %}
+            <p class="article-no-comments">{% trans "There are no comments yet. Be the first!" %}</p>
+            {% endfor %}
+
+            <div class="article-detail-comment-form">
+                {% if user.is_authenticated %}
+                <h3>{% trans "Leave a comment" %}</h3>
+                <form action="{% url 'mainapp:comment_article' object.id %}" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="boxed-btn3">{% trans "Send" %}</button>
+                </form>
+                {% else %}
+                    {% url 'authapp:login' as login_url %}
+                    <p>
+                        {% blocktrans trimmed with link='<a href="'|add:login_url|add:'"><u>log in</u></a>'|safe %}
+                        In order to leave a review you need to {{ link }} to the site!
+                        {% endblocktrans %}
+                    </p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+</main>
+{% endblock content %}

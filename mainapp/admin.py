@@ -233,10 +233,6 @@ class ArticlesAdmin(admin.ModelAdmin):
 class PlatformsAdmin(admin.ModelAdmin):
     list_per_page = 10
 
-@admin.register(mainapp_models.Idea)
-class PlatformsAdmin(admin.ModelAdmin):
-    list_per_page = 10
-
 @admin.register(authapp_models.User)
 class UserAdmin(admin.ModelAdmin):
     list_per_page = 10

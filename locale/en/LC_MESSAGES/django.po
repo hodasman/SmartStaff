@@ -455,6 +455,14 @@ msgstr ""
 msgid "Device types"
 msgstr ""
 
+#: mainapp/templates/mainapp/scenario_detail.html
+msgid "Types of devices used"
+msgstr "Types of devices used"
+
+#: mainapp/templates/mainapp/scenario_detail.html
+msgid "Rating"
+msgstr "Rating"
+
 #: mainapp/models.py:171
 msgid "Brief description"
 msgstr ""
@@ -1041,6 +1049,10 @@ msgstr ""
 msgid "Explanations"
 msgstr ""
 
+#: mainapp/models.py
+msgid "Implementation"
+msgstr "Implementation"
+
 #: mainapp/templates/mainapp/scenario_detail.html:98
 msgid ""
 "Attention! Depending on the version of the application, the names of the "
@@ -1057,6 +1069,26 @@ msgstr ""
 #: mainapp/templates/mainapp/search.html:63 templates/base_blog.html:44
 #: templates/base_blog.html:53
 msgid "Search"
+msgstr ""
+
+#: mainapp/templates/mainapp/search.html:30
+msgid "Search results"
+msgstr ""
+
+#, python-format
+msgid "Found %(total)s results"
+msgstr ""
+
+msgid "Read more"
+msgstr ""
+
+msgid "No results found"
+msgstr ""
+
+msgid "Enter a search term to find articles and scenarios."
+msgstr ""
+
+msgid "Pagination"
 msgstr ""
 
 #: mainapp/templates/mainapp/search.html:30
@@ -1207,3 +1239,7 @@ msgstr ""
 #: templates/subscribe/tags/form_right.html:2
 msgid "Subscribe to news"
 msgstr ""
+
+#: mainapp/templates/mainapp/scenario_list.html
+msgid "No scenarios are available right now."
+msgstr "No scenarios are available right now."

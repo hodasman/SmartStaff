@@ -1,6 +1,5 @@
 from django.db import migrations
 
-
 DESCRIPTIONS = {
     "Tuya (Smart Life)": (
         "Экосистема для умных устройств разных производителей, совместимых "

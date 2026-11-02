@@ -1,6 +1,8 @@
+import re
+
 from autoslug import AutoSlugField
 from django.conf import settings
-from django.db import models
+from django.db import connections, models
 from django.db.models import Avg, Count, Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -25,6 +27,16 @@ def scenarios_img_path(instance, filename):
     return "scenarios_img/{0}/{1}".format(instance.slug, filename)
 
 
+def _search_content(query, database):
+    if connections[database].vendor == "sqlite":
+        lookup = "iregex"
+        query = re.escape(query)
+    else:
+        lookup = "icontains"
+
+    return Q(**{f"title__{lookup}": query}) | Q(**{f"text__{lookup}": query})
+
+
 class Platform(models.Model):
     title = models.CharField(max_length=256, verbose_name=_("Name"), db_index=True)
     description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
@@ -43,19 +55,6 @@ class Platform(models.Model):
         from .models import ScenarioVariant
         qty = ScenarioVariant.objects.filter(platform__id=self.id).count()
         return qty
-
-
-class Idea(models.Model):
-    title = models.CharField(max_length=256, verbose_name=_("Name"))
-    description = models.TextField(blank=True, null=True, verbose_name=_("Description"))
-
-    class Meta:
-        verbose_name = _("Idea")
-        verbose_name_plural = _("Ideas")
-        ordering = ["title"]
-
-    def __str__(self) -> str:
-        return f"{self.title}"
 
 
 class ArticleCategory(models.Model):
@@ -123,8 +122,7 @@ class ObjectManager(models.Manager):
     def search(self, query=None):
         qs = self.get_queryset()
         if query:
-            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
-            qs = qs.filter(or_lookup)
+            qs = qs.filter(_search_content(query, qs.db))
  
         return qs
 
@@ -143,8 +141,7 @@ class ArticleQuerySet(models.QuerySet):
     def search(self, query=None):
         qs = self
         if query:
-            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
-            qs = qs.filter(or_lookup)
+            qs = qs.filter(_search_content(query, qs.db))
         return qs
 
 
@@ -359,8 +356,7 @@ class ScenarioQuerySet(models.QuerySet):
     def search(self, query=None):
         qs = self
         if query:
-            or_lookup = (Q(title__icontains=query) | Q(text__icontains=query))
-            qs = qs.filter(or_lookup)
+            qs = qs.filter(_search_content(query, qs.db))
         return qs
 
 
@@ -382,13 +378,13 @@ class Scenario(models.Model):
     objects = ScenarioManager()
     title = models.CharField(max_length=256, verbose_name=_("Title"))
     slug = AutoSlugField(populate_from="title", verbose_name=_("URL"))
-    text = models.TextField(verbose_name=_("Text"), blank=True)
-    description = models.TextField(verbose_name=_("Description"), blank=True)
+    idea = models.TextField(verbose_name=_("Idea"), blank=True)
+    text = models.TextField(verbose_name=_("Implementation"), blank=True)
+    description = models.TextField(verbose_name=_("Brief description"), blank=True)
     main_img = models.ImageField(verbose_name=_("Main image"), blank=True, null=True, upload_to=scenarios_img_path)
     device_types = models.ManyToManyField(DeviceType, related_name="scenarios", verbose_name=_("Device types"))
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("Author"), blank=True, null=True)
     # `platform` removed: scenario may have multiple variants per ecosystem
-    idea = models.ForeignKey(Idea, on_delete=models.CASCADE, blank=True, null=True)
     tags = TaggableManager()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), editable=False, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"), editable=False, db_index=True)
@@ -419,7 +415,7 @@ class Scenario(models.Model):
         return self.get_previous_by_created_at()
     
     def get_absolute_url(self):
-        return reverse('mainapp:scenario-detail', kwargs={'slug': self.slug})
+        return reverse("mainapp:scenario_detail", kwargs={"slug": self.slug})
     
     def get_rating(self) -> int:
         """Средняя оценка сценария (0, если оценок нет)."""

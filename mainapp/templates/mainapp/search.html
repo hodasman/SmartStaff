@@ -1,75 +1,142 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
-{% block title %}
-    {% trans "Search" %}
-{% endblock title %}    
-{% block content %}
 
-    <!-- bradcam_area  -->
-    <div class="bradcam_area bradcam_bg_1">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="bradcam_text">
-                        <h3>
-                            {% trans "Search" %}
-                        </h3>
-                    </div>
+{% block title %}{% trans "Search" %}{% endblock title %}
+
+{% block content %}
+<div class="bradcam_area bradcam_bg_1 search-page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="bradcam_text">
+                    <h3>{% trans "Search" %}</h3>
                 </div>
             </div>
         </div>
     </div>
-    <!--/ bradcam_area  -->
+</div>
 
-
-   <!-- Start Sample Area -->
-	<section class="sample-text-area">
-		<div class="container box_1170">
-            
-            <h2 class="text-heading">{% trans "Search results for" %} &quot;{{request.GET.q}}&quot;</h2>
-            {% if object_list %}
-            {% blocktrans count total=total_results %}
-            <h4>Found {{ total }} result:</h4>
-            {% plural %}
-            <h4>Found {{ total }} results:</h4>
-            {% endblocktrans %}
-
-            <p class="sample-text">
-                {% for item in object_list %}
-                    
-                    <h4><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></h4>
-                    {{ item.text|truncatewords:15|safe }}
-                    
-                {%endfor%}
-                <hr>    
-                <p>{% trans "Didn't find what you were looking for? Try again:" %}</p>
-                <div class="input-group mb-3">
-                    <form action="." method="get">
-                        <input name="q" type="text" class="form-control" placeholder="{% trans 'Search' %}"
-                                                onfocus="this.placeholder = ''"
-                                                onblur="this.placeholder = 'Search'">
-
-                    </form>
+<main class="search-page">
+    <div class="container">
+        <section class="search-panel" aria-label="{% trans 'Search' %}">
+            <div class="search-panel-heading">
+                <span class="search-panel-icon" aria-hidden="true">
+                    <i class="fa fa-search"></i>
+                </span>
+                <div>
+                    <h1>{% trans "Search" %}</h1>
+                    <p>{% trans "Search results for" %} <strong>“{{ search_query }}”</strong></p>
                 </div>
+            </div>
+            <form class="search-page-form" action="{% url 'mainapp:search' %}" method="get" role="search">
+                <label class="sr-only" for="site-search-query">{% trans "Search" %}</label>
+                <input
+                    id="site-search-query"
+                    type="search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="{% trans 'Search' %}"
+                    autocomplete="off">
+                <button class="boxed-btn3" type="submit">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    {% trans "Search" %}
+                </button>
+            </form>
+        </section>
+
+        {% if search_query %}
+            {% if object_list %}
+            <section class="search-results" aria-live="polite">
+                <div class="search-results-heading">
+                    <h2>{% trans "Search results" %}</h2>
+                    <span class="search-results-count">
+                        {% blocktrans with total=total_results %}Found {{ total }} results{% endblocktrans %}
+                    </span>
+                </div>
+
+                <div class="search-results-list">
+                    {% for item in object_list %}
+                    <article class="search-result-card">
+                        <a class="search-result-image" href="{{ item.get_absolute_url }}" tabindex="-1" aria-hidden="true">
+                            {% if item.main_img %}
+                            <img src="{{ item.main_img.url }}" alt="">
+                            {% else %}
+                            <span class="search-result-placeholder">
+                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                            </span>
+                            {% endif %}
+                        </a>
+                        <div class="search-result-content">
+                            <div class="search-result-meta">
+                                <span class="search-result-type">{{ item.search_type }}</span>
+                                <time datetime="{{ item.created_at|date:'Y-m-d' }}">
+                                    {{ item.created_at|date:"j E Y" }}
+                                </time>
+                            </div>
+                            <h3>
+                                <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                            </h3>
+                            {% if item.search_excerpt %}
+                            <p>{{ item.search_excerpt|striptags|truncatewords:32 }}</p>
+                            {% endif %}
+                            <a class="search-result-link" href="{{ item.get_absolute_url }}">
+                                {% trans "Read more" %}
+                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+
+                {% if page_obj.paginator.num_pages > 1 %}
+                <nav class="search-pagination" aria-label="{% trans 'Pagination' %}">
+                    {% if page_obj.has_previous %}
+                    <a class="search-pagination-link"
+                        href="?q={{ search_query|urlencode }}&page={{ page_obj.previous_page_number }}"
+                        aria-label="{% trans 'Previous' %}">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    </a>
+                    {% endif %}
+                    {% for page_number in page_obj.paginator.page_range %}
+                    <a class="search-pagination-link{% if page_number == page_obj.number %} is-current{% endif %}"
+                        href="?q={{ search_query|urlencode }}&page={{ page_number }}"
+                        {% if page_number == page_obj.number %}aria-current="page"{% endif %}>
+                        {{ page_number }}
+                    </a>
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <a class="search-pagination-link"
+                        href="?q={{ search_query|urlencode }}&page={{ page_obj.next_page_number }}"
+                        aria-label="{% trans 'Next' %}">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+                    {% endif %}
+                </nav>
+                {% endif %}
+            </section>
             {% else %}
+            <section class="search-empty-state" aria-live="polite">
+                <span class="search-empty-icon" aria-hidden="true">
+                    <i class="fa fa-search"></i>
+                </span>
+                <h2>{% trans "No results found" %}</h2>
                 <p>
                     {% blocktrans trimmed %}
                     No publications were found for your query. Please try again with a different formulation
                     {% endblocktrans %}
                 </p>
-                <div class="input-group mb-3">
-                    <form action="." method="get">
-                        <input name="q" type="text" class="form-control" placeholder="{% trans 'Search' %}"
-                                                onfocus="this.placeholder = ''"
-                                                onblur="this.placeholder = 'Search'">
-
-                    </form>
-                </div>
+            </section>
             {% endif %}
-			</p>
-		</div>
-	</section>
-	<!-- End Sample Area -->
-
+        {% else %}
+        <section class="search-empty-state search-empty-state--welcome">
+            <span class="search-empty-icon" aria-hidden="true">
+                <i class="fa fa-lightbulb-o"></i>
+            </span>
+            <h2>{% trans "Search" %}</h2>
+            <p>{% trans "Enter a search term to find articles and scenarios." %}</p>
+        </section>
+        {% endif %}
+    </div>
+</main>
 {% endblock content %}
