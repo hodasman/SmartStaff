@@ -2012,6 +2012,559 @@ h3 {
   }
 }
 
+.device-detail-banner {
+  padding: 132px 0 42px;
+}
+
+.device-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 27px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.device-detail-back:hover,
+.device-detail-back:focus {
+  color: #fff;
+}
+
+.device-detail-banner-content {
+  color: #fff;
+}
+
+.device-detail-banner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.device-detail-banner-meta > span:not(.legacy-badge) {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.23);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.96);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.device-detail-banner-meta > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.23);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.96);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.device-detail-banner-meta > a:hover,
+.device-detail-banner-meta > a:focus {
+  border-color: rgba(255, 255, 255, 0.48);
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.device-detail-banner-meta > span:not(.legacy-badge) i {
+  opacity: 0.85;
+}
+
+.device-detail-banner-meta > a i {
+  opacity: 0.85;
+}
+
+.device-detail-banner h1 {
+  max-width: 900px;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 700;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.device-detail-page {
+  min-height: 420px;
+  padding: 42px 0 76px;
+  background: #f6f8fb;
+}
+
+.device-detail-container {
+  max-width: 1160px;
+}
+
+.device-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 350px);
+  align-items: start;
+  gap: 24px;
+}
+
+.device-detail-main,
+.device-detail-sidebar {
+  display: grid;
+  min-width: 0;
+  gap: 20px;
+}
+
+.device-detail-card,
+.device-detail-gallery,
+.device-detail-specs,
+.device-detail-purchase {
+  border: 1px solid #e8edf3;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(30, 55, 82, 0.06);
+}
+
+.device-detail-card {
+  padding: 26px;
+}
+
+.device-detail-intro {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.device-detail-icon {
+  display: flex;
+  width: 112px;
+  height: 112px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #f3f8fa, #eaf2f4);
+}
+
+.device-detail-icon img {
+  width: 78px;
+  height: 78px;
+  object-fit: contain;
+}
+
+.device-detail-intro-copy {
+  min-width: 0;
+}
+
+.device-detail-kicker {
+  display: block;
+  margin-bottom: 5px;
+  color: #13885d;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.device-detail-intro h2 {
+  margin: 0;
+  color: #18304c;
+  font-size: clamp(21px, 2.4vw, 28px);
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.device-detail-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  color: #718198;
+  font-size: 13px;
+}
+
+.device-detail-section {
+  padding-top: 23px;
+}
+
+.device-detail-section > h2,
+.device-detail-section-heading h2 {
+  margin: 0 0 12px;
+  color: #18304c;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.device-detail-description {
+  color: #50647a;
+  font-size: 15px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.device-detail-description p:last-child {
+  margin-bottom: 0;
+}
+
+.device-detail-gallery {
+  padding: 22px;
+}
+
+.device-detail-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.device-detail-section-heading h2 {
+  margin: 0;
+}
+
+.device-detail-section-heading > span {
+  display: inline-flex;
+  min-width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #f0f5f7;
+  color: #52657b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.device-detail-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.device-detail-gallery-item {
+  display: flex;
+  min-height: 180px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #f3f6f8;
+}
+
+.device-detail-gallery-item img {
+  display: block;
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+
+.device-detail-gallery-item:hover img {
+  transform: scale(1.035);
+}
+
+.device-detail-specs,
+.device-detail-list-panel,
+.device-detail-purchase {
+  padding: 22px;
+  border: 1px solid #e8edf3;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(30, 55, 82, 0.06);
+}
+
+.device-detail-specs > header,
+.device-detail-purchase-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.device-detail-specs > header h2,
+.device-detail-purchase-heading h2 {
+  margin: 0;
+  color: #18304c;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.device-detail-sidebar-icon {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #eaf5f0;
+  color: #13885d;
+}
+
+.device-detail-specs dl {
+  margin: 0;
+}
+
+.device-detail-specs dl > div {
+  display: grid;
+  grid-template-columns: minmax(95px, 0.75fr) minmax(0, 1.25fr);
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f3f6;
+}
+
+.device-detail-specs dt {
+  color: #718198;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.device-detail-specs dd {
+  margin: 0;
+  color: #30465e;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.device-detail-ecosystems {
+  padding-top: 17px;
+}
+
+.device-detail-ecosystems h3 {
+  margin: 0 0 10px;
+  color: #718198;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.device-detail-ecosystems > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.device-detail-ecosystems > div > span:not(.device-detail-no-ecosystem) {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eaf5f0;
+  color: #13744f;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.device-detail-no-ecosystem {
+  color: #718198;
+}
+
+.device-detail-purchase-heading {
+  margin-bottom: 15px;
+}
+
+.device-detail-list-panel {
+  border-color: #dcebe3;
+  background: linear-gradient(145deg, #fff, #f8fcfa);
+}
+
+.device-detail-list-panel .device-detail-purchase-heading {
+  border-bottom-color: #e5f0ea;
+}
+
+.device-detail-list-panel .device-detail-sidebar-icon {
+  background: #eaf5f0;
+  color: #13885d;
+}
+
+.device-detail-list-action {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 10px 14px;
+  border: 1px solid #13885d;
+  border-radius: 11px;
+  background: #13885d;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.device-detail-list-action:hover,
+.device-detail-list-action:focus {
+  background: #0c6847;
+  color: #fff;
+}
+
+.device-detail-list-action--added {
+  border-color: #f1d8d6;
+  background: #fff5f4;
+  color: #bd5b52;
+}
+
+.device-detail-list-action--added:hover,
+.device-detail-list-action--added:focus {
+  border-color: #bd5b52;
+  background: #bd5b52;
+  color: #fff;
+}
+
+.device-detail-purchase-links {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.device-detail-purchase-links > a {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  border: 1px solid #e5ebf0;
+  border-radius: 10px;
+  color: #40536a;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.device-detail-purchase-links > a:hover {
+  border-color: #9acfb9;
+  color: #13885d;
+}
+
+.device-detail-purchase-links > a i {
+  color: #13885d;
+  font-size: 12px;
+}
+
+.device-detail-purchase-links > p {
+  margin: 0;
+  padding: 7px 0;
+  color: #8291a2;
+  font-size: 13px;
+}
+
+@media (max-width: 991px) {
+  .device-detail-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+    gap: 18px;
+  }
+
+  .device-detail-card,
+  .device-detail-gallery,
+  .device-detail-specs,
+  .device-detail-list-panel,
+  .device-detail-purchase {
+    padding: 19px;
+  }
+
+  .device-detail-specs dl > div {
+    grid-template-columns: minmax(78px, 0.8fr) minmax(0, 1.2fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .device-detail-banner {
+    padding: 115px 0 34px;
+  }
+
+  .device-detail-back {
+    margin-bottom: 20px;
+  }
+
+  .device-detail-banner h1 {
+    font-size: clamp(28px, 7vw, 36px);
+  }
+
+  .device-detail-page {
+    padding: 24px 0 50px;
+  }
+
+  .device-detail-container {
+    width: calc(100% - 28px);
+  }
+
+  .device-detail-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .device-detail-main,
+  .device-detail-sidebar {
+    gap: 16px;
+  }
+
+  .device-detail-intro {
+    align-items: flex-start;
+    gap: 15px;
+    padding-bottom: 19px;
+  }
+
+  .device-detail-icon {
+    width: 78px;
+    height: 78px;
+    border-radius: 18px;
+  }
+
+  .device-detail-icon img {
+    width: 54px;
+    height: 54px;
+  }
+
+  .device-detail-gallery-item {
+    min-height: 130px;
+  }
+}
+
+@media (max-width: 380px) {
+  .device-detail-banner-meta {
+    gap: 7px;
+  }
+
+  .device-detail-banner-meta > span:not(.legacy-badge),
+  .device-detail-banner-meta > a {
+      padding: 6px 9px;
+      font-size: 11px;
+    }
+
+  .device-detail-intro {
+    flex-direction: column;
+  }
+
+  .device-detail-gallery-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .device-detail-gallery-item img,
+  .device-detail-banner-meta > a,
+  .device-detail-list-action,
+  .device-detail-purchase-links > a {
+    transition: none;
+  }
+}
+
 /* line 243, ../../Arafath/CL/December/235. Job board/HTML/scss/_header.scss */
 .header-area .main-header-area .main-menu ul li .submenu li a {
   padding: 10px 15px;

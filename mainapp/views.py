@@ -341,6 +341,20 @@ class DevicesCategory(ListView):
 class DevicesDetailView(DetailView):
     model = mainapp_models.Device
 
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .select_related("category", "device_type", "author")
+            .prefetch_related(
+                "ecosystem",
+                "protocols",
+                "images",
+                "purchase_links",
+                "user_set",
+            )
+        )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 

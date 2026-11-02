@@ -2,7 +2,14 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from mainapp.models import Device, DeviceCategory, DeviceType, Platform
+from mainapp.models import (
+    Device,
+    DeviceCategory,
+    DeviceType,
+    Platform,
+    Protocol,
+    PurchaseLink,
+)
 
 
 class OnboardingFlowTests(TestCase):
@@ -120,6 +127,56 @@ class OnboardingFlowTests(TestCase):
         self.user.devices.add(device)
         with self.settings(LANGUAGE_CODE="en"):
             response = self.client.get(catalog_url)
+
+        self.assertContains(
+            response,
+            reverse("mainapp:delete_device", kwargs={"slug": device.slug}),
+        )
+
+    def test_device_detail_uses_editorial_layout_and_shows_device_information(self):
+        device = self.create_device("Detail sensor", [self.platform_a])
+        protocol = Protocol.objects.create(title="Zigbee")
+        device.protocols.add(protocol)
+        purchase_link = PurchaseLink.objects.create(
+            device=device,
+            marketplace=PurchaseLink.MARKETPLACE_OZON,
+            url="https://example.test/device",
+        )
+
+        with self.settings(LANGUAGE_CODE="en"):
+            response = self.client.get(
+                reverse("mainapp:devices_detail", kwargs={"slug": device.slug})
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "device-detail-page")
+        self.assertContains(response, "device-detail-specs")
+        self.assertContains(response, "device-detail-purchase")
+        self.assertContains(response, device.title)
+        self.assertContains(response, device.category.title)
+        self.assertContains(response, self.platform_a.title)
+        self.assertContains(response, protocol.title)
+        self.assertContains(response, device.temperature)
+        self.assertContains(response, purchase_link.url)
+        self.assertContains(response, "device-detail-list-action")
+        self.assertContains(
+            response,
+            f'href="{reverse("mainapp:devices-list")}?category={device.category.pk}"',
+        )
+        self.assertContains(
+            response,
+            f'href="{reverse("mainapp:devices-list")}?category={device.category.pk}&device_type={device.device_type.pk}"',
+        )
+        self.assertContains(response, "device-detail-list-panel")
+        self.assertContains(response, "device-detail-purchase-links")
+        self.assertNotContains(response, "job_details_area")
+        self.assertNotContains(response, "facebook")
+
+        self.user.devices.add(device)
+        with self.settings(LANGUAGE_CODE="en"):
+            response = self.client.get(
+                reverse("mainapp:devices_detail", kwargs={"slug": device.slug})
+            )
 
         self.assertContains(
             response,
